@@ -7,23 +7,26 @@ import typography from './typography';
  */
 export const light = {
 	palette: {
-		type: 'light',
+		mode: 'light',
 		background: {
-			default: '#f4f6f8',
+			default: '#FFFFFF',
 			paper: common.white,
 		},
 		primary: {
-			contrastText: '#ffffff',
-			main: '#E92C28',
+			main: '#F4A51C', // orange accent
+			contrastText: '#FFFFFF',
 		},
 		secondary: {
-			main: '#1646C1',
+			main: '#333333', // dark gray for contrast
+			contrastText: '#FFFFFF',
 		},
 		text: {
-			primary: '#212121',
-			secondary: '#616161',
+			primary: '#222222', // main text
+			secondary: '#555555', // muted gray
+			disabled: '#999999',
 			dark: common.black,
 		},
+		divider: '#E5E5E5',
 	},
 	components: {
 		MuiTypography: {
@@ -51,131 +54,115 @@ export const light = {
 		MuiLink: {
 			styleOverrides: {
 				root: {
-					color: '#757575',
+					color: '#F4A51C',
 					textDecoration: 'none',
+					'&:hover': {
+						textDecoration: 'underline',
+					},
 				},
 			},
 		},
 		MuiDivider: {
 			styleOverrides: {
 				root: {
-					borderColor: '#eee',
-				},
-			},
-		},
-		MuiBox: {
-			styleOverrides: {
-				root: {
-					padding: '0',
-				},
-			},
-			makeStyles: {
-				root: {
-					padding: 0,
-				},
-			},
-			sx: {
-				'&.MuiBox-root': {
-					component: 'div',
-				},
-			},
-		},
-		MuiContainer: {
-			styleOverrides: {
-				root: {
-					maxWidth: 'inherit',
-					padding: '0',
-					'@media (min-width: 600px)': {
-						paddingLeft: 0,
-						paddingRight: 0,
-					},
+					borderColor: '#E5E5E5',
 				},
 			},
 		},
 		MuiCssBaseline: {
 			styleOverrides: {
 				html: { height: '100%' },
-				body: { background: '#fff', height: '100%', minHeight: '100%' },
+				body: {
+					background: '#FFFFFF',
+					color: '#222222',
+					height: '100%',
+					minHeight: '100%',
+					fontFamily: "'Inter', 'Roboto', sans-serif",
+				},
 				p: {
 					margin: '0',
 				},
-			},
-		},
-		MuiAvatar: {
-			styleOverrides: {
-				root: {
-					marginLeft: '0',
+				a: {
+					color: '#F4A51C',
+					textDecoration: 'none',
+					'&:hover': {
+						textDecoration: 'underline',
+					},
 				},
 			},
 		},
 		MuiButton: {
 			styleOverrides: {
 				root: {
-					color: '#212121',
+					borderRadius: '4px',
+					fontWeight: 500,
+					textTransform: 'none',
+					boxShadow: 'none',
 					minWidth: 'auto',
 					lineHeight: '1.2',
-					boxShadow: 'none',
-					ButtonText: {
-						color: '#212121',
+					'&.MuiButton-containedPrimary': {
+						backgroundColor: '#F4A51C',
+						color: '#FFFFFF',
+						'&:hover': {
+							backgroundColor: '#e09918',
+						},
+					},
+					'&.MuiButton-outlinedPrimary': {
+						borderColor: '#F4A51C',
+						color: '#F4A51C',
+						'&:hover': {
+							backgroundColor: '#FFF7E5',
+						},
 					},
 				},
 			},
 		},
-		MuiIconButton: {
-			styleOverrides: {
-				root: {},
-			},
-		},
-		MuiListItemButton: {
+		MuiPaper: {
 			styleOverrides: {
 				root: {
-					padding: '0',
+					backgroundColor: '#FFFFFF',
+					boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+					borderRadius: '6px',
 				},
 			},
 		},
-		MuiList: {
+		MuiChip: {
 			styleOverrides: {
 				root: {
-					padding: '0',
+					border: '1px solid #ddd',
+					color: '#222222',
+					backgroundColor: '#FFFFFF',
 				},
 			},
 		},
-		MuiListItem: {
+		MuiFab: {
 			styleOverrides: {
 				root: {
-					MuiSelect: {
-						backgroundColor: '#fafafa',
+					width: '40px',
+					height: '40px',
+					background: '#FFFFFF',
+					color: '#222222',
+					boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+					'&:hover': {
+						background: '#FFF7E5',
 					},
-					padding: '0',
 				},
 			},
 		},
-		MuiFormControl: {
+		MuiCheckbox: {
 			styleOverrides: {
 				root: {
-					width: '100%',
-				},
-			},
-		},
-		MuiFormControlLabel: {
-			styleOverrides: {
-				root: {
-					marginRight: '0',
+					color: '#999999',
+					'&.Mui-checked': {
+						color: '#F4A51C',
+					},
 				},
 			},
 		},
 		MuiSelect: {
 			styleOverrides: {
-				root: {},
 				select: {
 					textAlign: 'left',
-				},
-			},
-		},
-		MuiInputBase: {
-			styleOverrides: {
-				root: {
-					input: {},
 				},
 			},
 		},
@@ -185,12 +172,10 @@ export const light = {
 					height: '48px',
 					width: '100%',
 					backgroundColor: '#fff',
-					input: {},
+					borderRadius: '4px',
 				},
 				notchedOutline: {
-					padding: '8px',
-					top: '-9px',
-					border: '1px solid #eee',
+					border: '1px solid #E5E5E5',
 				},
 			},
 		},
@@ -202,101 +187,13 @@ export const light = {
 				},
 			},
 		},
-		MuiStepper: {
-			styleOverrides: {
-				root: {
-					alignItems: 'center',
-				},
-			},
-		},
-		MuiTabPanel: {
-			styleOverrides: {
-				root: {
-					padding: '0',
-				},
-			},
-		},
-		MuiSvgIcon: {
-			styleOverrides: {
-				root: {},
-			},
-		},
-		MuiStepIcon: {
-			styleOverrides: {
-				root: {
-					color: '#fff',
-					borderRadius: '50%',
-					border: '1px solid #eee',
-				},
-				text: {
-					fill: '#bdbdbd',
-				},
-			},
-		},
-		MuiStepConnector: {
-			styleOverrides: {
-				line: {
-					borderColor: '#eee',
-				},
-			},
-		},
-		MuiStepLabel: {
-			styleOverrides: {
-				label: {
-					fontSize: '14px',
-				},
-			},
-		},
-		MuiCheckbox: {
-			styleOverrides: {
-				root: {
-					'&.Mui-checked': {
-						color: 'black',
-					},
-				},
-			},
-		},
-		MuiFab: {
-			styleOverrides: {
-				root: {
-					width: '40px',
-					height: '40px',
-					background: '#fff',
-					color: '#212121',
-				},
-				hover: {
-					background: '#fff',
-				},
-			},
-		},
-		MuiPaper: {
-			styleOverrides: {
-				root: {
-					MuiMenu: {
-						boxShadow: 'rgb(145 158 171 / 24%) 0px 0px 2px 0px, rgb(145 158 171 / 24%) -20px 20px 40px -4px',
-					},
-				},
-			},
-		},
 		MuiMenuItem: {
 			styleOverrides: {
 				root: {
 					padding: '6px 8px',
-				},
-			},
-		},
-		MuiAlert: {
-			styleOverrides: {
-				root: {
-					boxShadow: 'none',
-				},
-			},
-		},
-		MuiChip: {
-			styleOverrides: {
-				root: {
-					border: '1px solid #ddd',
-					color: '#212121',
+					'&:hover': {
+						backgroundColor: '#FFF7E5',
+					},
 				},
 			},
 		},

@@ -1,8 +1,11 @@
+import LayoutHome from "../libs/components/layout/LayoutHome";
 
-export default function Home() {
+ function Home() {
   return (
     <div>
       <h1>Hello World</h1>
     </div>
   );
 }
+
+export default LayoutHome(Home);

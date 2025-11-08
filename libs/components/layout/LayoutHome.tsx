@@ -1,29 +1,21 @@
 import React, { useEffect } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
-import Top from '../Top';
 import Footer from '../Footer';
 import { Stack } from '@mui/material';
-import FiberContainer from '../common/FiberContainer';
-import HeaderFilter from '../homepage/HeaderFilter';
-import { userVar } from '../../../apollo/store';
-import { useReactiveVar } from '@apollo/client';
-import { getJwtToken, updateUserInfo } from '../../auth';
-import Chat from '../Chat';
+
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import TopBar from '../navbar/TopBar';
+import MainBar from '../navbar/MainBar';
+import ActionBar from '../navbar/ActionBar';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
-		const user = useReactiveVar(userVar);
 
 		/** LIFECYCLES **/
-		useEffect(() => {
-			const jwt = getJwtToken();
-			if (jwt) updateUserInfo(jwt);
-		}, []);
 
 		/** HANDLERS **/
 
@@ -31,12 +23,12 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>CarMoa</title>
+						<meta name={'title'} content={`CarMoa`} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
-							<Top />
+						<MainBar />
 						</Stack>
 
 						<Stack id={'main'}>
@@ -53,27 +45,18 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>CarMoa</title>
+						<meta name={'title'} content={`CarMoa`} />
 					</Head>
 					<Stack id="pc-wrap">
-						<Stack id={'top'}>
-							<Top />
+						<Stack id={'top'} className='navbar'>
+							<TopBar />
+							<MainBar />
+							<ActionBar />
 						</Stack>
-
-						<Stack className={'header-main'}>
-							<FiberContainer />
-							<Stack className={'container'}>
-								<HeaderFilter />
-							</Stack>
-						</Stack>
-
 						<Stack id={'main'}>
 							<Component {...props} />
 						</Stack>
-
-						{user?._id && <Chat />}
-
 						<Stack id={'footer'}>
 							<Footer />
 						</Stack>
