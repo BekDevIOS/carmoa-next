@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Box } from '@mui/material';
-import { ExpandMore as ExpandMoreIcon, AccountCircle as AccountCircleIcon } from '@mui/icons-material';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 const MainBar = () => {
@@ -17,70 +17,63 @@ const MainBar = () => {
 						<Link href={'/'}>
 							<Box component={'div'} className={'tab-item active'}>
 								<Box component={'span'} sx={{ color: 'primary.main' }}>
-									HOME
+									Home
 								</Box>
 								<ExpandMoreIcon sx={{ color: 'primary.main', fontSize: 12 }} />
 							</Box>
 						</Link>
-						<Link href={'/shop'}>
+						<Link href={'/products'}>
 							<Box component={'div'} className={'tab-item'}>
 								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									SHOP
+									Products
+								</Box>
+								<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
+							</Box>
+						</Link>
+						<Link href={'/categories'}>
+							<Box component={'div'} className={'tab-item'}>
+								<Box component={'span'} sx={{ color: 'text.primary' }}>
+									Categories
+								</Box>
+								<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
+							</Box>
+						</Link>
+						<Link href={'/brands'}>
+							<Box component={'div'} className={'tab-item'}>
+								<Box component={'span'} sx={{ color: 'text.primary' }}>
+									Brands
 								</Box>
 								<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
 							</Box>
 						</Link>
 						<Link href={'/blog'}>
-							<Box component={'div'} className={'tab-item'}>
-								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									BLOG
-								</Box>
-								<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
-							</Box>
-						</Link>
-						<Link href={'/pages'}>
-							<Box component={'div'} className={'tab-item'}>
-								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									PAGES
-								</Box>
-								<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
-							</Box>
-						</Link>
-						<Link href={'/marketplace'}>
-							<Box component={'div'} className={'tab-item'}>
-								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									MARKETPLACE
-								</Box>
-								<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
-							</Box>
-						</Link>
-						<Link href={'/features'}>
 							<Box component={'div'} className={'tab-item no-icon'}>
 								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									FEATURES
+									Blog
 								</Box>
 							</Box>
 						</Link>
-						<Link href={'/contacts'}>
+						<Link href={'/dealer'}>
 							<Box component={'div'} className={'tab-item no-icon'}>
 								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									CONTACTS
+									Dealer
 								</Box>
 							</Box>
 						</Link>
-					</Box>
-				</Box>
-				<Box component={'div'} className={'right-support-section'}>
-					<Box component={'div'} className={'support-icon'}>
-						<AccountCircleIcon sx={{ color: 'text.primary', fontSize: 42 }} />
-					</Box>
-					<Box component={'div'} className={'support-text'}>
-						<Box component={'span'} className={'support-phone'} sx={{ color: 'text.primary' }}>
-							Support (+009) 908 989 999
-						</Box>
-						<Box component={'span'} className={'support-email'} sx={{ color: 'text.secondary' }}>
-							Email: info@autoparts.com
-						</Box>
+						<Link href={'/cs'}>
+							<Box component={'div'} className={'tab-item no-icon'}>
+								<Box component={'span'} sx={{ color: 'text.primary' }}>
+									CS
+								</Box>
+							</Box>
+						</Link>
+						<Link href={'/partnership'}>
+							<Box component={'div'} className={'tab-item no-icon'}>
+								<Box component={'span'} sx={{ color: 'text.primary' }}>
+									Partnership
+								</Box>
+							</Box>
+						</Link>
 					</Box>
 				</Box>
 			</Stack>

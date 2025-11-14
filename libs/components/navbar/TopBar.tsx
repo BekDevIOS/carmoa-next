@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { Stack, Box, Button, MenuItem } from '@mui/material';
+import { Stack, Box, MenuItem, Typography, IconButton } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
-import { ExpandMore as ExpandMoreIcon, LocationOn as LocationOnIcon } from '@mui/icons-material';
-import Link from 'next/link';
+import { ExpandMore as ExpandMoreIcon, LightMode as LightModeIcon, DarkMode as DarkModeIcon, HeadsetMic as HeadsetMicIcon } from '@mui/icons-material';
 
 const TopBar = () => {
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
 	const [lang, setLang] = useState<string | null>('en');
+	const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
 	const drop = Boolean(anchorEl2);
 
 	/** LIFECYCLES **/
@@ -22,6 +22,10 @@ const TopBar = () => {
 		} else {
 			setLang(localStorage.getItem('locale'));
 		}
+		const savedThemeMode = localStorage.getItem('themeMode');
+		if (savedThemeMode === 'light' || savedThemeMode === 'dark') {
+			setThemeMode(savedThemeMode);
+		}
 	}, [router]);
 
 	/** HANDLERS **/
@@ -31,6 +35,13 @@ const TopBar = () => {
 
 	const langClose = () => {
 		setAnchorEl2(null);
+	};
+
+	const handleThemeToggle = () => {
+		const newMode = themeMode === 'light' ? 'dark' : 'light';
+		setThemeMode(newMode);
+		localStorage.setItem('themeMode', newMode);
+		// Hardcoded theme toggle - can be connected to actual theme switching later
 	};
 
 	const langChoice = useCallback(
@@ -81,92 +92,76 @@ const TopBar = () => {
 		},
 	}));
 
+
 	return (
 		<Stack className={'utility-bar'} sx={{ bgcolor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider' }}>
-			<Stack className={'container'}>
+			<Stack className={'container'} direction="row" justifyContent="space-between" alignItems="center">
 				<Box component={'div'} className={'left-section'}>
-					<Box component={'span'} className={'shipping-text'} sx={{ color: 'text.primary' }}>
-						Free Shipping On Order Over $99
-					</Box>
-					<Box component={'div'} className={'store-location'}>
-						<Box component={'span'} sx={{ color: 'text.primary' }}>
-							Store Locations
-						</Box>
-						<LocationOnIcon sx={{ color: 'text.primary', fontSize: 20 }} />
-					</Box>
+					<Typography variant="body2" sx={{ color: 'text.secondary' }}>
+						🚚 Free Shipping On Orders Over $99
+					</Typography>
 				</Box>
-				<Box component={'div'} className={'right-section'}>
-					<Box component={'div'} className={'nav-links'}>
-						<Link href={'/about'}>
-							<Box component={'span'} sx={{ color: 'text.primary' }}>About Us</Box>
-						</Link>
-						<Link href={'/mypage'}>
-							<Box component={'span'} sx={{ color: 'text.primary' }}>My account</Box>
-						</Link>
-						<Link href={'/order-tracking'}>
-							<Box component={'span'} sx={{ color: 'text.primary' }}>Order Tracking</Box>
-						</Link>
-						<Link href={'/partnership'}>
-							<Box component={'span'} sx={{ color: 'text.primary' }}>Partnership</Box>
-						</Link>
-					</Box>
-					<Box component={'div'} className={'divider'} sx={{ bgcolor: 'text.primary' }} />
-					<Box component={'div'} className={'selector-tabs'}>
-						<Box component={'div'} className={'tab-item'}>
-							<Button
-								disableRipple
-								className="tab-btn"
-								onClick={langClick}
-								endIcon={<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />}
-							>
-								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									ENG
-								</Box>
-							</Button>
-							<StyledMenu anchorEl={anchorEl2} open={drop} onClose={langClose} sx={{ position: 'absolute' }}>
-								<MenuItem disableRipple onClick={langChoice} id="en">
-									<img
-										className="img-flag"
-										src={'/img/flag/langen.png'}
-										onClick={langChoice}
-										id="en"
-										alt={'usaFlag'}
-									/>
-									{t('English')}
-								</MenuItem>
-								<MenuItem disableRipple onClick={langChoice} id="kr">
-									<img
-										className="img-flag"
-										src={'/img/flag/langkr.png'}
-										onClick={langChoice}
-										id="kr"
-										alt={'koreanFlag'}
-									/>
-									{t('Korean')}
-								</MenuItem>
-								<MenuItem disableRipple onClick={langChoice} id="ru">
-									<img
-										className="img-flag"
-										src={'/img/flag/langru.png'}
-										onClick={langChoice}
-										id="ru"
-										alt={'russiaFlag'}
-									/>
-									{t('Russian')}
-								</MenuItem>
-							</StyledMenu>
-						</Box>
-						<Box component={'div'} className={'tab-item'}>
-							<Button
-								disableRipple
-								className="tab-btn"
-								endIcon={<ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />}
-							>
-								<Box component={'span'} sx={{ color: 'text.primary' }}>
-									$ USD
-								</Box>
-							</Button>
-						</Box>
+				<Box component={'div'} className={'right-section'} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					<Typography
+						variant="body2"
+						onClick={langClick}
+						sx={{
+							color: 'text.primary',
+							cursor: 'pointer',
+							display: 'flex',
+							alignItems: 'center',
+							gap: 0.5,
+						}}
+					>
+						ENG <ExpandMoreIcon sx={{ color: 'text.primary', fontSize: 12 }} />
+					</Typography>
+					<StyledMenu anchorEl={anchorEl2} open={drop} onClose={langClose} sx={{ position: 'absolute' }}>
+						<MenuItem disableRipple onClick={langChoice} id="en">
+							<img
+								className="img-flag"
+								src={'/img/flag/langen.png'}
+								onClick={langChoice}
+								id="en"
+								alt={'usaFlag'}
+							/>
+							{t('English')}
+						</MenuItem>
+						<MenuItem disableRipple onClick={langChoice} id="kr">
+							<img
+								className="img-flag"
+								src={'/img/flag/langkr.png'}
+								onClick={langChoice}
+								id="kr"
+								alt={'koreanFlag'}
+							/>
+							{t('Korean')}
+						</MenuItem>
+						<MenuItem disableRipple onClick={langChoice} id="ru">
+							<img
+								className="img-flag"
+								src={'/img/flag/langru.png'}
+								onClick={langChoice}
+								id="ru"
+								alt={'russiaFlag'}
+							/>
+							{t('Russian')}
+						</MenuItem>
+					</StyledMenu>
+					<IconButton onClick={handleThemeToggle} sx={{ color: 'text.primary', padding: '4px' }} size="small">
+						{themeMode === 'light' ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
+					</IconButton>
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: 0.5,
+							color: 'text.secondary',
+						}}
+					>
+						<HeadsetMicIcon sx={{ fontSize: 16 }} />
+						<Typography variant="body2" sx={{ color: 'text.secondary' }}>
+							(+8210 5700 4474)
+						</Typography>
 					</Box>
 				</Box>
 			</Stack>
