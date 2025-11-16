@@ -2,14 +2,18 @@ import React, { useEffect } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Footer from '../Footer';
-import { Stack } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import TopBar from '../navbar/TopBar';
-import MainBar from '../navbar/MainBar';
-import ActionBar from '../navbar/ActionBar';
+import TopHeader from '../TopHeader';
+import MainHeader from '../MainHeader';
+import dynamic from 'next/dynamic';
+
+const HeroSlider = dynamic(() => import('../homepage/HeroSlider'), {
+	ssr: false,
+});
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
@@ -27,9 +31,7 @@ const withLayoutMain = (Component: any) => {
 						<meta name={'title'} content={`CarMoa`} />
 					</Head>
 					<Stack id="mobile-wrap">
-						<Stack id={'top'}>
-						<MainBar />
-						</Stack>
+						<Stack id={'top'}></Stack>
 
 						<Stack id={'main'}>
 							<Component {...props} />
@@ -49,10 +51,12 @@ const withLayoutMain = (Component: any) => {
 						<meta name={'title'} content={`CarMoa`} />
 					</Head>
 					<Stack id="pc-wrap">
-						<Stack id={'top'} className='navbar'>
-							<TopBar />
-							<MainBar />
-							<ActionBar />
+						<Stack id={'top'} className="navbar">
+							<TopHeader />
+							<MainHeader />
+						</Stack>
+						<Stack className={'header-main'}>
+							<HeroSlider />
 						</Stack>
 						<Stack id={'main'}>
 							<Component {...props} />

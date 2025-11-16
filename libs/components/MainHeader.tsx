@@ -1,0 +1,273 @@
+import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { Stack, Box, Typography, MenuItem, Menu, MenuProps, IconButton } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
+import {
+	Menu as MenuIcon,
+	ExpandMore as ExpandMoreIcon,
+	LocalOffer as LocalOfferIcon,
+	LightMode as LightModeIcon,
+	DarkMode as DarkModeIcon,
+} from '@mui/icons-material';
+import Link from 'next/link';
+
+const MainHeader = () => {
+	const { t, i18n } = useTranslation('common');
+	const router = useRouter();
+	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
+	const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
+	const [lang, setLang] = useState<string | null>('en');
+	const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+	const categoryMenuOpen = Boolean(categoryAnchor);
+	const langMenuOpen = Boolean(langAnchor);
+
+	/** LIFECYCLES **/
+	useEffect(() => {
+		if (localStorage.getItem('locale') === null) {
+			localStorage.setItem('locale', 'en');
+			setLang('en');
+		} else {
+			setLang(localStorage.getItem('locale'));
+		}
+		const savedThemeMode = localStorage.getItem('themeMode');
+		if (savedThemeMode === 'light' || savedThemeMode === 'dark') {
+			setThemeMode(savedThemeMode);
+		}
+	}, [router]);
+
+	/** HANDLERS **/
+	const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
+		setCategoryAnchor(event.currentTarget);
+	};
+
+	const handleCategoryClose = () => {
+		setCategoryAnchor(null);
+	};
+
+	const handleLangClick = (event: React.MouseEvent<HTMLElement>) => {
+		setLangAnchor(event.currentTarget);
+	};
+
+	const handleLangClose = () => {
+		setLangAnchor(null);
+	};
+
+	const handleThemeToggle = () => {
+		const newMode = themeMode === 'light' ? 'dark' : 'light';
+		setThemeMode(newMode);
+		localStorage.setItem('themeMode', newMode);
+		// Hardcoded theme toggle - can be connected to actual theme switching later
+	};
+
+	const langChoice = useCallback(
+		async (e: any) => {
+			setLang(e.target.id);
+			localStorage.setItem('locale', e.target.id);
+			setLangAnchor(null);
+			await router.push(router.asPath, router.asPath, { locale: e.target.id });
+		},
+		[router],
+	);
+
+	const StyledMenu = styled((props: MenuProps) => (
+		<Menu
+			elevation={0}
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'left',
+			}}
+			transformOrigin={{
+				vertical: 'top',
+				horizontal: 'left',
+			}}
+			{...props}
+		/>
+	))(({ theme }) => ({
+		'& .MuiPaper-root': {
+			borderRadius: 6,
+			marginTop: theme.spacing(0.5),
+			minWidth: 200,
+			color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+			boxShadow:
+				'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+			'& .MuiMenu-list': {
+				padding: '4px 0',
+			},
+			'& .MuiMenuItem-root': {
+				padding: '10px 16px',
+				fontSize: 14,
+				'&:active': {
+					backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+				},
+			},
+		},
+	}));
+
+	const StyledLangMenu = styled((props: MenuProps) => (
+		<Menu
+			elevation={0}
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'right',
+			}}
+			transformOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+			{...props}
+		/>
+	))(({ theme }) => ({
+		'& .MuiPaper-root': {
+			borderRadius: 6,
+			marginTop: theme.spacing(0.5),
+			minWidth: 160,
+			color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+			boxShadow:
+				'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+			'& .MuiMenu-list': {
+				padding: '4px 0',
+			},
+			'& .MuiMenuItem-root': {
+				padding: '10px 16px',
+				fontSize: 14,
+				'& .MuiSvgIcon-root': {
+					fontSize: 18,
+					color: theme.palette.text.secondary,
+					marginRight: theme.spacing(1.5),
+				},
+				'&:active': {
+					backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+				},
+			},
+		},
+	}));
+
+	return (
+		<Stack className={'main-header'} sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
+			<Stack className={'container'}>
+				{/* Left: Shop by Categories Button */}
+				<Box
+					component={'div'}
+					className={'shop-categories-btn'}
+					onClick={handleCategoryClick}
+				>
+					<MenuIcon className={'menu-icon'} sx={{ color: 'text.primary' }} />
+					<Typography variant="body2" className={'categories-text'} sx={{ color: 'text.primary' }}>
+						SHOP BY CATEGORIES
+					</Typography>
+					<ExpandMoreIcon className={'expand-icon'} sx={{ color: 'text.primary' }} />
+				</Box>
+
+				<StyledMenu anchorEl={categoryAnchor} open={categoryMenuOpen} onClose={handleCategoryClose}>
+					<MenuItem onClick={handleCategoryClose}>All Categories</MenuItem>
+					<MenuItem onClick={handleCategoryClose}>Engine Parts</MenuItem>
+					<MenuItem onClick={handleCategoryClose}>Body Parts</MenuItem>
+					<MenuItem onClick={handleCategoryClose}>Interior Parts</MenuItem>
+					<MenuItem onClick={handleCategoryClose}>Accessories</MenuItem>
+				</StyledMenu>
+
+				{/* Center: Navigation Links */}
+				<Box component={'div'} className={'nav-links'}>
+					<Link href={'/'}>
+						<Box component={'div'} className={'nav-link active'} sx={{ bgcolor: 'primary.main' }}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'primary.contrastText' }}>
+								HOME
+							</Typography>
+							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'primary.contrastText' }} />
+						</Box>
+					</Link>
+					<Link href={'/shop'}>
+						<Box component={'div'} className={'nav-link'}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+								SHOP
+							</Typography>
+							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'text.primary' }} />
+						</Box>
+					</Link>
+					<Link href={'/products'}>
+						<Box component={'div'} className={'nav-link'}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+								PRODUCTS
+							</Typography>
+							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'text.primary' }} />
+						</Box>
+					</Link>
+					<Link href={'/blog'}>
+						<Box component={'div'} className={'nav-link'}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+								BLOG
+							</Typography>
+							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'text.primary' }} />
+						</Box>
+					</Link>
+					<Link href={'/about'}>
+						<Box component={'div'} className={'nav-link no-icon'}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+								ABOUT US
+							</Typography>
+						</Box>
+					</Link>
+					<Link href={'/cs'}>
+						<Box component={'div'} className={'nav-link no-icon'}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+								CS
+							</Typography>
+						</Box>
+					</Link>
+				</Box>
+
+				{/* Right: Utility Options */}
+				<Box component={'div'} className={'utility-options'}>
+					{/* Sale Off */}
+					<Box component={'div'} className={'sale-off'}>
+						<LocalOfferIcon className={'sale-icon'} sx={{ color: 'text.primary' }} />
+						<Typography variant="body2" className={'sale-text'} sx={{ color: 'text.primary' }}>
+							Sale Off
+						</Typography>
+					</Box>
+
+					{/* Vertical Separator */}
+					<Box component={'div'} className={'vertical-separator'} sx={{ bgcolor: 'divider' }} />
+
+					{/* Language Selector */}
+					<Box component={'div'} className={'lang-selector'} onClick={handleLangClick}>
+						<img className="img-flag" src={'/img/flag/langen.png'} alt={'usaFlag'} />
+						<Typography variant="body2" className={'lang-text'} sx={{ color: 'text.primary' }}>
+							English
+						</Typography>
+						<ExpandMoreIcon className={'lang-icon'} sx={{ color: 'text.primary' }} />
+					</Box>
+
+					<StyledLangMenu anchorEl={langAnchor} open={langMenuOpen} onClose={handleLangClose}>
+						<MenuItem disableRipple onClick={langChoice} id="en">
+							<img className="img-flag" src={'/img/flag/langen.png'} onClick={langChoice} id="en" alt={'usaFlag'} />
+							{t('English')}
+						</MenuItem>
+						<MenuItem disableRipple onClick={langChoice} id="kr">
+							<img className="img-flag" src={'/img/flag/langkr.png'} onClick={langChoice} id="kr" alt={'koreanFlag'} />
+							{t('Korean')}
+						</MenuItem>
+						<MenuItem disableRipple onClick={langChoice} id="ru">
+							<img className="img-flag" src={'/img/flag/langru.png'} onClick={langChoice} id="ru" alt={'russiaFlag'} />
+							{t('Russian')}
+						</MenuItem>
+					</StyledLangMenu>
+
+					{/* Vertical Separator */}
+					<Box component={'div'} className={'vertical-separator'} sx={{ bgcolor: 'divider' }} />
+
+					{/* Theme Mode Toggle */}
+					<Box component={'div'} className={'theme-toggle'}>
+						<IconButton onClick={handleThemeToggle} className={'theme-toggle-btn'} sx={{ color: 'text.primary' }} size="small">
+							{themeMode === 'light' ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
+						</IconButton>
+					</Box>
+				</Box>
+			</Stack>
+		</Stack>
+	);
+};
+
+export default MainHeader;
+
