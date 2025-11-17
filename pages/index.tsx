@@ -6,6 +6,8 @@ import FeaturedProducts from '../libs/components/homepage/FeaturedProducts';
 import Advertisement from '../libs/components/homepage/Advertisement';
 import TopDealers from '../libs/components/homepage/TopDealers';
 import TopProducts from '../libs/components/homepage/TopProducts';
+import LatestBlogs from '../libs/components/homepage/LatestBlogs';
+import Events from '../libs/components/homepage/Events';
 import { Stack } from '@mui/material';
 
 function Home() {
@@ -18,6 +20,8 @@ function Home() {
 			<FeaturedProducts />
 			<TopDealers />
 			<TopProducts />
+			<Events />
+			<LatestBlogs />
 		</Stack>
 	);
 }
