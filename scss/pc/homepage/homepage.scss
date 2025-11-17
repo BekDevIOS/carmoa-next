@@ -1073,4 +1073,451 @@
 			}
 		}
 	}
+
+	.top-dealers {
+		position: relative;
+		padding: 80px 0px 80px;
+		width: 100%;
+		height: 722px;
+		display: flex;
+		flex-direction: row;
+		background: #f6f6f6;
+
+		.container {
+			position: relative;
+			flex-direction: column;
+			align-items: center;
+
+			.info-box {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+
+				.left {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 8px;
+
+					span {
+						font-family: $font;
+						font-size: 48px;
+						font-weight: 700;
+						color: #181a20;
+						text-transform: uppercase;
+						text-align: center;
+
+						.title-highlight {
+							color: #fcb800;
+						}
+					}
+
+					p {
+						font-family: $font;
+						font-size: 16px;
+						font-weight: 400;
+						color: #717171;
+						text-align: center;
+					}
+				}
+
+				.right {
+					display: none;
+				}
+
+				// Mobile styles - when info-box only contains span
+				> span {
+					font-family: $font;
+					font-size: 48px;
+					font-weight: 700;
+					color: #181a20;
+					text-transform: uppercase;
+					text-align: center;
+
+					.title-highlight {
+						color: #fcb800;
+					}
+				}
+			}
+
+			.wrapper {
+				width: 100%;
+				margin-top: 80px;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+
+				.switch-btn {
+					width: 53px;
+					height: 53px;
+					margin-top: -51px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					border-radius: 50%;
+					background: #ffffff;
+					filter: drop-shadow(0px 10px 35px rgba(5, 16, 54, 0.1));
+					cursor: pointer;
+					transition: all 0.3s ease;
+
+					&:hover {
+						background-color: #fcb800;
+					}
+
+					svg {
+						width: 14px;
+						height: 14px;
+					}
+
+					&.swiper-dealers-next {
+						transform: rotate(180deg);
+					}
+				}
+
+				.card-wrapper {
+					width: 1174px;
+					height: 280px;
+					display: flex;
+					flex-direction: row;
+
+					.top-dealers-swiper {
+						width: 99.7%;
+						height: 280px;
+						display: flex;
+						flex-direction: row;
+
+						.top-dealers-slide {
+							width: auto;
+							height: auto;
+							display: flex;
+						}
+					}
+
+					.top-dealer-card {
+						width: 205px;
+						height: 280px;
+						display: flex;
+						flex-direction: column;
+
+						img {
+							width: 209px;
+							height: 209px;
+							border-radius: 50%;
+							cursor: pointer;
+							object-fit: cover;
+						}
+
+						strong {
+							margin-top: 20px;
+							color: #181a20;
+							text-align: center;
+							font-family: $font;
+							font-size: 15px;
+							font-style: normal;
+							font-weight: 600;
+							line-height: normal;
+							text-transform: capitalize;
+							cursor: pointer;
+						}
+
+						span {
+							color: #181a20;
+							text-align: center;
+							font-family: $font;
+							font-size: 15px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 28px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.top-products {
+		width: 100%;
+		padding: 80px 0px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		.container {
+			width: 100%;
+			max-width: 1300px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.section-header {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 48px;
+
+			.title-section {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 8px;
+
+				.main-title {
+					font-family: $font;
+					font-size: 48px;
+					font-weight: 700;
+					line-height: 1.2em;
+					text-align: center;
+
+					.title-highlight {
+						color: #fcb800;
+					}
+				}
+
+				.subtitle {
+					font-family: $font;
+					font-size: 16px;
+					font-weight: 400;
+					line-height: 1.5em;
+					text-align: center;
+				}
+			}
+		}
+
+		.products-wrapper {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			gap: 30px;
+			position: relative;
+
+			.switch-btn {
+				width: 53px;
+				height: 53px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				background: #ffffff;
+				filter: drop-shadow(0px 10px 35px rgba(5, 16, 54, 0.1));
+				cursor: pointer;
+				transition: all 0.3s ease;
+				flex-shrink: 0;
+
+				&:hover {
+					background-color: #fcb800;
+				}
+
+				svg {
+					width: 14px;
+					height: 14px;
+				}
+
+				&.swiper-top-products-next {
+					transform: rotate(180deg);
+				}
+			}
+
+			.swiper-container {
+				width: 100%;
+				max-width: 1174px;
+				flex: 1;
+
+				.top-products-swiper {
+					width: 100%;
+
+					.top-product-slide {
+						height: auto;
+					}
+				}
+			}
+		}
+
+		.top-product-card {
+			display: flex;
+			flex-direction: column;
+			background-color: #ffffff;
+			border-radius: 4px;
+			overflow: hidden;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+			transform: scale(1);
+			height: 100%;
+
+			.card-image-wrapper {
+				position: relative;
+				width: 100%;
+				height: 280px;
+				overflow: hidden;
+				background-color: #ffffff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-bottom: 1px solid #e0e0e0;
+
+				.sale-badge {
+					position: absolute;
+					top: 12px;
+					left: 12px;
+					padding: 6px 12px;
+					border-radius: 4px;
+					z-index: 10;
+
+					.sale-text {
+						font-family: $font;
+						font-size: 14px;
+						font-weight: 500;
+						text-transform: uppercase;
+					}
+				}
+
+				.product-image {
+					width: 100%;
+					height: 100%;
+					object-fit: contain;
+					transition: transform 0.3s ease;
+				}
+
+				.hover-actions {
+					position: absolute;
+					bottom: 16px;
+					left: 50%;
+					transform: translateX(-50%);
+					display: flex;
+					flex-direction: row;
+					gap: 8px;
+					z-index: 10;
+					opacity: 0;
+					transition: opacity 0.3s ease;
+
+					.action-icon {
+						width: 40px;
+						height: 40px;
+						background-color: #ffffff;
+						border-radius: 8px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						cursor: pointer;
+						transition: all 0.3s ease;
+						box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+
+						.icon {
+							font-size: 20px;
+							color: #181a20;
+						}
+
+						&:hover {
+							background-color: #fcb800;
+
+							.icon {
+								color: #000000;
+							}
+						}
+					}
+				}
+			}
+
+			.card-content {
+				padding: 16px;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+				flex: 1;
+
+				.product-category {
+					font-family: $font;
+					font-size: 12px;
+					font-weight: 400;
+					color: #717171;
+					text-transform: uppercase;
+				}
+
+				.product-title {
+					font-family: $font;
+					font-size: 16px;
+					font-weight: 500;
+					line-height: 1.4em;
+					min-height: 44px;
+					color: #000000;
+					cursor: pointer;
+					transition: color 0.3s ease;
+
+					&:hover {
+						color: #fcb800;
+					}
+				}
+
+				.price-section {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 8px;
+
+					.original-price {
+						font-family: $font;
+						font-size: 14px;
+						font-weight: 400;
+						color: #717171;
+						text-decoration: line-through;
+					}
+
+					.sale-price {
+						font-family: $font;
+						font-size: 20px;
+						font-weight: 700;
+						color: #f4a51c;
+					}
+				}
+
+				.add-to-cart-btn {
+					width: 100%;
+					height: 50px;
+					padding: 0;
+					background-color: #222222;
+					border-radius: 4px;
+					cursor: pointer;
+					transition: background-color 0.3s ease;
+					margin-top: auto;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					.cart-btn-text {
+						font-family: $font;
+						font-size: 14px;
+						font-weight: 600;
+						text-transform: uppercase;
+						color: #ffffff;
+					}
+
+					&:hover {
+						background-color: #f4a51c;
+
+						.cart-btn-text {
+							color: #000000;
+						}
+					}
+				}
+			}
+
+			&:hover {
+				transform: scale(1.05);
+				box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+
+				.card-image-wrapper {
+					.hover-actions {
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
 }
