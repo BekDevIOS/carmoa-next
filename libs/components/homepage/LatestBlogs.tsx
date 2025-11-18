@@ -23,7 +23,7 @@ const LatestBlogs = () => {
 	const blogs: BlogPost[] = [
 		{
 			id: 1,
-			image: '/img/community/articleImg.png',
+			image: '/img/community/communityImg.png',
 			date: '2024-10-03',
 			day: '03',
 			month: 'Oct',
@@ -43,7 +43,7 @@ const LatestBlogs = () => {
 		},
 		{
 			id: 3,
-			image: '/img/community/chats.png',
+			image: '/img/community/communityImg.png',
 			date: '2024-10-03',
 			day: '03',
 			month: 'Oct',
@@ -53,7 +53,7 @@ const LatestBlogs = () => {
 		},
 		{
 			id: 4,
-			image: '/img/community/articleImg.png',
+			image: '/img/community/communityImg.png',
 			date: '2024-10-03',
 			day: '03',
 			month: 'Oct',
@@ -73,7 +73,7 @@ const LatestBlogs = () => {
 		},
 		{
 			id: 6,
-			image: '/img/community/chats.png',
+			image: '/img/community/communityImg.png',
 			date: '2024-10-03',
 			day: '03',
 			month: 'Oct',
