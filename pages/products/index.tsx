@@ -1,7 +1,7 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography, IconButton } from '@mui/material';
-import ProductCard from '../../libs/components/product/ProductCard';
+import ProductCard from '../../libs/components/common/ProductCard';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/product/Filter';
@@ -50,7 +50,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		const sampleProducts: Product[] = [
 			{
 				id: 1,
-				image: '/img/fiber/img1.jpg',
+				image: '/img/product/image1.png',
 				category: 'Engine Parts',
 				title: 'High Performance Engine Filter',
 				originalPrice: 120,
@@ -62,7 +62,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 			},
 			{
 				id: 2,
-				image: '/img/fiber/img4.jpg',
+				image: '/img/product/image2.png',
 				category: 'Body Parts',
 				title: 'Premium Car Bumper',
 				salePrice: 299.99,
@@ -71,7 +71,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 			},
 			{
 				id: 3,
-				image: '/img/fiber/img8.jpg',
+				image: '/img/product/image1.png',
 				category: 'Accessories',
 				title: 'Luxury Car Seat Covers',
 				originalPrice: 150,
@@ -153,7 +153,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 						<Stack className={`main-config ${viewMode}`}>
 							{/* Hero Banner Image */}
 							<Box className={'product-hero-image'}>
-								<img src="/img/fiber/img8.jpg" alt="Product Hero" />
+								<img src="/img/cars/image1.png" alt="Product Hero" />
 							</Box>
 
 							{/* Sorting and View Controls */}

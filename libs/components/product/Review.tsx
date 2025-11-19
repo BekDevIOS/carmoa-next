@@ -1,52 +1,78 @@
 import React from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Comment } from '../../types/comment/comment';
 import { REACT_APP_API_URL } from '../../config';
 import Moment from 'react-moment';
 import { useRouter } from 'next/router';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
+import { Star as StarIcon, StarBorder as StarBorderIcon } from '@mui/icons-material';
+
+interface CommentMemberData {
+	memberImage?: string;
+	memberNick?: string;
+	_id?: string;
+}
+
+interface Comment {
+	memberData?: CommentMemberData;
+	commentContent: string;
+	createdAt: string | Date;
+	_id?: string;
+}
 
 interface ReviewProps {
 	comment: Comment;
+	rating?: number; // Optional rating (1-5)
 }
 
 const Review = (props: ReviewProps) => {
-	const { comment } = props;
+	const { comment, rating = 5 } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const user = useReactiveVar(userVar);
-	const [value, setValue] = React.useState<number | null>(2);
 	const imagePath: string = comment?.memberData?.memberImage
 		? `${REACT_APP_API_URL}/${comment?.memberData?.memberImage}`
 		: '/img/profile/defaultUser.svg';
 
 	/** HANDLERS **/
-	const goMemberPage = (id: string) => {
-		if (id === user?._id) router.push('/mypage');
-		else router.push(`/member?memberId=${id}`);
+	const goMemberPage = (id?: string) => {
+		if (!id) return;
+		router.push(`/member?memberId=${id}`);
 	};
+
 	if (device === 'mobile') {
 		return <div>REVIEW</div>;
 	} else {
 		return (
-			<Stack className={'review-config'}>
-				<Stack className={'review-mb-info'}>
-					<Stack className={'img-name-box'}>
-						<img src={imagePath} alt="" className={'img-box'} />
-						<Stack>
-							<Typography className={'name'} onClick={() => goMemberPage(comment?.memberData?._id as string)}>
-								{comment.memberData?.memberNick}
+			<Stack className={'product-review'}>
+				<Stack className={'review-header'}>
+					<Stack className={'review-user-info'}>
+						<Box className={'user-avatar'}>
+							<img src={imagePath} alt={comment.memberData?.memberNick || 'User'} />
+						</Box>
+						<Stack className={'user-details'}>
+							<Typography className={'user-name'} onClick={() => goMemberPage(comment?.memberData?._id as string)}>
+								{comment.memberData?.memberNick || 'Anonymous'}
 							</Typography>
-							<Typography className={'date'}>
-								<Moment format={'DD MMMM, YYYY'}>{comment.createdAt}</Moment>
-							</Typography>
+							<Stack className={'review-meta'}>
+								<Stack className={'star-rating'}>
+									{[1, 2, 3, 4, 5].map((star) => (
+										<Box key={star} className={'star-icon'}>
+											{star <= rating ? (
+												<StarIcon className={'star-filled'} />
+											) : (
+												<StarBorderIcon className={'star-empty'} />
+											)}
+										</Box>
+									))}
+								</Stack>
+								<Typography className={'review-date'}>
+									<Moment format={'MMMM DD, YYYY'}>{comment.createdAt}</Moment>
+								</Typography>
+							</Stack>
 						</Stack>
 					</Stack>
 				</Stack>
-				<Stack className={'desc-box'}>
-					<Typography className={'description'}>{comment.commentContent}</Typography>
+				<Stack className={'review-content'}>
+					<Typography className={'review-text'}>{comment.commentContent}</Typography>
 				</Stack>
 			</Stack>
 		);
