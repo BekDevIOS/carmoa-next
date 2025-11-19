@@ -229,88 +229,126 @@
 		}
 	}
 }
-.community-general-card-config {
+.community-blog-card {
 	position: relative;
-	height: auto;
-	gap: 20px;
-	border-radius: 12px;
 	cursor: pointer;
+	border-radius: 14px;
+	overflow: hidden;
+	transition: 0.2s ease;
+	gap: 12px;
+
+	&:hover {
+		transform: translateY(-3px);
+	}
+
 	.image-box {
 		width: 100%;
-		height: 283px;
+		height: 280px;
+		border-radius: 14px;
+		position: relative;
+
 		.card-img {
 			width: 100%;
 			height: 100%;
-			border-radius: 12px;
+			object-fit: cover;
+			border-radius: 14px;
+		}
+
+		.category-badge {
+			position: absolute;
+			top: 12px;
+			left: 12px;
+			padding: 6px 14px;
+			border-radius: 6px;
+			backdrop-filter: blur(4px);
+			background: #FCB800;
+
+			.category-text {
+				font-size: 11px;
+				font-weight: 600;
+				color: #000000;
+				font-family: $font;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+			}
 		}
 	}
-	.desc-box {
+
+	.content-box {
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-		height: 80px;
-		.title {
-			color: #717171;
-			font-family: $font;
-			font-size: 13px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: normal;
+		flex-direction: column;
+		gap: 10px;
+
+		.author-section {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			.author {
+				color: #181a20;
+				font-family: $font;
+				font-size: 14px;
+				font-weight: 600;
+				text-transform: capitalize;
+				cursor: pointer;
+				transition: color 0.2s ease;
+
+				&:hover {
+					color: #FCB800;
+					font-weight: 700;
+				}
+			}
+
+			.date {
+				color: #999;
+				font-family: $font;
+				font-size: 12px;
+				font-weight: 400;
+			}
 		}
-		.desc {
+
+		.title {
 			color: #181a20;
 			font-family: $font;
-			font-size: 15px;
-			font-style: normal;
+			font-size: 16px;
 			font-weight: 600;
-			line-height: 26px;
-			text-transform: capitalize;
+			line-height: 22px;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
-		.buttons {
-			width: auto;
+
+		.stats {
 			display: flex;
 			flex-direction: row;
-			justify-content: center;
-			align-items: center;
-			svg {
-				width: 24px;
-				height: 24px;
-				cursor: pointer;
+			gap: 16px;
+			margin-top: 4px;
+
+			.stat-item {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				gap: 6px;
+
+				.icon {
+					width: 18px;
+					height: 18px;
+					color: #717171;
+				}
+
+				.liked {
+					color: #ff6000; // CarMoa primary color
+				}
+
+				p,
+				span {
+					font-size: 13px;
+					color: #555;
+				}
 			}
-			.view-cnt {
-				font-size: 13px;
-			}
-		}
-	}
-	.date-box {
-		position: absolute;
-		width: 70px;
-		height: 69.014px;
-		align-items: center;
-		justify-content: center;
-		top: 235px;
-		right: 20px;
-		border-radius: 12px;
-		background: #fff;
-		box-shadow: 0px 6px 15px 0px rgba(64, 79, 104, 0.05);
-		.month {
-			color: #181a20;
-			text-align: center;
-			font-family: $font;
-			font-size: 13px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: normal;
-		}
-		.day {
-			color: #181a20;
-			font-family: $font;
-			font-size: 20px;
-			font-style: normal;
-			font-weight: 600;
-			line-height: normal;
 		}
 	}
 }
