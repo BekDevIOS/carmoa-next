@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyCard } from './ProductCard';
+import { PropertyCard } from './PropertyCard';
 import { useReactiveVar } from '@apollo/client';
-import { Property } from '../../types/product/property';
-import { AgentPropertiesInquiry } from '../../types/product/property.input';
+import { Property } from '../../types/property/property';
+import { AgentPropertiesInquiry } from '../../types/property/property.input';
 import { T } from '../../types/common';
 import { PropertyStatus } from '../../enums/property.enum';
 import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
 
-const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
+const MyProperties: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const [searchFilter, setSearchFilter] = useState<AgentPropertiesInquiry>(initialInput);
 	const [agentProperties, setAgentProperties] = useState<Property[]>([]);
@@ -39,13 +39,13 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	}
 
 	if (device === 'mobile') {
-		return <div>NESTAR PRODUCTS MOBILE</div>;
+		return <div>NESTAR PROPERTIES MOBILE</div>;
 	} else {
 		return (
-			<div id="my-product-page">
+			<div id="my-property-page">
 				<Stack className="main-title-box">
 					<Stack className="right-box">
-						<Typography className="main-title">My Products</Typography>
+						<Typography className="main-title">My Properties</Typography>
 						<Typography className="sub-title">We are glad to see you again!</Typography>
 					</Stack>
 				</Stack>
@@ -73,11 +73,11 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 							<Typography className="title-text">Action</Typography>
 						</Stack>
 
-					{agentProperties?.length === 0 ? (
-						<div className={'no-data'}>
-							<img src="/img/icons/icoAlert.svg" alt="" />
-							<p>No Product found!</p>
-						</div>
+						{agentProperties?.length === 0 ? (
+							<div className={'no-data'}>
+								<img src="/img/icons/icoAlert.svg" alt="" />
+								<p>No Property found!</p>
+							</div>
 						) : (
 							agentProperties.map((property: Property) => {
 								return (
@@ -101,9 +101,9 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 										onChange={paginationHandler}
 									/>
 								</Stack>
-							<Stack className="total-result">
-								<Typography>{total} product available</Typography>
-							</Stack>
+								<Stack className="total-result">
+									<Typography>{total} property available</Typography>
+								</Stack>
 							</Stack>
 						)}
 					</Stack>
@@ -113,7 +113,7 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	}
 };
 
-MyProducts.defaultProps = {
+MyProperties.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 5,
@@ -124,4 +124,4 @@ MyProducts.defaultProps = {
 	},
 };
 
-export default MyProducts;
+export default MyProperties;

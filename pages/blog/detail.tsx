@@ -31,7 +31,7 @@ const ToastViewerComponent = dynamic(() => import('../../libs/components/blog/TV
 // 	},
 // });
 
-const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
+const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const { query } = router;
@@ -669,7 +669,7 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 		);
 	}
 };
-CommunityDetail.defaultProps = {
+BlogDetail.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 5,
@@ -679,4 +679,4 @@ CommunityDetail.defaultProps = {
 	},
 };
 
-export default withLayoutBasic(CommunityDetail);
+export default withLayoutBasic(BlogDetail);

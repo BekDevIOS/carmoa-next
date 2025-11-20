@@ -3,7 +3,7 @@ import PartCategories from '../libs/components/homepage/PartCategories';
 import TrendProducts from '../libs/components/homepage/TrendProducts';
 import BrandProducts from '../libs/components/homepage/BrandProducts';
 import FeaturedProducts from '../libs/components/homepage/FeaturedProducts';
-import Advertisement from '../libs/components/homepage/Advertisement';
+import Advertisement from '../libs/components/common/Advertisement';
 import TopDealers from '../libs/components/homepage/TopDealers';
 import TopProducts from '../libs/components/homepage/TopProducts';
 import LatestBlogs from '../libs/components/homepage/LatestBlogs';

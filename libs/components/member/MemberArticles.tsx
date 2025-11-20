@@ -3,10 +3,10 @@ import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
-import BlogCard from '../common/BlogCard';
+import CommunityCard from '../common/CommunityCard';
 import { T } from '../../types/common';
-import { BoardArticle } from '../../types/blog/board-article';
-import { BoardArticlesInquiry } from '../../types/blog/board-article.input';
+import { BoardArticle } from '../../types/board-article/board-article';
+import { BoardArticlesInquiry } from '../../types/board-article/board-article.input';
 
 const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -45,9 +45,9 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 							<p>No Articles found!</p>
 						</div>
 					)}
-				{memberBoArticles?.map((boardArticle: BoardArticle) => {
-					return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} size={'small'} />;
-				})}
+					{memberBoArticles?.map((boardArticle: BoardArticle) => {
+						return <CommunityCard boardArticle={boardArticle} key={boardArticle?._id} size={'small'} />;
+					})}
 				</Stack>
 				{memberBoArticles?.length !== 0 && (
 					<Stack className="pagination-config">
@@ -59,10 +59,10 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 								color="primary"
 								onChange={paginationHandler}
 							/>
-					</Stack>
-					<Stack className="total-result">
-						<Typography>{total} article available</Typography>
-					</Stack>
+						</Stack>
+						<Stack className="total-result">
+							<Typography>{total} property available</Typography>
+						</Stack>
 					</Stack>
 				)}
 			</div>

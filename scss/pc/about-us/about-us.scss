@@ -1,0 +1,113 @@
+#pc-wrap {
+	#about-page {
+		position: relative;
+		padding-bottom: 80px;
+
+		// Hero Section
+		.hero-section {
+			width: 100%;
+			height: 500px;
+			overflow: hidden;
+			margin-top: 100px;
+
+			.hero-image {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		.container {
+			padding-top: 80px;
+			flex-direction: column;
+			gap: 80px;
+
+			// Introduction Section
+			.intro-section {
+				width: 100%;
+				max-width: 900px;
+				margin: 0 auto;
+				gap: 24px;
+				padding: 0 20px;
+
+				.intro-text {
+					color: #181a20;
+					font-family: $font;
+					font-size: 18px;
+					font-weight: 400;
+					line-height: 1.8;
+					text-align: center;
+				}
+			}
+
+			// Statistics Section
+			.statistics-section {
+				width: 100%;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-around;
+				align-items: center;
+				padding: 60px 40px;
+				margin-bottom: 80px;
+				background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+				border-radius: 12px;
+				box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
+
+				.stat-item {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					gap: 12px;
+
+					.stat-value {
+						color: #FCB800;
+						font-family: $font;
+						font-size: 48px;
+						font-weight: 700;
+						line-height: 1;
+					}
+
+					.stat-label {
+						color: #181a20;
+						font-family: $font;
+						font-size: 16px;
+						font-weight: 500;
+						text-align: center;
+					}
+				}
+			}
+
+			// Team Section
+			.team-section {
+				width: 100%;
+				gap: 50px;
+
+				.section-title {
+					color: #181a20;
+					font-family: $font;
+					font-size: 36px;
+					font-weight: 700;
+					text-align: center;
+					margin-bottom: 20px;
+				}
+
+				.team-grid {
+					display: grid;
+					grid-template-columns: repeat(4, 1fr);
+					gap: 40px;
+					justify-items: center;
+				}
+			}
+
+			// Features Section
+			.features-section {
+				width: 100%;
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 30px;
+				padding: 40px 0;
+			}
+		}
+	}
+}
+

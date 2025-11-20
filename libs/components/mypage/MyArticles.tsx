@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Pagination, Stack, Typography } from '@mui/material';
-import BlogCard from '../common/BlogCard';
+import CommunityCard from '../common/CommunityCard';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { T } from '../../types/common';
-import { BoardArticle } from '../../types/blog/board-article';
+import { BoardArticle } from '../../types/board-article/board-article';
 
 const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
-	const [searchBlog, setSearchBlog] = useState({
+	const [searchCommunity, setSearchCommunity] = useState({
 		...initialInput,
 		search: { memberId: user._id },
 	});
@@ -22,7 +22,7 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 
 	/** HANDLERS **/
 	const paginationHandler = (e: T, value: number) => {
-		setSearchBlog({ ...searchBlog, page: value });
+		setSearchCommunity({ ...searchCommunity, page: value });
 	};
 
 	if (device === 'mobile') {
@@ -37,11 +37,11 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 					</Stack>
 				</Stack>
 				<Stack className="article-list-box">
-				{boardArticles?.length > 0 ? (
-					boardArticles?.map((boardArticle: BoardArticle) => {
-						return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} size={'small'} />;
-					})
-				) : (
+					{boardArticles?.length > 0 ? (
+						boardArticles?.map((boardArticle: BoardArticle) => {
+							return <CommunityCard boardArticle={boardArticle} key={boardArticle?._id} size={'small'} />;
+						})
+					) : (
 						<div className={'no-data'}>
 							<img src="/img/icons/icoAlert.svg" alt="" />
 							<p>No Articles found!</p>
@@ -53,8 +53,8 @@ const MyArticles: NextPage = ({ initialInput, ...props }: T) => {
 					<Stack className="pagination-conf">
 						<Stack className="pagination-box">
 							<Pagination
-								count={Math.ceil(totalCount / searchBlog.limit)}
-								page={searchBlog.page}
+								count={Math.ceil(totalCount / searchCommunity.limit)}
+								page={searchCommunity.page}
 								shape="circular"
 								color="primary"
 								onChange={paginationHandler}

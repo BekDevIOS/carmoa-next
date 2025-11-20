@@ -4,7 +4,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import TopDealerCard from './TopDealerCard';
+import DealerCard from '../common/DealerCard';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -91,7 +91,7 @@ const TopDealers = () => {
 							{dealers.map((dealer: Dealer) => {
 								return (
 									<SwiperSlide className={'top-dealers-slide'} key={dealer.id}>
-										<TopDealerCard dealer={dealer} />
+										<DealerCard dealer={dealer} />
 									</SwiperSlide>
 								);
 							})}
@@ -136,7 +136,7 @@ const TopDealers = () => {
 								{dealers.map((dealer: Dealer) => {
 									return (
 										<SwiperSlide className={'top-dealers-slide'} key={dealer.id}>
-											<TopDealerCard dealer={dealer} />
+											<DealerCard dealer={dealer} />
 										</SwiperSlide>
 									);
 								})}

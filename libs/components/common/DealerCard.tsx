@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 
-interface TopDealerProps {
+interface DealerCardProps {
 	dealer: {
 		id: number;
 		name: string;
@@ -11,13 +11,13 @@ interface TopDealerProps {
 	};
 }
 
-const TopDealerCard = (props: TopDealerProps) => {
+const DealerCard = (props: DealerCardProps) => {
 	const { dealer } = props;
 	const device = useDeviceDetect();
 
 	if (device === 'mobile') {
 		return (
-			<Stack className="top-dealer-card">
+			<Stack className="dealer-card">
 				<img src={dealer.image} alt={dealer.name} />
 
 				<strong>{dealer.name}</strong>
@@ -26,7 +26,7 @@ const TopDealerCard = (props: TopDealerProps) => {
 		);
 	} else {
 		return (
-			<Stack className="top-dealer-card">
+			<Stack className="dealer-card">
 				<img src={dealer.image} alt={dealer.name} />
 
 				<strong>{dealer.name}</strong>
@@ -36,5 +36,5 @@ const TopDealerCard = (props: TopDealerProps) => {
 	}
 };
 
-export default TopDealerCard;
+export default DealerCard;
 

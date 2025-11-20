@@ -2,7 +2,11 @@ import React from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Stack } from '@mui/material';
 
-const Advertisement = () => {
+interface AdvertisementProps {
+	videoSrc?: string;
+}
+
+const Advertisement = ({ videoSrc = '/video/homepage.mp4' }: AdvertisementProps) => {
 	const device = useDeviceDetect();
 
 	if (device == 'mobile') {
@@ -16,7 +20,7 @@ const Advertisement = () => {
 					preload="auto"
 					style={{ width: '100%', height: '100%', objectFit: 'cover' }}
 				>
-					<source src="/video/ads.mov" type="video/mp4" />
+					<source src={videoSrc} type="video/mp4" />
 				</video>
 			</Stack>
 		);
@@ -31,7 +35,7 @@ const Advertisement = () => {
 					preload="auto"
 					style={{ width: '100%', height: '100%', objectFit: 'cover' }}
 				>
-					<source src="/video/ads.mov" type="video/mp4" />
+					<source src={videoSrc} type="video/mp4" />
 				</video>
 			</Stack>
 		);
@@ -39,3 +43,4 @@ const Advertisement = () => {
 };
 
 export default Advertisement;
+

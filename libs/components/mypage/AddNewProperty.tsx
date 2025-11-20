@@ -2,15 +2,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { PropertyLocation, PropertyType } from '../../enums/property.enum';
 import { REACT_APP_API_URL, propertySquare } from '../../config';
-import { PropertyInput } from '../../types/product/property.input';
+import { PropertyInput } from '../../types/property/property.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 
-const AddNewProduct = ({ initialValues, ...props }: any) => {
+const AddProperty = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const inputRef = useRef<any>(null);
@@ -125,12 +126,12 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	console.log('+insertPropertyData', insertPropertyData);
 
 	if (device === 'mobile') {
-		return <div>ADD NEW PRODUCT MOBILE PAGE</div>;
+		return <div>ADD NEW PROPERTY MOBILE PAGE</div>;
 	} else {
 		return (
-			<div id="add-product-page">
+			<div id="add-property-page">
 				<Stack className="main-title-box">
-					<Typography className="main-title">Add New Product</Typography>
+					<Typography className="main-title">Add New Property</Typography>
 					<Typography className="sub-title">We are glad to see you again!</Typography>
 				</Stack>
 
@@ -336,7 +337,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 								</Stack>
 							</Stack>
 
-							<Typography className="property-title">Product Description</Typography>
+							<Typography className="property-title">Property Description</Typography>
 							<Stack className="config-column">
 								<Typography className="title">Description</Typography>
 								<textarea
@@ -351,7 +352,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 							</Stack>
 						</Stack>
 
-						<Typography className="upload-title">Upload photos of your product</Typography>
+						<Typography className="upload-title">Upload photos of your property</Typography>
 						<Stack className="images-box">
 							<Stack className="upload-box">
 								<svg xmlns="http://www.w3.org/2000/svg" width="121" height="120" viewBox="0 0 121 120" fill="none">
@@ -459,7 +460,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	}
 };
 
-AddNewProduct.defaultProps = {
+AddProperty.defaultProps = {
 	initialValues: {
 		propertyTitle: '',
 		propertyPrice: 0,
@@ -476,4 +477,4 @@ AddNewProduct.defaultProps = {
 	},
 };
 
-export default AddNewProduct;
+export default AddProperty;

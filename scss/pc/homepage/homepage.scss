@@ -416,13 +416,6 @@
 		position: relative;
 		width: 100%;
 		height: auto;
-		.video-frame {
-			width: 100%;
-			height: 678px;
-			background: black;
-			transform: perspective(0px);
-			box-shadow: -3px 0px 20px 14px #34343480;
-		}
 	}
 
 	.part-categories {
@@ -1194,44 +1187,6 @@
 							width: auto;
 							height: auto;
 							display: flex;
-						}
-					}
-
-					.top-dealer-card {
-						width: 205px;
-						height: 280px;
-						display: flex;
-						flex-direction: column;
-
-						img {
-							width: 209px;
-							height: 209px;
-							border-radius: 50%;
-							cursor: pointer;
-							object-fit: cover;
-						}
-
-						strong {
-							margin-top: 20px;
-							color: #181a20;
-							text-align: center;
-							font-family: $font;
-							font-size: 15px;
-							font-style: normal;
-							font-weight: 600;
-							line-height: normal;
-							text-transform: capitalize;
-							cursor: pointer;
-						}
-
-						span {
-							color: #181a20;
-							text-align: center;
-							font-family: $font;
-							font-size: 15px;
-							font-style: normal;
-							font-weight: 400;
-							line-height: 28px;
 						}
 					}
 				}

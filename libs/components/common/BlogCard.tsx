@@ -48,7 +48,7 @@ const BlogCard = (props: BlogCardProps) => {
 	} else {
 		return (
 			<Stack
-				sx={{ width: '302px' }}
+				sx={{ width: '300px' }}
 				className="community-blog-card"
 				onClick={(e) => chooseArticleHandler(e, boardArticle)}
 			>

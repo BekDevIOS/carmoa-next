@@ -14,11 +14,11 @@ import MemberFollowings from '../../libs/components/member/MemberFollowings';
 import { userVar } from '../../apollo/store';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export const getStaticProps = async ({ locale }: any) => ({
-	props: {
-		...(await serverSideTranslations(locale, ['common'])),
-	},
-});
+// export const getStaticProps = async ({ locale }: any) => ({
+// 	props: {
+// 		...(await serverSideTranslations(locale, ['common'])),
+// 	},
+// });
 
 const MemberPage: NextPage = () => {
 	const device = useDeviceDetect();

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyCard } from '../mypage/ProductCard';
-import { Property } from '../../types/product/property';
-import { PropertiesInquiry } from '../../types/product/property.input';
+import { PropertyCard } from '../mypage/PropertyCard';
+import { Property } from '../../types/property/property';
+import { PropertiesInquiry } from '../../types/property/property.input';
 import { T } from '../../types/common';
 import { useRouter } from 'next/router';
 
