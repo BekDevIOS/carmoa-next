@@ -4,7 +4,6 @@ import { Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import DealerCard from '../../libs/components/common/DealerCard';
-import FeatureCard from '../../libs/components/common/FeatureCard';
 import Advertisement from '../../libs/components/common/Advertisement';
 import { T } from '../../libs/types/common';
 
@@ -44,30 +43,6 @@ const AboutUs: NextPage = (props: T) => {
 			name: 'Emily Rodriguez',
 			type: 'Marketing Head',
 			image: '/img/property/girlBrunette.png',
-		},
-	];
-
-	// Features data
-	const features = [
-		{
-			icon: '/img/icons/home.svg',
-			title: 'Free Shipping',
-			description: 'Free shipping for orders over $99',
-		},
-		{
-			icon: '/img/icons/securePayment.svg',
-			title: 'Money Guarantee',
-			description: 'Within 30 days for an exchange',
-		},
-		{
-			icon: '/img/icons/call.svg',
-			title: 'Online Support',
-			description: '24 hours a day, 7 days a week',
-		},
-		{
-			icon: '/img/icons/security.svg',
-			title: 'Flexible Payment',
-			description: 'Pay with Multiple Credit Cards',
 		},
 	];
 
@@ -132,13 +107,6 @@ const AboutUs: NextPage = (props: T) => {
 								<DealerCard key={member.id} dealer={member} />
 							))}
 						</Stack>
-					</Stack>
-
-					{/* Features Section */}
-					<Stack className="features-section">
-						{features.map((feature, index) => (
-							<FeatureCard key={index} icon={feature.icon} title={feature.title} description={feature.description} />
-						))}
 					</Stack>
 				</div>
 			</div>
