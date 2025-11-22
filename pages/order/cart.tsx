@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import CartContent, { CartItem } from '../../libs/components/order/CartContent';
-import OrderSummary from '../../libs/components/order/OrderSummary';
+import CheckoutSummaryPanel from '../../libs/components/order/CheckoutSummaryPanel';
 import { T } from '../../libs/types/common';
 
 const CartPage: NextPage = (props: T) => {
@@ -64,8 +64,7 @@ const CartPage: NextPage = (props: T) => {
 
 	// Handle checkout
 	const handleCheckout = () => {
-		console.log('Proceeding to checkout');
-		// TODO: Implement checkout navigation
+		router.push('/order/checkout');
 	};
 
 	// Handle return to shop
@@ -93,22 +92,22 @@ const CartPage: NextPage = (props: T) => {
 						</Stack>
 					) : (
 						<Stack className="cart-layout">
-							<CartContent
-								items={cartItems}
-								subtotal={subtotal}
-								threshold={FREE_SHIPPING_THRESHOLD}
-								onQuantityChange={handleQuantityChange}
-								onRemove={handleRemoveItem}
-								onApplyCoupon={handleApplyCoupon}
-							/>
-							<OrderSummary
-								subtotal={subtotal}
-								shippingMethod={shippingMethod}
-								flatRate={FLAT_RATE}
-								onShippingMethodChange={handleShippingMethodChange}
-								onChangeAddress={handleChangeAddress}
-								onCheckout={handleCheckout}
-							/>
+						<CartContent
+							items={cartItems}
+							subtotal={subtotal}
+							threshold={FREE_SHIPPING_THRESHOLD}
+							onQuantityChange={handleQuantityChange}
+							onRemove={handleRemoveItem}
+							onApplyCoupon={handleApplyCoupon}
+						/>
+						<CheckoutSummaryPanel
+							subtotal={subtotal}
+							shippingMethod={shippingMethod}
+							flatRate={FLAT_RATE}
+							onShippingMethodChange={handleShippingMethodChange}
+							onChangeAddress={handleChangeAddress}
+							onCheckout={handleCheckout}
+						/>
 						</Stack>
 					)}
 				</div>

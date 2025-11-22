@@ -1,282 +1,311 @@
 #pc-wrap {
 	#community-detail-page {
 		position: relative;
-		padding-bottom: 135px;
+		padding: 60px 0 80px;
+		background: #f8f9fa;
+
 		.container {
-			padding-top: 100px;
-			flex-direction: column;
-			gap: 64px;
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px;
+
 			.main-box {
+				display: flex;
 				flex-direction: row;
-				gap: 31px;
+				gap: 40px;
+				align-items: flex-start;
 				
 				.community-detail-config {
+					flex: 1;
+
 					.title-box {
-						width: 100%;
-						height: auto;
+						display: flex;
 						flex-direction: row;
 						justify-content: space-between;
 						align-items: center;
-						margin-bottom: 45px;
+						margin-bottom: 32px;
+						padding: 20px 32px;
+						background: #ffffff;
+						border-radius: 8px;
+						border: 1px solid #e0e0e0;
+
 						.left {
-							width: 60%;
-							height: auto;
+							flex: 1;
+
 							.title {
 								color: #000;
 								font-family: $font;
-								font-size: 24px;
-								font-style: normal;
-								font-weight: 600;
-								line-height: normal;
-								letter-spacing: 0.24px;
-							}
-							.sub-title {
-								color: #757575;
-								font-family: $font;
-								font-size: 13px;
-								font-style: normal;
+								font-size: 28px;
 								font-weight: 700;
-								line-height: normal;
-								letter-spacing: 0.325px;
+								margin-bottom: 6px;
+								letter-spacing: -0.02em;
+							}
+
+							.sub-title {
+								color: #666;
+								font-family: $font;
+								font-size: 14px;
+								font-weight: 400;
+								line-height: 1.5;
 							}
 						}
+
 						.right {
-							width: 91px;
-							height: 32px;
-							border-radius: 4px;
+							padding: 10px 24px;
+							border-radius: 6px;
 							background: #FCB800;
 							color: #000000;
 							font-family: $font;
-							font-size: 13px;
-							font-style: normal;
-							font-weight: 500;
-							line-height: normal;
-							letter-spacing: 0.39px;
+							font-size: 14px;
+							font-weight: 600;
+							text-transform: none;
+							transition: all 0.2s ease;
+
 							&:hover {
-								background: #ffffff;
-								border: 1px solid #000000;
+								background: #000000;
+								color: #ffffff;
 							}
 						}
 					}
 					.config {
 						.first-box-config {
-							width: 1012px;
-							min-height: 500px;
-							border-radius: 8px 8px 0px 0px;
-							border: 1px solid #eee;
-							box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+							background: #ffffff;
+							border-radius: 8px;
+							border: 1px solid #e0e0e0;
+							overflow: hidden;
+
 							.content-and-info {
-								width: 100%;
-								height: 126px;
-								padding: 35px 25px;
+								display: flex;
 								flex-direction: row;
 								justify-content: space-between;
-								border-bottom: 1px solid #eee;
+								align-items: center;
+								padding: 28px 32px;
+								border-bottom: 1px solid #e5e5e5;
 								.content {
-									gap: 12px;
+									display: flex;
+									flex-direction: column;
+									gap: 14px;
+
 									.content-data {
 										color: #000;
 										font-family: $font;
-										font-size: 18px;
-										font-style: normal;
+										font-size: 22px;
 										font-weight: 700;
-										line-height: normal;
+										line-height: 1.3;
 									}
+
 									.member-info {
-										width: auto;
-										height: auto;
+										display: flex;
 										flex-direction: row;
 										align-items: center;
-										gap: 5px;
+										gap: 10px;
+
 										.member-img {
-											width: 30.023px;
-											height: 30px;
+											width: 36px;
+											height: 36px;
+											border-radius: 50%;
 											cursor: pointer;
+											object-fit: cover;
+											border: 2px solid #f0f0f0;
 										}
+
 										.member-nick {
 											color: #000;
 											font-family: $font;
-											font-size: 13px;
-											font-style: normal;
-											font-weight: 400;
-											line-height: normal;
-											letter-spacing: 0.13px;
+											font-size: 14px;
+											font-weight: 600;
 											cursor: pointer;
+											transition: color 0.2s ease;
+
+											&:hover {
+												color: #FCB800;
+											}
 										}
+
 										.divider {
 											width: 1px;
 											height: 16px;
-											background: #eee;
+											background: #ddd;
 										}
+
 										.time-added {
-											color: #bdbdbd;
+											color: #999;
 											font-family: $font;
-											font-size: 12px;
-											font-style: normal;
+											font-size: 13px;
 											font-weight: 400;
-											line-height: normal;
-											letter-spacing: 0.12px;
 										}
 									}
 								}
 								.info {
-									width: auto;
-									height: auto;
-									gap: 15px;
+									display: flex;
 									flex-direction: row;
-									align-items: flex-end;
+									align-items: center;
+									gap: 16px;
+
 									.icon-info {
+										display: flex;
 										flex-direction: row;
 										align-items: center;
-										justify-content: center;
-										gap: 4px;
-										img {
-											width: 18.714px;
-											height: 16.15px;
+										gap: 6px;
+
+										svg {
+											font-size: 20px;
+											color: #666;
 										}
+
 										.text {
-											padding-top: 2 px;
-											color: #000;
+											color: #666;
 											font-family: $font;
-											font-size: 11px;
-											font-style: normal;
-											font-weight: 400;
-											line-height: normal;
-											letter-spacing: -0.22px;
+											font-size: 14px;
+											font-weight: 500;
 										}
 									}
+
 									.divider {
 										width: 1px;
-										height: 21px;
-										background: #eeeeee;
+										height: 20px;
+										background: #ddd;
 									}
 								}
 							}
 							.like-and-dislike {
-								width: 100%;
-								height: 100%;
+								display: flex;
 								align-items: center;
-								justify-content: flex-end;
-								gap: 60px;
-								padding: 25px 25px;
+								justify-content: center;
+								padding: 32px;
+								border-top: 1px solid #e5e5e5;
+
 								.top {
-									width: 100%;
-									height: auto;
+									display: flex;
 									flex-direction: row;
 									align-items: center;
 									justify-content: center;
-									gap: 17px;
+									gap: 20px;
+
 									button {
-										width: 105.081px;
-										height: 45px;
-										gap: 5px;
-										border-radius: 2px;
-										border: 1px solid #eee;
-										background: #FFF7D6;
-										p {
+										min-width: 120px;
+										height: 48px;
+										display: flex;
+										align-items: center;
+										justify-content: center;
+										gap: 8px;
+										border-radius: 6px;
+										border: 1px solid #e0e0e0;
+										background: #ffffff;
+										transition: all 0.2s ease;
+
+										svg {
+											font-size: 20px;
+											color: #000;
+										}
+
+										p,
+										.text {
 											color: #000000;
 											font-family: $font;
-											font-size: 13px;
-											font-style: normal;
-											font-weight: 500;
-											line-height: normal;
-											letter-spacing: -0.26px;
+											font-size: 14px;
+											font-weight: 600;
+										}
+
+										&:hover {
+											background: #FCB800;
+											border-color: #FCB800;
 										}
 									}
 								}
 							}
 						}
 						.second-box-config {
-							width: 1012px;
-							height: auto;
-							padding: 30px 24px;
-							gap: 11px;
+							background: #ffffff;
+							border-radius: 8px;
+							border: 1px solid #e0e0e0;
+							padding: 32px;
+							margin-top: 24px;
+
 							.title-text {
-								align-self: flex-start;
 								color: #000;
-								text-align: center;
 								font-family: $font;
-								font-size: 17px;
-								font-style: normal;
+								font-size: 20px;
 								font-weight: 700;
-								line-height: normal;
-								letter-spacing: -0.34px;
+								margin-bottom: 20px;
 							}
 							.leave-comment {
+								display: flex;
+								flex-direction: column;
+								gap: 12px;
+
 								input {
 									width: 100%;
-									height: 61px;
+									min-height: 80px;
 									outline: none;
-									padding: 22px 17px;
-									border: 1px solid #eee;
+									padding: 14px 16px;
+									border: 1px solid #d0d0d0;
+									border-radius: 6px;
+									font-family: $font;
+									font-size: 14px;
+									transition: border-color 0.2s ease;
+
+									&:focus {
+										border-color: #000;
+										border-width: 2px;
+									}
+
 									::placeholder {
-										color: #c0c0c0;
+										color: #999;
 										font-family: $font;
 										font-size: 14px;
-										font-style: normal;
-										font-weight: 500;
-										line-height: normal;
-										letter-spacing: -0.56px;
+										font-weight: 400;
 									}
 								}
+
 								.button-box {
-									width: 100%;
-									height: 42px;
+									display: flex;
 									flex-direction: row;
 									justify-content: space-between;
 									align-items: center;
-									padding-left: 17px;
-									border: 1px solid #eee;
-									border-top: none;
+
 									p {
-										color: #000;
+										color: #666;
 										font-family: $font;
-										font-size: 14px;
-										font-style: normal;
-										font-weight: 400;
-										line-height: normal;
-										letter-spacing: 0.56px;
+										font-size: 13px;
+										font-weight: 500;
 									}
+
 									button {
-										width: 100.077px;
-										height: 100%;
-										border-radius: 0;
+										padding: 10px 32px;
+										border-radius: 6px;
 										background: #FCB800;
 										color: #000000;
 										font-family: $font;
 										font-size: 14px;
-										font-style: normal;
-										font-weight: 400;
-										line-height: normal;
-										letter-spacing: 0.56px;
+										font-weight: 600;
+										text-transform: none;
+										transition: all 0.2s ease;
+
 										&:hover {
-											background: #ffffff;
-											color: #000000;
-											border: 1px solid #000000;
+											background: #000000;
+											color: #ffffff;
 										}
 									}
 								}
 							}
 						}
 						.comments {
-							width: 100%;
-							height: auto;
-							border: 1px solid #efefef;
-							border-top: none;
+							display: flex;
+							margin-top: 12px;
+							padding-top: 20px;
+							border-top: 2px solid #e5e5e5;
+
 							.comments-title {
-								width: 112.087px;
-								display: flex;
+								display: inline-flex;
 								align-items: center;
 								justify-content: center;
-								padding: 16px 15px;
-								border-bottom: 2px solid #FCB800;
-								color: #FCB800;
+								padding: 10px 20px;
+								border-bottom: 3px solid #FCB800;
+								color: #000;
 								font-family: $font;
-								font-size: 14px;
-								font-style: normal;
+								font-size: 16px;
 								font-weight: 700;
-								line-height: normal;
-								letter-spacing: 0.56px;
 							}
 						}
 						.pagination-box {
@@ -288,67 +317,91 @@
 						}
 						.comments-box {
 							.main-comment {
-								width: 100%;
-								height: auto;
-								padding: 20px 24px;
-								gap: 17px;
-								border: 1px solid #efefef;
-								border-top: none;
+								display: flex;
+								flex-direction: column;
+								padding: 24px 0;
+								gap: 16px;
+								border-bottom: 1px solid #e5e5e5;
+
+								&:first-child {
+									padding-top: 16px;
+								}
+
+								&:last-child {
+									border-bottom: none;
+								}
+
 								.member-info {
-									width: 100%;
-									height: auto;
+									display: flex;
 									flex-direction: row;
 									justify-content: space-between;
+									align-items: center;
+
 									.name-date {
-										width: auto;
-										height: auto;
+										display: flex;
 										flex-direction: row;
-										gap: 8px;
+										align-items: center;
+										gap: 12px;
 										cursor: pointer;
+
 										img {
-											width: 45.035px;
-											height: 45px;
+											width: 42px;
+											height: 42px;
 											border-radius: 50%;
 											cursor: pointer;
 											object-fit: cover;
+											border: 2px solid #f0f0f0;
 										}
+
 										.name-date-column {
+											display: flex;
+											flex-direction: column;
+											gap: 4px;
+
 											.name {
 												color: #000;
 												font-family: $font;
-												font-size: 16px;
-												font-style: normal;
-												font-weight: 700;
-												line-height: normal;
+												font-size: 15px;
+												font-weight: 600;
 												cursor: pointer;
+												transition: color 0.2s ease;
+
+												&:hover {
+													color: #FCB800;
+												}
 											}
+
 											.date {
-												color: #757575;
+												color: #999;
 												font-family: $font;
 												font-size: 13px;
-												font-style: normal;
 												font-weight: 400;
-												line-height: normal;
-												letter-spacing: -0.39px;
-												cursor: pointer;
 											}
 										}
 									}
+
 									.buttons {
+										display: flex;
 										flex-direction: row;
+										gap: 4px;
+
+										button {
+											&:hover {
+												svg {
+													color: #FCB800 !important;
+												}
+											}
+										}
 									}
 								}
+
 								.content {
-									width: 100%;
-									height: auto;
 									p {
-										color: #000;
+										color: #333;
 										font-family: $font;
-										font-size: 16px;
-										font-style: normal;
+										font-size: 15px;
 										font-weight: 400;
-										line-height: normal;
-										letter-spacing: -0.48px;
+										line-height: 1.6;
 									}
 								}
 							}
@@ -357,89 +410,85 @@
 				}
 				
 				.right-config {
-					width: 266px;
-					height: fit-content;
-					gap: 30px;
-					padding: 30px 15px 57px 21px;
-					margin-top: 100px;
-					margin-bottom: 50px;
-					border-radius: 12px;
-					border: 2px solid #FCB800;
-					background: #fff;
-					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+					width: 320px;
+					flex-shrink: 0;
+					display: flex;
+					flex-direction: column;
+					gap: 24px;
+					position: sticky;
+					top: 80px;
 
 					.blog-name {
+						background: #ffffff;
+						border-radius: 8px;
+						border: 1px solid #e0e0e0;
+						padding: 20px;
+
 						.name {
-							margin-top: 15px;
-							color: #181a20;
-							text-align: center;
+							color: #000;
 							font-family: $font;
-							font-size: 24px;
-							font-style: normal;
+							font-size: 20px;
 							font-weight: 700;
-							line-height: normal;
 						}
+					}
+
+					.MuiTabs-root {
+						background: #ffffff;
+						border-radius: 8px;
+						border: 1px solid #e0e0e0;
+						padding: 16px;
 					}
 
 					.tab-button {
-						width: 216.612px;
-						height: 36px;
-						padding: 0;
-						justify-content: center;
+						width: 100%;
+						min-height: 44px;
+						padding: 10px 16px;
+						justify-content: flex-start;
 						align-items: center;
 						border-radius: 6px;
-						border: 1px solid #181a20;
-						margin-bottom: 10px;
-						color: #181a20;
+						border: 1px solid #e0e0e0;
+						margin-bottom: 8px;
+						color: #000;
 						font-family: $font;
-						font-size: 18px;
-						font-style: normal;
+						font-size: 15px;
 						font-weight: 500;
-						line-height: 150%;
-						letter-spacing: -0.266px;
+						text-transform: none;
+						transition: all 0.2s ease;
+
 						&:hover {
 							background-color: #FCB800;
 							color: #000000;
-							border: none;
+							border-color: #FCB800;
 						}
 					}
+
 					.tab-button.active {
-						width: 216.612px;
-						height: 36px;
-						padding: 0;
-						justify-content: center;
-						align-items: center;
 						background-color: #FCB800;
-						border: none;
+						border-color: #FCB800;
 						color: #000000;
-						border-radius: 6px;
-						margin-bottom: 10px;
-						font-family: $font;
-						font-size: 18px;
-						font-style: normal;
-						font-weight: 500;
-						line-height: 150%;
-						letter-spacing: -0.266px;
+						font-weight: 600;
 					}
 					
 					.recent-articles {
-						margin-top: 10px;
+						background: #ffffff;
+						border-radius: 8px;
+						border: 1px solid #e0e0e0;
+						padding: 24px;
 						display: flex;
 						flex-direction: column;
 						gap: 20px;
-						
+
 						.recent-title-heading {
-							color: #181a20;
+							color: #000;
 							font-family: $font;
-							font-size: 24px;
+							font-size: 20px;
 							font-weight: 700;
-							margin-bottom: 10px;
 						}
-						
+
 						.recent-posts-list {
 							display: flex;
 							flex-direction: column;
-							gap: 20px;
+							gap: 16px;
 						}
 					}
 				}

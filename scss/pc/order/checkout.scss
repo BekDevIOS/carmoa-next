@@ -1,0 +1,546 @@
+#pc-wrap {
+	#checkout-page {
+		padding: 60px 0 80px;
+
+		.checkout-layout {
+			display: grid;
+			grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+			gap: 40px;
+			align-items: flex-start;
+			.checkout-main {
+				border: 1px solid #e0e0e0;
+			}
+		}
+
+		.section-heading {
+			font-size: 24px;
+			font-weight: 700;
+			color: #000;
+			margin-bottom: 4px;
+		}
+
+		.section-subtitle {
+			font-size: 14px;
+			color: #555;
+			margin-bottom: 24px;
+		}
+
+		.required {
+			color: #d32f2f;
+		}
+
+		.field-group {
+			margin-bottom: 16px;
+		}
+
+		.field-row {
+			display: flex;
+			gap: 16px;
+			margin-bottom: 16px;
+
+			.half {
+				flex: 1;
+			}
+		}
+
+		.field-label {
+			font-size: 13px;
+			font-weight: 600;
+			color: #000;
+			margin-bottom: 6px;
+		}
+
+		.field-input {
+			.MuiInputLabel-root {
+				color: #999;
+				font-size: 14px;
+				font-weight: 400;
+
+				&.Mui-focused {
+					color: #000;
+					font-weight: 500;
+				}
+
+				&.MuiInputLabel-shrink {
+					color: #000;
+					font-weight: 500;
+					font-size: 13px;
+				}
+			}
+
+			.MuiOutlinedInput-root {
+				background: #fff;
+
+				input,
+				textarea {
+					font-size: 14px;
+					color: #000;
+					padding: 14px 16px;
+				}
+
+				&:hover .MuiOutlinedInput-notchedOutline {
+					border-color: #999;
+				}
+
+				&.Mui-focused .MuiOutlinedInput-notchedOutline {
+					border-color: #000;
+					border-width: 2px;
+				}
+
+				.MuiOutlinedInput-notchedOutline {
+					border-color: #d0d0d0;
+				}
+			}
+		}
+
+		.field-select {
+			.MuiOutlinedInput-root {
+				background: #fff;
+				font-size: 14px;
+
+				.MuiSelect-select {
+					padding: 14px 16px;
+					color: #000;
+
+					&.MuiSelect-select[aria-expanded="false"]:empty {
+						color: #999;
+					}
+				}
+
+				&:hover .MuiOutlinedInput-notchedOutline {
+					border-color: #999;
+				}
+
+				&.Mui-focused .MuiOutlinedInput-notchedOutline {
+					border-color: #000;
+					border-width: 2px;
+				}
+
+				.MuiOutlinedInput-notchedOutline {
+					border-color: #d0d0d0;
+				}
+			}
+		}
+
+		.contact-card {
+			padding: 32px 32px 24px;
+			background: #ffffff;
+			border-radius: 8px;
+			margin-bottom: 32px;
+		}
+
+		.address-card {
+			padding: 32px;
+			background: #ffffff;
+			border-radius: 8px;
+			margin-bottom: 32px;
+
+			.billing-checkbox {
+				margin-top: 8px;
+				.MuiTypography-root {
+					font-size: 14px;
+				}
+			}
+		}
+
+		.checkout-summary-panel {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+
+		.summary-card {
+			background: #ffffff;
+			border-radius: 8px;
+			border: 1px solid #e0e0e0;
+			padding: 24px 24px 20px;
+
+			.summary-title {
+				font-size: 18px;
+				font-weight: 700;
+				margin-bottom: 20px;
+			}
+
+			.product-list {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				margin-bottom: 20px;
+			}
+
+			.product-row {
+				display: flex;
+        flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+				gap: 16px;
+			}
+
+			.product-info {
+				display: flex;
+        flex-direction: row;
+				align-items: start;
+				gap: 14px;
+
+				.thumbnail {
+					position: relative;
+					width: 60px;
+					height: 60px;
+					border-radius: 8px;
+					overflow: hidden;
+					background: #f5f5f5;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: contain;
+					}
+
+					.quantity-badge {
+						position: absolute;
+						top: 4px;
+						left: 4px;
+						min-width: 22px;
+						height: 22px;
+						border-radius: 999px;
+						background: #000;
+						color: #fff;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						font-size: 12px;
+						font-weight: 600;
+					}
+				}
+
+				.product-text {
+					.product-name {
+						font-size: 14px;
+						font-weight: 500;
+						color: #000;
+						margin-bottom: 4px;
+					}
+
+					.product-price {
+						font-size: 13px;
+						color: #777;
+					}
+				}
+			}
+
+			.line-total {
+				font-size: 14px;
+				font-weight: 600;
+				color: #000;
+			}
+
+			.coupon-section {
+				margin-top: 12px;
+				padding-top: 16px;
+				border-top: 1px solid #e5e5e5;
+
+				.coupon-toggle {
+					width: 100%;
+					justify-content: space-between;
+					padding: 0;
+					min-height: 0;
+					font-size: 14px;
+					font-weight: 600;
+					color: #000;
+					text-transform: none;
+
+					&:hover {
+						background: transparent;
+						color: #f4b000;
+					}
+
+					.MuiButton-endIcon {
+						margin-left: auto;
+						transition: transform 0.3s ease;
+
+						svg {
+							font-size: 20px;
+						}
+
+						&.icon-rotated {
+							transform: rotate(180deg);
+						}
+					}
+				}
+
+				.coupon-input-row {
+					display: flex;
+					gap: 12px;
+					margin-top: 16px;
+
+					.MuiInputLabel-root {
+						color: #999;
+						font-size: 14px;
+						font-weight: 400;
+
+						&.Mui-focused {
+							color: #000;
+							font-weight: 500;
+						}
+
+						&.MuiInputLabel-shrink {
+							color: #000;
+							font-weight: 500;
+							font-size: 13px;
+						}
+					}
+				}
+
+				.coupon-input {
+					flex: 1;
+
+					.MuiOutlinedInput-root {
+						background: #fff;
+
+						input {
+							font-size: 14px;
+							color: #000;
+						}
+
+						&:hover .MuiOutlinedInput-notchedOutline {
+							border-color: #999;
+						}
+
+						&.Mui-focused .MuiOutlinedInput-notchedOutline {
+							border-color: #000;
+							border-width: 2px;
+						}
+
+						.MuiOutlinedInput-notchedOutline {
+							border-color: #d0d0d0;
+						}
+					}
+				}
+
+				.apply-coupon-btn {
+					white-space: nowrap;
+					border-radius: 4px;
+					border: 1px solid #000;
+					background: #fff;
+					color: #000;
+					text-transform: none;
+					font-weight: 600;
+					padding: 8px 20px;
+					height: 40px;
+
+					&:hover {
+						background: #000;
+						color: #fff;
+					}
+				}
+			}
+
+			.summary-divider {
+				margin: 20px 0;
+			}
+
+			.totals-section {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				.row {
+					display: flex;
+          flex-direction: row;
+					justify-content: space-between;
+					font-size: 14px;
+
+					.label {
+						color: #555;
+					}
+
+					.value {
+						color: #000;
+						font-weight: 500;
+					}
+				}
+
+				.total-row {
+					margin-top: 8px;
+
+					.total-value {
+						font-size: 18px;
+						font-weight: 700;
+					}
+				}
+			}
+		}
+
+		.shipping-options-card,
+		.payment-card {
+			background: #ffffff;
+			border-radius: 8px;
+			padding: 20px 24px;
+
+			.section-title {
+				font-size: 16px;
+				font-weight: 700;
+				margin-bottom: 16px;
+			}
+
+			.option-control {
+				align-items: flex-start;
+
+				.option-row {
+					display: flex;
+					justify-content: space-between;
+					width: 100%;
+
+					.option-label {
+						font-size: 14px;
+						color: #000;
+					}
+
+					.option-price {
+						font-size: 14px;
+						font-weight: 600;
+					}
+				}
+			}
+		}
+
+		.payment-card {
+			.payment-option {
+				.option-label {
+					font-size: 14px;
+					font-weight: 600;
+					color: #000;
+				}
+
+				.option-description {
+					margin-top: 4px;
+					font-size: 13px;
+					color: #555;
+				}
+			}
+
+			.note-section {
+				margin-top: 40px;
+
+				.note-label {
+					margin-bottom: 0;
+					margin-left: -9px;
+					align-items: center;
+
+					.MuiCheckbox-root {
+						padding: 9px;
+					}
+
+					.MuiTypography-root {
+						font-size: 15px;
+						font-weight: 500;
+						color: #000;
+					}
+				}
+
+				.note-input {
+					margin-top: 16px;
+
+					.MuiInputLabel-root {
+						color: #999;
+						font-size: 14px;
+						font-weight: 400;
+
+						&.Mui-focused {
+							color: #000;
+							font-weight: 500;
+						}
+
+						&.MuiInputLabel-shrink {
+							color: #000;
+							font-weight: 500;
+							font-size: 13px;
+						}
+					}
+
+					.MuiOutlinedInput-root {
+						background: #fff;
+						border-radius: 4px;
+
+						.MuiOutlinedInput-notchedOutline {
+							border-color: #d0d0d0;
+						}
+
+						&:hover .MuiOutlinedInput-notchedOutline {
+							border-color: #999;
+						}
+
+						&.Mui-focused .MuiOutlinedInput-notchedOutline {
+							border-color: #000;
+							border-width: 2px;
+						}
+					}
+
+					textarea {
+						font-size: 14px;
+						color: #000;
+						line-height: 1.5;
+						padding: 14px 16px;
+
+						&::placeholder {
+							color: #999;
+						}
+					}
+				}
+			}
+
+			.terms-text {
+				margin-top: 16px;
+				font-size: 12px;
+				color: #777;
+
+				.link {
+					color: #000;
+					font-weight: 600;
+					cursor: pointer;
+				}
+			}
+
+			.checkout-actions {
+				margin-top: 20px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 20px;
+
+				.return-to-cart-btn {
+					padding: 0;
+					min-width: 0;
+					font-size: 14px;
+					font-weight: 500;
+					text-transform: none;
+					color: #000;
+          &:hover {
+            color: #f4b000;
+          }
+          
+
+					svg {
+						font-size: 18px;
+					}
+				}
+
+				.place-order-btn {
+					flex: 0 0 320px;
+					padding: 14px;
+					background: #f4b000;
+					color: #000;
+					font-size: 16px;
+					font-weight: 600;
+					border-radius: 4px;
+					text-transform: none;
+
+					&:hover {
+						background: #000000;
+						color: #fff;
+					}
+				}
+			}
+		}
+	}
+}

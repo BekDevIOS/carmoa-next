@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Stack, Typography, Button, TextField, MenuItem, Select, FormControl } from '@mui/material';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 
-interface OrderSummaryProps {
+interface CheckoutSummaryPanelProps {
 	subtotal: number;
 	shippingMethod: 'free' | 'flat';
 	flatRate: number;
@@ -12,7 +12,7 @@ interface OrderSummaryProps {
 	shippingAddress?: string;
 }
 
-const OrderSummary = ({
+const CheckoutSummaryPanel = ({
 	subtotal,
 	shippingMethod,
 	flatRate,
@@ -20,7 +20,7 @@ const OrderSummary = ({
 	onChangeAddress,
 	onCheckout,
 	shippingAddress = 'dsfd, 201호, sdfsd, 52819, South Korea',
-}: OrderSummaryProps) => {
+}: CheckoutSummaryPanelProps) => {
 	const [showAddressForm, setShowAddressForm] = useState(false);
 	const [country, setCountry] = useState('South Korea');
 	const [city, setCity] = useState('sdfsd');
@@ -141,5 +141,5 @@ const OrderSummary = ({
 	);
 };
 
-export default OrderSummary;
+export default CheckoutSummaryPanel;
 
