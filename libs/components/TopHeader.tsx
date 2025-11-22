@@ -6,6 +6,7 @@ import {
 	ExpandMore as ExpandMoreIcon,
 	HeadsetMic as HeadsetMicIcon,
 	PersonOutline as PersonOutlineIcon,
+	NotificationsOutlined as NotificationsOutlinedIcon,
 	FavoriteBorder as FavoriteBorderIcon,
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 } from '@mui/icons-material';
@@ -128,6 +129,11 @@ const TopHeader = () => {
 					{/* Profile */}
 					<Box className={'icon-btn'} sx={{ borderColor: 'divider' }}>
 						<PersonOutlineIcon className={'icon'} sx={{ color: 'text.primary' }} />
+					</Box>
+
+					{/* Notification */}
+					<Box className={'icon-btn'} sx={{ borderColor: 'divider' }}>
+						<NotificationsOutlinedIcon className={'icon'} sx={{ color: 'text.primary' }} />
 					</Box>
 
 					{/* Wishlist */}

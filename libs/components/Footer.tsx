@@ -89,7 +89,7 @@ const Footer = () => {
 				{/* LEFT SECTION */}
 				<Stack className={'left'}>
 					<Box className={'footer-box'}>
-						<img src="/img/logo/logoWhite.svg" alt="Carmoa Logo" className="logo" />
+						<img src="/img/logo/logoText.png" alt="Carmoa Logo" className="logo" />
 					</Box>
 
 					<Box className={'footer-box'}>

@@ -18,7 +18,9 @@ const DealerCard = (props: DealerCardProps) => {
 	if (device === 'mobile') {
 		return (
 			<Stack className="dealer-card">
-				<img src={dealer.image} alt={dealer.name} />
+				<div className="dealer-image-wrapper">
+					<img src={dealer.image} alt={dealer.name} />
+				</div>
 
 				<strong>{dealer.name}</strong>
 				<span>{dealer.type}</span>
@@ -27,7 +29,9 @@ const DealerCard = (props: DealerCardProps) => {
 	} else {
 		return (
 			<Stack className="dealer-card">
-				<img src={dealer.image} alt={dealer.name} />
+				<div className="dealer-image-wrapper">
+					<img src={dealer.image} alt={dealer.name} />
+				</div>
 
 				<strong>{dealer.name}</strong>
 				<span>{dealer.type}</span>

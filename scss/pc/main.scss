@@ -728,7 +728,7 @@ body::-webkit-scrollbar {
 		height: auto;
 		display: flex;
 		flex-direction: row;
-		background: #181a20;
+		background: #ffffff;
 		.footer-container {
 			width: 1300px;
 			height: auto;
@@ -747,11 +747,10 @@ body::-webkit-scrollbar {
 						flex-direction: column;
 						.logo {
 							width: 128px;
-							height: 52px;
 							cursor: pointer;
 						}
 						span {
-							color: #bebdbd;
+							color: #717171;
 							font-family: $font;
 							font-size: 14px;
 							font-style: normal;
@@ -759,7 +758,7 @@ body::-webkit-scrollbar {
 							text-transform: capitalize;
 						}
 						p {
-							color: #fff;
+							color: #181a20;
 							font-family: $font;
 							font-size: 15px;
 							font-style: normal;
@@ -769,11 +768,16 @@ body::-webkit-scrollbar {
 						}
 						.media-box {
 							margin-top: 12px;
-							color: #929495;
+							color: #181a20;
 							svg {
 								font-size: 32px;
 								margin-right: 22px;
 								cursor: pointer;
+								color: #181a20;
+								transition: color 0.3s ease;
+								&:hover {
+									color: #fcb800;
+								}
 							}
 						}
 					}
@@ -785,7 +789,7 @@ body::-webkit-scrollbar {
 						display: flex;
 						flex-direction: column;
 						strong {
-							color: #fff;
+							color: #181a20;
 							font-family: $font;
 							font-size: 15px;
 							font-style: normal;
@@ -803,28 +807,36 @@ body::-webkit-scrollbar {
 							align-items: center;
 							box-sizing: border-box;
 							border-radius: 12px;
-							background: #212329;
+							background: #f5f5f5;
+							border: 1px solid #e0e0e0;
 							input {
 								margin-right: 10px;
 								width: 85%;
 								border: none;
 								outline: none;
-								color: #fff;
+								color: #181a20;
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
 								font-weight: 400;
 								line-height: 26px;
 								background: none;
+								&::placeholder {
+									color: #999;
+								}
 							}
 							span {
-								color: #fff;
+								color: #181a20;
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
 								font-weight: 600;
 								line-height: normal;
 								cursor: pointer;
+								transition: color 0.3s ease;
+								&:hover {
+									color: #fcb800;
+								}
 							}
 						}
 					}
@@ -838,7 +850,7 @@ body::-webkit-scrollbar {
 							flex-direction: column;
 							strong {
 								margin-bottom: 3px;
-								color: #fff;
+								color: #181a20;
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
@@ -848,14 +860,15 @@ body::-webkit-scrollbar {
 							}
 							span {
 								margin-top: 25px;
-								color: #bebdbd;
+								color: #717171;
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
 								font-weight: 400;
 								cursor: pointer;
+								transition: color 0.3s ease;
 								&:hover {
-									color: #ffffff;
+									color: #181a20;
 									text-decoration-line: underline;
 								}
 							}
@@ -866,13 +879,13 @@ body::-webkit-scrollbar {
 			.second {
 				margin-top: 60px;
 				height: 45px;
-				border-top: 1px solid #212329;
+				border-top: 1px solid #e0e0e0;
 				display: flex;
 				flex-direction: row;
 				justify-content: space-between;
 				align-items: flex-end;
 				span {
-					color: #bebdbd;
+					color: #717171;
 					font-family: $font;
 					font-size: 14px;
 					font-style: normal;
@@ -1124,50 +1137,4 @@ body::-webkit-scrollbar {
 	margin-right: 8px;
 }
 
-// Advertisement Component
-.video-frame {
-	width: 100%;
-	height: 678px;
-	background: black;
-	transform: perspective(0px);
-	box-shadow: -3px 0px 20px 14px #34343480;
-}
 
-// DealerCard Component
-.dealer-card {
-	width: 205px;
-	height: 280px;
-	display: flex;
-	flex-direction: column;
-
-	img {
-		width: 209px;
-		height: 209px;
-		border-radius: 50%;
-		cursor: pointer;
-		object-fit: cover;
-	}
-
-	strong {
-		margin-top: 20px;
-		color: #181a20;
-		text-align: center;
-		font-family: $font;
-		font-size: 15px;
-		font-style: normal;
-		font-weight: 600;
-		line-height: normal;
-		text-transform: capitalize;
-		cursor: pointer;
-	}
-
-	span {
-		color: #181a20;
-		text-align: center;
-		font-family: $font;
-		font-size: 15px;
-		font-style: normal;
-		font-weight: 400;
-		line-height: 28px;
-	}
-}

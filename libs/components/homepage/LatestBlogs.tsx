@@ -3,7 +3,9 @@ import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import LatestBlogCard from './LatestBlogCard';
+import BlogCard from '../common/BlogCard';
+import { BoardArticle } from '../../types/blog/board-article';
+import { BoardArticleCategory } from '../../enums/blog.enum';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -87,6 +89,29 @@ const LatestBlogs = () => {
 		console.log('Read more:', blogId);
 	};
 
+	// Transform BlogPost to BoardArticle format
+	const transformToBoardArticle = (blog: BlogPost): BoardArticle => {
+		return {
+			_id: blog.id.toString(),
+			articleCategory: BoardArticleCategory.NEWS,
+			articleStatus: 'ACTIVE' as any,
+			articleTitle: blog.title,
+			articleContent: blog.description,
+			articleImage: blog.image,
+			articleViews: 0,
+			articleLikes: 0,
+			articleComments: 0,
+			memberId: '',
+			createdAt: new Date(blog.date),
+			updatedAt: new Date(blog.date),
+			memberData: {
+				_id: '',
+				memberNick: 'Author',
+			} as any,
+			meLiked: [],
+		};
+	};
+
 	return (
 		<Stack className={'latest-blogs'}>
 			<Stack className={'container'}>
@@ -120,7 +145,7 @@ const LatestBlogs = () => {
 						>
 							{blogs.map((blog) => (
 								<SwiperSlide key={blog.id} className={'latest-blog-slide'}>
-									<LatestBlogCard blog={blog} readMoreHandler={readMoreHandler} />
+									<BlogCard boardArticle={transformToBoardArticle(blog)} />
 								</SwiperSlide>
 							))}
 						</Swiper>

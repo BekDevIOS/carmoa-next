@@ -360,7 +360,7 @@
 	border-radius: 8px;
 	overflow: hidden;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
-	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+	border: 1px solid #c5c3c3;
 	position: relative;
 	cursor: pointer;
 
@@ -470,11 +470,10 @@
 			margin: 0;
 			line-height: 1.4;
 			transition: color 0.3s ease;
-		}
-
-		&.hovered .product-title {
-			color: #f4a51c;
-			font-weight: 600;
+			&:hover{
+				color: #f4a51c;
+				font-weight: 600;
+			}
 		}
 
 		.compatibility-text {
@@ -597,38 +596,35 @@
 
 // FeatureCard Component
 .feature-card {
-	flex: 1;
-	min-width: 0;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
 	gap: 16px;
-	padding: 30px 20px;
-	border-radius: 8px;
-	background: #ffffff;
-	border: 1px solid #e8e8e8;
 	transition: all 0.3s ease;
 
-	&:hover {
-		box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
-		transform: translateY(-4px);
-	}
-
 	.icon-box {
-		width: 60px;
-		height: 60px;
+		width: 80px;
+		height: 80px;
 		display: flex;
+		flex-direction: row;
 		align-items: center;
-		justify-content: center;
 		border-radius: 50%;
-		background: #FCB800;
+		background: #FFFFFF;
 		padding: 12px;
+		transition: all 0.3s ease;
+	
 
 		img {
-			width: 100%;
-			height: 100%;
+			width: 40px;
+			height: 40px;
 			object-fit: contain;
 		}
+	}
+
+	.feature-content {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 
 	.feature-title {
@@ -636,7 +632,7 @@
 		font-family: $font;
 		font-size: 18px;
 		font-weight: 600;
-		text-align: center;
+		text-align: left;
 		line-height: 1.2;
 	}
 
@@ -645,7 +641,84 @@
 		font-family: $font;
 		font-size: 14px;
 		font-weight: 400;
-		text-align: center;
+		text-align: left;
 		line-height: 1.5;
+	}
+	&:hover .icon-box{
+		background: #FCB800;
+	}
+}
+
+// Advertisement Component
+.video-frame {
+	width: 100%;
+	height: 678px;
+	background: black;
+	transform: perspective(0px);
+	box-shadow: -3px 0px 20px 14px #34343480;
+}
+
+// DealerCard Component
+.dealer-card {
+	width: 205px;
+	height: 280px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	cursor: pointer;
+
+	.dealer-image-wrapper {
+		width: 209px;
+		height: 209px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		border: 0px solid #000000;
+		transition: all 0.3s ease;
+		box-sizing: border-box;
+
+		img {
+			width: 209px;
+			height: 209px;
+			border-radius: 50%;
+			cursor: pointer;
+			object-fit: cover;
+			transition: all 0.3s ease;
+			display: block;
+		}
+	}
+
+	strong {
+		margin-top: 20px;
+		color: #181a20;
+		text-align: center;
+		font-family: $font;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: normal;
+		text-transform: capitalize;
+		cursor: pointer;
+	}
+
+	span {
+		color: #181a20;
+		text-align: center;
+		font-family: $font;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 28px;
+	}
+
+	&:hover {
+		.dealer-image-wrapper {
+			border: 1px solid #000000;
+			img {
+				width: 185px;
+				height: 185px;
+			}
+		}
 	}
 }

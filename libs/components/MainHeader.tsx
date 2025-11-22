@@ -147,11 +147,7 @@ const MainHeader = () => {
 		<Stack className={'main-header'} sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
 			<Stack className={'container'}>
 				{/* Left: Shop by Categories Button */}
-				<Box
-					component={'div'}
-					className={'shop-categories-btn'}
-					onClick={handleCategoryClick}
-				>
+				<Box component={'div'} className={'shop-categories-btn'} onClick={handleCategoryClick}>
 					<MenuIcon className={'menu-icon'} sx={{ color: 'text.primary' }} />
 					<Typography variant="body2" className={'categories-text'} sx={{ color: 'text.primary' }}>
 						SHOP BY CATEGORIES
@@ -174,37 +170,33 @@ const MainHeader = () => {
 							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'primary.contrastText' }}>
 								HOME
 							</Typography>
-							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'primary.contrastText' }} />
-						</Box>
-					</Link>
-					<Link href={'/shop'}>
-						<Box component={'div'} className={'nav-link'}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
-								SHOP
-							</Typography>
-							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'text.primary' }} />
 						</Box>
 					</Link>
 					<Link href={'/products'}>
 						<Box component={'div'} className={'nav-link'}>
 							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
-								PRODUCTS
+								Products
 							</Typography>
-							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'text.primary' }} />
 						</Box>
 					</Link>
 					<Link href={'/blog'}>
 						<Box component={'div'} className={'nav-link'}>
 							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
-								BLOG
+								Blog
 							</Typography>
-							<ExpandMoreIcon className={'nav-link-icon'} sx={{ color: 'text.primary' }} />
 						</Box>
 					</Link>
 					<Link href={'/about'}>
 						<Box component={'div'} className={'nav-link no-icon'}>
 							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
-								ABOUT US
+								About Us
+							</Typography>
+						</Box>
+					</Link>
+					<Link href={'/mypage'}>
+						<Box component={'div'} className={'nav-link no-icon'}>
+							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+								My Page
 							</Typography>
 						</Box>
 					</Link>
@@ -259,7 +251,12 @@ const MainHeader = () => {
 
 					{/* Theme Mode Toggle */}
 					<Box component={'div'} className={'theme-toggle'}>
-						<IconButton onClick={handleThemeToggle} className={'theme-toggle-btn'} sx={{ color: 'text.primary' }} size="small">
+						<IconButton
+							onClick={handleThemeToggle}
+							className={'theme-toggle-btn'}
+							sx={{ color: 'text.primary' }}
+							size="small"
+						>
 							{themeMode === 'light' ? <DarkModeIcon fontSize="small" /> : <LightModeIcon fontSize="small" />}
 						</IconButton>
 					</Box>
@@ -270,4 +267,3 @@ const MainHeader = () => {
 };
 
 export default MainHeader;
-

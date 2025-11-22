@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
-import TrendProductCard from './TrendProductCard';
+import ProductCard from '../common/ProductCard';
 
 const TrendProducts = () => {
 	const products = [
@@ -109,7 +109,7 @@ const TrendProducts = () => {
 				</Stack>
 				<Stack className={'products-grid'}>
 					{products.map((product) => (
-						<TrendProductCard
+						<ProductCard
 							key={product.id}
 							product={product}
 							addToCartHandler={addToCartHandler}

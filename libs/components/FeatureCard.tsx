@@ -9,15 +9,16 @@ interface FeatureCardProps {
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
 	return (
-		<Stack className="feature-card">
-			<Stack className="icon-box">
+		<Stack className="feature-card" direction="row">
+			<Stack className="icon-box" direction="row" justifyContent="center" alignItems="center">
 				<img src={icon} alt={title} />
 			</Stack>
-			<Typography className="feature-title">{title}</Typography>
-			<Typography className="feature-description">{description}</Typography>
+			<Stack className="feature-content" direction="column">
+				<Typography className="feature-title">{title}</Typography>
+				<Typography className="feature-description">{description}</Typography>
+			</Stack>
 		</Stack>
 	);
 };
 
 export default FeatureCard;
-

@@ -3,7 +3,7 @@ import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import TopProductCard from './TopProductCard';
+import ProductCard from '../common/ProductCard';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -144,7 +144,7 @@ const TopProducts = () => {
 						>
 							{products.map((product) => (
 								<SwiperSlide key={product.id} className={'top-product-slide'}>
-									<TopProductCard
+									<ProductCard
 										product={product}
 										addToCartHandler={addToCartHandler}
 										wishlistHandler={wishlistHandler}
