@@ -9,7 +9,9 @@ import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
 import AddProperty from '../../libs/components/mypage/AddNewProperty';
 import MyProfile from '../../libs/components/mypage/MyProfile';
+import Addresses from '../../libs/components/mypage/Addresses';
 import MyArticles from '../../libs/components/mypage/MyArticles';
+import OrderTable from '../../libs/components/mypage/OrderTable';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import MyMenu from '../../libs/components/mypage/MyMenu';
@@ -77,11 +79,13 @@ const MyPage: NextPage = () => {
 								<Stack className={'list-config'}>
 									{category === 'addProperty' && <AddProperty />}
 									{category === 'myProperties' && <MyProperties />}
+									{category === 'orders' && <OrderTable />}
 									{category === 'myFavorites' && <MyFavorites />}
 									{category === 'recentlyVisited' && <RecentlyVisited />}
 									{category === 'myArticles' && <MyArticles />}
 									{category === 'writeArticle' && <WriteArticle />}
 									{category === 'myProfile' && <MyProfile />}
+									{category === 'addresses' && <Addresses />}
 									{category === 'followers' && (
 										<MemberFollowers
 											subscribeHandler={subscribeHandler}

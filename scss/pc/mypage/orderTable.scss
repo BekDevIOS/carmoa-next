@@ -1,0 +1,195 @@
+#pc-wrap {
+	#my-page {
+		#order-table-page {
+			width: 100%;
+			height: auto;
+			display: flex;
+			flex-direction: column;
+			gap: 30px;
+			.main-title-box {
+				width: auto;
+				height: auto;
+				flex-direction: row;
+				justify-content: space-between;
+				.right-box {
+					width: 315px;
+					.main-title {
+						color: #181a20;
+						font-family: $font;
+						font-size: 30px;
+						font-style: normal;
+						font-weight: 600;
+						line-height: normal;
+						letter-spacing: 0.6px;
+						text-transform: capitalize;
+					}
+					.sub-title {
+						color: #181a20;
+						font-family: $font;
+						font-size: 14px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 26px;
+					}
+				}
+			}
+			.order-table-container {
+				width: 100%;
+				height: auto;
+				.order-table-wrapper {
+					width: 100%;
+					height: auto;
+					background: #fff;
+					border-radius: 12px;
+					border: 1px solid #c4c4c4;
+					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+					overflow: hidden;
+					.order-table {
+						width: 100%;
+						height: auto;
+						display: flex;
+						flex-direction: column;
+						.order-table-header {
+							display: flex;
+							flex-direction: row;
+							width: 100%;
+							background: #000000;
+							padding: 0;
+							.header-cell {
+								flex: 1;
+								padding: 16px 20px;
+								color: #ffffff;
+								font-family: $font;
+								font-size: 14px;
+								font-style: normal;
+								font-weight: 600;
+								line-height: normal;
+								text-align: left;
+								&.header-order {
+									flex: 1.2;
+								}
+								&.header-date {
+									flex: 1.5;
+								}
+								&.header-status {
+									flex: 1;
+								}
+								&.header-total {
+									flex: 1.5;
+								}
+								&.header-actions {
+									flex: 1;
+									text-align: center;
+								}
+							}
+						}
+						.order-table-body {
+							width: 100%;
+							display: flex;
+							flex-direction: column;
+							.order-table-row {
+								display: flex;
+								flex-direction: row;
+								width: 100%;
+								padding: 0;
+								&.even {
+									background: #f5f5f5;
+								}
+								&.odd {
+									background: #ffffff;
+								}
+								&:hover {
+									background: #f0f0f0;
+								}
+								.cell {
+									flex: 1;
+									padding: 16px 20px;
+									color: #181a20;
+									font-family: $font;
+									font-size: 14px;
+									font-style: normal;
+									font-weight: 400;
+									line-height: normal;
+									display: flex;
+									align-items: center;
+									&.cell-order {
+										flex: 1.2;
+										.order-number {
+											color: #181a20;
+											font-weight: 600;
+										}
+									}
+									&.cell-date {
+										flex: 1.5;
+									}
+									&.cell-status {
+										flex: 1;
+									}
+									&.cell-total {
+										flex: 1.5;
+									}
+									&.cell-actions {
+										flex: 1;
+										justify-content: center;
+										align-items: center;
+										.view-button {
+											background: #FCB800;
+											color: #181a20;
+											font-family: $font;
+											font-size: 14px;
+											font-style: normal;
+											font-weight: 600;
+											line-height: normal;
+											text-transform: capitalize;
+											padding: 8px 24px;
+											border-radius: 4px;
+											border: none;
+											cursor: pointer;
+											transition: all 0.3s ease;
+											box-shadow: none;
+											min-width: auto;
+											&:hover {
+												background: #000000;
+												color: #ffffff;
+												transform: translateY(-1px);
+												box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+											}
+											&:active {
+												transform: translateY(0);
+											}
+											&.MuiButton-root {
+												text-transform: capitalize;
+											}
+										}
+									}
+								}
+							}
+							.no-orders {
+								display: flex;
+								flex-direction: column;
+								align-items: center;
+								justify-content: center;
+								padding: 60px 20px;
+								img {
+									width: 48px;
+									height: 48px;
+									margin-bottom: 16px;
+									opacity: 0.5;
+								}
+								p {
+									color: #717171;
+									font-family: $font;
+									font-size: 16px;
+									font-style: normal;
+									font-weight: 400;
+									line-height: normal;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import PortraitIcon from '@mui/icons-material/Portrait';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LocationOn from '@mui/icons-material/LocationOn';
 import IconButton from '@mui/material/IconButton';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
@@ -17,6 +19,7 @@ const MyMenu = () => {
 	const pathname = router.query.category ?? 'myProfile';
 	const category: any = router.query?.category ?? 'myProfile';
 	const user = useReactiveVar(userVar);
+	user.memberType = 'AGENT';
 
 	/** HANDLERS **/
 	const logoutHandler = async () => {
@@ -55,9 +58,9 @@ const MyMenu = () => {
 					</Stack>
 				</Stack>
 				<Stack className={'sections'}>
-					<Stack className={'section'} style={{ height: user.memberType === 'AGENT' ? '228px' : '153px' }}>
+					<Stack className={'section'} style={{ height: user.memberType === 'AGENT' ? '270px' : '195px' }}>
 						<Typography className="title" variant={'h5'}>
-							MANAGE LISTINGS
+							My Activity
 						</Typography>
 						<List className={'sub-section'}>
 							{user.memberType === 'AGENT' && (
@@ -110,6 +113,30 @@ const MyMenu = () => {
 									</ListItem>
 								</>
 							)}
+							<ListItem className={pathname === 'orders' ? 'focus' : ''}>
+								<Link
+									href={{
+										pathname: '/mypage',
+										query: { category: 'orders' },
+									}}
+									scroll={false}
+								>
+									<div className={'flex-box'}>
+										<ShoppingCartIcon
+											className={'com-icon'}
+											style={{
+												color: category === 'orders' ? 'white' : 'black',
+												width: '16px',
+												height: '16px',
+											}}
+										/>
+
+										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
+											Orders
+										</Typography>
+									</div>
+								</Link>
+							</ListItem>
 							<ListItem className={pathname === 'myFavorites' ? 'focus' : ''}>
 								<Link
 									href={{
@@ -252,7 +279,7 @@ const MyMenu = () => {
 					<Stack className={'section'} sx={{ marginTop: '10px' }}>
 						<div>
 							<Typography className="title" variant={'h5'}>
-								Community
+								Blog
 							</Typography>
 							<List className={'sub-section'}>
 								<ListItem className={pathname === 'myArticles' ? 'focus' : ''}>
@@ -301,7 +328,7 @@ const MyMenu = () => {
 					</Stack>
 					<Stack className={'section'} sx={{ marginTop: '30px' }}>
 						<Typography className="title" variant={'h5'}>
-							MANAGE ACCOUNT
+							Account Settings
 						</Typography>
 						<List className={'sub-section'}>
 							<ListItem className={pathname === 'myProfile' ? 'focus' : ''}>
@@ -320,6 +347,28 @@ const MyMenu = () => {
 										)}
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 											My Profile
+										</Typography>
+									</div>
+								</Link>
+							</ListItem>
+							<ListItem className={pathname === 'addresses' ? 'focus' : ''}>
+								<Link
+									href={{
+										pathname: '/mypage',
+										query: { category: 'addresses' },
+									}}
+									scroll={false}
+								>
+									<div className={'flex-box'}>
+										<LocationOn
+											className={'com-icon'}
+											sx={{
+												fontSize: 16,
+												color: category === 'addresses' ? 'white' : 'black',
+											}}
+										/>
+										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
+											Addresses
 										</Typography>
 									</div>
 								</Link>

@@ -1,0 +1,183 @@
+#pc-wrap {
+	#my-page {
+		#addresses-page {
+			width: 100%;
+			height: auto;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			.main-title-box {
+				width: auto;
+				height: auto;
+				flex-direction: row;
+				justify-content: space-between;
+				.right-box {
+					width: 315px;
+					.main-title {
+						color: #181a20;
+						font-family: $font;
+						font-size: 30px;
+						font-style: normal;
+						font-weight: 600;
+						line-height: normal;
+						letter-spacing: 0.6px;
+						text-transform: capitalize;
+					}
+					.sub-title {
+						color: #181a20;
+						font-family: $font;
+						font-size: 14px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 26px;
+					}
+				}
+			}
+			.addresses-container {
+				width: 100%;
+				padding: 30px;
+				margin-top: 35px;
+				gap: 30px;
+				border-radius: 12px;
+				border: 1px solid #c4c4c4;
+				background: #fff;
+				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+				.addresses-row {
+					display: flex;
+					flex-direction: row;
+					gap: 24px;
+					width: 100%;
+					.address-card {
+						flex: 1;
+						padding: 32px;
+						background: #ffffff;
+						border-radius: 8px;
+						border: 1px solid #e0e0e0;
+						.section-heading {
+							font-size: 24px;
+							font-weight: 700;
+							color: #000;
+							margin-bottom: 4px;
+						}
+						.section-subtitle {
+							font-size: 14px;
+							color: #555;
+							margin-bottom: 24px;
+						}
+						.field-group {
+							margin-bottom: 16px;
+						}
+						.field-row {
+							display: flex;
+							gap: 16px;
+							margin-bottom: 16px;
+							.half {
+								flex: 1;
+							}
+						}
+						.field-input {
+							.MuiInputLabel-root {
+								color: #999;
+								font-size: 14px;
+								font-weight: 400;
+								&.Mui-focused {
+									color: #000;
+									font-weight: 500;
+								}
+								&.MuiInputLabel-shrink {
+									color: #000;
+									font-weight: 500;
+									font-size: 13px;
+								}
+							}
+							.MuiOutlinedInput-root {
+								background: #fff;
+								input,
+								textarea {
+									font-size: 14px;
+									color: #000;
+									padding: 14px 16px;
+								}
+								&:hover .MuiOutlinedInput-notchedOutline {
+									border-color: #999;
+								}
+								&.Mui-focused .MuiOutlinedInput-notchedOutline {
+									border-color: #000;
+									border-width: 2px;
+								}
+								.MuiOutlinedInput-notchedOutline {
+									border-color: #d0d0d0;
+								}
+							}
+						}
+						.field-select {
+							.MuiOutlinedInput-root {
+								background: #fff;
+								font-size: 14px;
+								.MuiSelect-select {
+									padding: 14px 16px;
+									color: #000;
+									&.MuiSelect-select[aria-expanded="false"]:empty {
+										color: #999;
+									}
+								}
+								&:hover .MuiOutlinedInput-notchedOutline {
+									border-color: #999;
+								}
+								&.Mui-focused .MuiOutlinedInput-notchedOutline {
+									border-color: #000;
+									border-width: 2px;
+								}
+								.MuiOutlinedInput-notchedOutline {
+									border-color: #d0d0d0;
+								}
+							}
+						}
+						.billing-checkbox {
+							margin-top: 8px;
+							.MuiTypography-root {
+								font-size: 14px;
+							}
+						}
+					}
+				}
+				.update-button-container {
+					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					width: 100%;
+					margin-top: 20px;
+					.update-button {
+						display: flex;
+						width: 170px;
+						height: 45px;
+						justify-content: center;
+						align-items: center;
+						gap: 10px;
+						border-radius: 8px;
+						background-color: #FCB800;
+						text-transform: none;
+						p {
+							color: #000000;
+							font-family: $font;
+							font-size: 14px;
+							font-style: normal;
+							font-weight: 600;
+							line-height: normal;
+						}
+						&:hover {
+							background-color: #000000;
+							p {
+								color: #ffffff;
+							}
+						}
+					}
+					button:disabled {
+						background: #181a2045;
+					}
+				}
+			}
+		}
+	}
+}
+
