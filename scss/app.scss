@@ -1,11 +1,12 @@
 /** IMPORTS **/
 @import 'variables.scss';
 @import 'reset.scss';
+@import 'styles/theme-vars.scss';
 
 a {
 	white-space: nowrap;
 	text-decoration: none;
-	color: #212121;
+	color: var(--carmo-text);
 }
 button {
 	text-transform: none;
@@ -13,10 +14,10 @@ button {
 	padding: 0;
 }
 button.outline {
-	border: 1px solid #eee;
+	border: 1px solid var(--carmo-border);
 }
 button.contain {
-	color: #fff;
+	color: var(--carmo-bg);
 }
 span,
 p {
@@ -29,11 +30,11 @@ body {
 	}
 	&::-webkit-scrollbar-thumb {
 		height: 30%;
-		background: #bdbdbd;
+		background: var(--carmo-text-secondary);
 		border-radius: 10px;
 	}
 	&::-webkit-scrollbar-track {
-		background: #eee;
+		background: var(--carmo-border);
 	}
 
 	.MuiPopover-paper {
@@ -43,7 +44,7 @@ body {
 hr {
 	border-width: 0;
 	border-bottom-width: thin;
-	border-color: #eee;
+	border-color: var(--carmo-border);
 	margin: auto;
 }
 

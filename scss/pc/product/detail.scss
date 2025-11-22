@@ -21,7 +21,7 @@
 					height: auto;
 					border-radius: 12px;
 					overflow: visible; // REQUIRED for zoom circle
-					background-color: #fafafa;
+					background-color: var(--carmo-bg-soft);
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -32,14 +32,14 @@
 						position: absolute;
 						top: 12px;
 						left: 12px;
-						background: #fff;
-						border: 1px solid #ef5350;
+						background: var(--carmo-bg);
+						border: 1px solid var(--carmo-primary);
 						padding: 4px 12px;
 						border-radius: 100px;
 						z-index: 20;
 
 						.sale-text {
-							color: #ef5350;
+							color: var(--carmo-primary);
 							font-size: 14px;
 							font-weight: 700;
 						}
@@ -52,7 +52,7 @@
 						transform: translateY(-50%);
 						width: 42px;
 						height: 42px;
-						background: #ffffffd9;
+						background: var(--carmo-bg)d9;
 						border-radius: 50%;
 						box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 						border: none;
@@ -72,12 +72,12 @@
 
 						&:hover {
 							transform: translateY(-50%) scale(1.12);
-							background: #fff;
+							background: var(--carmo-bg);
 						}
 
 						svg {
 							font-size: 22px;
-							color: #000;
+							color: var(--carmo-text);
 						}
 					}
 
@@ -120,11 +120,11 @@
 							}
 
 							&.active {
-								border-color: #000;
+								border-color: var(--carmo-text);
 							}
 
 							&:hover {
-								border-color: #f4a51c;
+								border-color: var(--carmo-primary);
 								transform: scale(1.06);
 							}
 						}
@@ -141,7 +141,7 @@
 					font-family: $font;
 					font-size: 32px;
 					font-weight: 500;
-					color: #000000;
+					color: var(--carmo-text);
 					line-height: 1.3;
 					margin: 0;
 				}
@@ -154,14 +154,14 @@
 						font-family: $font;
 						font-size: 16px;
 						font-weight: 600;
-						color: #000000;
+						color: var(--carmo-text);
 						margin: 0;
 					}
 					.brand-chip {
 						font-family: $font;
 						font-size: 14px;
-						background-color: #f5f5f5;
-						color: #000000;
+						background-color: var(--carmo-bg-soft);
+						color: var(--carmo-text);
 					}
 				}
 				.social-proof {
@@ -179,35 +179,35 @@
 
 						.view-icon {
 							font-size: 18px;
-							color: #717171;
+							color: var(--carmo-text-secondary);
 						}
 						.fire-icon {
-							color: #fcb800;
+							color: var(--carmo-primary);
 						}
 						.viewers-count,
 						.sold-count {
 							font-family: $font;
 							font-size: 14px;
 							font-weight: 600;
-							color: #fcb800;
+							color: var(--carmo-primary);
 							margin: 0;
 							&.viewers-count {
-								color: #717171;
+								color: var(--carmo-text-secondary);
 							}
 						}
 						.stock-icon {
 							font-size: 18px;
-							color: #4caf50;
+							color: var(--carmo-primary);
 						}
 						.stock-status {
 							font-family: $font;
 							font-size: 14px;
 							font-weight: 400;
-							color: #4caf50;
+							color: var(--carmo-primary);
 							margin: 0;
 
 							&.out-of-stock {
-								color: #e53935;
+								color: var(--carmo-primary);
 							}
 						}
 					}
@@ -216,7 +216,7 @@
 					font-family: $font;
 					font-size: 14px;
 					font-weight: 400;
-					color: #000000;
+					color: var(--carmo-text);
 					line-height: 1.6;
 					padding-bottom: 16px;
 					margin: 0;
@@ -233,7 +233,7 @@
 						font-family: $font;
 						font-size: 24px;
 						font-weight: 400;
-						color: #b9b9b9;
+						color: var(--carmo-text-secondary);
 						text-decoration: line-through;
 						margin: 0;
 					}
@@ -242,17 +242,17 @@
 						font-family: $font;
 						font-size: 32px;
 						font-weight: 600;
-						color: #f4a51c;
+						color: var(--carmo-primary);
 						margin: 0;
 					}
 				}
 
 				.countdown-timer {
-					background-color: #ffffff;
+					background-color: var(--carmo-bg);
 					padding: 16px 20px;
 					border-radius: 8px;
-					border: 1px solid #e53935;
-					background-color: #e9d4db;
+					border: 1px solid var(--carmo-primary);
+					background-color: var(--carmo-bg-soft);
 					display: flex;
 					flex-direction: row;
 					align-items: center;
@@ -266,14 +266,14 @@
 
 						.clock-icon {
 							font-size: 18px;
-							color: #000000;
+							color: var(--carmo-text);
 						}
 
 						p {
 							font-family: $font;
 							font-size: 14px;
 							font-weight: 600;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 						}
 					}
@@ -294,7 +294,7 @@
 								font-family: $font;
 								font-size: 20px;
 								font-weight: 700;
-								color: #e53935;
+								color: var(--carmo-primary);
 								margin: 0;
 							}
 						}
@@ -303,7 +303,7 @@
 							font-family: $font;
 							font-size: 18px;
 							font-weight: 700;
-							color: #e53935;
+							color: var(--carmo-primary);
 							margin: 0 4px;
 						}
 					}
@@ -323,7 +323,7 @@
 							font-family: $font;
 							font-size: 16px;
 							font-weight: 600;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 						}
 
@@ -336,12 +336,12 @@
 							.quantity-btn {
 								min-width: 40px;
 								height: 36px;
-								border: 1px solid #e0e0e0;
+								border: 1px solid var(--carmo-border);
 								border-radius: 4px;
 								font-family: $font;
 								font-size: 18px;
 								font-weight: 600;
-								color: #000000;
+								color: var(--carmo-text);
 							}
 
 							.quantity-input {
@@ -361,8 +361,8 @@
 					.add-to-cart-btn {
 						flex: 1;
 						height: 50px;
-						background-color: #ffffff;
-						color: #000000;
+						background-color: var(--carmo-bg);
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 14px;
 						font-weight: 600;
@@ -372,8 +372,8 @@
 						transition: all 0.3s ease;
 
 						&:hover {
-							background-color: #fcb800;
-							border-color: #e0e0e0;
+							background-color: var(--carmo-primary);
+							border-color: var(--carmo-border);
 						}
 					}
 
@@ -381,15 +381,15 @@
 					.compare-btn {
 						width: 50px;
 						height: 50px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						border-radius: 4px;
-						color: #000000;
-						background-color: #ffffff;
+						color: var(--carmo-text);
+						background-color: var(--carmo-bg);
 						transition: all 0.3s ease;
 
 						&:hover {
-							background-color: #fcb800;
-							border-color: #ffffff;
+							background-color: var(--carmo-primary);
+							border-color: var(--carmo-bg);
 						}
 
 						svg {
@@ -411,26 +411,26 @@
 						font-family: $font;
 						font-size: 14px;
 						font-weight: 400;
-						color: #000000;
+						color: var(--carmo-text);
 						margin: 0;
 					}
 
 					.terms-link {
-						color: #000000;
+						color: var(--carmo-text);
 						text-decoration: underline;
 						cursor: pointer;
 						transition: color 0.3s ease;
 
 						&:hover {
-							color: #f4a51c;
+							color: var(--carmo-primary);
 						}
 					}
 
 					.buy-now-btn {
 						width: 100%;
 						height: 60px;
-						background-color: #000000;
-						color: #ffffff;
+						background-color: var(--carmo-text);
+						color: var(--carmo-bg);
 						font-family: $font;
 						font-size: 14px;
 						font-weight: 600;
@@ -440,8 +440,8 @@
 						transition: all 0.3s ease;
 
 						&:hover {
-							background-color: #fcb800;
-							color: #000000;
+							background-color: var(--carmo-primary);
+							color: var(--carmo-text);
 						}
 					}
 				}
@@ -450,11 +450,11 @@
 					font-family: $font;
 					font-size: 14px;
 					font-weight: 400;
-					color: #717171;
+					color: var(--carmo-text-secondary);
 					margin: 0;
 
 					.delivery-date-range {
-						color: #f4a51c;
+						color: var(--carmo-primary);
 						font-weight: 600;
 					}
 				}
@@ -463,11 +463,11 @@
 					font-family: $font;
 					font-size: 14px;
 					font-weight: 400;
-					color: #717171;
+					color: var(--carmo-text-secondary);
 					margin: 0;
 
 					a {
-						color: #f4a51c;
+						color: var(--carmo-primary);
 						text-decoration: none;
 
 						&:hover {
@@ -479,7 +479,7 @@
 		}
 
 		.product-tabs-section {
-			background-color: #f5f5f5;
+			background-color: var(--carmo-bg-soft);
 			padding: 60px 0;
 
 			.container {
@@ -501,7 +501,7 @@
 					font-size: 20px;
 					font-weight: 400;
 					text-transform: none;
-					color: #000000;
+					color: var(--carmo-text);
 					min-height: 56px;
 					padding: 12px 24px;
 					align-items: flex-start;
@@ -512,7 +512,7 @@
 					position: relative;
 
 					&.Mui-selected {
-						color: #000000;
+						color: var(--carmo-text);
 						font-weight: 600;
 					}
 
@@ -522,7 +522,7 @@
 				}
 
 				.MuiTabs-indicator {
-					background-color: #000000;
+					background-color: var(--carmo-text);
 					width: 4px;
 					left: 0;
 					right: auto;
@@ -536,7 +536,7 @@
 			}
 
 			.tab-panel {
-				background-color: #ffffff;
+				background-color: var(--carmo-bg);
 				padding: 48px 56px;
 				min-height: 100%;
 				height: auto;
@@ -557,7 +557,7 @@
 							font-family: $font;
 							font-size: 20px;
 							font-weight: 700;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 							margin-top: 2px;
 							line-height: 1.5;
@@ -568,7 +568,7 @@
 							font-family: $font;
 							font-size: 15px;
 							font-weight: 700;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 							display: inline;
 							line-height: 1.7;
@@ -578,7 +578,7 @@
 							font-family: $font;
 							font-size: 15px;
 							font-weight: 400;
-							color: #000000;
+							color: var(--carmo-text);
 							line-height: 1.7;
 							margin: 0;
 							display: inline;
@@ -590,7 +590,7 @@
 					font-family: $font;
 					font-size: 15px;
 					font-weight: 400;
-					color: #000000;
+					color: var(--carmo-text);
 					line-height: 1.7;
 					margin: 0;
 				}
@@ -612,7 +612,7 @@
 							font-family: $font;
 							font-size: 14px;
 							font-weight: 600;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 						}
 
@@ -620,7 +620,7 @@
 							font-family: $font;
 							font-size: 14px;
 							font-weight: 400;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 						}
 					}
@@ -635,7 +635,7 @@
 						font-family: $font;
 						font-size: 32px;
 						font-weight: 600;
-						color: #000000;
+						color: var(--carmo-text);
 						margin: 0;
 						line-height: 1.2;
 					}
@@ -649,7 +649,7 @@
 							font-family: $font;
 							font-size: 15px;
 							font-weight: 400;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 							line-height: 1.7;
 						}
@@ -679,7 +679,7 @@
 						font-family: $font;
 						font-size: 15px;
 						font-weight: 400;
-						color: #000000;
+						color: var(--carmo-text);
 						margin: 0;
 						line-height: 1.7;
 					}
@@ -693,11 +693,11 @@
 							font-family: $font;
 							font-size: 15px;
 							font-weight: 600;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 
 							.required {
-								color: #e53935;
+								color: var(--carmo-primary);
 							}
 						}
 
@@ -709,11 +709,11 @@
 								padding: 0;
 								width: 32px;
 								height: 32px;
-								color: #b9b9b9;
+								color: var(--carmo-text-secondary);
 								transition: color 0.2s ease;
 
 								&:hover {
-									color: #f4a51c;
+									color: var(--carmo-primary);
 									background-color: transparent;
 								}
 
@@ -728,22 +728,22 @@
 						width: 100%;
 						min-height: 200px;
 						padding: 16px 20px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						border-radius: 4px;
 						font-family: $font;
 						font-size: 15px;
 						resize: vertical;
 						outline: none;
 						line-height: 1.7;
-						color: #000000;
+						color: var(--carmo-text);
 
 						&::placeholder {
-							color: #b9b9b9;
+							color: var(--carmo-text-secondary);
 						}
 
 						&:focus {
-							border-color: #000000;
-							background-color: #f5f5f5;
+							border-color: var(--carmo-text);
+							background-color: var(--carmo-bg-soft);
 						}
 					}
 
@@ -752,8 +752,8 @@
 						align-self: flex-start;
 						height: 48px;
 						padding: 0 40px;
-						background-color: #000000;
-						color: #ffffff;
+						background-color: var(--carmo-text);
+						color: var(--carmo-bg);
 						font-family: $font;
 						font-size: 15px;
 						font-weight: 500;
@@ -762,13 +762,13 @@
 						transition: all 0.3s ease;
 
 						&:hover {
-							background-color: #fcb800;
-							color: #000000;
+							background-color: var(--carmo-primary);
+							color: var(--carmo-text);
 						}
 
 						&:disabled {
-							background-color: #e0e0e0;
-							color: #b9b9b9;
+							background-color: var(--carmo-border);
+							color: var(--carmo-text-secondary);
 						}
 					}
 				}
@@ -791,7 +791,7 @@
 				font-size: 32px;
 				font-weight: 600;
 				padding-bottom: 60px;
-				color: #000000;
+				color: var(--carmo-text);
 			}
 
 			.related-products-wrapper,
@@ -807,16 +807,16 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
-					border: 1px solid #f4a51c;
+					border: 1px solid var(--carmo-primary);
 					border-radius: 50%;
 					cursor: pointer;
 					transition: all 0.3s ease;
 					flex-shrink: 0;
 
 					&:hover {
-						background-color: #f4a51c;
-						border-color: #f4a51c;
-						color: #ffffff;
+						background-color: var(--carmo-primary);
+						border-color: var(--carmo-primary);
+						color: var(--carmo-bg);
 					}
 
 					svg {
@@ -837,8 +837,8 @@
 			flex-direction: column;
 			gap: 16px;
 			padding: 24px;
-			background-color: #ffffff;
-			border: 1px solid #e0e0e0;
+			background-color: var(--carmo-bg);
+			border: 1px solid var(--carmo-border);
 			border-radius: 8px;
 
 			.review-header {
@@ -875,13 +875,13 @@
 							font-family: $font;
 							font-size: 16px;
 							font-weight: 600;
-							color: #000000;
+							color: var(--carmo-text);
 							margin: 0;
 							cursor: pointer;
 							transition: color 0.3s ease;
 
 							&:hover {
-								color: #f4a51c;
+								color: var(--carmo-primary);
 							}
 						}
 
@@ -903,12 +903,12 @@
 
 									.star-filled {
 										font-size: 18px;
-										color: #f4a51c;
+										color: var(--carmo-primary);
 									}
 
 									.star-empty {
 										font-size: 18px;
-										color: #b9b9b9;
+										color: var(--carmo-text-secondary);
 									}
 								}
 							}
@@ -917,7 +917,7 @@
 								font-family: $font;
 								font-size: 14px;
 								font-weight: 400;
-								color: #717171;
+								color: var(--carmo-text-secondary);
 								margin: 0;
 							}
 						}
@@ -933,7 +933,7 @@
 					font-family: $font;
 					font-size: 14px;
 					font-weight: 400;
-					color: #000000;
+					color: var(--carmo-text);
 					line-height: 1.6;
 					margin: 0;
 				}

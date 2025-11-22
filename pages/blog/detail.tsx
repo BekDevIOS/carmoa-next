@@ -456,7 +456,11 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 								</Stack>
 								<Stack
 									className="second-box-config"
-									sx={{ borderBottom: total > 0 ? 'none' : '1px solid #eee', border: '1px solid #eee' }}
+									sx={{ 
+										borderBottom: total > 0 ? 'none' : '1px solid var(--carmo-border)', 
+										border: '1px solid var(--carmo-border)',
+										color: 'var(--carmo-text)'
+									}}
 								>
 									<Typography className="title-text">Comments ({total})</Typography>
 									<Stack className="leave-comment">
@@ -468,6 +472,10 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 												if (e.target.value.length > 100) return;
 												setWordsCnt(e.target.value.length);
 												setComment(e.target.value);
+											}}
+											style={{ 
+												color: 'var(--carmo-text)',
+												backgroundColor: 'var(--carmo-bg-soft)'
 											}}
 										/>
 										<Stack className="button-box">

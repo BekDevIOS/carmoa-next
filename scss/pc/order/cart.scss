@@ -26,7 +26,7 @@
 				justify-content: start;
 				gap: 12px;
 				background: white;
-				border: 1px solid #1976d2;
+				border: 1px solid var(--carmo-primary);
 				border-radius: 4px;
 				padding: 16px 24px;
 				width: 100%;
@@ -37,7 +37,7 @@
 					justify-content: center;
 					width: 24px;
 					height: 24px;
-					background: #1976d2;
+					background: var(--carmo-primary);
 					border-radius: 50%;
 					flex-shrink: 0;
 
@@ -49,7 +49,7 @@
 
 				.empty-cart-text {
 					font-size: 16px;
-					color: #000;
+					color: var(--carmo-text);
 					font-weight: 400;
 				}
 			}
@@ -57,7 +57,7 @@
 			.return-to-shop-btn {
 				padding: 14px 40px;
 				background: white;
-				color: #000;
+				color: var(--carmo-text);
 				border: 1px solid #000;
 				font-size: 16px;
 				font-weight: 600;
@@ -67,7 +67,7 @@
 				align-self: center;
 
 				&:hover {
-					background: #000;
+					background: var(--carmo-text);
 					color: white;
 				}
 			}
@@ -82,7 +82,7 @@
 
 		// Shipping Progress Bar
 		.shipping-progress-container {
-			background: #fff3ed;
+			background: var(--carmo-bg)3ed;
 			border: 1px solid #ffe2d0;
 			padding: 32px;
 			border-radius: 18px;
@@ -94,7 +94,7 @@
 				gap: 18px;
 
 				.shipping-icon {
-					color: #ffa500;
+					color: var(--carmo-primary);
 					font-size: 34px;
 				}
 
@@ -107,25 +107,25 @@
 						font-size: 18px;
 						font-weight: 700;
 						text-transform: uppercase;
-						color: #000;
+						color: var(--carmo-text);
 
 						.threshold-amount {
-							color: #ffa500;
+							color: var(--carmo-primary);
 						}
 					}
 
 					.progress-subtitle {
 						font-size: 16px;
-						color: #000;
+						color: var(--carmo-text);
 
 						.remaining-amount {
-							color: #ffa500;
+							color: var(--carmo-primary);
 							font-weight: 700;
 						}
 
 						strong {
 							font-weight: 700;
-							color: #000;
+							color: var(--carmo-text);
 						}
 					}
 				}
@@ -135,7 +135,7 @@
 				position: relative;
 				width: 100%;
 				height: 10px;
-				background: #f1f1f1;
+				background: var(--carmo-bg-soft);
 				border-radius: 5px;
 				overflow: visible;
 
@@ -144,8 +144,8 @@
 					border-radius: 5px;
 					background: repeating-linear-gradient(
 						-45deg,
-						#ffa500,
-						#ffa500 14px,
+						var(--carmo-primary),
+						var(--carmo-primary) 14px,
 						#ffc766 14px,
 						#ffc766 28px
 					);
@@ -156,7 +156,7 @@
 					position: absolute;
 					top: 50%;
 					transform: translate(-50%, -50%);
-					background: #fff;
+					background: var(--carmo-bg);
 					border-radius: 50%;
 					padding: 6px;
 					width: 54px;
@@ -168,7 +168,7 @@
 					transition: left 0.3s ease;
 
 					.progress-truck-icon {
-						color: #000;
+						color: var(--carmo-text);
 						font-size: 26px;
 					}
 				}
@@ -177,7 +177,7 @@
 
 		// Cart Table
 		.cart-table {
-			background: #ffffff;
+			background: var(--carmo-bg);
 			border-radius: 12px;
 			overflow: hidden;
 			border: 1px solid #e6e6e6;
@@ -186,7 +186,7 @@
 			.cart-table-header {
 				display: grid;
 				grid-template-columns: 2fr 1fr 1fr;
-				background: #faf9f7;
+				background: var(--carmo-bg-soft);
 				padding: 18px 32px;
 				gap: 20px;
 				border-bottom: 1px solid #ececec;
@@ -196,7 +196,7 @@
 				.header-subtotal {
 					font-size: 15px;
 					font-weight: 600;
-					color: #000;
+					color: var(--carmo-text);
 				}
 
 				.header-quantity {
@@ -233,7 +233,7 @@
 							border-radius: 8px;
 							overflow: hidden;
 							flex-shrink: 0;
-							background: #f5f5f5;
+							background: var(--carmo-bg-soft);
 							display: flex;
 							align-items: center;
 							justify-content: center;
@@ -251,14 +251,14 @@
 							.product-name {
 								font-size: 16px;
 								font-weight: 500;
-								color: #000;
+								color: var(--carmo-text);
 								line-height: 1.4;
 							}
 
 							.product-price {
 								font-size: 18px;
 								font-weight: 600;
-								color: #ffa500;
+								color: var(--carmo-primary);
 							}
 						}
 					}
@@ -268,10 +268,10 @@
 						flex-direction: row;
 						justify-content: start;
 						align-items: center;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						border-radius: 4px;
 						overflow: hidden;
-						background: #fff;
+						background: var(--carmo-bg);
 						width: fit-content;
 						margin: 0;
 
@@ -280,12 +280,12 @@
 							height: 36px;
 							padding: 0;
 							border-radius: 0;
-							color: #666;
+							color: var(--carmo-text-secondary);
 							transition: background 0.2s ease, color 0.2s ease;
 
 							&:hover {
-								background: #f5f5f5;
-								color: #000;
+								background: var(--carmo-bg-soft);
+								color: var(--carmo-text);
 							}
 
 							svg {
@@ -298,7 +298,7 @@
 							text-align: center;
 							font-size: 16px;
 							font-weight: 600;
-							color: #000;
+							color: var(--carmo-text);
 							padding: 0 12px;
 							border-left: 1px solid #e0e0e0;
 							border-right: 1px solid #e0e0e0;
@@ -315,18 +315,18 @@
 						.subtotal-amount {
 							font-size: 20px;
 							font-weight: 600;
-							color: #ffa500;
+							color: var(--carmo-primary);
 						}
 
 						.remove-btn {
 							padding: 8px;
-							color: #666;
+							color: var(--carmo-text-secondary);
 							transition: all 0.2s ease;
 							border-radius: 4px;
 
 							&:hover {
-								background: #fff5f5;
-								color: #ff4444;
+								background: var(--carmo-bg)5f5;
+								color: var(--carmo-primary);
 							}
 
 							svg {
@@ -344,29 +344,29 @@
 				align-items: stretch;
 				padding: 24px 30px;
 				border-top: 1px solid #e0e0e0;
-				background: #fff;
+				background: var(--carmo-bg);
 
 				.coupon-input {
 					flex: 1;
 
 					.MuiOutlinedInput-root {
-						background: #fff;
+						background: var(--carmo-bg);
 						border-radius: 4px;
 						height: 100%;
 
 						.MuiOutlinedInput-notchedOutline {
-							border-color: #d0d0d0;
+							border-color: var(--carmo-border);
 						}
 
 						&:hover {
 							.MuiOutlinedInput-notchedOutline {
-								border-color: #999;
+								border-color: var(--carmo-text-secondary);
 							}
 						}
 
 						&.Mui-focused {
 							.MuiOutlinedInput-notchedOutline {
-								border-color: #000;
+								border-color: var(--carmo-text);
 								border-width: 2px;
 							}
 						}
@@ -375,18 +375,18 @@
 					input {
 						padding: 16px 18px;
 						font-size: 15px;
-						color: #000;
+						color: var(--carmo-text);
 
 						&::placeholder {
-							color: #999;
+							color: var(--carmo-text-secondary);
 						}
 					}
 				}
 
 				.apply-coupon-btn {
 					padding: 16px 40px;
-					background: #ffffff;
-					color: #000000;
+					background: var(--carmo-bg);
+					color: var(--carmo-text);
 					border: 1px solid #000000;
 					font-size: 16px;
 					font-weight: 600;
@@ -396,8 +396,8 @@
 					white-space: nowrap;
 
 					&:hover {
-						background: #000000;
-						color: #ffffff;
+						background: var(--carmo-text)000;
+						color: var(--carmo-bg);
 					}
 				}
 			}
@@ -405,7 +405,7 @@
 
 		// Order Summary (Right Sidebar)
 		.order-summary {
-			background: #f8f8f8;
+			background: var(--carmo-bg-soft);
 			padding: 30px;
 			border-radius: 8px;
 			position: sticky;
@@ -424,13 +424,13 @@
 					.summary-label {
 						font-size: 20px;
 						font-weight: 600;
-						color: #000;
+						color: var(--carmo-text);
 					}
 
 					.summary-value {
 						font-size: 24px;
 						font-weight: 600;
-						color: #ffa500;
+						color: var(--carmo-primary);
 					}
 				}
 			}
@@ -442,20 +442,20 @@
 				.section-title {
 					font-size: 18px;
 					font-weight: 600;
-					color: #000;
+					color: var(--carmo-text);
 					margin-bottom: 15px;
 				}
 
 				.shipping-method {
 					font-size: 16px;
 					font-weight: 600;
-					color: #000;
+					color: var(--carmo-text);
 					display: flex;
 					align-items: center;
 					gap: 8px;
 
 					.shipping-method-value {
-						color: #ffa500;
+						color: var(--carmo-primary);
 						font-weight: 700;
 					}
 
@@ -468,24 +468,24 @@
 						font-weight: 600;
 						text-transform: uppercase;
 						letter-spacing: 0.5px;
-						background: #f0f0f0;
-						color: #000;
+						background: var(--carmo-bg-soft);
+						color: var(--carmo-text);
 
 						&--free {
-							background: #fff1d6;
-							color: #ffa500;
+							background: var(--carmo-bg)1d6;
+							color: var(--carmo-primary);
 						}
 					}
 				}
 
 				.shipping-address {
 					font-size: 14px;
-					color: #000;
+					color: var(--carmo-text);
 					margin-top: 15px;
 					line-height: 1.5;
 
 					strong {
-						color: #000;
+						color: var(--carmo-text);
 						font-weight: 600;
 					}
 				}
@@ -493,7 +493,7 @@
 				.change-address-btn {
 					margin-top: 10px;
 					padding: 8px 0;
-					color: #ffa500;
+					color: var(--carmo-primary);
 					font-size: 14px;
 					font-weight: 600;
 					text-transform: none;
@@ -510,7 +510,7 @@
 
 					&:hover {
 						background: transparent;
-						color: #ff8c00;
+						color: var(--carmo-primary);
 					}
 				}
 
@@ -520,7 +520,7 @@
 					padding: 20px;
 					background: white;
 					border-radius: 8px;
-					border: 1px solid #e0e0e0;
+					border: 1px solid var(--carmo-border);
 
 					.address-form-header {
 						display: flex;
@@ -531,11 +531,11 @@
 						.form-title {
 							font-size: 16px;
 							font-weight: 700;
-							color: #000;
+							color: var(--carmo-text);
 						}
 
 						.form-title-icon {
-							color: #ffa500;
+							color: var(--carmo-primary);
 							font-size: 20px;
 						}
 					}
@@ -543,7 +543,7 @@
 					.form-label {
 						font-size: 14px;
 						font-weight: 600;
-						color: #000;
+						color: var(--carmo-text);
 						margin-bottom: 8px;
 					}
 
@@ -554,13 +554,13 @@
 
 							&:hover {
 								.MuiOutlinedInput-notchedOutline {
-									border-color: #ffa500;
+									border-color: var(--carmo-primary);
 								}
 							}
 
 							&.Mui-focused {
 								.MuiOutlinedInput-notchedOutline {
-									border-color: #ffa500;
+									border-color: var(--carmo-primary);
 									border-width: 2px;
 								}
 							}
@@ -569,7 +569,7 @@
 						.MuiSelect-select {
 							padding: 14px 16px;
 							font-size: 14px;
-							color: #000;
+							color: var(--carmo-text);
 						}
 					}
 
@@ -580,13 +580,13 @@
 
 							&:hover {
 								.MuiOutlinedInput-notchedOutline {
-									border-color: #ffa500;
+									border-color: var(--carmo-primary);
 								}
 							}
 
 							&.Mui-focused {
 								.MuiOutlinedInput-notchedOutline {
-									border-color: #ffa500;
+									border-color: var(--carmo-primary);
 									border-width: 2px;
 								}
 							}
@@ -595,10 +595,10 @@
 						input {
 							padding: 14px 16px;
 							font-size: 14px;
-							color: #000;
+							color: var(--carmo-text);
 
 							&::placeholder {
-								color: #999;
+								color: var(--carmo-text-secondary);
 							}
 						}
 					}
@@ -606,7 +606,7 @@
 					.update-address-btn {
 						width: 100%;
 						padding: 14px;
-						background: #000;
+						background: var(--carmo-text);
 						color: white;
 						font-size: 16px;
 						font-weight: 600;
@@ -616,7 +616,7 @@
 						transition: all 0.2s ease;
 
 						&:hover {
-							background: #333;
+							background: var(--carmo-text);
 						}
 					}
 				}
@@ -643,7 +643,7 @@
 				width: 100%;
 				padding: 16px;
 				background: white;
-				color: #000;
+				color: var(--carmo-text);
 				border: 2px solid #000;
 				font-size: 16px;
 				font-weight: 600;
@@ -653,7 +653,7 @@
 				transition: all 0.2s ease;
 
 				&:hover {
-					background: #000;
+					background: var(--carmo-text);
 					color: white;
 				}
 			}

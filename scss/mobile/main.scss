@@ -15,7 +15,7 @@
     flex-direction: row;
     justify-content: center;
     span {
-      color: #181a20;
+      color: var(--carmo-text);
       font-family: $font;
       font-size: 34px;
       font-style: normal;
@@ -24,7 +24,7 @@
       letter-spacing: -0.646px;
       text-transform: capitalize;
       &.white {
-        color: #ffffff;
+        color: var(--carmo-bg);
       }
     }
 
@@ -79,8 +79,8 @@
                   left: 12px;
                   bottom: 12px;
                   border-radius: 6px;
-                  background: #fff;
-                  color: #181a20;
+                  background: var(--carmo-bg);
+                  color: var(--carmo-text);
                   font-family: $font;
                   font-size: 15px;
                   font-style: normal;
@@ -94,13 +94,13 @@
                 flex-direction: column;
                 box-sizing: border-box;
                 border-radius: 0px 0px 12px 12px;
-                border: 1px solid rgba(196, 196, 196, 0.71);
+                border: 1px solid var(--carmo-border);
                 border-top: none;
-                background: #fff;
+                background: var(--carmo-bg);
                 box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
                 .title {
                   overflow: hidden;
-                  color: #181a20;
+                  color: var(--carmo-text);
                   text-overflow: ellipsis;
                   white-space: nowrap;
                   font-family: $font;
@@ -114,7 +114,7 @@
                 .desc {
                   margin-top: 5px;
                   overflow: hidden;
-                  color: #717171;
+                  color: var(--carmo-text-secondary);
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -137,7 +137,7 @@
                       height: 17px;
                     }
                     span {
-                      color: #181a20;
+                      color: var(--carmo-text);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
@@ -152,7 +152,7 @@
                   justify-content: space-between;
                   align-items: center;
                   p {
-                    color: #181a20;
+                    color: var(--carmo-text);
                     font-family: $font;
                     font-size: 13px;
                     font-style: normal;
@@ -172,7 +172,7 @@
                     gap: 7px;
                     align-items: center;
                     .view-cnt {
-                      color: #717171;
+                      color: var(--carmo-text-secondary);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
@@ -205,8 +205,8 @@
               left: 12px;
               bottom: 12px;
               border-radius: 6px;
-              background: #fff;
-              color: #181a20;
+              background: var(--carmo-bg);
+              color: var(--carmo-text);
               font-family: $font;
               font-size: 15px;
               font-style: normal;
@@ -220,13 +220,13 @@
             flex-direction: column;
             box-sizing: border-box;
             border-radius: 0px 0px 12px 12px;
-            border: 1px solid rgba(196, 196, 196, 0.71);
+            border: 1px solid var(--carmo-border);
             border-top: none;
-            background: #fff;
+            background: var(--carmo-bg);
             box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
             .title {
               overflow: hidden;
-              color: #181a20;
+              color: var(--carmo-text);
               text-overflow: ellipsis;
               white-space: nowrap;
               font-family: $font;
@@ -240,7 +240,7 @@
             .desc {
               margin-top: 5px;
               overflow: hidden;
-              color: #717171;
+              color: var(--carmo-text-secondary);
               font-family: $font;
               font-size: 13px;
               font-style: normal;
@@ -263,7 +263,7 @@
                   height: 17px;
                 }
                 span {
-                  color: #181a20;
+                  color: var(--carmo-text);
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -278,7 +278,7 @@
               justify-content: space-between;
               align-items: center;
               p {
-                color: #181a20;
+                color: var(--carmo-text);
                 font-family: $font;
                 font-size: 13px;
                 font-style: normal;
@@ -298,7 +298,7 @@
                 gap: 7px;
                 align-items: center;
                 .view-cnt {
-                  color: #717171;
+                  color: var(--carmo-text-secondary);
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -320,7 +320,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #f6f6f6;
+    background: var(--carmo-bg-soft);
     .container {
       width: 100%;
       flex-direction: column;
@@ -364,14 +364,14 @@
               display: flex;
               align-items: center;
               border-radius: 6px;
-              background: #eb6753;
+              background: var(--carmo-primary);
               img {
                 width: 14px;
                 height: 14px;
               }
               span {
                 margin-left: 5px;
-                color: #fff;
+                color: var(--carmo-bg);
                 font-family: $font;
                 font-size: 12px;
                 font-style: normal;
@@ -386,8 +386,8 @@
               left: 20px;
               bottom: 20px;
               border-radius: 6px;
-              background: #fff;
-              color: #181a20;
+              background: var(--carmo-bg);
+              color: var(--carmo-text);
               font-family: $font;
               font-size: 15px;
               font-style: normal;
@@ -401,13 +401,13 @@
             flex-direction: column;
             box-sizing: border-box;
             border-radius: 0px 0px 12px 12px;
-            border: 1px solid rgba(196, 196, 196, 0.71);
+            border: 1px solid var(--carmo-border);
             border-top: none;
-            background: #fff;
+            background: var(--carmo-bg);
             box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
             .title {
               overflow: hidden;
-              color: #181a20;
+              color: var(--carmo-text);
               text-overflow: ellipsis;
               white-space: nowrap;
               font-family: $font;
@@ -421,7 +421,7 @@
             .desc {
               margin-top: 5px;
               overflow: hidden;
-              color: #717171;
+              color: var(--carmo-text-secondary);
               font-family: $font;
               font-size: 13px;
               font-style: normal;
@@ -444,7 +444,7 @@
                   height: 17px;
                 }
                 span {
-                  color: #181a20;
+                  color: var(--carmo-text);
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -459,7 +459,7 @@
               justify-content: space-between;
               align-items: center;
               p {
-                color: #181a20;
+                color: var(--carmo-text);
                 font-family: $font;
                 font-size: 13px;
                 font-style: normal;
@@ -479,7 +479,7 @@
                 gap: 7px;
                 align-items: center;
                 .view-cnt {
-                  color: #717171;
+                  color: var(--carmo-text-secondary);
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -498,7 +498,7 @@
         justify-content: center;
         align-items: center;
         .swiper-pagination-bullet.swiper-pagination-bullet-active {
-          background: #000000;
+          background: var(--carmo-text)000;
         }
         .swiper-popular-next {
           margin-left: 20px;
@@ -564,8 +564,8 @@
                   left: 12px;
                   bottom: 12px;
                   border-radius: 6px;
-                  background: #fff;
-                  color: #181a20;
+                  background: var(--carmo-bg);
+                  color: var(--carmo-text);
                   font-family: $font;
                   font-size: 15px;
                   font-style: normal;
@@ -579,13 +579,13 @@
                 flex-direction: column;
                 box-sizing: border-box;
                 border-radius: 0px 0px 12px 12px;
-                border: 1px solid rgba(196, 196, 196, 0.71);
+                border: 1px solid var(--carmo-border);
                 border-top: none;
-                background: #fff;
+                background: var(--carmo-bg);
                 box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
                 .title {
                   overflow: hidden;
-                  color: #181a20;
+                  color: var(--carmo-text);
                   text-overflow: ellipsis;
                   white-space: nowrap;
                   font-family: $font;
@@ -599,7 +599,7 @@
                 .desc {
                   margin-top: 5px;
                   overflow: hidden;
-                  color: #717171;
+                  color: var(--carmo-text-secondary);
                   font-family: $font;
                   font-size: 13px;
                   font-style: normal;
@@ -622,7 +622,7 @@
                       height: 17px;
                     }
                     span {
-                      color: #181a20;
+                      color: var(--carmo-text);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
@@ -637,7 +637,7 @@
                   justify-content: space-between;
                   align-items: center;
                   p {
-                    color: #181a20;
+                    color: var(--carmo-text);
                     font-family: $font;
                     font-size: 13px;
                     font-style: normal;
@@ -657,7 +657,7 @@
                     gap: 7px;
                     align-items: center;
                     .view-cnt {
-                      color: #717171;
+                      color: var(--carmo-text-secondary);
                       font-family: $font;
                       font-size: 13px;
                       font-style: normal;
@@ -683,7 +683,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #f6f6f6;
+    background: var(--carmo-bg-soft);
     .container {
       position: relative;
       width: 100%;
@@ -719,7 +719,7 @@
               }
               strong {
                 margin-top: 10px;
-                color: #181a20;
+                color: var(--carmo-text);
                 text-align: center;
                 font-family: $font;
                 font-size: 24px;
@@ -730,7 +730,7 @@
                 cursor: pointer;
               }
               span {
-                color: #181a20;
+                color: var(--carmo-text);
                 text-align: center;
                 font-family: $font;
                 font-size: 15px;
@@ -752,7 +752,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    background: #ffffff;
+    background: var(--carmo-bg);
     .footer-container {
       padding: 0 10px;
       margin: 0 auto;
@@ -775,7 +775,7 @@
               cursor: pointer;
             }
             span {
-              color: #717171;
+              color: var(--carmo-text-secondary);
               font-family: $font;
               font-size: 14px;
               font-style: normal;
@@ -783,7 +783,7 @@
               text-transform: capitalize;
             }
             p {
-              color: #181a20;
+              color: var(--carmo-text);
               font-family: $font;
               font-size: 15px;
               font-style: normal;
@@ -793,15 +793,15 @@
             }
             .media-box {
               margin-top: 12px;
-              color: #181a20;
+              color: var(--carmo-text);
               svg {
                 font-size: 32px;
                 margin-right: 22px;
                 cursor: pointer;
-                color: #181a20;
+                color: var(--carmo-text);
                 transition: color 0.3s ease;
                 &:hover {
-                  color: #fcb800;
+                  color: var(--carmo-primary);
                 }
               }
             }
@@ -820,7 +820,7 @@
               flex-direction: column;
               strong {
                 margin-bottom: 3px;
-                color: #181a20;
+                color: var(--carmo-text);
                 font-family: $font;
                 font-size: 15px;
                 font-style: normal;
@@ -830,7 +830,7 @@
               }
               span {
                 margin-top: 25px;
-                color: #717171;
+                color: var(--carmo-text-secondary);
                 font-family: $font;
                 font-size: 14px;
                 font-style: normal;
@@ -838,7 +838,7 @@
                 cursor: pointer;
                 transition: color 0.3s ease;
                 &:hover {
-                  color: #181a20;
+                  color: var(--carmo-text);
                   text-decoration-line: underline;
                 }
               }
@@ -855,7 +855,7 @@
         justify-content: space-between;
         align-items: flex-end;
         span {
-          color: #717171;
+          color: var(--carmo-text-secondary);
           font-family: $font;
           font-size: 14px;
           font-style: normal;

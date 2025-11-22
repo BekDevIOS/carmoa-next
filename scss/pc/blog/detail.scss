@@ -2,7 +2,7 @@
 	#community-detail-page {
 		position: relative;
 		padding: 60px 0 80px;
-		background: #f8f9fa;
+		background: var(--carmo-bg-soft);
 
 		.container {
 			max-width: 1200px;
@@ -25,15 +25,15 @@
 						align-items: center;
 						margin-bottom: 32px;
 						padding: 20px 32px;
-						background: #ffffff;
+						background: var(--carmo-bg);
 						border-radius: 8px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 
 						.left {
 							flex: 1;
 
 							.title {
-								color: #000;
+								color: var(--carmo-text);
 								font-family: $font;
 								font-size: 28px;
 								font-weight: 700;
@@ -42,7 +42,7 @@
 							}
 
 							.sub-title {
-								color: #666;
+								color: var(--carmo-text-secondary);
 								font-family: $font;
 								font-size: 14px;
 								font-weight: 400;
@@ -53,8 +53,8 @@
 						.right {
 							padding: 10px 24px;
 							border-radius: 6px;
-							background: #FCB800;
-							color: #000000;
+							background: var(--carmo-primary);
+							color: var(--carmo-text);
 							font-family: $font;
 							font-size: 14px;
 							font-weight: 600;
@@ -62,16 +62,16 @@
 							transition: all 0.2s ease;
 
 							&:hover {
-								background: #000000;
-								color: #ffffff;
+								background: var(--carmo-text)000;
+								color: var(--carmo-bg);
 							}
 						}
 					}
 					.config {
 						.first-box-config {
-							background: #ffffff;
+							background: var(--carmo-bg);
 							border-radius: 8px;
-							border: 1px solid #e0e0e0;
+							border: 1px solid var(--carmo-border);
 							overflow: hidden;
 
 							.content-and-info {
@@ -87,7 +87,7 @@
 									gap: 14px;
 
 									.content-data {
-										color: #000;
+										color: var(--carmo-text);
 										font-family: $font;
 										font-size: 22px;
 										font-weight: 700;
@@ -110,7 +110,7 @@
 										}
 
 										.member-nick {
-											color: #000;
+											color: var(--carmo-text);
 											font-family: $font;
 											font-size: 14px;
 											font-weight: 600;
@@ -118,18 +118,18 @@
 											transition: color 0.2s ease;
 
 											&:hover {
-												color: #FCB800;
+												color: var(--carmo-primary);
 											}
 										}
 
 										.divider {
 											width: 1px;
 											height: 16px;
-											background: #ddd;
+											background: var(--carmo-border);
 										}
 
 										.time-added {
-											color: #999;
+											color: var(--carmo-text-secondary);
 											font-family: $font;
 											font-size: 13px;
 											font-weight: 400;
@@ -150,11 +150,11 @@
 
 										svg {
 											font-size: 20px;
-											color: #666;
+											color: var(--carmo-text-secondary);
 										}
 
 										.text {
-											color: #666;
+											color: var(--carmo-text-secondary);
 											font-family: $font;
 											font-size: 14px;
 											font-weight: 500;
@@ -164,7 +164,7 @@
 									.divider {
 										width: 1px;
 										height: 20px;
-										background: #ddd;
+										background: var(--carmo-border);
 									}
 								}
 							}
@@ -190,40 +190,40 @@
 										justify-content: center;
 										gap: 8px;
 										border-radius: 6px;
-										border: 1px solid #e0e0e0;
-										background: #ffffff;
+										border: 1px solid var(--carmo-border);
+										background: var(--carmo-bg);
 										transition: all 0.2s ease;
 
 										svg {
 											font-size: 20px;
-											color: #000;
+											color: var(--carmo-text);
 										}
 
 										p,
 										.text {
-											color: #000000;
+											color: var(--carmo-text);
 											font-family: $font;
 											font-size: 14px;
 											font-weight: 600;
 										}
 
 										&:hover {
-											background: #FCB800;
-											border-color: #FCB800;
+											background: var(--carmo-primary);
+											border-color: var(--carmo-primary);
 										}
 									}
 								}
 							}
 						}
 						.second-box-config {
-							background: #ffffff;
+							background: var(--carmo-bg);
 							border-radius: 8px;
-							border: 1px solid #e0e0e0;
+							border: 1px solid var(--carmo-border);
 							padding: 32px;
 							margin-top: 24px;
 
 							.title-text {
-								color: #000;
+								color: var(--carmo-text);
 								font-family: $font;
 								font-size: 20px;
 								font-weight: 700;
@@ -239,19 +239,21 @@
 									min-height: 80px;
 									outline: none;
 									padding: 14px 16px;
-									border: 1px solid #d0d0d0;
+									border: 1px solid var(--carmo-border);
 									border-radius: 6px;
 									font-family: $font;
 									font-size: 14px;
+									color: var(--carmo-text);
+									background-color: var(--carmo-bg-soft);
 									transition: border-color 0.2s ease;
 
 									&:focus {
-										border-color: #000;
+										border-color: var(--carmo-text);
 										border-width: 2px;
 									}
 
-									::placeholder {
-										color: #999;
+									&::placeholder {
+										color: var(--carmo-text-secondary);
 										font-family: $font;
 										font-size: 14px;
 										font-weight: 400;
@@ -265,7 +267,7 @@
 									align-items: center;
 
 									p {
-										color: #666;
+										color: var(--carmo-text-secondary);
 										font-family: $font;
 										font-size: 13px;
 										font-weight: 500;
@@ -274,8 +276,8 @@
 									button {
 										padding: 10px 32px;
 										border-radius: 6px;
-										background: #FCB800;
-										color: #000000;
+										background: var(--carmo-primary);
+										color: var(--carmo-text);
 										font-family: $font;
 										font-size: 14px;
 										font-weight: 600;
@@ -283,8 +285,8 @@
 										transition: all 0.2s ease;
 
 										&:hover {
-											background: #000000;
-											color: #ffffff;
+											background: var(--carmo-text)000;
+											color: var(--carmo-bg);
 										}
 									}
 								}
@@ -301,8 +303,8 @@
 								align-items: center;
 								justify-content: center;
 								padding: 10px 20px;
-								border-bottom: 3px solid #FCB800;
-								color: #000;
+								border-bottom: 3px solid var(--carmo-primary);
+								color: var(--carmo-text);
 								font-family: $font;
 								font-size: 16px;
 								font-weight: 700;
@@ -359,7 +361,7 @@
 											gap: 4px;
 
 											.name {
-												color: #000;
+												color: var(--carmo-text);
 												font-family: $font;
 												font-size: 15px;
 												font-weight: 600;
@@ -367,12 +369,12 @@
 												transition: color 0.2s ease;
 
 												&:hover {
-													color: #FCB800;
+													color: var(--carmo-primary);
 												}
 											}
 
 											.date {
-												color: #999;
+												color: var(--carmo-text-secondary);
 												font-family: $font;
 												font-size: 13px;
 												font-weight: 400;
@@ -388,7 +390,7 @@
 										button {
 											&:hover {
 												svg {
-													color: #FCB800 !important;
+													color: var(--carmo-primary) !important;
 												}
 											}
 										}
@@ -397,7 +399,7 @@
 
 								.content {
 									p {
-										color: #333;
+										color: var(--carmo-text);
 										font-family: $font;
 										font-size: 15px;
 										font-weight: 400;
@@ -419,13 +421,13 @@
 					top: 80px;
 
 					.blog-name {
-						background: #ffffff;
+						background: var(--carmo-bg);
 						border-radius: 8px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						padding: 20px;
 
 						.name {
-							color: #000;
+							color: var(--carmo-text);
 							font-family: $font;
 							font-size: 20px;
 							font-weight: 700;
@@ -433,9 +435,9 @@
 					}
 
 					.MuiTabs-root {
-						background: #ffffff;
+						background: var(--carmo-bg);
 						border-radius: 8px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						padding: 16px;
 					}
 
@@ -446,9 +448,9 @@
 						justify-content: flex-start;
 						align-items: center;
 						border-radius: 6px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						margin-bottom: 8px;
-						color: #000;
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 15px;
 						font-weight: 500;
@@ -456,30 +458,30 @@
 						transition: all 0.2s ease;
 
 						&:hover {
-							background-color: #FCB800;
-							color: #000000;
-							border-color: #FCB800;
+							background-color: var(--carmo-primary);
+							color: var(--carmo-text);
+							border-color: var(--carmo-primary);
 						}
 					}
 
 					.tab-button.active {
-						background-color: #FCB800;
-						border-color: #FCB800;
-						color: #000000;
+						background-color: var(--carmo-primary);
+						border-color: var(--carmo-primary);
+						color: var(--carmo-text);
 						font-weight: 600;
 					}
 					
 					.recent-articles {
-						background: #ffffff;
+						background: var(--carmo-bg);
 						border-radius: 8px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						padding: 24px;
 						display: flex;
 						flex-direction: column;
 						gap: 20px;
 
 						.recent-title-heading {
-							color: #000;
+							color: var(--carmo-text);
 							font-family: $font;
 							font-size: 20px;
 							font-weight: 700;
@@ -502,7 +504,7 @@
 				border: 1px solid #c4c4c4;
 				.similar-articles-title {
 					padding-left: 56px;
-					color: #000;
+					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 30px;
 					font-style: normal;
@@ -561,12 +563,12 @@
 			width: fit-content;
 			padding: 4px 12px;
 			border-radius: 4px;
-			background: #FCB800;
+			background: var(--carmo-primary);
 
 			.recent-category-text {
 				font-size: 11px;
 				font-weight: 500;
-				color: #000000;
+				color: var(--carmo-text);
 				font-family: $font;
 				text-transform: uppercase;
 				letter-spacing: 0.5px;
@@ -574,7 +576,7 @@
 		}
 
 		.recent-title {
-			color: #181a20;
+			color: var(--carmo-text);
 			font-family: $font;
 			font-size: 14px;
 			font-weight: 600;

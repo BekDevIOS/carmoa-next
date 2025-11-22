@@ -10,6 +10,8 @@ import {
 	LightMode as LightModeIcon,
 	DarkMode as DarkModeIcon,
 } from '@mui/icons-material';
+import { useReactiveVar } from '@apollo/client';
+import { themeVar } from '../../apollo/store';
 import Link from 'next/link';
 
 const MainHeader = () => {
@@ -18,7 +20,7 @@ const MainHeader = () => {
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
 	const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
 	const [lang, setLang] = useState<string | null>('en');
-	const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+	const themeMode = useReactiveVar(themeVar);
 	const categoryMenuOpen = Boolean(categoryAnchor);
 	const langMenuOpen = Boolean(langAnchor);
 
@@ -29,10 +31,6 @@ const MainHeader = () => {
 			setLang('en');
 		} else {
 			setLang(localStorage.getItem('locale'));
-		}
-		const savedThemeMode = localStorage.getItem('themeMode');
-		if (savedThemeMode === 'light' || savedThemeMode === 'dark') {
-			setThemeMode(savedThemeMode);
 		}
 	}, [router]);
 
@@ -55,9 +53,7 @@ const MainHeader = () => {
 
 	const handleThemeToggle = () => {
 		const newMode = themeMode === 'light' ? 'dark' : 'light';
-		setThemeMode(newMode);
-		localStorage.setItem('themeMode', newMode);
-		// Hardcoded theme toggle - can be connected to actual theme switching later
+		themeVar(newMode);
 	};
 
 	const langChoice = useCallback(

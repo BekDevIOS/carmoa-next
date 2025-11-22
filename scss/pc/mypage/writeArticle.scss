@@ -10,7 +10,7 @@
 			.right-box {
 				width: 315px;
 				.main-title {
-					color: #181a20;
+					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 30px;
 					font-style: normal;
@@ -20,7 +20,7 @@
 					text-transform: capitalize;
 				}
 				.sub-title {
-					color: #181a20;
+					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 14px;
 					font-style: normal;
@@ -41,8 +41,8 @@
 			}
 			.flex-space {
 				.btn-next {
-					background: #87cdf9;
-					color: #000000;
+					background: var(--carmo-primary);
+					color: var(--carmo-text);
 				}
 			}
 			.select {
@@ -60,7 +60,7 @@
 			.btn-flex { margin-top: 40px; }
 		}
 		.css-guvl2y-MuiButtonBase-root-MuiButton-root {
-			background: #87cdf9;
+			background: var(--carmo-primary);
 			svg {
 				fill: #000000;
 			}

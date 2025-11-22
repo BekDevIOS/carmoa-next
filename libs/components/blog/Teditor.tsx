@@ -85,18 +85,19 @@ const TuiEditor = () => {
 	};
 
 	return (
-		<Stack>
-			<Stack direction="row" style={{ margin: '40px' }} justifyContent="space-evenly">
-				<Box component={'div'} className={'form_row'} style={{ width: '300px' }}>
-					<Typography style={{ color: '#7f838d', margin: '10px' }} variant="h3">
+		<Stack sx={{ color: 'var(--carmo-text)' }}>
+			<Stack direction="row" sx={{ margin: '40px' }} justifyContent="space-evenly">
+				<Box component={'div'} className={'form_row'} sx={{ width: '300px' }}>
+					<Typography sx={{ color: 'var(--carmo-text-secondary)', margin: '10px' }} variant="h3">
 						Category
 					</Typography>
-					<FormControl sx={{ width: '100%', background: 'white' }}>
+					<FormControl sx={{ width: '100%', backgroundColor: 'var(--carmo-card-bg)', '& .MuiOutlinedInput-root': { color: 'var(--carmo-text)' }, '& .MuiInputLabel-root': { color: 'var(--carmo-text-secondary)' } }}>
 						<Select
 							value={articleCategory}
 							onChange={changeCategoryHandler}
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}
+							sx={{ color: 'var(--carmo-text)' }}
 						>
 							<MenuItem value={BoardArticleCategory.FREE}>
 								<span>Free</span>
@@ -107,43 +108,91 @@ const TuiEditor = () => {
 						</Select>
 					</FormControl>
 				</Box>
-				<Box component={'div'} style={{ width: '300px', flexDirection: 'column' }}>
-					<Typography style={{ color: '#7f838d', margin: '10px' }} variant="h3">
+				<Box component={'div'} sx={{ width: '300px', flexDirection: 'column' }}>
+					<Typography sx={{ color: 'var(--carmo-text-secondary)', margin: '10px' }} variant="h3">
 						Title
 					</Typography>
 					<TextField
 						onChange={articleTitleHandler}
 						id="filled-basic"
 						label="Type Title"
-						style={{ width: '300px', background: 'white' }}
+						sx={{ 
+							width: '300px', 
+							backgroundColor: 'var(--carmo-card-bg)',
+							'& .MuiOutlinedInput-root': { 
+								color: 'var(--carmo-text)',
+								'& fieldset': { borderColor: 'var(--carmo-border)' },
+								'&:hover fieldset': { borderColor: 'var(--carmo-text)' },
+								'&.Mui-focused fieldset': { borderColor: 'var(--carmo-primary)' }
+							},
+							'& .MuiInputLabel-root': { color: 'var(--carmo-text-secondary)' },
+							'& .MuiInputLabel-root.Mui-focused': { color: 'var(--carmo-primary)' }
+						}}
 					/>
 				</Box>
 			</Stack>
 
-			<Editor
-				initialValue={'Type here'}
-				placeholder={'Type here'}
-				previewStyle={'vertical'}
-				height={'640px'}
-				// @ts-ignore
-				initialEditType={'WYSIWYG'}
-				toolbarItems={[
-					['heading', 'bold', 'italic', 'strike'],
-					['image', 'table', 'link'],
-					['ul', 'ol', 'task'],
-				]}
-				ref={editorRef}
-				hooks={{
-					addImageBlobHook: async (image: any, callback: any) => {
-						const uploadedImageURL = await uploadImage(image);
-						callback(uploadedImageURL);
-						return false;
+			<Box sx={{ 
+				backgroundColor: 'var(--carmo-card-bg)', 
+				borderRadius: '8px',
+				'& .toastui-editor-defaultUI': { 
+					borderColor: 'var(--carmo-border)',
+				},
+				'& .toastui-editor-defaultUI-toolbar': {
+					backgroundColor: 'var(--carmo-bg-soft)',
+					borderBottomColor: 'var(--carmo-border)',
+					'& button': {
+						color: 'var(--carmo-text)',
+					}
+				},
+				'& .toastui-editor-contents': {
+					color: 'var(--carmo-text)',
+					backgroundColor: 'var(--carmo-card-bg)',
+					'& p': { color: 'var(--carmo-text)' },
+					'& h1, & h2, & h3, & h4, & h5, & h6': { color: 'var(--carmo-text)' },
+					'& a': { color: 'var(--carmo-primary)' },
+					'& code': { 
+						color: 'var(--carmo-text)', 
+						backgroundColor: 'var(--carmo-bg-soft)' 
 					},
-				}}
-				events={{
-					load: function (param: any) {},
-				}}
-			/>
+					'& pre': { 
+						backgroundColor: 'var(--carmo-bg-soft)', 
+						color: 'var(--carmo-text)' 
+					},
+					'& blockquote': { 
+						borderLeftColor: 'var(--carmo-primary)', 
+						color: 'var(--carmo-text-secondary)' 
+					}
+				},
+				'& .toastui-editor-contents-placeholder': {
+					color: 'var(--carmo-text-secondary)',
+				}
+			}}>
+				<Editor
+					initialValue={'Type here'}
+					placeholder={'Type here'}
+					previewStyle={'vertical'}
+					height={'640px'}
+					// @ts-ignore
+					initialEditType={'WYSIWYG'}
+					toolbarItems={[
+						['heading', 'bold', 'italic', 'strike'],
+						['image', 'table', 'link'],
+						['ul', 'ol', 'task'],
+					]}
+					ref={editorRef}
+					hooks={{
+						addImageBlobHook: async (image: any, callback: any) => {
+							const uploadedImageURL = await uploadImage(image);
+							callback(uploadedImageURL);
+							return false;
+						},
+					}}
+					events={{
+						load: function (param: any) {},
+					}}
+				/>
+			</Box>
 
 			<Stack direction="row" justifyContent="center">
 				<Button

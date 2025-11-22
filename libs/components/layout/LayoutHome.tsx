@@ -3,6 +3,10 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Footer from '../Footer';
 import { Stack, Box } from '@mui/material';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
+import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -23,22 +27,22 @@ const withLayoutMain = (Component: any) => {
 		// Features data
 		const features = [
 			{
-				icon: '/img/icons/home.svg',
+				icon: LocalShippingOutlinedIcon,
 				title: 'Free Shipping',
 				description: 'Free shipping for orders over $99',
 			},
 			{
-				icon: '/img/icons/securePayment.svg',
+				icon: VerifiedUserOutlinedIcon,
 				title: 'Money Guarantee',
 				description: 'Within 30 days for an exchange',
 			},
 			{
-				icon: '/img/icons/call.svg',
+				icon: HeadsetMicIcon,
 				title: 'Online Support',
 				description: '24 hours a day, 7 days a week',
 			},
 			{
-				icon: '/img/icons/security.svg',
+				icon: CreditCardOutlinedIcon,
 				title: 'Flexible Payment',
 				description: 'Pay with Multiple Credit Cards',
 			},

@@ -16,8 +16,8 @@ const TViewer = (props: any) => {
 	}, [props.markdown]);
 
 	return (
-		<Stack sx={{ background: 'white', mt: '30px', borderRadius: '10px' }}>
-			<Box component={'div'} sx={{ m: '40px' }}>
+		<Stack sx={{ background: "var(--carmo-bg)", color: "var(--carmo-text)", mt: '30px', borderRadius: '10px' }}>
+			<Box component={'div'} sx={{ m: '40px', color: "var(--carmo-text)", '& .toastui-editor-contents': { color: 'var(--carmo-text)' }, '& .toastui-editor-contents p': { color: 'var(--carmo-text)' }, '& .toastui-editor-contents h1, & .toastui-editor-contents h2, & .toastui-editor-contents h3, & .toastui-editor-contents h4, & .toastui-editor-contents h5, & .toastui-editor-contents h6': { color: 'var(--carmo-text)' }, '& .toastui-editor-contents a': { color: 'var(--carmo-primary)' }, '& .toastui-editor-contents code': { color: 'var(--carmo-text)', background: 'var(--carmo-bg-soft)' }, '& .toastui-editor-contents pre': { background: 'var(--carmo-bg-soft)', color: 'var(--carmo-text)' }, '& .toastui-editor-contents blockquote': { borderLeftColor: 'var(--carmo-primary)', color: 'var(--carmo-text-secondary)' } }}>
 				{editorLoaded ? (
 					<Viewer
 						initialValue={props.markdown}

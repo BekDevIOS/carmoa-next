@@ -14,7 +14,7 @@
 				.right-box {
 					width: 315px;
 					.main-title {
-						color: #181a20;
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 30px;
 						font-style: normal;
@@ -24,7 +24,7 @@
 						text-transform: capitalize;
 					}
 					.sub-title {
-						color: #181a20;
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
@@ -40,7 +40,7 @@
 				gap: 30px;
 				border-radius: 12px;
 				border: 1px solid #c4c4c4;
-				background: #fff;
+				background: var(--carmo-bg);
 				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 				.addresses-row {
 					display: flex;
@@ -50,18 +50,18 @@
 					.address-card {
 						flex: 1;
 						padding: 32px;
-						background: #ffffff;
+						background: var(--carmo-bg);
 						border-radius: 8px;
-						border: 1px solid #e0e0e0;
+						border: 1px solid var(--carmo-border);
 						.section-heading {
 							font-size: 24px;
 							font-weight: 700;
-							color: #000;
+							color: var(--carmo-text);
 							margin-bottom: 4px;
 						}
 						.section-subtitle {
 							font-size: 14px;
-							color: #555;
+							color: var(--carmo-text-secondary);
 							margin-bottom: 24px;
 						}
 						.field-group {
@@ -77,59 +77,59 @@
 						}
 						.field-input {
 							.MuiInputLabel-root {
-								color: #999;
+								color: var(--carmo-text-secondary);
 								font-size: 14px;
 								font-weight: 400;
 								&.Mui-focused {
-									color: #000;
+									color: var(--carmo-text);
 									font-weight: 500;
 								}
 								&.MuiInputLabel-shrink {
-									color: #000;
+									color: var(--carmo-text);
 									font-weight: 500;
 									font-size: 13px;
 								}
 							}
 							.MuiOutlinedInput-root {
-								background: #fff;
+								background: var(--carmo-bg);
 								input,
 								textarea {
 									font-size: 14px;
-									color: #000;
+									color: var(--carmo-text);
 									padding: 14px 16px;
 								}
 								&:hover .MuiOutlinedInput-notchedOutline {
-									border-color: #999;
+									border-color: var(--carmo-text-secondary);
 								}
 								&.Mui-focused .MuiOutlinedInput-notchedOutline {
-									border-color: #000;
+									border-color: var(--carmo-text);
 									border-width: 2px;
 								}
 								.MuiOutlinedInput-notchedOutline {
-									border-color: #d0d0d0;
+									border-color: var(--carmo-border);
 								}
 							}
 						}
 						.field-select {
 							.MuiOutlinedInput-root {
-								background: #fff;
+								background: var(--carmo-bg);
 								font-size: 14px;
 								.MuiSelect-select {
 									padding: 14px 16px;
-									color: #000;
+									color: var(--carmo-text);
 									&.MuiSelect-select[aria-expanded="false"]:empty {
-										color: #999;
+										color: var(--carmo-text-secondary);
 									}
 								}
 								&:hover .MuiOutlinedInput-notchedOutline {
-									border-color: #999;
+									border-color: var(--carmo-text-secondary);
 								}
 								&.Mui-focused .MuiOutlinedInput-notchedOutline {
-									border-color: #000;
+									border-color: var(--carmo-text);
 									border-width: 2px;
 								}
 								.MuiOutlinedInput-notchedOutline {
-									border-color: #d0d0d0;
+									border-color: var(--carmo-border);
 								}
 							}
 						}
@@ -155,10 +155,10 @@
 						align-items: center;
 						gap: 10px;
 						border-radius: 8px;
-						background-color: #FCB800;
+						background-color: var(--carmo-primary);
 						text-transform: none;
 						p {
-							color: #000000;
+							color: var(--carmo-text);
 							font-family: $font;
 							font-size: 14px;
 							font-style: normal;
@@ -166,14 +166,14 @@
 							line-height: normal;
 						}
 						&:hover {
-							background-color: #000000;
+							background-color: var(--carmo-text);
 							p {
-								color: #ffffff;
+								color: var(--carmo-bg);
 							}
 						}
 					}
 					button:disabled {
-						background: #181a2045;
+						background: var(--carmo-text);
 					}
 				}
 			}

@@ -14,7 +14,7 @@
 				.right-box {
 					width: 315px;
 					.main-title {
-						color: #181a20;
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 30px;
 						font-style: normal;
@@ -24,7 +24,7 @@
 						text-transform: capitalize;
 					}
 					.sub-title {
-						color: #181a20;
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
@@ -39,7 +39,7 @@
 				.order-table-wrapper {
 					width: 100%;
 					height: auto;
-					background: #fff;
+					background: var(--carmo-bg);
 					border-radius: 12px;
 					border: 1px solid #c4c4c4;
 					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
@@ -53,12 +53,12 @@
 							display: flex;
 							flex-direction: row;
 							width: 100%;
-							background: #000000;
+							background: var(--carmo-text)000;
 							padding: 0;
 							.header-cell {
 								flex: 1;
 								padding: 16px 20px;
-								color: #ffffff;
+								color: var(--carmo-bg);
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
@@ -93,18 +93,18 @@
 								width: 100%;
 								padding: 0;
 								&.even {
-									background: #f5f5f5;
+									background: var(--carmo-bg-soft);
 								}
 								&.odd {
-									background: #ffffff;
+									background: var(--carmo-bg);
 								}
 								&:hover {
-									background: #f0f0f0;
+									background: var(--carmo-bg-soft);
 								}
 								.cell {
 									flex: 1;
 									padding: 16px 20px;
-									color: #181a20;
+									color: var(--carmo-text);
 									font-family: $font;
 									font-size: 14px;
 									font-style: normal;
@@ -115,7 +115,7 @@
 									&.cell-order {
 										flex: 1.2;
 										.order-number {
-											color: #181a20;
+											color: var(--carmo-text);
 											font-weight: 600;
 										}
 									}
@@ -133,8 +133,8 @@
 										justify-content: center;
 										align-items: center;
 										.view-button {
-											background: #FCB800;
-											color: #181a20;
+											background: var(--carmo-primary);
+											color: var(--carmo-text);
 											font-family: $font;
 											font-size: 14px;
 											font-style: normal;
@@ -149,8 +149,8 @@
 											box-shadow: none;
 											min-width: auto;
 											&:hover {
-												background: #000000;
-												color: #ffffff;
+												background: var(--carmo-text)000;
+												color: var(--carmo-bg);
 												transform: translateY(-1px);
 												box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
 											}
@@ -177,7 +177,7 @@
 									opacity: 0.5;
 								}
 								p {
-									color: #717171;
+									color: var(--carmo-text-secondary);
 									font-family: $font;
 									font-size: 16px;
 									font-style: normal;

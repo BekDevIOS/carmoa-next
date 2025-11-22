@@ -22,14 +22,14 @@
 			display: flex;
 			align-items: center;
 			border-radius: 6px;
-			background: #eb6753;
+			background: var(--carmo-primary);
 			img {
 				width: 14px;
 				height: 14px;
 			}
 			span {
 				margin-left: 5px;
-				color: #fff;
+				color: var(--carmo-bg);
 				font-family: $font;
 				font-size: 12px;
 				font-style: normal;
@@ -44,8 +44,8 @@
 			left: 20px;
 			bottom: 20px;
 			border-radius: 6px;
-			background: #fff;
-			color: #181a20;
+			background: var(--carmo-bg);
+			color: var(--carmo-text);
 			font-family: $font;
 			font-size: 15px;
 			font-style: normal;
@@ -59,12 +59,12 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		border-radius: 0px 0px 12px 12px;
-		border: 1px solid #ddd;
+		border: 1px solid var(--carmo-border);
 		border-top: none;
-		background: #fff;
+		background: var(--carmo-bg);
 		.title {
 			overflow: hidden;
-			color: #181a20;
+			color: var(--carmo-text);
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			font-family: $font;
@@ -78,7 +78,7 @@
 		.desc {
 			margin-top: 5px;
 			overflow: hidden;
-			color: #717171;
+			color: var(--carmo-text-secondary);
 			font-family: $font;
 			font-size: 13px;
 			font-style: normal;
@@ -101,7 +101,7 @@
 					height: 17px;
 				}
 				span {
-					color: #181a20;
+					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 13px;
 					font-style: normal;
@@ -123,7 +123,7 @@
 				justify-content: space-between;
 			}
 			p {
-				color: #181a20;
+				color: var(--carmo-text);
 				font-family: $font;
 				font-size: 13px;
 				font-style: normal;
@@ -133,7 +133,7 @@
 			}
 			span {
 				margin-left: 6px;
-				color: rgba(143, 143, 143, 0.54);
+				color: var(--carmo-text-secondary);
 				font-family: $font;
 				font-size: 15px;
 				font-style: normal;
@@ -176,8 +176,8 @@
 			top: 12px;
 			left: 12px;
 			border-radius: 6px;
-			background: #eb6753;
-			color: #fff;
+			background: var(--carmo-primary);
+			color: var(--carmo-bg);
 			font-family: $font;
 			font-size: 12px;
 			font-style: normal;
@@ -195,7 +195,7 @@
 			display: flex;
 			flex-direction: column;
 			strong {
-				color: #181a20;
+				color: var(--carmo-text);
 				font-family: $font;
 				font-size: 15px;
 				font-style: normal;
@@ -204,7 +204,7 @@
 				cursor: pointer;
 			}
 			span {
-				color: #181a20;
+				color: var(--carmo-text);
 				font-family: $font;
 				font-size: 15px;
 				font-style: normal;
@@ -235,6 +235,8 @@
 	border-radius: 14px;
 	overflow: hidden;
 	transition: 0.2s ease;
+	border: 1px solid #c5c3c3;
+	border-radius: 14px;
 	gap: 12px;
 
 	&:hover {
@@ -251,7 +253,7 @@
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-			border-radius: 14px;
+			border-radius: 14 14 0 0px;
 		}
 
 		.category-badge {
@@ -261,12 +263,12 @@
 			padding: 6px 14px;
 			border-radius: 6px;
 			backdrop-filter: blur(4px);
-			background: #FCB800;
+			background: var(--carmo-primary);
 
 			.category-text {
 				font-size: 11px;
 				font-weight: 600;
-				color: #000000;
+				color: var(--carmo-text);
 				font-family: $font;
 				text-transform: uppercase;
 				letter-spacing: 0.5px;
@@ -278,6 +280,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+		padding: 12px;
 
 		.author-section {
 			display: flex;
@@ -285,7 +288,7 @@
 			gap: 4px;
 
 			.author {
-				color: #181a20;
+				color: var(--carmo-text);
 				font-family: $font;
 				font-size: 14px;
 				font-weight: 600;
@@ -294,13 +297,13 @@
 				transition: color 0.2s ease;
 
 				&:hover {
-					color: #FCB800;
+					color: var(--carmo-primary);
 					font-weight: 700;
 				}
 			}
 
 			.date {
-				color: #999;
+				color: var(--carmo-text-secondary);
 				font-family: $font;
 				font-size: 12px;
 				font-weight: 400;
@@ -308,7 +311,7 @@
 		}
 
 		.title {
-			color: #181a20;
+			color: var(--carmo-text);
 			font-family: $font;
 			font-size: 16px;
 			font-weight: 600;
@@ -336,17 +339,17 @@
 				.icon {
 					width: 18px;
 					height: 18px;
-					color: #717171;
+					color: var(--carmo-text-secondary);
 				}
 
 				.liked {
-					color: #ff6000; // CarMoa primary color
+					color: var(--carmo-primary); // CarMoa primary color
 				}
 
 				p,
 				span {
 					font-size: 13px;
-					color: #555;
+					color: var(--carmo-text-secondary);
 				}
 			}
 		}
@@ -356,7 +359,7 @@
 .product-card {
 	display: flex;
 	flex-direction: column;
-	background-color: #ffffff;
+	background-color: var(--carmo-bg)fff;
 	border-radius: 8px;
 	overflow: hidden;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -374,7 +377,7 @@
 		width: 100%;
 		height: 280px;
 		overflow: hidden;
-		background-color: #f5f5f5;
+		background-color: var(--carmo-bg-soft);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -386,7 +389,7 @@
 			padding: 2px 8px;
 			border-radius: 999px;
 			background-color: transparent;
-			border: 1px solid #e53935;
+			border: 1px solid var(--carmo-primary);
 			z-index: 10;
 			display: flex;
 			align-items: center;
@@ -396,7 +399,7 @@
 				font-family: $font;
 				font-size: 12px;
 				font-weight: 700;
-				color: #e53935;
+				color: var(--carmo-primary);
 				text-transform: uppercase;
 				margin: 0;
 				text-align: center;
@@ -433,7 +436,7 @@
 			.action-icon {
 				width: 40px;
 				height: 40px;
-				background-color: #ffffff;
+				background-color: var(--carmo-bg)fff;
 				border-radius: 50%;
 				display: flex;
 				align-items: center;
@@ -443,13 +446,13 @@
 				box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
 
 				&:hover {
-					background-color: #f4a51c;
+					background-color: var(--carmo-primary);
 					transform: scale(1.1);
 				}
 
 				.icon {
 					font-size: 20px;
-					color: #000000;
+					color: var(--carmo-text);
 				}
 			}
 		}
@@ -466,12 +469,12 @@
 			font-family: $font;
 			font-size: 16px;
 			font-weight: 500;
-			color: #000000;
+			color: var(--carmo-text);
 			margin: 0;
 			line-height: 1.4;
 			transition: color 0.3s ease;
 			&:hover{
-				color: #f4a51c;
+				color: var(--carmo-primary);
 				font-weight: 600;
 			}
 		}
@@ -480,7 +483,7 @@
 			font-family: $font;
 			font-size: 12px;
 			font-weight: 400;
-			color: #717171;
+			color: var(--carmo-text-secondary);
 			margin: 0;
 			line-height: 1.4;
 		}
@@ -494,10 +497,10 @@
 				font-family: $font;
 				font-size: 11px;
 				font-weight: 500;
-				color: #717171;
+				color: var(--carmo-text-secondary);
 				margin: 0;
 				padding: 2px 8px;
-				background-color: #f5f5f5;
+				background-color: var(--carmo-bg-soft);
 				border-radius: 4px;
 				display: inline-block;
 			}
@@ -511,7 +514,7 @@
 
 			.star-icon {
 				font-size: 16px;
-				color: #b9b9b9;
+				color: var(--carmo-text-secondary);
 			}
 		}
 
@@ -526,7 +529,7 @@
 				font-family: $font;
 				font-size: 14px;
 				font-weight: 400;
-				color: #b9b9b9;
+				color: var(--carmo-text-secondary);
 				text-decoration: line-through;
 				margin: 0;
 			}
@@ -535,7 +538,7 @@
 				font-family: $font;
 				font-size: 20px;
 				font-weight: 700;
-				color: #e53935;
+				color: var(--carmo-primary);
 				margin: 0;
 			}
 		}
@@ -547,8 +550,8 @@
 			width: 48px;
 			height: 48px;
 			border-radius: 50%;
-			background-color: #ffffff;
-			border: 1px solid #e0e0e0;
+			background-color: var(--carmo-bg)fff;
+			border: 1px solid var(--carmo-border);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -557,14 +560,14 @@
 			box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 
 			&:hover {
-				background-color: #f4a51c;
-				border-color: #f4a51c;
+				background-color: var(--carmo-primary);
+				border-color: var(--carmo-primary);
 				transform: scale(1.1);
 			}
 
 			.cart-icon {
 				font-size: 24px;
-				color: #000000;
+				color: var(--carmo-text);
 			}
 		}
 	}
@@ -574,7 +577,7 @@
 .layout-features-section {
 	display: flex;
 	width: 100%;
-	background: #f8f9fa;
+	background: var(--carmo-bg-soft);
 	padding: 60px 0;
 	margin-top: 80px;
 
@@ -609,7 +612,7 @@
 		flex-direction: row;
 		align-items: center;
 		border-radius: 50%;
-		background: #FFFFFF;
+		background: var(--carmo-bg);
 		padding: 12px;
 		transition: all 0.3s ease;
 	
@@ -628,7 +631,7 @@
 	}
 
 	.feature-title {
-		color: #181a20;
+		color: var(--carmo-text);
 		font-family: $font;
 		font-size: 18px;
 		font-weight: 600;
@@ -637,7 +640,7 @@
 	}
 
 	.feature-description {
-		color: #757575;
+		color: var(--carmo-text-secondary);
 		font-family: $font;
 		font-size: 14px;
 		font-weight: 400;
@@ -645,7 +648,7 @@
 		line-height: 1.5;
 	}
 	&:hover .icon-box{
-		background: #FCB800;
+		background: var(--carmo-primary);
 	}
 }
 
@@ -674,7 +677,7 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: 50%;
-		border: 0px solid #000000;
+		border: 0px solid var(--carmo-text)000;
 		transition: all 0.3s ease;
 		box-sizing: border-box;
 
@@ -691,7 +694,7 @@
 
 	strong {
 		margin-top: 20px;
-		color: #181a20;
+		color: var(--carmo-text);
 		text-align: center;
 		font-family: $font;
 		font-size: 15px;
@@ -703,7 +706,7 @@
 	}
 
 	span {
-		color: #181a20;
+		color: var(--carmo-text);
 		text-align: center;
 		font-family: $font;
 		font-size: 15px;
@@ -714,7 +717,7 @@
 
 	&:hover {
 		.dealer-image-wrapper {
-			border: 1px solid #000000;
+			border: 2px solid var(--carmo-text);
 			img {
 				width: 185px;
 				height: 185px;

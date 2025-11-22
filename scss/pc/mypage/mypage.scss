@@ -1,6 +1,6 @@
 #pc-wrap {
 	#my-page {
-		background: #FFFFFF;
+		background: var(--carmo-bg);
 		.container {
 			.my-page {
 				position: relative;
@@ -16,7 +16,7 @@
 					margin: 100px 0 200px 0;
 					border-radius: 12px;
 					border: 1px solid #c4c4c4;
-					background: #fff;
+					background: var(--carmo-bg);
 					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 					.left-config {
 						position: relative;
@@ -24,7 +24,7 @@
 						width: 266px;
 						min-height: 760px;
 						border-radius: 12px;
-						background: #fff;
+						background: var(--carmo-bg);
 						border: 1px solid rgba(196, 196, 196, 0.79);
 						box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 						margin: 180px 20px 40px 20px;
@@ -48,7 +48,7 @@
 								display: flex;
 								flex-direction: column;
 								.user-name {
-									color: #181a20;
+									color: var(--carmo-text);
 									font-family: $font;
 									font-size: 15px;
 									font-style: normal;
@@ -99,11 +99,11 @@
 									}
 									.focus {
 										height: 50px;
-										background: #000000;
+										background: var(--carmo-text)000;
 										border-radius: 10px;
 										p {
 											font-size: 14px;
-											color: #ffffff;
+											color: var(--carmo-bg);
 										}
 									}
 									.flex-box {
@@ -126,7 +126,7 @@
 								}
 								.sub-title {
 									margin-left: 12px;
-									color: #181a20;
+									color: var(--carmo-text);
 									font-family: $font;
 									font-size: 14px;
 									font-style: normal;
@@ -154,7 +154,7 @@
 								height: 413px;
 								margin-bottom: 7px;
 								border-radius: 12px;
-								background: #fff;
+								background: var(--carmo-bg);
 								box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 								.top {
 									position: relative;
@@ -177,8 +177,8 @@
 										align-items: center;
 										border-radius: 6px;
 										padding: 6px 20px;
-										background: #eb6753;
-										color: #fff;
+										background: var(--carmo-primary);
+										color: var(--carmo-bg);
 										text-align: center;
 										text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 										font-family: $font;
@@ -198,9 +198,9 @@
 										align-items: center;
 										border-radius: 6px;
 										border: 1px solid rgba(255, 255, 255, 0.5);
-										background: #fff;
+										background: var(--carmo-bg);
 										p {
-											color: #181a20;
+											color: var(--carmo-text);
 											font-family: $font;
 											font-size: 15px;
 											font-style: normal;
@@ -223,7 +223,7 @@
 											height: 23px;
 											overflow: hidden;
 											p {
-												color: #181a20;
+												color: var(--carmo-text);
 												font-family: $font;
 												font-size: 15px;
 												font-style: normal;
@@ -236,7 +236,7 @@
 											width: 100%;
 											overflow: hidden;
 											p {
-												color: #717171;
+												color: var(--carmo-text-secondary);
 												font-family: $font;
 												font-size: 13px;
 												font-style: normal;
@@ -256,7 +256,7 @@
 											gap: 5px;
 											align-items: center;
 											p {
-												color: #181a20;
+												color: var(--carmo-text);
 												font-family: $font;
 												font-size: 13px;
 												font-style: normal;
@@ -268,7 +268,7 @@
 									.divider {
 										width: 100%;
 										height: 1px;
-										background: #ddd;
+										background: var(--carmo-border);
 										margin-bottom: 17px;
 									}
 									.type-buttons {
@@ -281,7 +281,7 @@
 											align-items: center;
 											gap: 7px;
 											p {
-												color: #181a20;
+												color: var(--carmo-text);
 												font-family: $font;
 												font-style: normal;
 												line-height: normal;
@@ -316,7 +316,7 @@
 							}
 							.total-result {
 								p {
-									color: #181a20;
+									color: var(--carmo-text);
 									text-align: center;
 									font-family: $font;
 									font-size: 24px;

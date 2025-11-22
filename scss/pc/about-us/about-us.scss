@@ -31,7 +31,7 @@
 				padding: 0 20px;
 
 				.intro-text {
-					color: #181a20;
+					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 18px;
 					font-weight: 400;
@@ -60,7 +60,7 @@
 					gap: 12px;
 
 					.stat-value {
-						color: #FCB800;
+						color: var(--carmo-primary);
 						font-family: $font;
 						font-size: 48px;
 						font-weight: 700;
@@ -68,7 +68,7 @@
 					}
 
 					.stat-label {
-						color: #181a20;
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 16px;
 						font-weight: 500;
@@ -83,7 +83,7 @@
 				gap: 50px;
 
 				.section-title {
-					color: #181a20;
+					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 36px;
 					font-weight: 700;
