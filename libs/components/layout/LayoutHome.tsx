@@ -52,7 +52,7 @@ const withLayoutMain = (Component: any) => {
 
 		/** HANDLERS **/
 
-		if (device == 'mobile') {
+			if (device == 'mobile') {
 			return (
 				<>
 					<Head>

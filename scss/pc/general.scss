@@ -725,3 +725,448 @@
 		}
 	}
 }
+
+// Cart Drawer Component
+.cart-drawer {
+	.MuiDrawer-paper {
+		width: 520px;
+		height: 100%;
+		background: var(--carmo-bg);
+	}
+
+	.cart-drawer-container {
+		display: flex;
+		flex-direction: column;
+		min-height: 50%;
+		padding: 0;
+		overflow: hidden;
+	}
+
+	.cart-header {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		background: var(--carmo-bg);
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 24px 24px 16px;
+		margin-bottom: 0;
+		border-bottom: 1px solid var(--carmo-border);
+
+		.cart-title {
+			font-family: $font;
+			font-size: 20px;
+			font-weight: 600;
+			color: var(--carmo-text);
+		}
+
+		.cart-close-btn {
+			svg {
+				font-size: 24px;
+				color: var(--carmo-text);
+			}
+		}
+	}
+
+
+	.cart-items {
+		flex: 1;
+		overflow-y: auto;
+		padding: 24px;
+		margin-bottom: 0;
+
+		.cart-item {
+			display: flex;
+			flex-direction: row;
+			gap: 16px;
+			padding-bottom: 24px;
+			border-bottom: 1px solid var(--carmo-border);
+			margin-bottom: 24px;
+
+			.cart-item-image {
+				width: 80px;
+				height: 80px;
+				border-radius: 8px;
+				overflow: hidden;
+				background: var(--carmo-bg-soft);
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+
+			.cart-item-details {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				.cart-item-name {
+					font-family: $font;
+					font-size: 14px;
+					font-weight: 500;
+					color: var(--carmo-text);
+					line-height: 1.4;
+				}
+
+				.cart-item-price {
+					font-family: $font;
+					font-size: 18px;
+					font-weight: 700;
+					color: var(--carmo-primary);
+				}
+
+				.cart-item-actions {
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: center;
+
+					.quantity-controls {
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						gap: 8px;
+						border: 1px solid var(--carmo-border);
+						border-radius: 4px;
+						padding: 4px;
+
+						.quantity-btn {
+							padding: 4px;
+							
+							svg {
+								font-size: 18px;
+								color: var(--carmo-text);
+							}
+						}
+
+						.quantity-value {
+							font-family: $font;
+							font-size: 14px;
+							font-weight: 500;
+							color: var(--carmo-text);
+							min-width: 30px;
+							text-align: center;
+						}
+					}
+
+					.delete-btn {
+						padding: 8px;
+
+						svg {
+							font-size: 20px;
+							color: var(--carmo-text);
+						}
+
+						&:hover svg {
+							color: #d32f2f;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.cart-action-buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		padding: 20px 24px;
+		border-top: 1px solid var(--carmo-border);
+		border-bottom: 1px solid var(--carmo-border);
+		margin-bottom: 0;
+		background: var(--carmo-bg);
+
+		.action-button-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 8px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+
+			.action-icon {
+				font-size: 24px;
+				color: var(--carmo-text);
+				transition: all 0.3s ease;
+			}
+
+			.action-label {
+				font-family: $font;
+				font-size: 13px;
+				font-weight: 500;
+				color: var(--carmo-text);
+				transition: all 0.3s ease;
+			}
+
+			&:hover {
+				.action-icon,
+				.action-label {
+					color: var(--carmo-primary);
+				}
+			}
+		}
+	}
+
+	.cart-subview-tabs {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		padding: 20px 24px 16px;
+		border-bottom: 1px solid var(--carmo-border);
+		background: var(--carmo-bg);
+
+		.cart-subview-tab {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 8px;
+			cursor: pointer;
+			padding: 12px 16px;
+			transition: all 0.3s ease;
+			border-bottom: 3px solid transparent;
+			flex: 1;
+
+			svg {
+				font-size: 28px;
+				color: var(--carmo-text-secondary);
+				transition: all 0.3s ease;
+			}
+
+			p {
+				font-family: $font;
+				font-size: 14px;
+				font-weight: 500;
+				color: var(--carmo-text-secondary);
+				margin: 0;
+				transition: all 0.3s ease;
+			}
+
+			&.active {
+				border-bottom-color: var(--carmo-text);
+
+				svg {
+					color: var(--carmo-text);
+				}
+
+				p {
+					color: var(--carmo-text);
+					font-weight: 600;
+				}
+			}
+
+			&:hover:not(.active) {
+				svg {
+					color: var(--carmo-primary);
+				}
+
+				p {
+					color: var(--carmo-primary);
+				}
+			}
+		}
+	}
+
+	.cart-subview-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 24px;
+		background: var(--carmo-bg);
+
+		.cart-textarea,
+		.cart-input {
+			.MuiInputBase-root {
+				font-family: $font;
+				font-size: 14px;
+				color: var(--carmo-text);
+				background: var(--carmo-bg-soft);
+				border-radius: 8px;
+
+				textarea,
+				input {
+					padding: 16px;
+				}
+
+				fieldset {
+					border: 1px solid var(--carmo-border);
+				}
+
+				&:hover fieldset {
+					border-color: var(--carmo-text);
+				}
+
+				&.Mui-focused fieldset {
+					border-color: var(--carmo-primary);
+				}
+			}
+		}
+
+		.shipping-form {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+
+			.shipping-form-group {
+				.shipping-label {
+					font-family: $font;
+					font-size: 15px;
+					font-weight: 600;
+					color: var(--carmo-text);
+					margin-bottom: 8px;
+					display: block;
+				}
+
+				.shipping-select,
+				.shipping-input {
+					.MuiInputBase-root {
+						font-family: $font;
+						font-size: 14px;
+						color: var(--carmo-text);
+						background: var(--carmo-bg-soft);
+						border-radius: 8px;
+
+						input {
+							padding: 14px;
+						}
+
+						fieldset {
+							border: 1px solid var(--carmo-border);
+						}
+
+						&:hover fieldset {
+							border-color: var(--carmo-text);
+						}
+
+						&.Mui-focused fieldset {
+							border-color: var(--carmo-primary);
+						}
+					}
+
+					.MuiSelect-select {
+						padding: 14px;
+					}
+				}
+			}
+		}
+	}
+
+	.cart-subview-actions {
+		display: flex;
+		flex-direction: row;
+		gap: 16px;
+		padding: 20px 24px;
+		border-top: 1px solid var(--carmo-border);
+		background: var(--carmo-bg);
+
+		.save-btn,
+		.close-btn {
+			flex: 1;
+			padding: 14px 24px;
+			font-family: $font;
+			font-size: 16px;
+			font-weight: 600;
+			text-transform: none;
+			border-radius: 4px;
+			transition: all 0.3s ease;
+		}
+
+		.save-btn {
+			background: var(--carmo-text);
+			color: var(--carmo-bg);
+			border: 2px solid var(--carmo-text);
+
+			&:hover {
+				background: var(--carmo-primary);
+				border-color: var(--carmo-primary);
+			}
+		}
+
+		.close-btn {
+			background: var(--carmo-primary);
+			color: var(--carmo-bg);
+			border: 2px solid var(--carmo-primary);
+
+			&:hover {
+				background: transparent;
+				color: var(--carmo-primary);
+			}
+		}
+	}
+
+	.cart-total {
+		position: sticky;
+		bottom: 80px;
+		background: var(--carmo-bg);
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 24px;
+		margin: 0;
+		border-top: 1px solid var(--carmo-border);
+
+		.total-label {
+			font-family: $font;
+			font-size: 18px;
+			font-weight: 600;
+			color: var(--carmo-text);
+		}
+
+		.total-value {
+			font-family: $font;
+			font-size: 24px;
+			font-weight: 700;
+			color: var(--carmo-primary);
+		}
+	}
+
+	.cart-footer {
+		position: sticky;
+		bottom: 0;
+		z-index: 10;
+		background: var(--carmo-bg);
+		display: flex;
+		flex-direction: row;
+		gap: 16px;
+		padding: 20px 24px;
+
+		.view-cart-btn,
+		.checkout-btn {
+			flex: 1;
+			padding: 14px 24px;
+			font-family: $font;
+			font-size: 16px;
+			font-weight: 600;
+			text-transform: none;
+			border-radius: 4px;
+			transition: all 0.3s ease;
+		}
+
+		.view-cart-btn {
+			background: var(--carmo-bg);
+			color: var(--carmo-text);
+			border: 2px solid var(--carmo-text);
+
+			&:hover {
+				background: var(--carmo-text);
+				color: var(--carmo-bg);
+			}
+		}
+
+		.checkout-btn {
+			background: var(--carmo-text);
+			color: var(--carmo-bg);
+			border: 2px solid var(--carmo-text);
+
+			&:hover {
+				background: var(--carmo-primary);
+				border-color: var(--carmo-primary);
+			}
+		}
+	}
+}
+

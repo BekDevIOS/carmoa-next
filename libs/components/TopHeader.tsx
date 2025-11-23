@@ -11,10 +11,12 @@ import {
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 } from '@mui/icons-material';
 import Link from 'next/link';
+import Cart from './Cart';
 
 const TopHeader = () => {
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
 	const categoryMenuOpen = Boolean(categoryAnchor);
+	const [cartOpen, setCartOpen] = useState(false);
 
 	const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
 		setCategoryAnchor(event.currentTarget);
@@ -22,6 +24,14 @@ const TopHeader = () => {
 
 	const handleCategoryClose = () => {
 		setCategoryAnchor(null);
+	};
+
+	const handleCartOpen = () => {
+		setCartOpen(true);
+	};
+
+	const handleCartClose = () => {
+		setCartOpen(false);
 	};
 
 	const StyledMenu = styled((props: MenuProps) => (
@@ -145,7 +155,7 @@ const TopHeader = () => {
 					</Box>
 
 					{/* Cart Button */}
-					<Box className={'cart-btn'} sx={{ px: 2, py: 1, bgcolor: 'primary.main' }}>
+					<Box className={'cart-btn'} sx={{ px: 2, py: 1, bgcolor: 'primary.main', cursor: 'pointer' }} onClick={handleCartOpen}>
 						<ShoppingCartOutlinedIcon className={'cart-icon'} sx={{ color: 'primary.contrastText' }} />
 						<Typography variant="body2" className={'cart-text'} sx={{ color: 'primary.contrastText' }}>
 							Cart
@@ -158,6 +168,9 @@ const TopHeader = () => {
 					</Box>
 				</Box>
 			</Stack>
+			
+			{/* Cart Drawer */}
+			<Cart open={cartOpen} onClose={handleCartClose} />
 		</Stack>
 	);
 };

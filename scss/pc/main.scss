@@ -1137,4 +1137,234 @@ body::-webkit-scrollbar {
 	margin-right: 8px;
 }
 
+// FreeShippingProgress Component
+.free-shipping-progress {
+	width: 100%;
+	padding: 20px 24px;
+	border-radius: 12px;
+	background: linear-gradient(135deg, #FFF6F4 0%, #FFF9F5 100%);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	transition: all 0.3s ease;
+
+	.shipping-header {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 8px;
+
+		.shipping-icon {
+			font-size: 28px;
+			color: #FCB800;
+			animation: pulseShipping 2s ease-in-out infinite;
+		}
+
+		.shipping-title {
+			font-family: $font;
+			font-size: 13px;
+			font-weight: 700;
+			color: #1A1A1A;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			line-height: 1.4;
+
+			.shipping-threshold {
+				color: #FCB800;
+				font-weight: 800;
+			}
+		}
+	}
+
+	.shipping-message {
+		font-family: $font;
+		font-size: 15px;
+		font-weight: 400;
+		color: #1A1A1A;
+		line-height: 1.6;
+		margin-bottom: 14px;
+
+		strong {
+			font-weight: 700;
+			color: #1A1A1A;
+		}
+	}
+
+	.shipping-progress-wrapper {
+		position: relative;
+		width: 100%;
+		padding: 10px 0;
+
+		.shipping-progress-track {
+			position: relative;
+			width: 100%;
+			height: 8px;
+			background: #E5E5E5;
+			border-radius: 30px;
+			overflow: hidden;
+			box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+
+			.shipping-progress-fill {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				border-radius: 30px;
+				background: #FCB800;
+				transition: width 0.4s ease;
+				overflow: hidden;
+				box-shadow: 0 2px 8px rgba(252, 184, 0, 0.3);
+
+				.shipping-progress-stripes {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					background: repeating-linear-gradient(
+						45deg,
+						#FCB800,
+						#FCB800 10px,
+						#E5A000 10px,
+						#E5A000 20px
+					);
+					background-size: 28px 28px;
+					animation: moveStripes 2.5s linear infinite;
+				}
+			}
+		}
+
+		.shipping-truck-bubble {
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 42px;
+			height: 42px;
+			background: #FFFFFF;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+			transition: left 0.4s ease;
+			z-index: 2;
+
+			svg {
+				font-size: 22px;
+				color: #1A1A1A;
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				border: 2px solid #FCB800;
+				animation: ripple 1.5s ease-out infinite;
+			}
+		}
+	}
+
+	@keyframes moveStripes {
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 28px 0;
+		}
+	}
+
+	@keyframes pulseShipping {
+		0%, 100% {
+			transform: scale(1);
+			opacity: 1;
+		}
+		50% {
+			transform: scale(1.08);
+			opacity: 0.9;
+		}
+	}
+
+	@keyframes ripple {
+		0% {
+			transform: scale(1);
+			opacity: 0.6;
+		}
+		100% {
+			transform: scale(1.4);
+			opacity: 0;
+		}
+	}
+}
+
+// Dark Mode Support
+body.theme-dark {
+	.free-shipping-progress {
+		background: linear-gradient(135deg, rgba(255, 182, 0, 0.08) 0%, rgba(224, 163, 0, 0.06) 100%);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+		border: 1px solid rgba(255, 182, 0, 0.15);
+
+		.shipping-header {
+			.shipping-icon {
+				color: #FFB800;
+				filter: drop-shadow(0 0 8px rgba(255, 184, 0, 0.4));
+			}
+
+			.shipping-title {
+				color: #FFFFFF;
+
+				.shipping-threshold {
+					color: #FFD766;
+					text-shadow: 0 0 12px rgba(255, 184, 0, 0.5);
+				}
+			}
+		}
+
+		.shipping-message {
+			color: #CCCCCC;
+
+			strong {
+				color: #FFFFFF;
+			}
+		}
+
+		.shipping-progress-wrapper {
+			.shipping-progress-track {
+				background: #2A2A2A;
+				box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+
+				.shipping-progress-fill {
+					background: #FFB800;
+					box-shadow: 0 2px 12px rgba(255, 184, 0, 0.5);
+
+					.shipping-progress-stripes {
+						background: repeating-linear-gradient(
+							45deg,
+							#FFB800,
+							#FFB800 10px,
+							#E5A000 10px,
+							#E5A000 20px
+						);
+					}
+				}
+			}
+
+			.shipping-truck-bubble {
+				background: #1A1A1A;
+				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 184, 0, 0.2);
+				border: 1px solid rgba(255, 184, 0, 0.3);
+
+				svg {
+					color: #FFFFFF;
+					filter: drop-shadow(0 0 4px rgba(255, 184, 0, 0.3));
+				}
+
+				&::after {
+					border: 2px solid #FFB800;
+					box-shadow: 0 0 12px rgba(255, 184, 0, 0.4);
+				}
+			}
+		}
+	}
+}
+
 

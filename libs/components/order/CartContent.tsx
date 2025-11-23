@@ -1,9 +1,9 @@
 import React from 'react';
 import { Stack, Typography, TextField, Button, IconButton, Box } from '@mui/material';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import FreeShippingProgress from '../common/FreeShippingProgress';
 
 export interface CartItem {
 	id: string;
@@ -31,8 +31,6 @@ const CartContent = ({
 	onApplyCoupon,
 }: CartContentProps) => {
 	const [couponCode, setCouponCode] = React.useState('');
-	const progress = Math.min((subtotal / threshold) * 100, 100);
-	const hasFreeShipping = subtotal >= threshold;
 
 	const handleApplyCoupon = () => {
 		if (couponCode.trim()) {
@@ -50,36 +48,10 @@ const CartContent = ({
 		}
 	};
 
-	const remaining = Math.max(threshold - subtotal, 0);
-
 	return (
 		<Stack className="cart-content">
 			{/* Shipping Progress Bar */}
-			<Stack className="shipping-progress-container">
-				<Stack className="progress-header">
-					<LocalShippingOutlinedIcon className="shipping-icon" />
-					<Stack className="progress-copy">
-						<Typography className="progress-title">
-							FREE SHIPPING ON ORDER <span className="threshold-amount">${threshold.toFixed(2)}</span>
-						</Typography>
-						{hasFreeShipping ? (
-							<Typography className="progress-subtitle">Congratulations, you have got free shipping!</Typography>
-						) : (
-							<Typography className="progress-subtitle">
-								Spend <span className="remaining-amount">${remaining.toFixed(2)}</span> more and get{' '}
-								<strong>Free Shipping!</strong>
-							</Typography>
-						)}
-					</Stack>
-				</Stack>
-
-				<Box className="progress-bar-container">
-					<Box className="progress-bar" style={{ width: `${progress}%` }} />
-					<Box className="progress-icon-wrapper" style={{ left: `${progress}%` }}>
-						<LocalShippingOutlinedIcon className="progress-truck-icon" />
-					</Box>
-				</Box>
-			</Stack>
+			<FreeShippingProgress threshold={threshold} current={subtotal} currency="$" />
 
 			{/* Cart Table */}
 			<Stack className="cart-table">
