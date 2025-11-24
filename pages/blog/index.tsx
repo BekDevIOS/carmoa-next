@@ -324,10 +324,12 @@ const Blog: NextPage = ({ initialInput, ...props }: T) => {
 										/>
 									))}
 								</Stack>
+								
 							</Stack>
+							
 							</Stack>
+							
 						</Stack>
-					</TabContext>
 
 					{totalCount > 0 && (
 						<Stack className="pagination-config">
@@ -347,6 +349,8 @@ const Blog: NextPage = ({ initialInput, ...props }: T) => {
 							</Stack>
 						</Stack>
 					)}
+					</TabContext>
+
 				</div>
 			</div>
 		);

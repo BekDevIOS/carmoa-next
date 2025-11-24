@@ -96,7 +96,7 @@ const CheckoutSummaryPanel = ({
 
 						<Stack>
 							<Typography className="form-label">
-								Town / City <span style={{ color: '#d32f2f' }}>*</span>
+								Town / City <span style={{ color: 'var(--carmo-primary)' }}>*</span>
 							</Typography>
 							<TextField
 								fullWidth
@@ -109,7 +109,7 @@ const CheckoutSummaryPanel = ({
 
 						<Stack>
 							<Typography className="form-label">
-								Postcode / ZIP <span style={{ color: '#d32f2f' }}>*</span>
+								Postcode / ZIP <span style={{ color: 'var(--carmo-primary)' }}>*</span>
 							</Typography>
 							<TextField
 								fullWidth

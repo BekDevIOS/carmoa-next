@@ -250,7 +250,7 @@
 						.name {
 							margin-top: 15px;
 							color: var(--carmo-text);
-							text-align: center;
+							text-align: left;
 							font-family: $font;
 							font-size: 24px;
 							font-style: normal;
@@ -263,7 +263,9 @@
 						width: 216.612px;
 						height: 36px;
 						padding: 0;
-						justify-content: center;
+						display: flex;
+						flex-direction: row;
+						justify-content: start;
 						align-items: center;
 						border-radius: 6px;
 						border: 1px solid #181a20;
@@ -285,7 +287,9 @@
 						width: 216.612px;
 						height: 36px;
 						padding: 0;
-						justify-content: center;
+						display: flex;
+						flex-direction: row;
+						justify-content: start;
 						align-items: center;
 						background-color: var(--carmo-primary);
 						border: none;
@@ -350,8 +354,8 @@
 				align-items: center;
 				justify-content: center;
 				margin-bottom: 50px;
+				padding-right: 270px;
 				gap: 20px;
-				padding-left: 270px;
 				.pagination-box {
 					align-items: center;
 					justify-content: center;

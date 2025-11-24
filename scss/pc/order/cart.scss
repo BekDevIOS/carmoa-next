@@ -119,7 +119,7 @@
 					grid-template-columns: 2fr 1fr 1fr;
 					padding: 30px;
 					gap: 20px;
-					border-bottom: 1px solid #e0e0e0;
+					border-bottom: 1px solid var(--carmo-border);
 					align-items: center;
 
 					&:last-child {
@@ -248,7 +248,7 @@
 				gap: 16px;
 				align-items: stretch;
 				padding: 24px 30px;
-				border-top: 1px solid #e0e0e0;
+				border-top: 1px solid var(--carmo-border);
 				background: var(--carmo-bg);
 
 				.coupon-input {
@@ -292,7 +292,7 @@
 					padding: 16px 40px;
 					background: var(--carmo-bg);
 					color: var(--carmo-text);
-					border: 1px solid #000000;
+					border: 1px solid var(--carmo-text);
 					font-size: 16px;
 					font-weight: 600;
 					border-radius: 4px;
@@ -301,7 +301,7 @@
 					white-space: nowrap;
 
 					&:hover {
-						background: var(--carmo-text)000;
+						background: var(--carmo-text);
 						color: var(--carmo-bg);
 					}
 				}
@@ -310,7 +310,7 @@
 
 		// Order Summary (Right Sidebar)
 		.order-summary {
-			background: var(--carmo-bg-soft);
+			background: var(--carmo-bg);
 			padding: 30px;
 			border-radius: 8px;
 			position: sticky;
@@ -341,7 +341,7 @@
 			}
 
 			.shipping-section {
-				border-top: 1px solid #e0e0e0;
+				border-top: 1px solid var(--carmo-border);
 				padding-top: 25px;
 
 				.section-title {
@@ -423,7 +423,7 @@
 				.address-form {
 					margin-top: 20px;
 					padding: 20px;
-					background: white;
+					background: var(--carmo-bg);
 					border-radius: 8px;
 					border: 1px solid var(--carmo-border);
 
@@ -454,7 +454,7 @@
 
 					.address-select {
 						.MuiOutlinedInput-root {
-							background: white;
+							background: var(--carmo-bg-soft);
 							border-radius: 4px;
 
 							&:hover {
@@ -480,7 +480,8 @@
 
 					.address-input {
 						.MuiOutlinedInput-root {
-							background: white;
+							
+							background: var(--carmo-bg-soft);
 							border-radius: 4px;
 
 							&:hover {
@@ -511,8 +512,9 @@
 					.update-address-btn {
 						width: 100%;
 						padding: 14px;
-						background: var(--carmo-text);
-						color: white;
+						background: var(--carmo-bg);
+						color: var(--carmo-text);
+						border: 1px solid var(--carmo-text);
 						font-size: 16px;
 						font-weight: 600;
 						border-radius: 4px;
@@ -522,6 +524,7 @@
 
 						&:hover {
 							background: var(--carmo-text);
+							color: white;
 						}
 					}
 				}
@@ -547,9 +550,9 @@
 			.checkout-btn {
 				width: 100%;
 				padding: 16px;
-				background: white;
+				background: var(--carmo-bg);
 				color: var(--carmo-text);
-				border: 2px solid #000;
+				border: 1px solid var(--carmo-text);
 				font-size: 16px;
 				font-weight: 600;
 				border-radius: 4px;
