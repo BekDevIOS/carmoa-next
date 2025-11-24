@@ -14,11 +14,7 @@ import 'swiper/css/navigation';
 import TopHeader from '../TopHeader';
 import MainHeader from '../MainHeader';
 import FeatureCard from '../FeatureCard';
-import dynamic from 'next/dynamic';
-
-const HeroSlider = dynamic(() => import('../homepage/HeroSlider'), {
-	ssr: false,
-});
+import HeroBannerOverlay from '../homepage/HeroBannerOverlay';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
@@ -85,7 +81,7 @@ const withLayoutMain = (Component: any) => {
 							<MainHeader />
 						</Stack>
 						<Stack className={'header-main'}>
-							<HeroSlider />
+							<HeroBannerOverlay />
 						</Stack>
 					<Stack id={'main'}>
 						<Component {...props} />

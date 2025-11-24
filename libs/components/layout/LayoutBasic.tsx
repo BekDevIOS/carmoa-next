@@ -14,11 +14,6 @@ import 'swiper/css/navigation';
 import TopHeader from '../TopHeader';
 import MainHeader from '../MainHeader';
 import FeatureCard from '../FeatureCard';
-import dynamic from 'next/dynamic';
-
-const HeroSlider = dynamic(() => import('../homepage/HeroSlider'), {
-	ssr: false,
-});
 
 const withLayoutBasic = (Component: any) => {
 	return (props: any) => {
