@@ -10,10 +10,13 @@ import {
 	FavoriteBorder as FavoriteBorderIcon,
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 } from '@mui/icons-material';
+import { useReactiveVar } from '@apollo/client';
+import { themeVar } from '../../apollo/store';
 import Link from 'next/link';
 import Cart from './Cart';
 
 const TopHeader = () => {
+	const themeMode = useReactiveVar(themeVar);
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
 	const categoryMenuOpen = Boolean(categoryAnchor);
 	const [cartOpen, setCartOpen] = useState(false);
@@ -75,7 +78,10 @@ const TopHeader = () => {
 				<Box component={'div'} className={'logo-section'}>
 					<Link href={'/'} className={'logo-link'}>
 						<Box component={'div'} className={'logo-wrapper'}>
-							<img src="/img/logo/logoWhite.png" alt="AutoGarage Logo" />
+							<img 
+								src={themeMode === 'dark' ? '/img/logo/logoTopLight.png' : '/img/logo/logoTopDark.png'} 
+								alt="AutoGarage Logo" 
+							/>
 						</Box>
 					</Link>
 				</Box>

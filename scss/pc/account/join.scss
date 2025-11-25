@@ -18,7 +18,7 @@
         flex-direction: row;
         border-radius: 16px;
         background: var(--carmo-card-bg);
-        box-shadow: 0px 3px 12px rgba(0,0,0,0.12);
+        border: 1px solid var(--carmo-border);
         overflow: hidden;
         transition: flex-direction 0.3s ease;
 
@@ -42,8 +42,8 @@
             gap: 10px;
 
             img {
-              width: 40px;
-              height: 40px;
+              width: 120px;
+              height: 120px;
             }
             span {
               font-size: 22px;

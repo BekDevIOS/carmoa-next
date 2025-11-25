@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { NextPage } from 'next';
+import { useReactiveVar } from '@apollo/client';
+import { themeVar } from '../../apollo/store';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
@@ -10,6 +12,8 @@ import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
 const Join: NextPage = () => {
 	const router = useRouter();
 	const device = useDeviceDetect();
+	const themeMode = useReactiveVar(themeVar);
+	const logoSrc = themeMode === 'dark' ? '/img/logo/logoFooterDark.png' : '/img/logo/logoFooterLight.png';
 
 	const [input, setInput] = useState({
 		name: '',
@@ -72,8 +76,7 @@ const Join: NextPage = () => {
 					<Stack className={'left'}>
 						{/* LOGO */}
 						<Box className={'logo'}>
-							<img src="/img/logo/logoText.svg" alt="" />
-							<span>CarMoa</span>
+							<img src={logoSrc} alt="" />
 						</Box>
 
 						{/* TITLE */}

@@ -2,12 +2,16 @@ import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TelegramIcon from '@mui/icons-material/Telegram';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { useReactiveVar } from '@apollo/client';
+import { themeVar } from '../../apollo/store';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import { Stack, Box, Typography } from '@mui/material';
 import moment from 'moment';
 
 const Footer = () => {
 	const device = useDeviceDetect();
+	const themeMode = useReactiveVar(themeVar);
+	const logoSrc = themeMode === 'dark' ? '/img/logo/logoFooterDark.png' : '/img/logo/logoFooterLight.png';
 
 	// ---------------------------------------
 	// MOBILE FOOTER
@@ -19,7 +23,7 @@ const Footer = () => {
 					{/* Logo + Contact */}
 					<Stack className={'left'}>
 						<Box className={'footer-box'}>
-							<img src="/img/logo/logoText.png" alt="Carmoa Logo" className="logo" />
+							<img src={logoSrc} alt="Carmoa Logo" className="logo" />
 						</Box>
 
 						<Box className={'footer-box'}>
@@ -89,7 +93,7 @@ const Footer = () => {
 				{/* LEFT SECTION */}
 				<Stack className={'left'}>
 					<Box className={'footer-box'}>
-						<img src="/img/logo/logoText.png" alt="Carmoa Logo" className="logo" />
+						<img src={logoSrc} alt="Carmoa Logo" className="logo" />
 					</Box>
 
 					<Box className={'footer-box'}>
