@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Stack, Typography, Box, List, ListItem } from '@mui/material';
+import { Stack, Typography, Box, List, ListItem, useTheme } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { useReactiveVar } from '@apollo/client';
@@ -9,6 +9,18 @@ import PortraitIcon from '@mui/icons-material/Portrait';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LocationOn from '@mui/icons-material/LocationOn';
 import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import HistoryIcon from '@mui/icons-material/History';
+import PeopleIcon from '@mui/icons-material/People';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ArticleIcon from '@mui/icons-material/Article';
+import EditIcon from '@mui/icons-material/Edit';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PhoneIcon from '@mui/icons-material/Phone';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
 import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
@@ -16,10 +28,19 @@ import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 const MyMenu = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const theme = useTheme();
 	const pathname = router.query.category ?? 'myProfile';
 	const category: any = router.query?.category ?? 'myProfile';
 	const user = useReactiveVar(userVar);
-	user.memberType = 'AGENT';
+	user.memberType = 'DEALER';
+
+	// Helper function to get icon color based on active state
+	const getIconColor = (isActive: boolean) => {
+		if (isActive) {
+			return '#ffffff'; // White for active state in both modes
+		}
+		return theme.palette.text.primary; // Theme-aware text color for inactive state
+	};
 
 	/** HANDLERS **/
 	const logoutHandler = async () => {
@@ -45,7 +66,7 @@ const MyMenu = () => {
 					<Stack className={'user-info'}>
 						<Typography className={'user-name'}>{user?.memberNick}</Typography>
 						<Box component={'div'} className={'user-phone'}>
-							<img src={'/img/icons/call.svg'} alt={'icon'} />
+							<PhoneIcon sx={{ fontSize: 16, color: theme.palette.text.primary }} />
 							<Typography className={'p-number'}>{user?.memberPhone}</Typography>
 						</Box>
 						{user?.memberType === 'ADMIN' ? (
@@ -58,52 +79,56 @@ const MyMenu = () => {
 					</Stack>
 				</Stack>
 				<Stack className={'sections'}>
-					<Stack className={'section'} style={{ height: user.memberType === 'AGENT' ? '270px' : '195px' }}>
+					<Stack className={'section'} style={{ height: user.memberType === 'DEALER' ? '270px' : '195px' }}>
 						<Typography className="title" variant={'h5'}>
 							My Activity
 						</Typography>
 						<List className={'sub-section'}>
-							{user.memberType === 'AGENT' && (
+							{user.memberType === 'DEALER' && (
 								<>
-									<ListItem className={pathname === 'addProperty' ? 'focus' : ''}>
+									<ListItem className={pathname === 'addProduct' ? 'focus' : ''}>
 										<Link
 											href={{
 												pathname: '/mypage',
-												query: { category: 'addProperty' },
+												query: { category: 'addProduct' },
 											}}
 											scroll={false}
 										>
 											<div className={'flex-box'}>
-												{category === 'addProperty' ? (
-													<img className={'com-icon'} src={'/img/icons/whiteTab.svg'} alt={'com-icon'} />
-												) : (
-													<img className={'com-icon'} src={'/img/icons/newTab.svg'} alt={'com_icon'} />
-												)}
+												<AddIcon
+													className={'com-icon'}
+													sx={{
+														fontSize: 16,
+														color: getIconColor(category === 'addProduct'),
+													}}
+												/>
 												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-													Add Property
+													Add Product
 												</Typography>
-												<IconButton aria-label="delete" sx={{ ml: '40px' }}>
+												<IconButton aria-label="delete" sx={{ ml: '36px' }}>
 													<PortraitIcon style={{ color: 'red' }} />
 												</IconButton>
 											</div>
 										</Link>
 									</ListItem>
-									<ListItem className={pathname === 'myProperties' ? 'focus' : ''}>
+									<ListItem className={pathname === 'myProducts' ? 'focus' : ''}>
 										<Link
 											href={{
 												pathname: '/mypage',
-												query: { category: 'myProperties' },
+												query: { category: 'myProducts' },
 											}}
 											scroll={false}
 										>
 											<div className={'flex-box'}>
-												{category === 'myProperties' ? (
-													<img className={'com-icon'} src={'/img/icons/homeWhite.svg'} alt={'com-icon'} />
-												) : (
-													<img className={'com-icon'} src={'/img/icons/home.svg'} alt={'com-icon'} />
-												)}
+												<InventoryIcon
+													className={'com-icon'}
+													sx={{
+														fontSize: 16,
+														color: getIconColor(category === 'myProducts'),
+													}}
+												/>
 												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-													My Properties
+													My Products
 												</Typography>
 												<IconButton aria-label="delete" sx={{ ml: '36px' }}>
 													<PortraitIcon style={{ color: 'red' }} />
@@ -124,10 +149,9 @@ const MyMenu = () => {
 									<div className={'flex-box'}>
 										<ShoppingCartIcon
 											className={'com-icon'}
-											style={{
-												color: category === 'orders' ? 'white' : 'black',
-												width: '16px',
-												height: '16px',
+											sx={{
+												fontSize: 16,
+												color: getIconColor(category === 'orders'),
 											}}
 										/>
 
@@ -147,9 +171,21 @@ const MyMenu = () => {
 								>
 									<div className={'flex-box'}>
 										{category === 'myFavorites' ? (
-											<img className={'com-icon'} src={'/img/icons/likeWhite.svg'} alt={'com-icon'} />
+											<FavoriteIcon
+												className={'com-icon'}
+												sx={{
+													fontSize: 16,
+													color: getIconColor(true),
+												}}
+											/>
 										) : (
-											<img className={'com-icon'} src={'/img/icons/like.svg'} alt={'com-icon'} />
+											<FavoriteBorderIcon
+												className={'com-icon'}
+												sx={{
+													fontSize: 16,
+													color: getIconColor(false),
+												}}
+											/>
 										)}
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
@@ -167,11 +203,13 @@ const MyMenu = () => {
 									scroll={false}
 								>
 									<div className={'flex-box'}>
-										{category === 'recentlyVisited' ? (
-											<img className={'com-icon'} src={'/img/icons/searchWhite.svg'} alt={'com-icon'} />
-										) : (
-											<img className={'com-icon'} src={'/img/icons/search.svg'} alt={'com-icon'} />
-										)}
+										<HistoryIcon
+											className={'com-icon'}
+											sx={{
+												fontSize: 16,
+												color: getIconColor(category === 'recentlyVisited'),
+											}}
+										/>
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 											Recently Visited
@@ -188,38 +226,13 @@ const MyMenu = () => {
 									scroll={false}
 								>
 									<div className={'flex-box'}>
-										<svg
+										<PeopleIcon
 											className={'com-icon'}
-											fill={category === 'followers' ? 'white' : 'black'}
-											height="16px"
-											width="16px"
-											version="1.1"
-											id="Layer_1"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 328 328"
-										>
-											<g id="XMLID_350_">
-												<path
-													id="XMLID_351_"
-													d="M52.25,64.001c0,34.601,28.149,62.749,62.75,62.749c34.602,0,62.751-28.148,62.751-62.749
-		S149.602,1.25,115,1.25C80.399,1.25,52.25,29.4,52.25,64.001z"
-												/>
-												<path
-													id="XMLID_352_"
-													d="M217.394,262.357c2.929,2.928,6.768,4.393,10.606,4.393c3.839,0,7.678-1.465,10.607-4.394
-		c5.857-5.858,5.857-15.356-0.001-21.214l-19.393-19.391l19.395-19.396c5.857-5.858,5.857-15.356-0.001-21.214
-		c-5.858-5.857-15.356-5.856-21.214,0.001l-30,30.002c-2.813,2.814-4.393,6.629-4.393,10.607c0,3.979,1.58,7.794,4.394,10.607
-		L217.394,262.357z"
-												/>
-												<path
-													id="XMLID_439_"
-													d="M15,286.75h125.596c19.246,24.348,49.031,40,82.404,40c57.896,0,105-47.103,105-105
-		c0-57.896-47.104-105-105-105c-34.488,0-65.145,16.716-84.297,42.47c-7.764-1.628-15.695-2.47-23.703-2.47
-		c-63.411,0-115,51.589-115,115C0,280.034,6.716,286.75,15,286.75z M223,146.75c41.355,0,75,33.645,75,75s-33.645,75-75,75
-		s-75-33.645-75-75S181.644,146.75,223,146.75z"
-												/>
-											</g>
-										</svg>
+											sx={{
+												fontSize: 16,
+												color: getIconColor(category === 'followers'),
+											}}
+										/>
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 											My Followers
 										</Typography>
@@ -235,38 +248,13 @@ const MyMenu = () => {
 									scroll={false}
 								>
 									<div className={'flex-box'}>
-										<svg
+										<PersonAddIcon
 											className={'com-icon'}
-											fill={category === 'followings' ? 'white' : 'black'}
-											height="16px"
-											width="16px"
-											version="1.1"
-											id="Layer_1"
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 328 328"
-										>
-											<g id="XMLID_334_">
-												<path
-													id="XMLID_337_"
-													d="M177.75,64.001C177.75,29.4,149.601,1.25,115,1.25c-34.602,0-62.75,28.15-62.75,62.751
-		S80.398,126.75,115,126.75C149.601,126.75,177.75,98.602,177.75,64.001z"
-												/>
-												<path
-													id="XMLID_338_"
-													d="M228.606,181.144c-5.858-5.857-15.355-5.858-21.214-0.001c-5.857,5.857-5.857,15.355,0,21.214
-		l19.393,19.396l-19.393,19.391c-5.857,5.857-5.857,15.355,0,21.214c2.93,2.929,6.768,4.394,10.607,4.394
-		c3.838,0,7.678-1.465,10.605-4.393l30-29.998c2.813-2.814,4.395-6.629,4.395-10.607c0-3.978-1.58-7.793-4.394-10.607
-		L228.606,181.144z"
-												/>
-												<path
-													id="XMLID_340_"
-													d="M223,116.75c-34.488,0-65.145,16.716-84.298,42.47c-7.763-1.628-15.694-2.47-23.702-2.47
-		c-63.412,0-115,51.589-115,115c0,8.284,6.715,15,15,15h125.596c19.246,24.348,49.03,40,82.404,40c57.896,0,105-47.103,105-105
-		C328,163.854,280.896,116.75,223,116.75z M223,296.75c-41.356,0-75-33.645-75-75s33.644-75,75-75c41.354,0,75,33.645,75,75
-		S264.354,296.75,223,296.75z"
-												/>
-											</g>
-										</svg>
+											sx={{
+												fontSize: 16,
+												color: getIconColor(category === 'followings'),
+											}}
+										/>
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 											My Followings
@@ -291,11 +279,13 @@ const MyMenu = () => {
 										scroll={false}
 									>
 										<div className={'flex-box'}>
-											{category === 'myArticles' ? (
-												<img className={'com-icon'} src={'/img/icons/discoveryWhite.svg'} alt={'com-icon'} />
-											) : (
-												<img className={'com-icon'} src={'/img/icons/discovery.svg'} alt={'com-icon'} />
-											)}
+											<ArticleIcon
+												className={'com-icon'}
+												sx={{
+													fontSize: 16,
+													color: getIconColor(category === 'myArticles'),
+												}}
+											/>
 
 											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 												Articles
@@ -312,11 +302,13 @@ const MyMenu = () => {
 										scroll={false}
 									>
 										<div className={'flex-box'}>
-											{category === 'writeArticle' ? (
-												<img className={'com-icon'} src={'/img/icons/whiteTab.svg'} alt={'com-icon'} />
-											) : (
-												<img className={'com-icon'} src={'/img/icons/newTab.svg'} alt={'com_icon'} />
-											)}
+											<EditIcon
+												className={'com-icon'}
+												sx={{
+													fontSize: 16,
+													color: getIconColor(category === 'writeArticle'),
+												}}
+											/>
 											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 												Write Article
 											</Typography>
@@ -340,11 +332,13 @@ const MyMenu = () => {
 									scroll={false}
 								>
 									<div className={'flex-box'}>
-										{category === 'myProfile' ? (
-											<img className={'com-icon'} src={'/img/icons/userWhite.svg'} alt={'com-icon'} />
-										) : (
-											<img className={'com-icon'} src={'/img/icons/user.svg'} alt={'com-icon'} />
-										)}
+										<PersonIcon
+											className={'com-icon'}
+											sx={{
+												fontSize: 16,
+												color: getIconColor(category === 'myProfile'),
+											}}
+										/>
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 											My Profile
 										</Typography>
@@ -364,7 +358,7 @@ const MyMenu = () => {
 											className={'com-icon'}
 											sx={{
 												fontSize: 16,
-												color: category === 'addresses' ? 'white' : 'black',
+												color: getIconColor(category === 'addresses'),
 											}}
 										/>
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
@@ -375,7 +369,13 @@ const MyMenu = () => {
 							</ListItem>
 							<ListItem onClick={logoutHandler}>
 								<div className={'flex-box'}>
-									<img className={'com-icon'} src={'/img/icons/logout.svg'} alt={'com-icon'} />
+									<LogoutIcon
+										className={'com-icon'}
+										sx={{
+											fontSize: 16,
+											color: theme.palette.text.primary,
+										}}
+									/>
 									<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
 										Logout
 									</Typography>

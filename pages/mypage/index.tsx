@@ -7,7 +7,7 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import MyProperties from '../../libs/components/mypage/MyProperties';
 import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
-import AddProperty from '../../libs/components/mypage/AddNewProperty';
+import AddProduct from '../../libs/components/mypage/AddNewProduct';
 import MyProfile from '../../libs/components/mypage/MyProfile';
 import Addresses from '../../libs/components/mypage/Addresses';
 import MyArticles from '../../libs/components/mypage/MyArticles';
@@ -77,7 +77,7 @@ const MyPage: NextPage = () => {
 							</Stack>
 							<Stack className="main-config" mb={'76px'}>
 								<Stack className={'list-config'}>
-									{category === 'addProperty' && <AddProperty />}
+									{category === 'addProduct' && <AddProduct />}
 									{category === 'myProperties' && <MyProperties />}
 									{category === 'orders' && <OrderTable />}
 									{category === 'myFavorites' && <MyFavorites />}
