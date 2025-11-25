@@ -1,0 +1,243 @@
+#pc-wrap {
+  .join-page {
+    padding: 100px 0;
+    width: 100%;
+    background: var(--carmo-bg);
+    display: flex;
+    justify-content: center;
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .main {
+        width: 100%;
+        height: 850px;
+        display: flex;
+        flex-direction: row;
+        border-radius: 16px;
+        background: var(--carmo-card-bg);
+        box-shadow: 0px 3px 12px rgba(0,0,0,0.12);
+        overflow: hidden;
+        transition: flex-direction 0.3s ease;
+
+        &.main--swapped {
+          flex-direction: row-reverse;
+        }
+
+        /* LEFT SIDE */
+        .left {
+          width: 52%;
+          padding: 60px 40px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          /* LOGO */
+          .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            img {
+              width: 40px;
+              height: 40px;
+            }
+            span {
+              font-size: 22px;
+              font-weight: 700;
+              letter-spacing: 0.5px;
+              color: var(--carmo-primary);
+              text-transform: uppercase;
+            }
+          }
+
+          /* TITLE & SUBTEXT */
+          .info {
+            margin-top: 20px;
+            text-align: center;
+
+            span {
+              font-size: 26px;
+              font-weight: 700;
+              color: var(--carmo-text);
+              text-transform: uppercase;
+            }
+            p {
+              margin-top: 8px;
+              font-size: 14px;
+              color: var(--carmo-text-secondary);
+            }
+          }
+
+          /* INPUTS */
+          .input-wrap {
+            margin-top: 40px;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+
+            .input-box {
+              display: flex;
+              flex-direction: column;
+
+              span {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--carmo-text);
+                margin-bottom: 6px;
+              }
+
+              input {
+                height: 52px;
+                width: 100%;
+                border-radius: 10px;
+                padding: 0 15px;
+                border: 1px solid var(--carmo-border);
+                background: var(--carmo-card-bg);
+                color: var(--carmo-text);
+                transition: 0.25s;
+
+                &:focus {
+                  border-color: var(--carmo-primary);
+                  box-shadow: 0 0 0 3px rgba(255,184,0,0.18);
+                }
+              }
+            }
+          }
+
+          /* REGISTRATION AREA */
+          .register {
+            margin-top: 30px;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            /* USER / DEALER SELECT */
+            .type-option {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              gap: 15px;
+
+              span.text {
+                font-weight: 600;
+                color: var(--carmo-text);
+              }
+
+              div {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+              }
+            }
+
+            /* REMEMBER ME / LOST PASSWORD */
+            .remember-info {
+              width: 100%;
+              margin-bottom: 10px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+
+              a {
+                font-size: 14px;
+                color: var(--carmo-primary);
+                cursor: pointer;
+
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+            }
+
+            /* SUBMIT BUTTON */
+            button {
+              margin-top: 15px;
+              width: 100%;
+              height: 55px;
+              border-radius: 12px;
+              font-size: 15px;
+              font-weight: 600;
+              background: var(--carmo-primary);
+              color: #000;
+              transition: 0.2s;
+
+              &:hover {
+                background: var(--carmo-primary-hover);
+              }
+            }
+
+            /* GOOGLE LOGIN BUTTON */
+            .google-btn {
+              margin-top: 15px;
+              width: 100%;
+              height: 55px;
+              border-radius: 12px;
+              background: #ffffff;
+              color: #000;
+              border: 1px solid var(--carmo-border);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+              font-weight: 600;
+              font-size: 15px;
+
+              img {
+                width: 20px;
+              }
+
+              &:hover {
+                background: #f1f1f1;
+              }
+            }
+          }
+
+          /* SWITCH LOGIN / SIGNUP */
+          .ask-info {
+            margin-top: 35px;
+
+            p {
+              font-size: 16px;
+              color: var(--carmo-text);
+
+              b {
+                margin-left: 8px;
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--carmo-primary);
+                cursor: pointer;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+
+        /* RIGHT SIDE IMAGE */
+        .right {
+          width: 48%;
+          background-image: url("/img/image.png");
+          background-size: cover;
+          background-position: center;
+
+          /* Dark overlay & theme support */
+          position: relative;
+          &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--hero-gradient);
+          }
+        }
+      }
+    }
+  }
+}
