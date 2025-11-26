@@ -3,15 +3,20 @@ import { Direction } from '../../enums/common.enum';
 
 export interface MemberInput {
 	memberNick: string;
-	memberPassword: string;
+	memberEmail: string;
 	memberPhone: string;
+	memberPassword: string;
 	memberType?: MemberType;
 	memberAuthType?: MemberAuthType;
 }
 
 export interface LoginInput {
-	memberNick: string;
+	memberEmail: string;
 	memberPassword: string;
+}
+
+export interface GoogleLoginInput {
+	idToken: string;
 }
 
 interface AISearch {

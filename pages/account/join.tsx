@@ -20,7 +20,7 @@ const Join: NextPage = () => {
 		email: '',
 		password: '',
 		phone: '',
-		type: 'USER', // USER or DEALER
+		type: 'USER',
 	});
 
 	const [loginView, setLoginView] = useState<boolean>(true);
@@ -56,7 +56,7 @@ const Join: NextPage = () => {
 	/** SIGNUP **/
 	const doSignUp = useCallback(async () => {
 		try {
-			await signUp(input.name, input.email, input.password, input.phone);
+			await signUp(input.name, input.email, input.password, input.phone, input.type);
 			await router.push(`${router.query.referrer ?? '/'}`);
 		} catch (err: any) {
 			await sweetMixinErrorAlert(err.message);
@@ -68,6 +68,7 @@ const Join: NextPage = () => {
 	}
 
 	const mainClassName = loginView ? 'main' : 'main main--swapped';
+	console.log("+++++", process.env.REACT_APP_API_URL)
 
 	return (
 		<Stack className={'join-page'}>
@@ -126,8 +127,8 @@ const Join: NextPage = () => {
 								/>
 							</div>
 
-							{/* Phone (Dealer only) */}
-							{!loginView && input.type === 'DEALER' && (
+							{/* Phone */}
+							{!loginView && (
 								<div className={'input-box'}>
 									<span>Phone Number</span>
 									<input
@@ -188,11 +189,7 @@ const Join: NextPage = () => {
 
 							{/* SUBMIT BUTTON */}
 							{loginView ? (
-								<Button
-									variant="contained"
-									disabled={input.email === '' || input.password === ''}
-									onClick={doLogin}
-								>
+								<Button variant="contained" disabled={input.email === '' || input.password === ''} onClick={doLogin}>
 									LOGIN
 								</Button>
 							) : (
@@ -202,7 +199,7 @@ const Join: NextPage = () => {
 										input.name === '' ||
 										input.email === '' ||
 										input.password === '' ||
-										(input.type === 'DEALER' && input.phone === '')
+										input.phone === ''
 									}
 									onClick={doSignUp}
 								>

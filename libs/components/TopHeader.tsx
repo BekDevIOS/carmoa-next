@@ -143,9 +143,11 @@ const TopHeader = () => {
 				{/* Icons */}
 				<Box component={'div'} className={'utility-icons'} sx={{ gap: 1, ml: 2 }}>
 					{/* Profile */}
-					<Box className={'icon-btn'} sx={{ borderColor: 'divider' }}>
-						<PersonOutlineIcon className={'icon'} sx={{ color: 'text.primary' }} />
-					</Box>
+					<Link href={'/account/join'}>
+						<Box className={'icon-btn'} sx={{ borderColor: 'divider', cursor: 'pointer' }}>
+							<PersonOutlineIcon className={'icon'} sx={{ color: 'text.primary' }} />
+						</Box>
+					</Link>
 
 					{/* Notification */}
 					<Box className={'icon-btn'} sx={{ borderColor: 'divider' }}>

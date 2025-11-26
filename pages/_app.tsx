@@ -28,11 +28,15 @@ const AppContent = ({ Component, pageProps }: AppProps) => {
 		return createTheme((themeMode === 'dark' ? dark : light) as any);
 	}, [themeMode]);
 
+	const client = useApollo(pageProps.initialApolloState);
+
 	return (
-		<ThemeProvider theme={theme}>
-			<CssBaseline />
-			<Component {...pageProps} />
-		</ThemeProvider>
+		<ApolloProvider client={client}>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<Component {...pageProps} />
+			</ThemeProvider>
+		</ApolloProvider>
 	);
 };
 

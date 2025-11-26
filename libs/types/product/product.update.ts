@@ -1,22 +1,31 @@
-import { ProductLocation, ProductStatus, ProductType } from '../../enums/product.enum';
+import {
+	ProductType,
+	ProductStatus,
+	ProductCondition,
+	ProductMainCategory,
+	ProductSubCategory,
+	CarBrand,
+} from '../../enums/product.enum';
 
 export interface ProductUpdate {
 	_id: string;
 	productType?: ProductType;
 	productStatus?: ProductStatus;
-	productLocation?: ProductLocation;
-	productAddress?: string;
+	productCondition?: ProductCondition;
+	productMainCategory?: ProductMainCategory;
+	productSubCategory?: ProductSubCategory;
+	productCarBrand?: CarBrand;
+	productCarModel?: string;
+	productYearFrom?: number;
+	productYearTo?: number;
+	productOemNumbers?: string[];
 	productTitle?: string;
 	productPrice?: number;
-	productSquare?: number;
-	productBeds?: number;
-	productRooms?: number;
+	productSalePrice?: number;
+	productStock?: number;
+	productComments?: number;
 	productImages?: string[];
-	productDesc?: string;
-	productBarter?: boolean;
-	productRent?: boolean;
+	productDescription?: string;
 	soldAt?: Date;
 	deletedAt?: Date;
-	constructedAt?: Date;
 }
-

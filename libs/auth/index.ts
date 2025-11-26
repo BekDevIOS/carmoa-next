@@ -15,9 +15,9 @@ export function setJwtToken(token: string) {
 	localStorage.setItem('accessToken', token);
 }
 
-export const logIn = async (nick: string, password: string): Promise<void> => {
+export const logIn = async (email: string, password: string): Promise<void> => {
 	try {
-		const { jwtToken } = await requestJwtToken({ nick, password });
+		const { jwtToken } = await requestJwtToken({ email, password });
 
 		if (jwtToken) {
 			updateStorage({ jwtToken });
@@ -26,15 +26,15 @@ export const logIn = async (nick: string, password: string): Promise<void> => {
 	} catch (err) {
 		console.warn('login err', err);
 		logOut();
-		throw new Error('Login Err');
+		// throw new Error('Login Err');
 	}
 };
 
 const requestJwtToken = async ({
-	nick,
+	email,
 	password,
 }: {
-	nick: string;
+	email: string;
 	password: string;
 }): Promise<{ jwtToken: string }> => {
 	const apolloClient = await initializeApollo();
@@ -42,7 +42,7 @@ const requestJwtToken = async ({
 	try {
 		const result = await apolloClient.mutate({
 			mutation: LOGIN,
-			variables: { input: { memberNick: nick, memberPassword: password } },
+			variables: { input: { memberEmail: email, memberPassword: password } },
 			fetchPolicy: 'network-only',
 		});
 
@@ -64,9 +64,9 @@ const requestJwtToken = async ({
 	}
 };
 
-export const signUp = async (nick: string, password: string, phone: string, type: string): Promise<void> => {
+export const signUp = async (nick: string, email: string, password: string, phone: string, type: string): Promise<void> => {
 	try {
-		const { jwtToken } = await requestSignUpJwtToken({ nick, password, phone, type });
+		const { jwtToken } = await requestSignUpJwtToken({ nick, email, password, phone, type });
 
 		if (jwtToken) {
 			updateStorage({ jwtToken });
@@ -75,17 +75,19 @@ export const signUp = async (nick: string, password: string, phone: string, type
 	} catch (err) {
 		console.warn('login err', err);
 		logOut();
-		throw new Error('Login Err');
+		// throw new Error('Login Err');
 	}
 };
 
 const requestSignUpJwtToken = async ({
 	nick,
+	email,
 	password,
 	phone,
 	type,
 }: {
 	nick: string;
+	email: string;
 	password: string;
 	phone: string;
 	type: string;
@@ -96,7 +98,7 @@ const requestSignUpJwtToken = async ({
 		const result = await apolloClient.mutate({
 			mutation: SIGN_UP,
 			variables: {
-				input: { memberNick: nick, memberPassword: password, memberPhone: phone, memberType: type },
+				input: { memberNick: nick, memberEmail: email, memberPassword: password, memberPhone: phone, memberType: type },
 			},
 			fetchPolicy: 'network-only',
 		});
@@ -142,20 +144,31 @@ export const updateUserInfo = (jwtToken: any) => {
 				: `${claims.memberImage}`,
 		memberAddress: claims.memberAddress ?? '',
 		memberDesc: claims.memberDesc ?? '',
-		memberProperties: claims.memberProperties,
-		memberRank: claims.memberRank,
-		memberArticles: claims.memberArticles,
-		memberPoints: claims.memberPoints,
-		memberLikes: claims.memberLikes,
-		memberViews: claims.memberViews,
-		memberWarnings: claims.memberWarnings,
-		memberBlocks: claims.memberBlocks,
+		memberArticles: claims.memberArticles ?? 0,
+		memberFollowers: claims.memberFollowers ?? 0,
+		memberFollowings: claims.memberFollowings ?? 0,
+		memberPoints: claims.memberPoints ?? 0,
+		memberLikes: claims.memberLikes ?? 0,
+		memberViews: claims.memberViews ?? 0,
+		memberComments: claims.memberComments ?? 0,
+		memberRank: claims.memberRank ?? 0,
+		memberWarnings: claims.memberWarnings ?? 0,
+		memberBlocks: claims.memberBlocks ?? 0,
+		deletedAt: claims.deletedAt ?? '',
+		createdAt: claims.createdAt ?? '',
+		updatedAt: claims.updatedAt ?? '',
+		memberProducts: claims.memberProducts ?? 0,
+		memberProvider: claims.memberProvider ?? '',
+		memberEmail: claims.memberEmail ?? '',
+		accessToken: claims.accessToken ?? '',
+		memberProperties: claims.memberProperties ?? 0, // Keep for backward compatibility
 	});
 };
 
 export const logOut = () => {
 	deleteStorage();
 	deleteUserInfo();
+	// window.location.reload();
 };
 
 const deleteStorage = () => {
@@ -175,13 +188,23 @@ const deleteUserInfo = () => {
 		memberImage: '',
 		memberAddress: '',
 		memberDesc: '',
-		memberProperties: 0,
-		memberRank: 0,
 		memberArticles: 0,
+		memberFollowers: 0,
+		memberFollowings: 0,
 		memberPoints: 0,
 		memberLikes: 0,
 		memberViews: 0,
+		memberComments: 0,
+		memberRank: 0,
 		memberWarnings: 0,
 		memberBlocks: 0,
+		deletedAt: '',
+		createdAt: '',
+		updatedAt: '',
+		memberProducts: 0,
+		memberProvider: '',
+		memberEmail: '',
+		accessToken: '',
+		memberProperties: 0, // Keep for backward compatibility
 	});
 };

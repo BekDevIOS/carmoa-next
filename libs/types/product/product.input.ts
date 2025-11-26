@@ -1,33 +1,42 @@
-import { ProductLocation, ProductStatus, ProductType } from '../../enums/product.enum';
+import {
+	CarBrand,
+	ProductCondition,
+	ProductMainCategory,
+	ProductStatus,
+	ProductSubCategory,
+	ProductType,
+} from '../../enums/product.enum';
 import { Direction } from '../../enums/common.enum';
 
 export interface ProductInput {
-	productType: ProductType;
-	productLocation: ProductLocation;
-	productAddress: string;
+	productType?: ProductType;
+	productStatus?: ProductStatus;
+	productCondition: ProductCondition;
+	productMainCategory: ProductMainCategory;
+	productSubCategory: ProductSubCategory;
+	productCarBrand: CarBrand;
+	productCarModel: string;
+	productYearFrom: number;
+	productYearTo: number;
+	productOemNumbers?: string[];
 	productTitle: string;
 	productPrice: number;
-	productSquare: number;
-	productBeds: number;
-	productRooms: number;
+	productSalePrice?: number;
+	productStock?: number;
 	productImages: string[];
-	productDesc?: string;
-	productBarter?: boolean;
-	productRent?: boolean;
-	memberId?: string;
-	constructedAt?: Date;
+	productDescription?: string;
+	dealerId: string;
 }
 
-interface PISearch {
+export interface PISearch {
 	memberId?: string;
-	locationList?: ProductLocation[];
-	typeList?: ProductType[];
-	roomsList?: Number[];
-	options?: string[];
-	bedsList?: Number[];
+	brandList?: CarBrand[];
+	mainCategoryList?: ProductMainCategory[];
+	subCategoryList?: ProductSubCategory[];
+	conditionList?: ProductCondition[];
 	pricesRange?: Range;
 	periodsRange?: PeriodsRange;
-	squaresRange?: Range;
+	yearsRange?: Range;
 	text?: string;
 }
 
@@ -39,21 +48,23 @@ export interface ProductsInquiry {
 	search: PISearch;
 }
 
-interface APISearch {
+interface DPISearch {
 	productStatus?: ProductStatus;
 }
 
-export interface AgentProductsInquiry {
+export interface DealerProductsInquiry {
 	page: number;
 	limit: number;
 	sort?: string;
 	direction?: Direction;
-	search: APISearch;
+	search: DPISearch;
 }
 
-interface ALPISearch {
+export interface ALPISearch {
 	productStatus?: ProductStatus;
-	productLocationList?: ProductLocation[];
+	carBrandList?: CarBrand[];
+	productMainCategoryList?: ProductMainCategory[];
+	productSubCategoryList?: ProductSubCategory[];
 }
 
 export interface AllProductsInquiry {
@@ -74,3 +85,7 @@ interface PeriodsRange {
 	end: Date | number;
 }
 
+export interface OrdinaryInquiry {
+	page: number;
+	limit: number;
+}
