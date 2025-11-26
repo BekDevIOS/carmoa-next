@@ -80,3 +80,52 @@ export const closeQuickView = () => {
 		product: null,
 	});
 };
+
+// Compare Product Interface
+export interface CompareProduct {
+	id: number;
+	image: string;
+	category?: string;
+	title: string;
+	originalPrice?: number;
+	salePrice: number;
+	discount?: number;
+	rating?: number;
+	compatibility?: string;
+	condition?: 'New' | 'Used' | 'Refurbished';
+	isSale?: boolean;
+	brand?: string;
+	oemNumber?: string;
+	year?: number;
+}
+
+// Initialize compare items from localStorage
+const getInitialCompareItems = (): CompareProduct[] => {
+	if (typeof window !== 'undefined') {
+		try {
+			const saved = localStorage.getItem('carmoa_compare_items');
+			if (saved) {
+				const parsed = JSON.parse(saved);
+				// Ensure max 6 items
+				return Array.isArray(parsed) ? parsed.slice(0, 6) : [];
+			}
+		} catch (error) {
+			console.error('Error loading compare items from localStorage:', error);
+		}
+	}
+	return [];
+};
+
+// Compare State
+export const compareVar = makeVar<CompareProduct[]>(getInitialCompareItems());
+
+// Helper function to sync localStorage with compareVar
+export const syncCompareToLocalStorage = (items: CompareProduct[]) => {
+	if (typeof window !== 'undefined') {
+		try {
+			localStorage.setItem('carmoa_compare_items', JSON.stringify(items));
+		} catch (error) {
+			console.error('Error saving compare items to localStorage:', error);
+		}
+	}
+};

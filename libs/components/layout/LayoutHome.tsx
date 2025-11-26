@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Footer from '../Footer';
@@ -15,10 +15,21 @@ import TopHeader from '../TopHeader';
 import MainHeader from '../MainHeader';
 import FeatureCard from '../FeatureCard';
 import HeroBannerOverlay from '../homepage/HeroBannerOverlay';
+import CompareFab from '../compare/CompareFab';
+import CompareModal from '../compare/CompareModal';
+import { CompareProduct } from '../../../apollo/store';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
+		const [compareModalOpen, setCompareModalOpen] = useState(false);
+
+		const handleAddToCart = (product: CompareProduct) => {
+			// TODO: Implement actual cart functionality
+			// This should add the product to the cart state/drawer
+			console.log('Add to cart from compare:', product);
+			// You can integrate with your cart state management here
+		};
 
 		// Features data
 		const features = [
@@ -62,9 +73,15 @@ const withLayoutMain = (Component: any) => {
 							<Component {...props} />
 						</Stack>
 
-						<Stack id={'footer'}>
-							<Footer />
-						</Stack>
+					<Stack id={'footer'}>
+						<Footer />
+					</Stack>
+					<CompareFab onClick={() => setCompareModalOpen(true)} />
+					<CompareModal 
+						open={compareModalOpen} 
+						onClose={() => setCompareModalOpen(false)}
+						onAddToCart={handleAddToCart}
+					/>
 					</Stack>
 				</>
 			);
@@ -103,6 +120,12 @@ const withLayoutMain = (Component: any) => {
 					<Stack id={'footer'}>
 						<Footer />
 					</Stack>
+					<CompareFab onClick={() => setCompareModalOpen(true)} />
+					<CompareModal 
+						open={compareModalOpen} 
+						onClose={() => setCompareModalOpen(false)}
+						onAddToCart={handleAddToCart}
+					/>
 					</Stack>
 				</>
 			);

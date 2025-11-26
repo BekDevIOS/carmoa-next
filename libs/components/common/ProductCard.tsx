@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Box, Typography, IconButton } from '@mui/material';
+import { Stack, Box, Typography, IconButton, Tooltip } from '@mui/material';
 import {
 	FavoriteBorder as FavoriteBorderIcon,
 	CompareArrows as CompareArrowsIcon,
@@ -7,6 +7,7 @@ import {
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 	StarBorder as StarBorderIcon,
 } from '@mui/icons-material';
+import { useCompare } from '../../hooks/useCompare';
 
 interface Product {
 	id: number;
@@ -38,6 +39,8 @@ const ProductCard = ({
 	quickViewHandler,
 }: ProductCardProps) => {
 	const [isHovered, setIsHovered] = useState(false);
+	const { isCompared, toggleCompare } = useCompare();
+	const isInCompare = isCompared(product.id);
 
 	return (
 		<Stack
@@ -60,9 +63,17 @@ const ProductCard = ({
 					<Box className={'action-icon'} onClick={() => wishlistHandler?.(product.id)}>
 						<FavoriteBorderIcon className={'icon'} />
 					</Box>
-					<Box className={'action-icon'} onClick={() => compareHandler?.(product.id)}>
-						<CompareArrowsIcon className={'icon'} />
-					</Box>
+					<Tooltip title={isInCompare ? 'Remove from Compare' : 'Add to Compare'} arrow>
+						<Box 
+							className={`action-icon ${isInCompare ? 'compared' : ''}`} 
+							onClick={() => {
+								toggleCompare(product);
+								compareHandler?.(product.id);
+							}}
+						>
+							<CompareArrowsIcon className={'icon'} />
+						</Box>
+					</Tooltip>
 					<Box className={'action-icon'} onClick={() => quickViewHandler?.(product.id)}>
 						<VisibilityIcon className={'icon'} />
 					</Box>

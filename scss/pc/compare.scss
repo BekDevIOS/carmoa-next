@@ -1,0 +1,273 @@
+// Compare Feature Styles
+
+// Floating Action Button
+.compare-fab {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	z-index: 1000;
+	transition: transform 0.3s ease;
+
+	&.pulse {
+		animation: comparePulse 1s ease-in-out;
+	}
+
+	.compare-fab-badge {
+		.MuiBadge-badge {
+			background-color: var(--carmo-primary);
+			color: var(--carmo-bg);
+			font-weight: 600;
+		}
+	}
+
+	.compare-fab-button {
+		width: 62px;
+		height: 62px;
+		background-color: var(--carmo-primary);
+		color: #fff;
+		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+
+		&:hover {
+			background-color: var(--carmo-primary-hover);
+		}
+	}
+}
+
+@keyframes comparePulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+// Compare Modal
+.compare-modal {
+	.MuiDialog-paper.compare-modal-paper {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		max-width: 100%;
+		max-height: 100%;
+		margin: 0;
+		border-radius: 0;
+		background-color: var(--carmo-bg);
+	}
+
+	.MuiBackdrop-root.compare-modal-backdrop {
+		backdrop-filter: blur(4px);
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+
+	.compare-modal-container {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		width: 100%;
+	}
+
+	.compare-modal-header {
+		padding: 24px;
+		border-bottom: 1px solid var(--carmo-border);
+		background-color: var(--carmo-card-bg);
+		flex-shrink: 0;
+
+		.compare-modal-header-stack {
+			width: 100%;
+		}
+
+		.compare-modal-title {
+			color: var(--carmo-text);
+			font-weight: 600;
+		}
+
+		.compare-modal-clear-btn {
+			color: var(--carmo-text-secondary);
+
+			&:hover {
+				background-color: var(--carmo-bg-soft);
+			}
+		}
+
+		.compare-modal-close-btn {
+			color: var(--carmo-text);
+
+			&:hover {
+				background-color: var(--carmo-bg-soft);
+			}
+		}
+	}
+
+	.compare-modal-content {
+		flex: 1;
+		overflow-y: auto;
+		padding: 24px;
+		background-color: var(--carmo-bg);
+	}
+}
+
+// Compare Table
+.compare-table-container {
+	width: 100%;
+	padding: 16px 0;
+
+	.compare-table-empty {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 300px;
+
+		.compare-table-empty-text {
+			color: var(--carmo-text-secondary);
+		}
+	}
+
+	.compare-table-grid {
+		width: 100%;
+		margin: 0;
+	}
+
+	.compare-table-header-card {
+		background-color: var(--carmo-bg-soft);
+		border: 1px solid var(--carmo-border);
+		min-height: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: left;
+	}
+
+	.compare-table-product-card {
+		background-color: var(--carmo-card-bg);
+		border: 1px solid var(--carmo-border);
+		min-height: 60px;
+	}
+
+	.compare-table-label-card {
+		background-color: var(--carmo-bg-soft);
+		border: 1px solid var(--carmo-border);
+		min-height: 80px;
+		height: 100%;
+		display: flex;
+		align-items: center;
+	}
+
+	.compare-table-data-card {
+		background-color: var(--carmo-card-bg);
+		border: 1px solid var(--carmo-border);
+		min-height: 80px;
+		display: flex;
+		align-items: center;
+	}
+
+	.compare-table-card-content {
+		padding: 16px;
+
+		&:last-child {
+			padding-bottom: 16px;
+		}
+
+		&.compare-table-card-content-full {
+			width: 100%;
+		}
+	}
+
+	.compare-table-header-text {
+		color: var(--carmo-text);
+		text-align: center;
+		font-weight: bold;
+		margin-left: 10px;
+	}
+
+	.compare-table-label-text {
+		color: var(--carmo-text);
+		font-weight: 600;
+		text-align: left;
+		margin-left: 10px;
+	}
+
+	.compare-table-data-text {
+		color: var(--carmo-text);
+		text-align: center;
+	}
+
+	.compare-table-remove-container {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 8px;
+	}
+
+	.compare-table-remove-text {
+		cursor: pointer;
+		color: var(--carmo-primary);
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.compare-table-image-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.compare-table-image {
+		width: 100%;
+		max-width: 150px;
+		height: auto;
+		object-fit: contain;
+		border-radius: 4px;
+	}
+
+	.compare-table-add-to-cart-btn {
+		background-color: var(--carmo-primary);
+		color: var(--carmo-bg);
+		font-weight: 600;
+		text-transform: uppercase;
+		padding: 10px 16px;
+		border-radius: 4px;
+
+		&:hover {
+			background-color: var(--carmo-primary-hover);
+		}
+
+		.MuiSvgIcon-root {
+			margin-right: 8px;
+		}
+	}
+}
+
+// Product Card Compare Icon Active State
+.product-card {
+	.action-icon {
+		&.compared {
+			background-color: var(--carmo-primary);
+			color: var(--carmo-bg);
+
+			.icon {
+				color: var(--carmo-bg);
+			}
+
+			&:hover {
+				background-color: var(--carmo-primary-hover);
+			}
+		}
+	}
+}
+
+// Responsive adjustments
+@media (max-width: 960px) {
+	.compare-table-container {
+		.MuiGrid-container {
+			.MuiGrid-item {
+				margin-bottom: 8px;
+			}
+		}
+	}
+}
+
