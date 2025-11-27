@@ -4,10 +4,10 @@ import { NextPage } from 'next';
 import { Stack } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import MyProperties from '../../libs/components/mypage/MyProperties';
+import MyProducts from '../../libs/components/mypage/MyProducts';
 import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
-import AddProduct from '../../libs/components/mypage/AddNewProduct';
+import AddNewProduct from '../../libs/components/mypage/AddNewProduct';
 import MyProfile from '../../libs/components/mypage/MyProfile';
 import Addresses from '../../libs/components/mypage/Addresses';
 import MyArticles from '../../libs/components/mypage/MyArticles';
@@ -22,6 +22,7 @@ import MemberFollowings from '../../libs/components/member/MemberFollowings';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { LIKE_TARGET_MEMBER, SUBSCRIBE, UNSUBSCRIBE } from '../../apollo/user/mutation';
 import { Messages } from '../../libs/config';
+
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -124,8 +125,8 @@ const MyPage: NextPage = () => {
 							</Stack>
 							<Stack className="main-config" mb={'76px'}>
 								<Stack className={'list-config'}>
-									{category === 'addProduct' && <AddProduct />}
-									{category === 'myProperties' && <MyProperties />}
+									{category === 'addProduct' && <AddNewProduct />}
+									{category === 'myProducts' && <MyProducts />}
 									{category === 'orders' && <OrderTable />}
 									{category === 'myFavorites' && <MyFavorites />}
 									{category === 'recentlyVisited' && <RecentlyVisited />}

@@ -60,6 +60,18 @@ export interface DealerProductsInquiry {
 	search: DPISearch;
 }
 
+interface APISearch {
+	productStatus?: ProductStatus;
+}
+
+export interface AgentProductsInquiry {
+	page: number;
+	limit: number;
+	sort?: string;
+	direction?: Direction;
+	search: APISearch;
+}
+
 export interface ALPISearch {
 	productStatus?: ProductStatus;
 	carBrandList?: CarBrand[];

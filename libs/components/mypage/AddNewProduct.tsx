@@ -11,9 +11,9 @@ import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { CREATE_PRODUCT, UPDATE_PRODUCT } from '../../../apollo/user/mutation';
 import { GET_PRODUCT } from '../../../apollo/user/query';
-import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert } from '../../sweetAlert';
 
-const AddProduct = ({ initialValues }: any) => {
+const AddNewProduct = ({ initialValues }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const inputRef = useRef<any>(null);
@@ -83,6 +83,10 @@ const AddProduct = ({ initialValues }: any) => {
 				formData.append(`${i}`, files[i]);
 			}
 
+			for (const key in files) {
+				if (/^\d+$/.test(key)) formData.append(`${key}`, files[key]);
+			}
+
 			const res = await axios.post(`${process.env.REACT_APP_API_GRAPHQL_URL}`, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
@@ -141,30 +145,70 @@ const AddProduct = ({ initialValues }: any) => {
 			await createProduct({
 				variables: { input: insertProductData },
 			});
-			router.push('/dealer/products');
+			await sweetMixinSuccessAlert('This product has been created successfully.');
+			await router.push({
+				pathname: '/mypage',
+				query: {
+					category: 'myProducts',
+				},
+			});
 		} catch (err) {
-			sweetMixinErrorAlert('Creation failed');
+			sweetErrorHandling(err).then();
 		}
 	}, [insertProductData]);
 
 	/** UPDATE HANDLER **/
 	const updateProductHandler = useCallback(async () => {
 		try {
+			if (!router.query.productId) {
+				await sweetMixinErrorAlert('Product ID is required');
+				return;
+			}
+
+			// Clean up data - remove GraphQL-only fields and only include ProductUpdate fields
+			const updatePayload: any = {
+				_id: router.query.productId as string,
+				productTitle: insertProductData.productTitle,
+				productPrice: insertProductData.productPrice,
+				productMainCategory: insertProductData.productMainCategory,
+				productSubCategory: insertProductData.productSubCategory,
+				productCondition: insertProductData.productCondition,
+				productCarBrand: insertProductData.productCarBrand,
+				productCarModel: insertProductData.productCarModel,
+				productYearFrom: insertProductData.productYearFrom,
+				productYearTo: insertProductData.productYearTo,
+				productOemNumbers: insertProductData.productOemNumbers,
+				productImages: insertProductData.productImages,
+				productDescription: insertProductData.productDescription,
+				productStock: insertProductData.productStock,
+			};
+
+			// Only include productSalePrice if it's defined (not null/undefined)
+			if (insertProductData.productSalePrice !== null && insertProductData.productSalePrice !== undefined) {
+				updatePayload.productSalePrice = insertProductData.productSalePrice;
+			}
+
 			await updateProduct({
 				variables: {
-					input: {
-						productId: router.query.productId,
-						updateData: insertProductData,
-					},
+					input: updatePayload,
 				},
 			});
-			router.push('/dealer/products');
-		} catch (err) {
-			sweetMixinErrorAlert('Update failed');
+			await sweetMixinSuccessAlert('This product has been updated successfully.');
+			await router.push({
+				pathname: '/mypage',
+				query: {
+					category: 'myProducts',
+				},
+			});
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
 		}
-	}, [insertProductData]);
+	}, [insertProductData, router, updateProduct]);
 
-	if (user?.memberType !== 'DEALER') return router.back();
+	if (user?.memberType !== 'DEALER') {
+		router.back();
+		return null;
+	}
 
 	if (device === 'mobile') return <div>ADD PRODUCT MOBILE</div>;
 
@@ -246,10 +290,10 @@ const AddProduct = ({ initialValues }: any) => {
 							</Stack>
 						</Stack>
 
-						{/* PRICE + CONDITION */}
+						{/* PRICE + SALE PRICE */}
 						<Stack className="config-row">
 							<Stack className="price-year-after-price">
-								<Typography className="title">Price (₩)</Typography>
+								<Typography className="title">Price ($)</Typography>
 								<input
 									type="number"
 									className="description-input"
@@ -258,12 +302,31 @@ const AddProduct = ({ initialValues }: any) => {
 									onChange={(e) =>
 										setInsertProductData({
 											...insertProductData,
-											productPrice: parseInt(e.target.value),
+											productPrice: parseInt(e.target.value) || 0,
 										})
 									}
 								/>
 							</Stack>
 
+							<Stack className="price-year-after-price">
+								<Typography className="title">Sale Price ($) <span style={{ fontSize: '12px', fontWeight: 'normal' }}>(Optional)</span></Typography>
+								<input
+									type="number"
+									className="description-input"
+									placeholder="Sale Price (Optional)"
+									value={insertProductData.productSalePrice || ''}
+									onChange={(e) =>
+										setInsertProductData({
+											...insertProductData,
+											productSalePrice: e.target.value ? parseInt(e.target.value) : undefined,
+										})
+									}
+								/>
+							</Stack>
+						</Stack>
+
+						{/* CONDITION */}
+						<Stack className="config-row">
 							<Stack className="price-year-after-price">
 								<Typography className="title">Condition</Typography>
 								<select
@@ -458,10 +521,11 @@ const AddProduct = ({ initialValues }: any) => {
 	);
 };
 
-AddProduct.defaultProps = {
+AddNewProduct.defaultProps = {
 	initialValues: {
 		productTitle: '',
 		productPrice: 0,
+		productSalePrice: undefined,
 		productMainCategory: '',
 		productSubCategory: '',
 		productCondition: '',
@@ -476,4 +540,4 @@ AddProduct.defaultProps = {
 	},
 };
 
-export default AddProduct;
+export default AddNewProduct;

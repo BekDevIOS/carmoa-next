@@ -1,6 +1,6 @@
 #pc-wrap {
 	#my-page {
-		#my-property-page {
+		#my-products-page {
 			width: 100%;
 			height: auto;
 			display: flex;
@@ -33,7 +33,7 @@
 					}
 				}
 			}
-			.property-list-box {
+			.product-list-box {
 				width: 100%;
 				height: auto;
 				.tab-name-box {
@@ -108,7 +108,7 @@
 						margin-right: 138px;
 					}
 				}
-				.property-card-box {
+				.product-card-box {
 					width: 100%;
 					height: auto;
 					flex-direction: row;
@@ -141,14 +141,27 @@
 							font-weight: 600;
 							line-height: normal;
 						}
-						.address {
+						.category-box {
 							margin-bottom: 13px;
-							color: var(--carmo-text-secondary);
-							font-family: $font;
-							font-size: 11px;
-							font-style: normal;
-							font-weight: 400;
-							line-height: normal;
+							flex-direction: row;
+							align-items: center;
+							gap: 8px;
+							.category {
+								color: var(--carmo-text-secondary);
+								font-family: $font;
+								font-size: 11px;
+								font-style: normal;
+								font-weight: 400;
+								line-height: normal;
+							}
+							.category-separator {
+								color: var(--carmo-text-secondary);
+								font-family: $font;
+								font-size: 11px;
+								font-style: normal;
+								font-weight: 400;
+								line-height: normal;
+							}
 						}
 						.price {
 							color: var(--carmo-text);
@@ -252,3 +265,4 @@
 		}
 	}
 }
+

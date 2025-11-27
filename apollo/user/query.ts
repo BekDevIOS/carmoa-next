@@ -221,14 +221,21 @@ export const GET_PRODUCTS = gql`
 	}
 `;
 
-export const GET_AGENT_PRODUCTS = gql`
-	query GetAgentProducts($input: AgentProductsInquiry!) {
-		getAgentProducts(input: $input) {
+export const GET_DEALER_PRODUCTS = gql`
+	query GetDealerProducts($input: DealerProductsInquiry!) {
+		getDealerProducts(input: $input) {
 			list {
 				_id
 				productType
 				productStatus
 				productCondition
+				productTitle
+				productPrice
+				productViews
+				productLikes
+				productComments
+				productRank
+				productImages
 				productMainCategory
 				productSubCategory
 				productCarBrand
@@ -236,15 +243,8 @@ export const GET_AGENT_PRODUCTS = gql`
 				productYearFrom
 				productYearTo
 				productOemNumbers
-				productTitle
-				productPrice
 				productSalePrice
 				productStock
-				productViews
-				productLikes
-				productComments
-				productRank
-				productImages
 				productDescription
 				dealerId
 				soldAt
