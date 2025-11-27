@@ -1,6 +1,7 @@
 import { makeVar } from '@apollo/client';
 
 import { CustomJwtPayload } from '../libs/types/customJwtPayload';
+import { Product } from '../libs/types/product/product';
 
 // QuickView Product Interface
 export interface QuickViewProduct {
@@ -91,26 +92,8 @@ export const closeQuickView = () => {
 	});
 };
 
-// Compare Product Interface
-export interface CompareProduct {
-	id: number;
-	image: string;
-	category?: string;
-	title: string;
-	originalPrice?: number;
-	salePrice: number;
-	discount?: number;
-	rating?: number;
-	compatibility?: string;
-	condition?: 'New' | 'Used' | 'Refurbished';
-	isSale?: boolean;
-	brand?: string;
-	oemNumber?: string;
-	year?: number;
-}
-
 // Initialize compare items from localStorage
-const getInitialCompareItems = (): CompareProduct[] => {
+const getInitialCompareItems = (): Product[] => {
 	if (typeof window !== 'undefined') {
 		try {
 			const saved = localStorage.getItem('carmoa_compare_items');
@@ -127,10 +110,10 @@ const getInitialCompareItems = (): CompareProduct[] => {
 };
 
 // Compare State
-export const compareVar = makeVar<CompareProduct[]>(getInitialCompareItems());
+export const compareVar = makeVar<Product[]>(getInitialCompareItems());
 
 // Helper function to sync localStorage with compareVar
-export const syncCompareToLocalStorage = (items: CompareProduct[]) => {
+export const syncCompareToLocalStorage = (items: Product[]) => {
 	if (typeof window !== 'undefined') {
 		try {
 			localStorage.setItem('carmoa_compare_items', JSON.stringify(items));

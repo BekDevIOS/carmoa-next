@@ -3,11 +3,13 @@ import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
-import { REACT_APP_API_URL } from '../../config';
-import { getJwtToken } from '../../auth';
-import { useReactiveVar } from '@apollo/client';
+import { Messages, REACT_APP_API_URL } from '../../config';
+import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { MemberUpdate } from '../../types/member/member.update';
+import { UPDATE_MEMBER } from '../../../apollo/user/mutation';
+import { sweetErrorHandling, sweetMixinSuccessAlert } from '../../sweetAlert';
 
 const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -16,6 +18,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 	const [updateData, setUpdateData] = useState<MemberUpdate>(initialValues);
 
 	/** APOLLO REQUESTS **/
+	const [updateMember] = useMutation(UPDATE_MEMBER);
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -23,7 +26,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 			...updateData,
 			memberNick: user.memberNick,
 			memberPhone: user.memberPhone,
-			memberAddress: user.memberAddress,
+			memberEmail: user.memberEmail,
 			memberImage: user.memberImage,
 		});
 	}, [user]);
@@ -74,13 +77,32 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 		}
 	};
 
-	const updatePropertyHandler = useCallback(async () => {}, [updateData]);
+	const updatePropertyHandler = useCallback(async () => {
+		try {
+			if (!user._id) throw new Error(Messages.error2);
+			updateData._id = user._id;
+
+			const result = await updateMember({
+				variables: {
+					input: updateData,
+				},
+			});
+
+			// @ts-ignore
+			const jwtToken = result.data.updateMember?.accessToken;
+			await updateStorage({ jwtToken });
+			updateUserInfo(result.data.updateMember?.accessToken);
+			await sweetMixinSuccessAlert('information updated successfully.');
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	}, [updateData]);
 
 	const doDisabledCheck = () => {
 		if (
 			updateData.memberNick === '' ||
 			updateData.memberPhone === '' ||
-			updateData.memberAddress === '' ||
+			updateData.memberEmail === '' ||
 			updateData.memberImage === ''
 		) {
 			return true;
@@ -150,12 +172,12 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 						</Stack>
 					</Stack>
 					<Stack className="address-box">
-						<Typography className="title">Address</Typography>
+						<Typography className="title">Email</Typography>
 						<input
-							type="text"
-							placeholder="Your address"
-							value={updateData.memberAddress}
-							onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberAddress: value })}
+							type="email"
+							placeholder="Your email"
+							value={updateData.memberEmail}
+							onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberEmail: value })}
 						/>
 					</Stack>
 					<Stack className="about-me-box">
@@ -187,7 +209,7 @@ MyProfile.defaultProps = {
 		memberImage: '',
 		memberNick: '',
 		memberPhone: '',
-		memberAddress: '',
+		memberEmail: '',
 	},
 };
 

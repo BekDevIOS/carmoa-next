@@ -141,90 +141,102 @@ export const LIKE_TARGET_MEMBER = gql`
 `;
 
 /**************************
- *        PROPERTY        *
+ *        PRODUCT        *
  *************************/
 
 export const CREATE_PRODUCT = gql`
-	mutation CreateProperty($input: PropertyInput!) {
-		createProperty(input: $input) {
+	mutation CreateProduct($input: ProductInput!) {
+		createProduct(input: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
+			productType
+			productStatus
+			productCondition
+			productMainCategory
+			productSubCategory
+			productCarBrand
+			productCarModel
+			productYearFrom
+			productYearTo
+			productOemNumbers
+			productTitle
+			productPrice
+			productSalePrice
+			productStock
+			productViews
+			productLikes
+			productComments
+			productRank
+			productImages
+			productDescription
+			dealerId
 			soldAt
 			deletedAt
-			constructedAt
 			createdAt
 			updatedAt
 		}
 	}
 `;
 
-export const UPDATE_PROPERTY = gql`
-	mutation UpdateProperty($input: PropertyUpdate!) {
-		updateProperty(input: $input) {
+export const UPDATE_PRODUCT = gql`
+	mutation UpdateProduct($input: ProductUpdate!) {
+		updateProduct(input: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
+			productType
+			productStatus
+			productCondition
+			productMainCategory
+			productSubCategory
+			productCarBrand
+			productCarModel
+			productYearFrom
+			productYearTo
+			productOemNumbers
+			productTitle
+			productPrice
+			productSalePrice
+			productStock
+			productViews
+			productLikes
+			productComments
+			productRank
+			productImages
+			productDescription
+			dealerId
 			soldAt
 			deletedAt
-			constructedAt
 			createdAt
 			updatedAt
 		}
 	}
 `;
 
-export const LIKE_TARGET_PROPERTY = gql`
-	mutation LikeTargetProperty($input: String!) {
-		likeTargetProperty(propertyId: $input) {
+export const LIKE_TARGET_PRODUCT = gql`
+	mutation LikeTargetProduct($input: String!) {
+		likeTargetProduct(productId: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
+			productType
+			productStatus
+			productCondition
+			productMainCategory
+			productSubCategory
+			productCarBrand
+			productCarModel
+			productYearFrom
+			productYearTo
+			productOemNumbers
+			productTitle
+			productPrice
+			productSalePrice
+			productStock
+			productViews
+			productLikes
+			productComments
+			productRank
+			productImages
+			productDescription
+			dealerId
 			soldAt
 			deletedAt
-			constructedAt
 			createdAt
 			updatedAt
 		}

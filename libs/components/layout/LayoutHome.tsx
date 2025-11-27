@@ -18,6 +18,7 @@ import HeroBannerOverlay from '../homepage/HeroBannerOverlay';
 import CompareFab from '../compare/CompareFab';
 import CompareModal from '../compare/CompareModal';
 import { CompareProduct } from '../../../apollo/store';
+import { getJwtToken, updateUserInfo } from '../../auth';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
@@ -56,10 +57,13 @@ const withLayoutMain = (Component: any) => {
 		];
 
 		/** LIFECYCLES **/
-
+		useEffect(() => {
+			const jwt = getJwtToken();
+			if (jwt) updateUserInfo(jwt);
+		}, []);
 		/** HANDLERS **/
 
-			if (device == 'mobile') {
+		if (device == 'mobile') {
 			return (
 				<>
 					<Head>
@@ -73,15 +77,15 @@ const withLayoutMain = (Component: any) => {
 							<Component {...props} />
 						</Stack>
 
-					<Stack id={'footer'}>
-						<Footer />
-					</Stack>
-					<CompareFab onClick={() => setCompareModalOpen(true)} />
-					<CompareModal 
-						open={compareModalOpen} 
-						onClose={() => setCompareModalOpen(false)}
-						onAddToCart={handleAddToCart}
-					/>
+						<Stack id={'footer'}>
+							<Footer />
+						</Stack>
+						<CompareFab onClick={() => setCompareModalOpen(true)} />
+						<CompareModal
+							open={compareModalOpen}
+							onClose={() => setCompareModalOpen(false)}
+							onAddToCart={handleAddToCart}
+						/>
 					</Stack>
 				</>
 			);
@@ -100,32 +104,32 @@ const withLayoutMain = (Component: any) => {
 						<Stack className={'header-main'}>
 							<HeroBannerOverlay />
 						</Stack>
-					<Stack id={'main'}>
-						<Component {...props} />
-					</Stack>
-					<Stack className="layout-features-section">
-						<div className="container">
-							<Stack className="features-grid">
-								{features.map((feature, index) => (
-									<FeatureCard
-										key={index}
-										icon={feature.icon}
-										title={feature.title}
-										description={feature.description}
-									/>
-								))}
-							</Stack>
-						</div>
-					</Stack>
-					<Stack id={'footer'}>
-						<Footer />
-					</Stack>
-					<CompareFab onClick={() => setCompareModalOpen(true)} />
-					<CompareModal 
-						open={compareModalOpen} 
-						onClose={() => setCompareModalOpen(false)}
-						onAddToCart={handleAddToCart}
-					/>
+						<Stack id={'main'}>
+							<Component {...props} />
+						</Stack>
+						<Stack className="layout-features-section">
+							<div className="container">
+								<Stack className="features-grid">
+									{features.map((feature, index) => (
+										<FeatureCard
+											key={index}
+											icon={feature.icon}
+											title={feature.title}
+											description={feature.description}
+										/>
+									))}
+								</Stack>
+							</div>
+						</Stack>
+						<Stack id={'footer'}>
+							<Footer />
+						</Stack>
+						<CompareFab onClick={() => setCompareModalOpen(true)} />
+						<CompareModal
+							open={compareModalOpen}
+							onClose={() => setCompareModalOpen(false)}
+							onAddToCart={handleAddToCart}
+						/>
 					</Stack>
 				</>
 			);

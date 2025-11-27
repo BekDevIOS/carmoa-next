@@ -1,18 +1,19 @@
 import { useReactiveVar } from '@apollo/client';
-import { compareVar, CompareProduct, syncCompareToLocalStorage } from '../../apollo/store';
+import { compareVar, syncCompareToLocalStorage } from '../../apollo/store';
+import { Product } from '../types/product/product';
 
 export const useCompare = () => {
 	const items = useReactiveVar(compareVar);
 
-	const isCompared = (id: number): boolean => {
-		return items.some((item) => item.id === id);
+	const isCompared = (id: string): boolean => {
+		return items.some((item) => item._id === id);
 	};
 
-	const addToCompare = (product: CompareProduct): void => {
+	const addToCompare = (product: Product): void => {
 		const currentItems = compareVar();
 		
 		// Check if already in compare
-		if (isCompared(product.id)) {
+		if (isCompared(product._id)) {
 			return;
 		}
 
@@ -29,16 +30,16 @@ export const useCompare = () => {
 		}
 	};
 
-	const removeFromCompare = (id: number): void => {
+	const removeFromCompare = (id: string): void => {
 		const currentItems = compareVar();
-		const newItems = currentItems.filter((item) => item.id !== id);
+		const newItems = currentItems.filter((item) => item._id !== id);
 		compareVar(newItems);
 		syncCompareToLocalStorage(newItems);
 	};
 
-	const toggleCompare = (product: CompareProduct): void => {
-		if (isCompared(product.id)) {
-			removeFromCompare(product.id);
+	const toggleCompare = (product: Product): void => {
+		if (isCompared(product._id)) {
+			removeFromCompare(product._id);
 		} else {
 			addToCompare(product);
 		}

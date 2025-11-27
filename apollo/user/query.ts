@@ -79,32 +79,36 @@ query GetMember($input: String!) {
 `);
 
 /**************************
- *        PROPERTY        *
+ *        PRODUCT        *
  *************************/
 
-export const GET_PROPERTY = gql`
-	query GetProperty($input: String!) {
-		getProperty(propertyId: $input) {
+export const GET_PRODUCT = gql`
+	query GetProduct($input: String!) {
+		getProduct(productId: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
+			productType
+			productStatus
+			productCondition
+			productMainCategory
+			productSubCategory
+			productCarBrand
+			productCarModel
+			productYearFrom
+			productYearTo
+			productOemNumbers
+			productTitle
+			productPrice
+			productSalePrice
+			productStock
+			productViews
+			productLikes
+			productComments
+			productRank
+			productImages
+			productDescription
+			dealerId
 			soldAt
 			deletedAt
-			constructedAt
 			createdAt
 			updatedAt
 			memberData {
@@ -118,14 +122,22 @@ export const GET_PROPERTY = gql`
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
+				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
+				memberProducts
+				memberProvider
+				memberEmail
 				accessToken
 			}
 			meLiked {
@@ -137,31 +149,34 @@ export const GET_PROPERTY = gql`
 	}
 `;
 
-export const GET_PROPERTIES = gql`
-	query GetProperties($input: PropertiesInquiry!) {
-		getProperties(input: $input) {
+export const GET_PRODUCTS = gql`
+	query GetProducts($input: ProductsInquiry!) {
+		getProducts(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
+				productType
+				productStatus
+				productCondition
+				productMainCategory
+				productSubCategory
+				productCarBrand
+				productCarModel
+				productYearFrom
+				productYearTo
+				productOemNumbers
+				productTitle
+				productPrice
+				productSalePrice
+				productStock
+				productViews
+				productLikes
+				productComments
+				productRank
+				productImages
+				productDescription
+				dealerId
 				soldAt
 				deletedAt
-				constructedAt
 				createdAt
 				updatedAt
 				memberData {
@@ -175,16 +190,23 @@ export const GET_PROPERTIES = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
+					accessToken
 				}
 				meLiked {
 					memberId
@@ -199,30 +221,34 @@ export const GET_PROPERTIES = gql`
 	}
 `;
 
-export const GET_AGENT_PROPERTIES = gql`
-	query GetAgentProperties($input: AgentPropertiesInquiry!) {
-		getAgentProperties(input: $input) {
+export const GET_AGENT_PRODUCTS = gql`
+	query GetAgentProducts($input: AgentProductsInquiry!) {
+		getAgentProducts(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
+				productType
+				productStatus
+				productCondition
+				productMainCategory
+				productSubCategory
+				productCarBrand
+				productCarModel
+				productYearFrom
+				productYearTo
+				productOemNumbers
+				productTitle
+				productPrice
+				productSalePrice
+				productStock
+				productViews
+				productLikes
+				productComments
+				productRank
+				productImages
+				productDescription
+				dealerId
 				soldAt
 				deletedAt
-				constructedAt
 				createdAt
 				updatedAt
 			}
@@ -238,27 +264,29 @@ export const GET_FAVORITES = gql`
 		getFavorites(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyComments
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
+				productType
+				productStatus
+				productCondition
+				productMainCategory
+				productSubCategory
+				productCarBrand
+				productCarModel
+				productYearFrom
+				productYearTo
+				productOemNumbers
+				productTitle
+				productPrice
+				productSalePrice
+				productStock
+				productViews
+				productLikes
+				productComments
+				productRank
+				productImages
+				productDescription
+				dealerId
 				soldAt
 				deletedAt
-				constructedAt
 				createdAt
 				updatedAt
 				memberData {
@@ -272,20 +300,22 @@ export const GET_FAVORITES = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberProperties
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
 					accessToken
 				}
 			}
@@ -301,27 +331,29 @@ export const GET_VISITED = gql`
 		getVisited(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyComments
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
+				productType
+				productStatus
+				productCondition
+				productMainCategory
+				productSubCategory
+				productCarBrand
+				productCarModel
+				productYearFrom
+				productYearTo
+				productOemNumbers
+				productTitle
+				productPrice
+				productSalePrice
+				productStock
+				productViews
+				productLikes
+				productComments
+				productRank
+				productImages
+				productDescription
+				dealerId
 				soldAt
 				deletedAt
-				constructedAt
 				createdAt
 				updatedAt
 				memberData {
@@ -335,20 +367,22 @@ export const GET_VISITED = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberProperties
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
 					accessToken
 				}
 			}
@@ -389,16 +423,23 @@ export const GET_BOARD_ARTICLE = gql`
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
-				memberProperties
-				memberRank
+				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
+				memberProducts
+				memberProvider
+				memberEmail
+				accessToken
 			}
 			meLiked {
 				memberId
@@ -441,16 +482,23 @@ export const GET_BOARD_ARTICLES = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
+					accessToken
 				}
 			}
 			metaCounter {
@@ -487,16 +535,22 @@ export const GET_COMMENTS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
 					accessToken
 				}
 			}
@@ -540,20 +594,23 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberProperties
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
+					accessToken
 				}
 			}
 			metaCounter {
@@ -583,20 +640,22 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberProperties
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					memberProducts
+					memberProvider
+					memberEmail
 					accessToken
 				}
 				meLiked {

@@ -10,6 +10,7 @@ export interface MemberUpdate {
 	memberFullName?: string;
 	memberImage?: string;
 	memberAddress?: string;
+	memberEmail?: string;
 	memberDesc?: string;
 	deletedAt?: Date;
 }

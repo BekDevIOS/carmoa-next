@@ -7,119 +7,126 @@ import {
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 	StarBorder as StarBorderIcon,
 } from '@mui/icons-material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCompare } from '../../hooks/useCompare';
-
-interface Product {
-	id: number;
-	image: string;
-	category?: string;
-	title: string;
-	originalPrice?: number;
-	salePrice: number;
-	discount?: number;
-	rating?: number;
-	compatibility?: string;
-	condition?: 'New' | 'Used' | 'Refurbished';
-	isSale?: boolean;
-}
+import { Product } from '../../types/product/product';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '../../../apollo/store';
+import { REACT_APP_API_URL } from '../../config';
 
 interface ProductCardProps {
 	product: Product;
-	addToCartHandler?: (productId: number) => void;
-	wishlistHandler?: (productId: number) => void;
-	compareHandler?: (productId: number) => void;
-	quickViewHandler?: (productId: number) => void;
+	likeProductHandler?: any;
+	myFavorites?: boolean;
+	recentlyVisited?: boolean;
+	addToCartHandler?: any;
+	compareHandler?: any;
+	quickViewHandler?: any;
 }
 
 const ProductCard = ({
 	product,
+	likeProductHandler,
 	addToCartHandler,
-	wishlistHandler,
+	myFavorites,
+	recentlyVisited,
 	compareHandler,
 	quickViewHandler,
 }: ProductCardProps) => {
+	const device = useDeviceDetect();
+	const user = useReactiveVar(userVar);
 	const [isHovered, setIsHovered] = useState(false);
 	const { isCompared, toggleCompare } = useCompare();
-	const isInCompare = isCompared(product.id);
+	const isInCompare = isCompared(product._id);
+	const imagePath: string = product?.productImages?.[0]
+		? `${REACT_APP_API_URL}/${product?.productImages[0]}`
+		: '/img/banner/header1.svg';
 
-	return (
-		<Stack
-			className={'product-card'}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => {
-				setIsHovered(false);
-			}}
-		>
-			<Stack className={'card-image-wrapper'}>
-				{(product.isSale || product.discount) && (
-					<Box className={'sale-badge'}>
-						<Typography variant="caption" className={'sale-text'}>
-							SALE
-						</Typography>
-					</Box>
-				)}
-				<img src={product.image} alt={product.title} className={'product-image'} />
-				<Stack className={`hover-actions ${isHovered ? 'visible' : ''}`}>
-					<Box className={'action-icon'} onClick={() => wishlistHandler?.(product.id)}>
-						<FavoriteBorderIcon className={'icon'} />
-					</Box>
-					<Tooltip title={isInCompare ? 'Remove from Compare' : 'Add to Compare'} arrow>
-						<Box 
-							className={`action-icon ${isInCompare ? 'compared' : ''}`} 
-							onClick={() => {
-								toggleCompare(product);
-								compareHandler?.(product.id);
-							}}
-						>
-							<CompareArrowsIcon className={'icon'} />
+	if (device === 'mobile') {
+		return <div>PRODUCT CARD</div>;
+	} else {
+		return (
+			<Stack
+				className={'product-card'}
+				onMouseEnter={() => setIsHovered(true)}
+				onMouseLeave={() => {
+					setIsHovered(false);
+				}}
+			>
+				<Stack className={'card-image-wrapper'}>
+					{product.productSalePrice && product.productSalePrice > 0 && (
+						<Box className={'sale-badge'}>
+							<Typography variant="caption" className={'sale-text'}>
+								SALE
+							</Typography>
 						</Box>
-					</Tooltip>
-					<Box className={'action-icon'} onClick={() => quickViewHandler?.(product.id)}>
-						<VisibilityIcon className={'icon'} />
-					</Box>
+					)}
+					<img src={imagePath} alt={product.productTitle} className={'product-image'} />
+					<Stack className={`hover-actions ${isHovered ? 'visible' : ''}`}>
+						<Box className={'action-icon'} onClick={() => likeProductHandler(user, product._id)}>
+							{myFavorites ? (
+								<FavoriteIcon color="primary" />
+							) : product?.meLiked && product?.meLiked[0]?.myFavorite ? (
+								<FavoriteIcon color="primary" />
+							) : (
+								<FavoriteBorderIcon />
+							)}
+						</Box>
+						<Tooltip title={isInCompare ? 'Remove from Compare' : 'Add to Compare'} arrow>
+							<Box
+								className={`action-icon ${isInCompare ? 'compared' : ''}`}
+								onClick={() => {
+									toggleCompare(product);
+									compareHandler?.(product._id);
+								}}
+							>
+								<CompareArrowsIcon className={'icon'} />
+							</Box>
+						</Tooltip>
+						<Box className={'action-icon'} onClick={() => quickViewHandler?.(product._id)}>
+							<VisibilityIcon className={'icon'} />
+						</Box>
+					</Stack>
 				</Stack>
-			</Stack>
-			<Stack className={`card-content ${isHovered ? 'hovered' : ''}`}>
-				<Typography variant="body1" className={'product-title'}>
-					{product.title}
-				</Typography>
-				{product.compatibility && (
-					<Typography variant="caption" className={'compatibility-text'}>
-						{product.compatibility}
+				<Stack className={`card-content ${isHovered ? 'hovered' : ''}`}>
+					<Typography variant="body1" className={'product-title'}>
+						{product.productTitle}
 					</Typography>
-				)}
-				{product.condition && (
-					<Box className={'condition-badge'}>
-						<Typography variant="caption" className={'condition-text'}>
-							{product.condition}
-						</Typography>
-					</Box>
-				)}
-				<Stack className={'rating-section'}>
-					{[1, 2, 3, 4, 5].map((star) => (
-						<StarBorderIcon key={star} className={'star-icon'} />
-					))}
-				</Stack>
-				<Stack className={'price-section'}>
-					{product.originalPrice && (
-						<Typography variant="body2" className={'original-price'}>
-							${product.originalPrice.toFixed(2)}
+					{product.productDescription && (
+						<Typography variant="caption" className={'compatibility-text'}>
+							{product.productDescription}
 						</Typography>
 					)}
-					<Typography variant="h6" className={'sale-price'}>
-						${product.salePrice.toFixed(2)}
-					</Typography>
+					{product.productCondition && (
+						<Box className={'condition-badge'}>
+							<Typography variant="caption" className={'condition-text'}>
+								{product.productCondition}
+							</Typography>
+						</Box>
+					)}
+					<Stack className={'rating-section'}>
+						{[1, 2, 3, 4, 5].map((star) => (
+							<StarBorderIcon key={star} className={'star-icon'} />
+						))}
+					</Stack>
+					<Stack className={'price-section'}>
+						{product.productPrice && (
+							<Typography variant="body2" className={'original-price'}>
+								${product.productPrice.toFixed(2)}
+							</Typography>
+						)}
+						<Typography variant="h6" className={'sale-price'}>
+							${product.productSalePrice?.toFixed(2)}
+						</Typography>
+					</Stack>
+					<Box className={'add-to-cart-btn'} onClick={() => addToCartHandler?.(product._id)}>
+						<ShoppingCartOutlinedIcon className={'cart-icon'} />
+					</Box>
 				</Stack>
-				<Box
-					className={'add-to-cart-btn'}
-					onClick={() => addToCartHandler?.(product.id)}
-				>
-					<ShoppingCartOutlinedIcon className={'cart-icon'} />
-				</Box>
 			</Stack>
-		</Stack>
-	);
+		);
+	}
 };
 
 export default ProductCard;
-

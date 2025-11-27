@@ -7,7 +7,6 @@ import Moment from 'react-moment';
 import { REACT_APP_API_URL } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
-import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -15,16 +14,17 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 interface BlogCardProps {
 	boardArticle: BoardArticle;
 	size?: string;
+	likeArticleHandler?: any;
 }
 
 const BlogCard = (props: BlogCardProps) => {
-	const { boardArticle, size = 'normal' } = props;
+	const { boardArticle, size = 'normal', likeArticleHandler } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
-	const imagePath: string = boardArticle?.articleImage || '/img/banner/cities/BUSAN.webp';
-	// ? `${REACT_APP_API_URL}/${boardArticle?.articleImage}`
-	// : '/img/community/communityImg.png';
+	const imagePath: string = boardArticle?.articleImage
+		? `${REACT_APP_API_URL}/${boardArticle?.articleImage}`
+		: '/img/community/communityImg.png';
 
 	/** HANDLERS **/
 	const chooseArticleHandler = (e: React.SyntheticEvent, boardArticle: BoardArticle) => {
@@ -44,11 +44,11 @@ const BlogCard = (props: BlogCardProps) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>BLOG CARD MOBILE</div>;
+		return <div>COMMUNITY CARD MOBILE</div>;
 	} else {
 		return (
 			<Stack
-				sx={{ width: '300px' }}
+				sx={{ width: '292px'}}
 				className="community-blog-card"
 				onClick={(e) => chooseArticleHandler(e, boardArticle)}
 			>
@@ -88,7 +88,7 @@ const BlogCard = (props: BlogCardProps) => {
 							<Typography>{boardArticle?.articleViews}</Typography>
 						</Stack>
 
-						<Stack className="stat-item">
+						<Stack className="stat-item" onClick={(e) => likeArticleHandler(e, user, boardArticle?._id)}>
 							{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
 								<FavoriteIcon className="icon liked" />
 							) : (
