@@ -98,13 +98,7 @@ const ProductCard = ({
 							{product.productDescription}
 						</Typography>
 					)}
-					{product.productCondition && (
-						<Box className={'condition-badge'}>
-							<Typography variant="caption" className={'condition-text'}>
-								{product.productCondition}
-							</Typography>
-						</Box>
-					)}
+					
 					<Stack className={'rating-section'}>
 						{[1, 2, 3, 4, 5].map((star) => (
 							<StarBorderIcon key={star} className={'star-icon'} />
@@ -112,14 +106,23 @@ const ProductCard = ({
 					</Stack>
 					<Stack className={'price-section'}>
 						{product.productPrice && (
-							<Typography variant="body2" className={'original-price'}>
+							<Typography variant="body2" className={`original-price ${product.productSalePrice && product.productSalePrice > 0 ? 'sale' : ''}`}>
 								${product.productPrice.toFixed(2)}
 							</Typography>
 						)}
-						<Typography variant="h6" className={'sale-price'}>
-							${product.productSalePrice?.toFixed(2)}
-						</Typography>
+						{product.productSalePrice && product.productSalePrice > 0 && (
+							<Typography variant="h6" className={'sale-price'}>
+								${product.productSalePrice?.toFixed(2)}
+							</Typography>
+						)}
 					</Stack>
+					{product.productCondition && (
+						<Box className={'condition-badge'}>
+							<Typography variant="caption" className={'condition-text'}>
+								{product.productCondition}
+							</Typography>
+						</Box>
+					)}
 					<Box className={'add-to-cart-btn'} onClick={() => addToCartHandler?.(product._id)}>
 						<ShoppingCartOutlinedIcon className={'cart-icon'} />
 					</Box>

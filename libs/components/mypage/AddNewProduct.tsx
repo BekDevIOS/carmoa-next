@@ -51,12 +51,16 @@ const AddNewProduct = ({ initialValues }: any) => {
 	async function uploadImages() {
 		try {
 			const formData = new FormData();
-			const files = inputRef.current?.files;
+			const fileList = inputRef.current?.files;
 
-			if (!files || files.length === 0) {
+			if (!fileList || fileList.length === 0) {
 				await sweetMixinErrorAlert('Please select at least one image');
 				return;
 			}
+
+			// Convert FileList to Array
+			const files: File[] = Array.from(fileList);
+
 			if (files.length > 5) {
 				await sweetMixinErrorAlert('Maximum 5 images allowed');
 				return;
@@ -79,12 +83,9 @@ const AddNewProduct = ({ initialValues }: any) => {
 
 			formData.append('map', JSON.stringify(map));
 
+			// Append files to FormData
 			for (let i = 0; i < files.length; i++) {
 				formData.append(`${i}`, files[i]);
-			}
-
-			for (const key in files) {
-				if (/^\d+$/.test(key)) formData.append(`${key}`, files[key]);
 			}
 
 			const res = await axios.post(`${process.env.REACT_APP_API_GRAPHQL_URL}`, formData, {
@@ -104,9 +105,14 @@ const AddNewProduct = ({ initialValues }: any) => {
 				throw new Error('No images were uploaded');
 			}
 
+			// Append new images to existing ones, or replace if editing
+			const existingImages = insertProductData.productImages || [];
+			const newImages = Array.isArray(imgs) ? imgs : [imgs];
+			const allImages = [...existingImages, ...newImages];
+
 			setInsertProductData({
 				...insertProductData,
-				productImages: imgs,
+				productImages: allImages,
 			});
 
 			// Reset file input to allow re-uploading the same files
@@ -119,6 +125,15 @@ const AddNewProduct = ({ initialValues }: any) => {
 			await sweetMixinErrorAlert(errorMessage);
 		}
 	}
+
+	/** REMOVE IMAGE HANDLER **/
+	const removeImageHandler = (imageToRemove: string) => {
+		const updatedImages = insertProductData.productImages?.filter((img: string) => img !== imageToRemove) || [];
+		setInsertProductData({
+			...insertProductData,
+			productImages: updatedImages,
+		});
+	};
 
 	/** DISABLED CHECK **/
 	const doDisabledCheck = () => {
@@ -496,8 +511,37 @@ const AddNewProduct = ({ initialValues }: any) => {
 
 						<Stack className="gallery-box">
 							{insertProductData.productImages?.map((img: string) => (
-								<Stack key={img} className="image-box">
-									<img src={`${REACT_APP_API_URL}/${img}`} alt="" />
+								<Stack key={img} className="image-box" style={{ position: 'relative', cursor: 'pointer' }}>
+									<img 
+										src={`${REACT_APP_API_URL}/${img}`} 
+										alt="" 
+										onClick={() => removeImageHandler(img)}
+										style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+									/>
+									<Button
+										onClick={(e) => {
+											e.stopPropagation();
+											removeImageHandler(img);
+										}}
+										style={{
+											position: 'absolute',
+											top: '5px',
+											right: '5px',
+											minWidth: '30px',
+											width: '30px',
+											height: '30px',
+											borderRadius: '50%',
+											backgroundColor: 'rgba(255, 0, 0, 0.7)',
+											color: 'white',
+											padding: 0,
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											cursor: 'pointer',
+										}}
+									>
+										×
+									</Button>
 								</Stack>
 							))}
 						</Stack>

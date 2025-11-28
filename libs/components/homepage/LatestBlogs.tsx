@@ -1,115 +1,67 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import BlogCard from '../common/BlogCard';
 import { BoardArticle } from '../../types/blog/board-article';
-import { BoardArticleCategory } from '../../enums/blog.enum';
+import { BoardArticlesInquiry } from '../../types/blog/board-article.input';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
+import { LIKE_TARGET_BOARD_ARTICLE } from '../../../apollo/user/mutation';
+import { T } from '../../types/common';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { userVar } from '../../../apollo/store';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-interface BlogPost {
-	id: number;
-	image: string;
-	date: string;
-	day: string;
-	month: string;
-	title: string;
-	description: string;
+interface LatestBlogsProps {
+	initialInput?: BoardArticlesInquiry;
 }
 
-const LatestBlogs = () => {
+const LatestBlogs = (props: LatestBlogsProps) => {
+	const { initialInput } = props;
 	const swiperRef = useRef<any>(null);
+	const user = useReactiveVar(userVar);
+	const [latestBlogs, setLatestBlogs] = useState<BoardArticle[]>([]);
 
-	const blogs: BlogPost[] = [
-		{
-			id: 1,
-			image: '/img/community/communityImg.png',
-			date: '2024-10-03',
-			day: '03',
-			month: 'Oct',
-			title: 'Duis aute irure dolor in',
-			description:
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-		},
-		{
-			id: 2,
-			image: '/img/community/communityImg.png',
-			date: '2024-10-03',
-			day: '03',
-			month: 'Oct',
-			title: 'Sunt in culpa qui officia deserunt',
-			description:
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-		},
-		{
-			id: 3,
-			image: '/img/community/communityImg.png',
-			date: '2024-10-03',
-			day: '03',
-			month: 'Oct',
-			title: 'Excepteur sint occaecat cup',
-			description:
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-		},
-		{
-			id: 4,
-			image: '/img/community/communityImg.png',
-			date: '2024-10-03',
-			day: '03',
-			month: 'Oct',
-			title: 'Duis aute irure dolor in',
-			description:
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-		},
-		{
-			id: 5,
-			image: '/img/community/communityImg.png',
-			date: '2024-10-03',
-			day: '03',
-			month: 'Oct',
-			title: 'Sunt in culpa qui officia deserunt',
-			description:
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-		},
-		{
-			id: 6,
-			image: '/img/community/communityImg.png',
-			date: '2024-10-03',
-			day: '03',
-			month: 'Oct',
-			title: 'Excepteur sint occaecat cup',
-			description:
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-		},
-	];
+	/** APOLLO REQUESTS **/
+	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
 
-	const readMoreHandler = (blogId: number) => {
-		console.log('Read more:', blogId);
-	};
+	const {
+		loading: getBoardArticlesLoading,
+		data: getBoardArticlesData,
+		error: getBoardArticlesError,
+		refetch: getBoardArticlesRefetch,
+	} = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setLatestBlogs(data?.getBoardArticles?.list || []);
+		},
+	});
 
-	// Transform BlogPost to BoardArticle format
-	const transformToBoardArticle = (blog: BlogPost): BoardArticle => {
-		return {
-			_id: blog.id.toString(),
-			articleCategory: BoardArticleCategory.NEWS,
-			articleStatus: 'ACTIVE' as any,
-			articleTitle: blog.title,
-			articleContent: blog.description,
-			articleImage: blog.image,
-			articleViews: 0,
-			articleLikes: 0,
-			articleComments: 0,
-			memberId: '',
-			createdAt: new Date(blog.date),
-			updatedAt: new Date(blog.date),
-			memberData: {
-				_id: '',
-				memberNick: 'Author',
-			} as any,
-			meLiked: [],
-		};
+	/** HANDLERS **/
+	const likeArticleHandler = async (e: React.SyntheticEvent, user: T, id: string) => {
+		try {
+			e.stopPropagation();
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await likeTargetBoardArticle({
+				variables: {
+					input: id,
+				},
+			});
+
+			await getBoardArticlesRefetch({ input: initialInput });
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeArticleHandler:', err);
+			sweetMixinErrorAlert(err.message).then();
+		}
 	};
 
 	return (
@@ -132,7 +84,7 @@ const LatestBlogs = () => {
 					<Box component={'div'} className={'swiper-container'}>
 						<Swiper
 							className={'latest-blogs-swiper'}
-							slidesPerView={3}
+							slidesPerView={4}
 							spaceBetween={30}
 							modules={[Navigation]}
 							navigation={{
@@ -143,9 +95,9 @@ const LatestBlogs = () => {
 								swiperRef.current = swiper;
 							}}
 						>
-							{blogs.map((blog) => (
-								<SwiperSlide key={blog.id} className={'latest-blog-slide'}>
-									<BlogCard boardArticle={transformToBoardArticle(blog)} />
+							{latestBlogs.map((blog) => (
+								<SwiperSlide key={blog._id} className={'latest-blog-slide'}>
+									<BlogCard boardArticle={blog} likeArticleHandler={likeArticleHandler} />
 								</SwiperSlide>
 							))}
 						</Swiper>
@@ -157,6 +109,16 @@ const LatestBlogs = () => {
 			</Stack>
 		</Stack>
 	);
+};
+
+LatestBlogs.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 6,
+		sort: 'createdAt',
+		direction: 'DESC',
+		search: {},
+	},
 };
 
 export default LatestBlogs;

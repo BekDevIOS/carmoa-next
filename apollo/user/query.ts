@@ -12,19 +12,25 @@ export const GET_AGENTS = gql`
 				memberType
 				memberStatus
 				memberAuthType
+				memberProvider
 				memberPhone
+				memberEmail
 				memberNick
 				memberFullName
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
-				memberProperties
-				memberRank
+				memberProducts
+				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
@@ -49,19 +55,22 @@ query GetMember($input: String!) {
         memberType
         memberStatus
         memberAuthType
+        memberProvider
         memberPhone
+        memberEmail
         memberNick
         memberFullName
         memberImage
         memberAddress
         memberDesc
-        memberProperties
+        memberProducts
         memberArticles
+        memberFollowers
+        memberFollowings
         memberPoints
         memberLikes
         memberViews
-        memberFollowings
-				memberFollowers
+        memberComments
         memberRank
         memberWarnings
         memberBlocks
@@ -69,11 +78,16 @@ query GetMember($input: String!) {
         createdAt
         updatedAt
         accessToken
+        meLiked {
+            memberId
+            likeRefId
+            myFavorite
+        }
         meFollowed {
-					followingId
-					followerId
-					myFollowing
-				}
+            followingId
+            followerId
+            myFollowing
+        }
     }
 }
 `);
@@ -116,12 +130,15 @@ export const GET_PRODUCT = gql`
 				memberType
 				memberStatus
 				memberAuthType
+				memberProvider
 				memberPhone
+				memberEmail
 				memberNick
 				memberFullName
 				memberImage
 				memberAddress
 				memberDesc
+				memberProducts
 				memberArticles
 				memberFollowers
 				memberFollowings
@@ -135,9 +152,6 @@ export const GET_PRODUCT = gql`
 				deletedAt
 				createdAt
 				updatedAt
-				memberProducts
-				memberProvider
-				memberEmail
 				accessToken
 			}
 			meLiked {
@@ -417,12 +431,15 @@ export const GET_BOARD_ARTICLE = gql`
 				memberType
 				memberStatus
 				memberAuthType
+				memberProvider
 				memberPhone
+				memberEmail
 				memberNick
 				memberFullName
 				memberImage
 				memberAddress
 				memberDesc
+				memberProducts
 				memberArticles
 				memberFollowers
 				memberFollowings
@@ -436,9 +453,6 @@ export const GET_BOARD_ARTICLE = gql`
 				deletedAt
 				createdAt
 				updatedAt
-				memberProducts
-				memberProvider
-				memberEmail
 				accessToken
 			}
 			meLiked {
@@ -588,12 +602,15 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberType
 					memberStatus
 					memberAuthType
+					memberProvider
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
 					memberDesc
+					memberProducts
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -607,9 +624,6 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					deletedAt
 					createdAt
 					updatedAt
-					memberProducts
-					memberProvider
-					memberEmail
 					accessToken
 				}
 			}
@@ -634,12 +648,15 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberType
 					memberStatus
 					memberAuthType
+					memberProvider
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
 					memberDesc
+					memberProducts
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -653,9 +670,6 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					deletedAt
 					createdAt
 					updatedAt
-					memberProducts
-					memberProvider
-					memberEmail
 					accessToken
 				}
 				meLiked {

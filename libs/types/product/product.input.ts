@@ -38,6 +38,7 @@ export interface PISearch {
 	periodsRange?: PeriodsRange;
 	yearsRange?: Range;
 	text?: string;
+	onSale?: boolean;
 }
 
 export interface ProductsInquiry {

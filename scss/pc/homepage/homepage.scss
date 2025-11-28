@@ -869,7 +869,9 @@
 					font-size: 14px;
 					font-weight: 400;
 					color: var(--carmo-text-secondary);
-					text-decoration: line-through;
+					&.sale {
+						text-decoration: line-through;
+					}
 				}
 			}
 

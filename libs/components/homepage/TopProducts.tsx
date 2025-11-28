@@ -1,113 +1,75 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '../common/ProductCard';
+import { ProductsInquiry } from '../../types/product/product.input';
+import { Product } from '../../types/product/product';
+import { useMutation, useQuery } from '@apollo/client';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { T } from '../../types/common';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-interface Product {
-	id: number;
-	image: string;
-	category: string;
-	title: string;
-	originalPrice?: number;
-	salePrice: number;
-	discount?: number;
+interface TopProductsProps {
+	initialInput: ProductsInquiry;
 }
 
-const TopProducts = () => {
+const TopProducts = (props: TopProductsProps) => {
+	const { initialInput } = props;
 	const swiperRef = useRef<any>(null);
+	const [topProducts, setTopProducts] = useState<Product[]>([]);
 
-	const products: Product[] = [
-		{
-			id: 1,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 2,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 3,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 4,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 5,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 6,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 7,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 8,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-	];
+	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 
-	const addToCartHandler = (productId: number) => {
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setTopProducts(data?.getProducts?.list);
+		},
+	});
+
+	/** HANDLERS **/
+	const likeProductHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await likeTargetProduct({
+				variables: { input: id },
+			});
+			await getProductsRefetch({ input: initialInput });
+
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeProductHandler:', err);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	if (!topProducts) return null;
+
+	const addToCartHandler = (productId: number | string) => {
 		console.log('Add to cart:', productId);
 	};
 
-	const wishlistHandler = (productId: number) => {
-		console.log('Add to wishlist:', productId);
-	};
-
-	const compareHandler = (productId: number) => {
+	const compareHandler = (productId: number | string) => {
 		console.log('Add to compare:', productId);
 	};
 
-	const quickViewHandler = (productId: number) => {
+	const quickViewHandler = (productId: number | string) => {
 		console.log('Quick view:', productId);
 	};
 
@@ -142,12 +104,12 @@ const TopProducts = () => {
 								swiperRef.current = swiper;
 							}}
 						>
-							{products.map((product) => (
-								<SwiperSlide key={product.id} className={'top-product-slide'}>
+							{topProducts.map((product) => (
+								<SwiperSlide key={product._id} className={'top-product-slide'}>
 									<ProductCard
 										product={product}
+										likeProductHandler={likeProductHandler}
 										addToCartHandler={addToCartHandler}
-										wishlistHandler={wishlistHandler}
 										compareHandler={compareHandler}
 										quickViewHandler={quickViewHandler}
 									/>
@@ -162,6 +124,16 @@ const TopProducts = () => {
 			</Stack>
 		</Stack>
 	);
+};
+
+TopProducts.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 8,
+		sort: 'productRank',
+		direction: 'DESC',
+		search: {},
+	},
 };
 
 export default TopProducts;

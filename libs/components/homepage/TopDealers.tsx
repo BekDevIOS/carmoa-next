@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -8,68 +8,41 @@ import DealerCard from '../common/DealerCard';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { AgentsInquiry } from '../../types/member/member.input';
+import { useRouter } from 'next/router';
+import { Member } from '../../types/member/member';
+import { useQuery } from '@apollo/client';
+import { GET_AGENTS } from '../../../apollo/user/query';
+import { T } from '../../types/common';
 
-interface Dealer {
-	id: number;
-	name: string;
-	type: string;
-	image: string;
+interface TopDealerProps {
+	initialInput: AgentsInquiry;
 }
 
-const TopDealers = () => {
+const TopDealers = (props: TopDealerProps) => {
+	const { initialInput } = props;
 	const device = useDeviceDetect();
+	const router = useRouter();
+	const [topDealers, setTopDealers] = useState<Member[]>([]);
 
-	// Hardcoded dealers data
-	const dealers: Dealer[] = [
-		{
-			id: 1,
-			name: 'Sarah Johnson',
-			type: 'Premium Dealer',
-			image: '/img/profile/girl.svg',
+	/** APOLLO REQUESTS **/
+	const {
+		loading: getDealersLoading,
+		data: getDealersData,
+		error: getDealersError,
+		refetch: getDealersRefetch,
+	} = useQuery(GET_AGENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setTopDealers(data?.getAgents?.list);
 		},
-		{
-			id: 2,
-			name: 'Emily Davis',
-			type: 'Elite Dealer',
-			image: '/img/profile/girl.svg',
-		},
-		{
-			id: 3,
-			name: 'Jessica Martinez',
-			type: 'Premium Dealer',
-			image: '/img/profile/girl.svg',
-		},
-		{
-			id: 4,
-			name: 'Amanda Wilson',
-			type: 'Elite Dealer',
-			image: '/img/profile/girl.svg',
-		},
-		{
-			id: 5,
-			name: 'Michelle Brown',
-			type: 'Premium Dealer',
-			image: '/img/profile/girl.svg',
-		},
-		{
-			id: 6,
-			name: 'Rachel Taylor',
-			type: 'Elite Dealer',
-			image: '/img/profile/girl.svg',
-		},
-		{
-			id: 7,
-			name: 'Nicole Anderson',
-			type: 'Premium Dealer',
-			image: '/img/profile/girl.svg',
-		},
-		{
-			id: 8,
-			name: 'Lauren Thomas',
-			type: 'Elite Dealer',
-			image: '/img/profile/girl.svg',
-		},
-	];
+	});
+
+	/** HANDLERS **/
+
+	if (!topDealers) return null; 
 
 	if (device === 'mobile') {
 		return (
@@ -88,9 +61,9 @@ const TopDealers = () => {
 							spaceBetween={29}
 							modules={[Autoplay]}
 						>
-							{dealers.map((dealer: Dealer) => {
+							{topDealers.map((dealer: Member) => {
 								return (
-									<SwiperSlide className={'top-dealers-slide'} key={dealer.id}>
+									<SwiperSlide className={'top-dealers-slide'} key={dealer._id}>
 										<DealerCard dealer={dealer} />
 									</SwiperSlide>
 								);
@@ -133,9 +106,9 @@ const TopDealers = () => {
 									prevEl: '.swiper-dealers-prev',
 								}}
 							>
-								{dealers.map((dealer: Dealer) => {
+								{topDealers.map((dealer: Member) => {
 									return (
-										<SwiperSlide className={'top-dealers-slide'} key={dealer.id}>
+										<SwiperSlide className={'top-dealers-slide'} key={dealer._id}>
 											<DealerCard dealer={dealer} />
 										</SwiperSlide>
 									);
@@ -152,5 +125,16 @@ const TopDealers = () => {
 	}
 };
 
+TopDealers.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 10,
+		sort: 'memberRank',
+		direction: 'DESC',
+		search: {},
+	},
+};
+
 export default TopDealers;
+
 

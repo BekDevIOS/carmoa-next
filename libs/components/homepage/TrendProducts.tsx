@@ -1,82 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import ProductCard from '../common/ProductCard';
+import { ProductsInquiry } from '../../types/product/product.input';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { Product } from '../../types/product/product';
+import { useMutation, useQuery } from '@apollo/client';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { T } from '../../types/common';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
-const TrendProducts = () => {
-	const products = [
-		{
-			id: 1,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
+interface TrendProductsProps {
+	initialInput: ProductsInquiry;
+}
+
+const TrendProducts = (props: TrendProductsProps) => {
+
+	const { initialInput } = props;
+	const device = useDeviceDetect();
+	const [trendProducts, setTrendProducts] = useState<Product[]>([]);
+
+	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setTrendProducts(data?.getProducts?.list);
 		},
-		{
-			id: 2,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 3,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 4,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 5,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 6,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 7,
-			image: '/img/product/image1.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-		{
-			id: 8,
-			image: '/img/product/image2.png',
-			category: 'Accessories',
-			title: 'Astro 4 Portable Tire Inflator Air compressor Easy',
-			originalPrice: 275.0,
-			salePrice: 200.0,
-			discount: 27,
-		},
-	];
+	});
+
+	/** HANDLERS **/
+	const likeProductHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await likeTargetProduct({
+				variables: { input: id },
+			});
+			await getProductsRefetch({ input: initialInput });
+
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeProductHandler:', err);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	if (trendProducts) console.log('trendProducts:', trendProducts);
+	if (!trendProducts) return null;
+
 
 	const addToCartHandler = (productId: number) => {
 		console.log('Add to cart:', productId);
@@ -108,12 +90,12 @@ const TrendProducts = () => {
 					</Stack>
 				</Stack>
 				<Stack className={'products-grid'}>
-					{products.map((product) => (
+					{trendProducts.map((product) => (
 						<ProductCard
-							key={product.id}
+							key={product._id}
 							product={product}
+							likeProductHandler={likeProductHandler}
 							addToCartHandler={addToCartHandler}
-							wishlistHandler={wishlistHandler}
 							compareHandler={compareHandler}
 							quickViewHandler={quickViewHandler}
 						/>
@@ -122,6 +104,16 @@ const TrendProducts = () => {
 			</Stack>
 		</Stack>
 	);
+};
+
+TrendProducts.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 8,
+		sort: 'productLikes',
+		direction: 'DESC',
+		search: { },
+	},
 };
 
 export default TrendProducts;

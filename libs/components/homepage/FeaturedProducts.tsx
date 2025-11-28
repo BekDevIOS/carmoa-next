@@ -1,203 +1,114 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Stack, Typography, Box } from '@mui/material';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
-import FeaturedProductCard, { Product } from './FeaturedProductCard';
+import FeaturedProductCard from './FeaturedProductCard';
+import { Product } from '../../types/product/product';
+import { ProductsInquiry } from '../../types/product/product.input';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { T } from '../../types/common';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { userVar } from '../../../apollo/store';
 import 'swiper/css';
 
 interface FeaturedProductsProps {
-	latestProducts?: Product[];
-	mostViewedProducts?: Product[];
-	onSaleProducts?: Product[];
+	latestInput?: ProductsInquiry;
+	mostViewedInput?: ProductsInquiry;
+	onSaleInput?: ProductsInquiry;
 }
 
-const FeaturedProducts = ({ latestProducts, mostViewedProducts, onSaleProducts }: FeaturedProductsProps) => {
+const FeaturedProducts = ({ latestInput, mostViewedInput, onSaleInput }: FeaturedProductsProps) => {
 	const latestSwiperRef = useRef<any>(null);
 	const mostViewedSwiperRef = useRef<any>(null);
 	const onSaleSwiperRef = useRef<any>(null);
+	const user = useReactiveVar(userVar);
 
-	const defaultLatestProducts: Product[] = [
-		{
-			id: 1,
-			image: '/img/product/image1.png',
-			title: 'Swatch Variation Image',
-			priceRange: { min: 49.0, max: 69.0 },
-			discount: 17,
-		},
-		{
-			id: 2,
-			image: '/img/product/image2.png',
-			title: 'Tatis Et Quasi',
-			salePrice: 340.0,
-		},
-		{
-			id: 3,
-			image: '/img/product/image1.png',
-			title: 'Ut Labore Et Do',
-			priceRange: { min: 50.0, max: 70.0 },
-		},
-		{
-			id: 4,
-			image: '/img/product/image2.png',
-			title: 'Odit Aut Fugit',
-			salePrice: 50.0,
-			originalPrice: 60.0,
-		},
-		{
-			id: 13,
-			image: '/img/product/image1.png',
-			title: 'Dolorem Ipsum Quia',
-			salePrice: 120.0,
-		},
-		{
-			id: 14,
-			image: '/img/product/image2.png',
-			title: 'Sit Amet Consectetur',
-			priceRange: { min: 80.0, max: 100.0 },
-		},
-		{
-			id: 15,
-			image: '/img/product/image1.png',
-			title: 'Adipisci Velit Sed',
-			salePrice: 95.0,
-			originalPrice: 110.0,
-		},
-		{
-			id: 16,
-			image: '/img/product/image2.png',
-			title: 'Quis Autem Vel',
-			salePrice: 75.0,
-		},
-	];
+	const [latestProducts, setLatestProducts] = useState<Product[]>([]);
+	const [mostViewedProducts, setMostViewedProducts] = useState<Product[]>([]);
+	const [onSaleProducts, setOnSaleProducts] = useState<Product[]>([]);
 
-	const defaultMostViewedProducts: Product[] = [
-		{
-			id: 5,
-			image: '/img/product/image1.png',
-			title: 'Ut Enim Ad Mini',
-			salePrice: 70.0,
-		},
-		{
-			id: 6,
-			image: '/img/product/image2.png',
-			title: 'Ut Labore Et Do',
-			priceRange: { min: 50.0, max: 70.0 },
-		},
-		{
-			id: 7,
-			image: '/img/product/image1.png',
-			title: 'Ex Ea Com Modi',
-			salePrice: 70.0,
-		},
-		{
-			id: 8,
-			image: '/img/product/image2.png',
-			title: 'Nisi Ut Aliqu',
-			priceRange: { min: 60.0, max: 70.0 },
-		},
-		{
-			id: 17,
-			image: '/img/product/image1.png',
-			title: 'Eum Iure Reprehenderit',
-			salePrice: 85.0,
-		},
-		{
-			id: 18,
-			image: '/img/product/image2.png',
-			title: 'Quis Nostrum Exercitationem',
-			priceRange: { min: 90.0, max: 120.0 },
-		},
-		{
-			id: 19,
-			image: '/img/product/image1.png',
-			title: 'Neque Porro Quisquam',
-			salePrice: 65.0,
-			originalPrice: 80.0,
-		},
-		{
-			id: 20,
-			image: '/img/product/image2.png',
-			title: 'Est Qui Dolorem',
-			salePrice: 110.0,
-		},
-	];
+	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 
-	const defaultOnSaleProducts: Product[] = [
-		{
-			id: 9,
-			image: '/img/product/image1.png',
-			title: 'Quia Voluptas Sit',
-			salePrice: 150.0,
-			originalPrice: 200.0,
-			discount: 43,
+	// Latest Products Query
+	const {
+		loading: latestLoading,
+		data: latestData,
+		refetch: latestRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: latestInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setLatestProducts(data?.getProducts?.list || []);
 		},
-		{
-			id: 10,
-			image: '/img/product/image2.png',
-			title: 'Labore Et Dolore',
-			salePrice: 60.0,
-			originalPrice: 89.0,
-		},
-		{
-			id: 11,
-			image: '/img/product/image1.png',
-			title: 'Odit Aut Fugit',
-			salePrice: 50.0,
-			originalPrice: 60.0,
-		},
-		{
-			id: 12,
-			image: '/img/product/image2.png',
-			title: 'Ipsa Quae Ab Illo',
-			salePrice: 50.0,
-			originalPrice: 88.0,
-		},
-		{
-			id: 21,
-			image: '/img/product/image1.png',
-			title: 'Magnam Aliquam Quaerat',
-			salePrice: 130.0,
-			originalPrice: 180.0,
-			discount: 28,
-		},
-		{
-			id: 22,
-			image: '/img/product/image2.png',
-			title: 'Voluptatem Accusantium',
-			salePrice: 75.0,
-			originalPrice: 95.0,
-		},
-		{
-			id: 23,
-			image: '/img/product/image1.png',
-			title: 'Doloremque Laudantium',
-			salePrice: 45.0,
-			originalPrice: 65.0,
-		},
-		{
-			id: 24,
-			image: '/img/product/image2.png',
-			title: 'Totam Rem Aperiam',
-			salePrice: 90.0,
-			originalPrice: 130.0,
-			discount: 31,
-		},
-	];
+	});
 
-	const displayLatestProducts = latestProducts || defaultLatestProducts;
-	const displayMostViewedProducts = mostViewedProducts || defaultMostViewedProducts;
-	const displayOnSaleProducts = onSaleProducts || defaultOnSaleProducts;
+	// Most Viewed Products Query
+	const {
+		loading: mostViewedLoading,
+		data: mostViewedData,
+		refetch: mostViewedRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: mostViewedInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setMostViewedProducts(data?.getProducts?.list || []);
+		},
+	});
 
-	const addToCartHandler = (productId: number) => {
+	// On Sale Products Query
+	const {
+		loading: onSaleLoading,
+		data: onSaleData,
+		refetch: onSaleRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: onSaleInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setOnSaleProducts(data?.getProducts?.list || []);
+		},
+	});
+
+	/** HANDLERS **/
+	const likeProductHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await likeTargetProduct({
+				variables: { input: id },
+			});
+
+			// Refetch all queries to update like status
+			await Promise.all([
+				latestRefetch({ input: latestInput }),
+				mostViewedRefetch({ input: mostViewedInput }),
+				onSaleRefetch({ input: onSaleInput }),
+			]);
+
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeProductHandler:', err);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	const addToCartHandler = (productId: string) => {
 		console.log('Add to cart:', productId);
 	};
 
-	const wishlistHandler = (productId: number) => {
-		console.log('Add to wishlist:', productId);
+	const wishlistHandler = (productId: string) => {
+		likeProductHandler(user, productId);
 	};
 
-	const compareHandler = (productId: number) => {
+	const compareHandler = (productId: string) => {
 		console.log('Add to compare:', productId);
 	};
 
@@ -241,8 +152,8 @@ const FeaturedProducts = ({ latestProducts, mostViewedProducts, onSaleProducts }
 								}}
 								className={'featured-products-swiper'}
 							>
-								{displayLatestProducts.map((product) => (
-									<SwiperSlide key={product.id} className={'featured-product-slide'}>
+								{latestProducts.map((product) => (
+									<SwiperSlide key={product._id} className={'featured-product-slide'}>
 										<Box className={'slide-content'}>
 											<FeaturedProductCard
 												product={product}
@@ -293,8 +204,8 @@ const FeaturedProducts = ({ latestProducts, mostViewedProducts, onSaleProducts }
 								}}
 								className={'featured-products-swiper'}
 							>
-								{displayMostViewedProducts.map((product) => (
-									<SwiperSlide key={product.id} className={'featured-product-slide'}>
+								{mostViewedProducts.map((product) => (
+									<SwiperSlide key={product._id} className={'featured-product-slide'}>
 										<Box className={'slide-content'}>
 											<FeaturedProductCard
 												product={product}
@@ -321,13 +232,13 @@ const FeaturedProducts = ({ latestProducts, mostViewedProducts, onSaleProducts }
 								<Stack className={'swiper-nav-buttons'}>
 									<Box
 										className={'swiper-nav-btn swiper-nav-prev'}
-										onClick={() => mostViewedSwiperRef.current?.slidePrev()}
+										onClick={() => onSaleSwiperRef.current?.slidePrev()}
 									>
 										<WestIcon />
 									</Box>
 									<Box
 										className={'swiper-nav-btn swiper-nav-next'}
-										onClick={() => mostViewedSwiperRef.current?.slideNext()}
+										onClick={() => onSaleSwiperRef.current?.slideNext()}
 									>
 										<EastIcon />
 									</Box>
@@ -345,8 +256,8 @@ const FeaturedProducts = ({ latestProducts, mostViewedProducts, onSaleProducts }
 								}}
 								className={'featured-products-swiper'}
 							>
-								{displayOnSaleProducts.map((product) => (
-									<SwiperSlide key={product.id} className={'featured-product-slide'}>
+								{onSaleProducts.map((product) => (
+									<SwiperSlide key={product._id} className={'featured-product-slide'}>
 										<Box className={'slide-content'}>
 											<FeaturedProductCard
 												product={product}
@@ -364,6 +275,32 @@ const FeaturedProducts = ({ latestProducts, mostViewedProducts, onSaleProducts }
 			</Stack>
 		</Stack>
 	);
+};
+
+FeaturedProducts.defaultProps = {
+	latestInput: {
+		page: 1,
+		limit: 8,
+		sort: 'createdAt',
+		direction: 'DESC',
+		search: {},
+	},
+	mostViewedInput: {
+		page: 1,
+		limit: 8,
+		sort: 'productViews',
+		direction: 'DESC',
+		search: {},
+	},
+	onSaleInput: {
+		page: 1,
+		limit: 8,
+		sort: 'productLikes',
+		direction: 'DESC',
+		search: {
+			onSale: true,
+		},
+	},
 };
 
 export default FeaturedProducts;

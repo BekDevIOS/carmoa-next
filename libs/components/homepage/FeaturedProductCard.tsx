@@ -5,25 +5,14 @@ import {
 	FavoriteBorder as FavoriteBorderIcon,
 	CompareArrows as ShuffleIcon,
 } from '@mui/icons-material';
-
-export interface Product {
-	id: number;
-	image: string;
-	title: string;
-	salePrice?: number;
-	originalPrice?: number;
-	priceRange?: {
-		min: number;
-		max: number;
-	};
-	discount?: number;
-}
+import { Product } from '../../types/product/product';
+import { REACT_APP_API_URL } from '../../config';
 
 interface FeaturedProductCardProps {
 	product: Product;
-	addToCartHandler?: (productId: number) => void;
-	wishlistHandler?: (productId: number) => void;
-	compareHandler?: (productId: number) => void;
+	addToCartHandler?: (productId: string) => void;
+	wishlistHandler?: (productId: string) => void;
+	compareHandler?: (productId: string) => void;
 }
 
 const FeaturedProductCard = ({
@@ -34,6 +23,20 @@ const FeaturedProductCard = ({
 }: FeaturedProductCardProps) => {
 	const [isHovered, setIsHovered] = useState(false);
 
+	// Map product fields
+	const imageUrl = product?.productImages?.[0]
+		? `${REACT_APP_API_URL}/${product.productImages[0]}`
+		: '/img/product/image1.png';
+	
+	const title = product.productTitle || '';
+	const salePrice = product.productSalePrice;
+	const originalPrice = product.productPrice;
+	
+	// Calculate discount percentage if both prices exist
+	const discount = salePrice && originalPrice && originalPrice > salePrice
+		? Math.round(((originalPrice - salePrice) / originalPrice) * 100)
+		: undefined;
+
 	return (
 		<Stack
 			className={'featured-product-card'}
@@ -41,48 +44,48 @@ const FeaturedProductCard = ({
 			onMouseLeave={() => setIsHovered(false)}
 		>
 			<Box className={'card-image-wrapper'}>
-				{product.discount && (
+				{discount && (
 					<Box className={'discount-badge'}>
 						<Typography variant="caption" className={'discount-text'}>
-							-{product.discount}%
+							-{discount}%
 						</Typography>
 					</Box>
 				)}
-				<img src={product.image} alt={product.title} className={'product-image'} />
+				<img src={imageUrl} alt={title} className={'product-image'} />
 			</Box>
 			<Stack className={'card-content'}>
 				<Typography variant="body1" className={'product-title'}>
-					{product.title}
+					{title}
 				</Typography>
 				<Stack className={'price-section'}>
-					{product.priceRange ? (
-						<Typography variant="body1" className={'price-range'}>
-							${product.priceRange.min.toFixed(2)} - ${product.priceRange.max.toFixed(2)}
-						</Typography>
-					) : (
+					{salePrice ? (
 						<>
-							{product.salePrice && (
-								<Typography variant="body1" className={'sale-price'}>
-									${product.salePrice.toFixed(2)}
-								</Typography>
-							)}
-							{product.originalPrice && (
+							<Typography variant="body1" className={'sale-price'}>
+								${salePrice.toFixed(2)}
+							</Typography>
+							{originalPrice && originalPrice > salePrice && (
 								<Typography variant="body2" className={'original-price'}>
-									${product.originalPrice.toFixed(2)}
+									${originalPrice.toFixed(2)}
 								</Typography>
 							)}
 						</>
+					) : (
+						originalPrice && (
+							<Typography variant="body1" className={'sale-price'}>
+								${originalPrice.toFixed(2)}
+							</Typography>
+						)
 					)}
 				</Stack>
 				{isHovered && (
 					<Stack className={'hover-actions'}>
-						<Box className={'action-btn'} onClick={() => addToCartHandler?.(product.id)}>
+						<Box className={'action-btn'} onClick={() => addToCartHandler?.(product._id)}>
 							<ShoppingCartIcon className={'action-icon'} />
 						</Box>
-						<Box className={'action-btn'} onClick={() => wishlistHandler?.(product.id)}>
+						<Box className={'action-btn'} onClick={() => wishlistHandler?.(product._id)}>
 							<FavoriteBorderIcon className={'action-icon'} />
 						</Box>
-						<Box className={'action-btn'} onClick={() => compareHandler?.(product.id)}>
+						<Box className={'action-btn'} onClick={() => compareHandler?.(product._id)}>
 							<ShuffleIcon className={'action-icon'} />
 						</Box>
 					</Stack>
