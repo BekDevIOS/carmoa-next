@@ -11,7 +11,6 @@ import {
 	MenuItem,
 	Tooltip,
 	IconButton,
-	Box,
 	Slider,
 } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
@@ -19,6 +18,9 @@ import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SearchIcon from '@mui/icons-material/Search';
+import { ProductsInquiry } from '../../types/product/product.input';
+import { CarBrand, ProductMainCategory, ProductSubCategory, ProductCondition } from '../../enums/product.enum';
 
 const MenuProps = {
 	PaperProps: {
@@ -29,9 +31,9 @@ const MenuProps = {
 };
 
 interface FilterType {
-	searchFilter: any;
+	searchFilter: ProductsInquiry;
 	setSearchFilter: any;
-	initialInput: any;
+	initialInput: ProductsInquiry;
 }
 
 const Filter = (props: FilterType) => {
@@ -39,65 +41,80 @@ const Filter = (props: FilterType) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [searchText, setSearchText] = useState<string>('');
-	const [selectedBrand, setSelectedBrand] = useState<string>('Bentley');
-	const [selectedModel, setSelectedModel] = useState<string>('Bentayga');
-	const [selectedYear, setSelectedYear] = useState<string>('2024');
-	const [selectedEngine, setSelectedEngine] = useState<string>('');
+	const [selectedMainCategory, setSelectedMainCategory] = useState<ProductMainCategory | ''>('');
+	const [selectedSubCategory, setSelectedSubCategory] = useState<ProductSubCategory | ''>('');
+	const [selectedBrand, setSelectedBrand] = useState<CarBrand | ''>('');
+	const [selectedCondition, setSelectedCondition] = useState<ProductCondition | ''>('');
 	const [priceRange, setPriceRange] = useState<number[]>([200, 560]);
-	const [selectedColor, setSelectedColor] = useState<string>('Black');
-	const [hoveredColor, setHoveredColor] = useState<string | null>(null);
-	const [selectedSize, setSelectedSize] = useState<string>('');
-	const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 	const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
 		parts: true,
 		categories: false,
 		price: false,
-		color: false,
-		size: false,
 		brands: false,
 	});
 
-	// Sample data
-	const brands = ['Bentley', 'BMW', 'Mercedes', 'Audi', 'Ford'];
-	const models = ['Bentayga', 'Continental', 'Flying Spur'];
-	const years = ['2024', '2023', '2022', '2021', '2020'];
-	const engines = ['V8', 'V12', 'W12', 'Select Engine'];
-	const categories = [
-		{ name: 'Accessories', count: 11 },
-		{ name: 'Body Parts', count: 11 },
-		{ name: 'Electronics', count: 7 },
-		{ name: 'Engine & Drivetrain', count: 4 },
-		{ name: 'Interior', count: 11 },
-		{ name: 'Lighting', count: 9 },
-		{ name: 'Performance', count: 11 },
-		{ name: 'Repair Parts', count: 8 },
-		{ name: 'Suspensions', count: 5 },
-		{ name: 'Tires & Wheels', count: 8 },
-		{ name: 'Tools & Garage', count: 4 },
-	];
-	const colors = [
-		{ name: 'Black', value: '#000000' },
-		{ name: 'Blue', value: '#0000FF' },
-		{ name: 'Orange', value: '#FFA500' },
-		{ name: 'Red', value: '#FF0000' },
-	];
-	const sizes = ['16 Inch', '18 Inch', '20 Inch', '22 Inch'];
-	const filterBrands = ['Ford', 'BMW', 'Mitsubishi', 'Honda', 'KN', 'Nissan'];
+	// Enum data
+	const mainCategories = Object.values(ProductMainCategory);
+	const carBrands = Object.values(CarBrand);
+	const conditions = Object.values(ProductCondition);
+
+	// Get subcategories based on main category
+	const getSubCategories = (mainCategory: ProductMainCategory): ProductSubCategory[] => {
+		switch (mainCategory) {
+			case ProductMainCategory.ENGINE:
+				return [
+					ProductSubCategory.ENGINE_OIL_FILTER,
+					ProductSubCategory.AIR_FILTER,
+					ProductSubCategory.FUEL_PUMP,
+					ProductSubCategory.RADIATOR,
+					ProductSubCategory.ALTERNATOR,
+					ProductSubCategory.BATTERY,
+				];
+			case ProductMainCategory.EXTERIOR:
+				return [
+					ProductSubCategory.BUMPER,
+					ProductSubCategory.HEADLIGHT,
+					ProductSubCategory.TAILLIGHT,
+					ProductSubCategory.MIRROR,
+				];
+			case ProductMainCategory.INTERIOR:
+				return [ProductSubCategory.STEERING_WHEEL, ProductSubCategory.SEAT, ProductSubCategory.DASHBOARD];
+			case ProductMainCategory.SUSPENSION:
+				return [ProductSubCategory.SHOCK_ABSORBER, ProductSubCategory.SPRING, ProductSubCategory.CONTROL_ARM];
+			case ProductMainCategory.ELECTRICAL:
+				return [ProductSubCategory.SENSOR, ProductSubCategory.ECU, ProductSubCategory.CABLE];
+			default:
+				return [];
+		}
+	};
+
+	const availableSubCategories = selectedMainCategory ? getSubCategories(selectedMainCategory) : [];
+
+	/** LIFECYCLES **/
+	useEffect(() => {
+		setSearchText(searchFilter?.search?.text || '');
+		if (searchFilter?.search?.pricesRange) {
+			setPriceRange([searchFilter.search.pricesRange.start || 0, searchFilter.search.pricesRange.end || 1000]);
+		}
+	}, [searchFilter]);
 
 	/** HANDLERS **/
 	const refreshHandler = async () => {
-		setSearchText('');
-		setSelectedBrand('Bentley');
-		setSelectedModel('Bentayga');
-		setSelectedYear('2024');
-		setSelectedEngine('');
-		setPriceRange([200, 560]);
-		setSelectedColor('Black');
-		setHoveredColor(null);
-		setSelectedSize('');
-		setSelectedBrands([]);
-		setSelectedCategories([]);
+		try {
+			setSearchText('');
+			setSelectedMainCategory('');
+			setSelectedSubCategory('');
+			setSelectedBrand('');
+			setSelectedCondition('');
+			setPriceRange([200, 560]);
+			await router.push(
+				`/product?input=${JSON.stringify(initialInput)}`,
+				`/product?input=${JSON.stringify(initialInput)}`,
+				{ scroll: false },
+			);
+		} catch (err: any) {
+			console.log('ERROR, refreshHandler:', err);
+		}
 	};
 
 	const toggleSection = (section: string) => {
@@ -107,25 +124,139 @@ const Filter = (props: FilterType) => {
 		}));
 	};
 
-	const handleColorSelect = (colorName: string) => {
-		setSelectedColor(colorName);
-	};
+	const handleCategoryToggle = useCallback(
+		async (categoryEnum: ProductMainCategory) => {
+			try {
+				const currentList = searchFilter?.search?.mainCategoryList || [];
+				const isSelected = currentList.includes(categoryEnum);
 
-	const handleCategoryToggle = (categoryName: string) => {
-		setSelectedCategories((prev) =>
-			prev.includes(categoryName) ? prev.filter((c) => c !== categoryName) : [...prev, categoryName],
-		);
-	};
+				if (isSelected) {
+					await router.push(
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								mainCategoryList: currentList.filter((item: ProductMainCategory) => item !== categoryEnum),
+							},
+						})}`,
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								mainCategoryList: currentList.filter((item: ProductMainCategory) => item !== categoryEnum),
+							},
+						})}`,
+						{ scroll: false },
+					);
+				} else {
+					await router.push(
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								mainCategoryList: [...currentList, categoryEnum],
+							},
+						})}`,
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								mainCategoryList: [...currentList, categoryEnum],
+							},
+						})}`,
+						{ scroll: false },
+					);
+				}
+			} catch (err: any) {
+				console.log('ERROR, handleCategoryToggle:', err);
+			}
+		},
+		[searchFilter, router],
+	);
 
-	const handleBrandToggle = (brandName: string) => {
-		setSelectedBrands((prev) =>
-			prev.includes(brandName) ? prev.filter((b) => b !== brandName) : [...prev, brandName],
-		);
-	};
+	const handleBrandToggle = useCallback(
+		async (brandEnum: CarBrand) => {
+			try {
+				const currentList = searchFilter?.search?.brandList || [];
+				const isSelected = currentList.includes(brandEnum);
+
+				if (isSelected) {
+					await router.push(
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								brandList: currentList.filter((item: CarBrand) => item !== brandEnum),
+							},
+						})}`,
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								brandList: currentList.filter((item: CarBrand) => item !== brandEnum),
+							},
+						})}`,
+						{ scroll: false },
+					);
+				} else {
+					await router.push(
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								brandList: [...currentList, brandEnum],
+							},
+						})}`,
+						`/product?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+								brandList: [...currentList, brandEnum],
+							},
+						})}`,
+						{ scroll: false },
+					);
+				}
+			} catch (err: any) {
+				console.log('ERROR, handleBrandToggle:', err);
+			}
+		},
+		[searchFilter, router],
+	);
 
 	const handlePriceChange = (_event: any, newValue: number | number[]) => {
 		setPriceRange(newValue as number[]);
 	};
+
+	const handlePriceFilter = useCallback(async () => {
+		try {
+			await router.push(
+				`/product?input=${JSON.stringify({
+					...searchFilter,
+					search: {
+						...searchFilter.search,
+						pricesRange: {
+							start: priceRange[0],
+							end: priceRange[1],
+						},
+					},
+				})}`,
+				`/product?input=${JSON.stringify({
+					...searchFilter,
+					search: {
+						...searchFilter.search,
+						pricesRange: {
+							start: priceRange[0],
+							end: priceRange[1],
+						},
+					},
+				})}`,
+				{ scroll: false },
+			);
+		} catch (err: any) {
+			console.log('ERROR, handlePriceFilter:', err);
+		}
+	}, [searchFilter, priceRange, router]);
 
 	if (device === 'mobile') {
 		return <div>PRODUCTS FILTER</div>;
@@ -141,29 +272,51 @@ const Filter = (props: FilterType) => {
 							className={'search-input'}
 							placeholder={'What are you looking for?'}
 							onChange={(e: any) => setSearchText(e.target.value)}
-							onKeyDown={(event: any) => {
+							onKeyDown={async (event: any) => {
 								if (event.key == 'Enter') {
-									setSearchFilter({
-										...searchFilter,
-										search: { ...searchFilter.search, text: searchText },
-									});
+									await router.push(
+										`/product?input=${JSON.stringify({
+											...searchFilter,
+											search: { ...searchFilter.search, text: searchText },
+										})}`,
+										`/product?input=${JSON.stringify({
+											...searchFilter,
+											search: { ...searchFilter.search, text: searchText },
+										})}`,
+										{ scroll: false },
+									);
 								}
 							}}
 							endAdornment={
 								<>
 									<CancelRoundedIcon
-										onClick={() => {
+										onClick={async () => {
 											setSearchText('');
-											setSearchFilter({
-												...searchFilter,
-												search: { ...searchFilter.search, text: '' },
-											});
+											await router.push(
+												`/product?input=${JSON.stringify({
+													...searchFilter,
+													search: { ...searchFilter.search, text: '' },
+												})}`,
+												`/product?input=${JSON.stringify({
+													...searchFilter,
+													search: { ...searchFilter.search, text: '' },
+												})}`,
+												{ scroll: false },
+											);
 										}}
 									/>
 								</>
 							}
 						/>
-						<img src={'/img/icons/search_icon.png'} alt={''} />
+						<SearchIcon
+							sx={{
+								position: 'absolute',
+								left: '15px',
+								top: '18px',
+								color: 'var(--carmo-text-secondary)',
+								fontSize: '24px',
+							}}
+						/>
 						<Tooltip title="Reset">
 							<IconButton onClick={refreshHandler}>
 								<RefreshIcon />
@@ -186,13 +339,55 @@ const Filter = (props: FilterType) => {
 						<Stack className={'parts-form'} mt={'20px'}>
 							<Stack className={'input-box'}>
 								<FormControl fullWidth>
+									<InputLabel>Main Category</InputLabel>
 									<Select
-										value={selectedBrand}
-										onChange={(e) => setSelectedBrand(e.target.value)}
+										value={selectedMainCategory}
+										onChange={(e) => {
+											setSelectedMainCategory(e.target.value as ProductMainCategory);
+											setSelectedSubCategory(''); // Reset subcategory when main category changes
+										}}
 										displayEmpty
 										className={'select-field'}
+										label="Main Category"
 									>
-										{brands.map((brand) => (
+										{mainCategories.map((category) => (
+											<MenuItem key={category} value={category}>
+												{category}
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</Stack>
+							<Stack className={'input-box'}>
+								<FormControl fullWidth>
+									<InputLabel>Sub Category</InputLabel>
+									<Select
+										value={selectedSubCategory}
+										onChange={(e) => setSelectedSubCategory(e.target.value as ProductSubCategory)}
+										displayEmpty
+										className={'select-field'}
+										label="Sub Category"
+										disabled={!selectedMainCategory}
+									>
+										{availableSubCategories.map((subCategory) => (
+											<MenuItem key={subCategory} value={subCategory}>
+												{subCategory}
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</Stack>
+							<Stack className={'input-box'}>
+								<FormControl fullWidth>
+									<InputLabel>Brand</InputLabel>
+									<Select
+										value={selectedBrand}
+										onChange={(e) => setSelectedBrand(e.target.value as CarBrand)}
+										displayEmpty
+										className={'select-field'}
+										label="Brand"
+									>
+										{carBrands.map((brand) => (
 											<MenuItem key={brand} value={brand}>
 												{brand}
 											</MenuItem>
@@ -202,53 +397,57 @@ const Filter = (props: FilterType) => {
 							</Stack>
 							<Stack className={'input-box'}>
 								<FormControl fullWidth>
+									<InputLabel>Condition</InputLabel>
 									<Select
-										value={selectedModel}
-										onChange={(e) => setSelectedModel(e.target.value)}
+										value={selectedCondition}
+										onChange={(e) => setSelectedCondition(e.target.value as ProductCondition)}
 										displayEmpty
 										className={'select-field'}
+										label="Condition"
 									>
-										{models.map((model) => (
-											<MenuItem key={model} value={model}>
-												{model}
+										{conditions.map((condition) => (
+											<MenuItem key={condition} value={condition}>
+												{condition}
 											</MenuItem>
 										))}
 									</Select>
 								</FormControl>
 							</Stack>
-							<Stack className={'input-box'}>
-								<FormControl fullWidth>
-									<Select
-										value={selectedYear}
-										onChange={(e) => setSelectedYear(e.target.value)}
-										displayEmpty
-										className={'select-field'}
-									>
-										{years.map((year) => (
-											<MenuItem key={year} value={year}>
-												{year}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-							</Stack>
-							<Stack className={'input-box'}>
-								<FormControl fullWidth>
-									<Select
-										value={selectedEngine}
-										onChange={(e) => setSelectedEngine(e.target.value)}
-										displayEmpty
-										className={'select-field'}
-									>
-										{engines.map((engine) => (
-											<MenuItem key={engine} value={engine}>
-												{engine}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-							</Stack>
-							<Button className={'search-btn'}>SEARCH</Button>
+							<Button
+								className={'search-btn'}
+								onClick={async () => {
+									try {
+										const searchUpdates: any = {};
+										if (selectedMainCategory) {
+											searchUpdates.mainCategoryList = [selectedMainCategory];
+										}
+										if (selectedSubCategory) {
+											searchUpdates.subCategoryList = [selectedSubCategory];
+										}
+										if (selectedBrand) {
+											searchUpdates.brandList = [selectedBrand];
+										}
+										if (selectedCondition) {
+											searchUpdates.conditionList = [selectedCondition];
+										}
+										await router.push(
+											`/product?input=${JSON.stringify({
+												...searchFilter,
+												search: { ...searchFilter.search, ...searchUpdates },
+											})}`,
+											`/product?input=${JSON.stringify({
+												...searchFilter,
+												search: { ...searchFilter.search, ...searchUpdates },
+											})}`,
+											{ scroll: false },
+										);
+									} catch (err: any) {
+										console.log('ERROR, parts search:', err);
+									}
+								}}
+							>
+								SEARCH
+							</Button>
 						</Stack>
 					)}
 				</Stack>
@@ -266,25 +465,19 @@ const Filter = (props: FilterType) => {
 					</Stack>
 					{expandedSections.categories && (
 						<Stack className={'categories-list'} mt={'20px'}>
-							{categories.map((category) => (
-								<Stack className={'category-item'} key={category.name}>
-									<Checkbox
-										checked={selectedCategories.includes(category.name)}
-										onChange={() => handleCategoryToggle(category.name)}
-										className={'category-checkbox'}
-									/>
-									<Typography
-										className={`category-name ${selectedCategories.includes(category.name) ? 'selected' : ''}`}
-									>
-										{category.name} ({category.count})
-									</Typography>
-									{(category.name === 'Body Parts' ||
-										category.name === 'Electronics' ||
-										category.name === 'Engine & Drivetrain' ||
-										category.name === 'Suspensions' ||
-										category.name === 'Tires & Wheels') && <ExpandMoreIcon className={'category-expand-icon'} />}
-								</Stack>
-							))}
+							{mainCategories.map((category) => {
+								const isSelected = (searchFilter?.search?.mainCategoryList || []).includes(category);
+								return (
+									<Stack className={'category-item'} key={category}>
+										<Checkbox
+											checked={isSelected}
+											onChange={() => handleCategoryToggle(category)}
+											className={'category-checkbox'}
+										/>
+										<Typography className={`category-name ${isSelected ? 'selected' : ''}`}>{category}</Typography>
+									</Stack>
+								);
+							})}
 						</Stack>
 					)}
 				</Stack>
@@ -321,96 +514,10 @@ const Filter = (props: FilterType) => {
 									onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
 									className={'price-input'}
 								/>
-								<Button className={'filter-btn'}>FILTER</Button>
-							</Stack>
-						</Stack>
-					)}
-				</Stack>
-
-				<Stack className={'color-filter'} mb={'30px'}>
-					<Stack className={'section-header'} onClick={() => toggleSection('color')}>
-						<Typography className={'section-title'}>Color</Typography>
-						<ExpandMoreIcon
-							className={`expand-icon ${expandedSections.color ? 'expanded' : ''}`}
-							sx={{
-								transform: expandedSections.color ? 'rotate(180deg)' : 'rotate(0deg)',
-								transition: 'transform 0.3s',
-							}}
-						/>
-					</Stack>
-					{expandedSections.color && (
-						<Stack className={'color-list'} mt={'20px'}>
-							{colors.map((color) => {
-								const isSelected = selectedColor === color.name;
-								const isHovered = hoveredColor === color.name;
-								return (
-									<Stack
-										className={`color-item ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
-										key={color.name}
-										onClick={() => handleColorSelect(color.name)}
-										onMouseEnter={() => setHoveredColor(color.name)}
-										onMouseLeave={() => setHoveredColor(null)}
-									>
-										<Tooltip
-											title={color.name}
-											placement="right"
-											arrow
-											componentsProps={{
-												tooltip: {
-													sx: {
-														backgroundColor: '#424242',
-														color: '#ffffff',
-														fontFamily: "'Poppins', sans-serif",
-														fontSize: '12px',
-														padding: '6px 12px',
-														borderRadius: '4px',
-													},
-												},
-												arrow: {
-													sx: {
-														color: '#424242',
-													},
-												},
-											}}
-										>
-											<Box
-												className={'color-swatch'}
-												style={{
-													'--swatch-color': color.value,
-													'--hover-border-color': isHovered && !isSelected ? color.value : undefined,
-												} as React.CSSProperties}
-											/>
-										</Tooltip>
-										<Typography className={`color-name ${isSelected ? 'selected' : ''}`}>{color.name}</Typography>
-									</Stack>
-								);
-							})}
-						</Stack>
-					)}
-				</Stack>
-
-				<Stack className={'size-filter'} mb={'30px'}>
-					<Stack className={'section-header'} onClick={() => toggleSection('size')}>
-						<Typography className={'section-title'}>Size</Typography>
-						<ExpandMoreIcon
-							className={`expand-icon ${expandedSections.size ? 'expanded' : ''}`}
-							sx={{
-								transform: expandedSections.size ? 'rotate(180deg)' : 'rotate(0deg)',
-								transition: 'transform 0.3s',
-							}}
-						/>
-					</Stack>
-					{expandedSections.size && (
-						<Stack className={'size-buttons'} mt={'20px'} direction={'row'} spacing={2}>
-							{sizes.map((size) => (
-								<Button
-									key={size}
-									className={`size-btn ${selectedSize === size ? 'selected' : ''}`}
-									onClick={() => setSelectedSize(size === selectedSize ? '' : size)}
-								>
-									{size}
+								<Button className={'filter-btn'} onClick={handlePriceFilter}>
+									FILTER
 								</Button>
-							))}
+							</Stack>
 						</Stack>
 					)}
 				</Stack>
@@ -428,16 +535,19 @@ const Filter = (props: FilterType) => {
 					</Stack>
 					{expandedSections.brands && (
 						<Stack className={'brands-list'} mt={'20px'}>
-							{filterBrands.map((brand) => (
-								<Stack className={'brand-item'} key={brand}>
-									<Checkbox
-										checked={selectedBrands.includes(brand)}
-										onChange={() => handleBrandToggle(brand)}
-										className={'brand-checkbox'}
-									/>
-									<Typography className={'brand-name'}>{brand}</Typography>
-								</Stack>
-							))}
+							{carBrands.map((brand) => {
+								const isSelected = (searchFilter?.search?.brandList || []).includes(brand);
+								return (
+									<Stack className={'brand-item'} key={brand}>
+										<Checkbox
+											checked={isSelected}
+											onChange={() => handleBrandToggle(brand)}
+											className={'brand-checkbox'}
+										/>
+										<Typography className={'brand-name'}>{brand}</Typography>
+									</Stack>
+								);
+							})}
 						</Stack>
 					)}
 				</Stack>

@@ -30,7 +30,7 @@ const BlogCard = (props: BlogCardProps) => {
 	const chooseArticleHandler = (e: React.SyntheticEvent, boardArticle: BoardArticle) => {
 		router.push(
 			{
-				pathname: '/community/detail',
+				pathname: '/blog/detail',
 				query: { articleCategory: boardArticle?.articleCategory, id: boardArticle?._id },
 			},
 			undefined,
@@ -88,7 +88,14 @@ const BlogCard = (props: BlogCardProps) => {
 							<Typography>{boardArticle?.articleViews}</Typography>
 						</Stack>
 
-						<Stack className="stat-item" onClick={(e) => likeArticleHandler(e, user, boardArticle?._id)}>
+						<Stack
+							className="stat-item"
+							onClick={(e) => {
+								if (typeof likeArticleHandler === 'function') {
+									likeArticleHandler(e, user, boardArticle?._id);
+								}
+							}}
+						>
 							{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
 								<FavoriteIcon className="icon liked" />
 							) : (

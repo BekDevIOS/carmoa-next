@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NextPage } from 'next';
 import { Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import DealerCard from '../../libs/components/common/DealerCard';
 import Advertisement from '../../libs/components/common/Advertisement';
 import { T } from '../../libs/types/common';
 
@@ -22,28 +21,29 @@ const AboutUs: NextPage = (props: T) => {
 	const teamMembers = [
 		{
 			id: 1,
-			name: 'James Anderson',
-			type: 'CEO & Founder',
-			image: '/img/profile/agent.png',
+			memberNick: 'Utkirbek Mekhmonboev',
+			memberType: 'CEO & Founder',
+			memberImage: '/img/profile/agent.png',
 		},
 		{
 			id: 2,
-			name: 'Sarah Mitchell',
-			type: 'Sales Director',
-			image: '/img/property/girlBrunette.png',
+			memberNick: 'Jina Park',
+			memberType: 'Operations & Dealer Relations Manager',
+			memberImage: '/img/property/girlBrunette.png',
 		},
 		{
 			id: 3,
-			name: 'Michael Chen',
-			type: 'Service Manager',
-			image: '/img/profile/agent.png',
+			memberNick: 'Daniel Kim',
+			memberType: 'Lead Full-Stack Engineer',
+			memberImage: '/img/profile/agent.png',
 		},
 		{
 			id: 4,
-			name: 'Emily Rodriguez',
-			type: 'Marketing Head',
-			image: '/img/property/girlBrunette.png',
+			memberNick: 'Sophia Lee',
+			memberType: 'Marketing & Content Director',
+			memberImage: '/img/property/girlBrunette.png',
 		},
+		
 	];
 
 	if (device === 'mobile') {
@@ -103,8 +103,15 @@ const AboutUs: NextPage = (props: T) => {
 					<Stack className="team-section">
 						<Typography className="section-title">Meet Our Team</Typography>
 						<Stack className="team-grid">
-							{teamMembers.map((member) => (
-								<DealerCard key={member.id} dealer={member} />
+							{teamMembers.map((dealer) => (
+								<Stack className="dealer-card">
+								<div className="dealer-image-wrapper">
+									<img src={dealer.memberImage} alt={dealer.memberNick} />
+								</div>
+				
+								<strong>{dealer.memberNick}</strong>
+								<span>{dealer.memberType}</span>
+							</Stack>
 							))}
 						</Stack>
 					</Stack>

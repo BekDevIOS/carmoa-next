@@ -7,16 +7,20 @@ interface RecentPostCardProps {
 	category: string;
 	title: string;
 	articleId?: string;
+	articleCategory?: string;
 }
 
-const RecentPostCard = ({ image, category, title, articleId }: RecentPostCardProps) => {
+const RecentPostCard = ({ image, category, title, articleId, articleCategory }: RecentPostCardProps) => {
 	const router = useRouter();
 
 	const handleClick = () => {
 		if (articleId) {
 			router.push({
 				pathname: '/blog/detail',
-				query: { id: articleId },
+				query: { 
+					articleCategory: articleCategory || category,
+					id: articleId,
+				},
 			});
 		}
 	};

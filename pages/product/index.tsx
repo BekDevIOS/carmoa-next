@@ -2,6 +2,7 @@ import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography, IconButton } from '@mui/material';
 import ProductCard from '../../libs/components/common/ProductCard';
+import BigProductCard from '../../libs/components/product/BigProductCard';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/product/Filter';
@@ -10,30 +11,27 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import { ProductsInquiry } from '../../libs/types/product/product.input';
+import { Product } from '../../libs/types/product/product';
+import { Direction, Message } from '../../libs/enums/common.enum';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { GET_PRODUCTS } from '../../apollo/user/query';
+import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
+import { T } from '../../libs/types/common';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { userVar } from '../../apollo/store';
 
-// export const getStaticProps = async ({ locale }: any) => ({
-// 	props: {
-// 		...(await serverSideTranslations(locale, ['common'])),
-// 	},
-// });
-
-interface Product {
-	id: number;
-	image: string;
-	category: string;
-	title: string;
-	originalPrice?: number;
-	salePrice: number;
-	discount?: number;
-	compatibility?: string;
-	condition?: 'New' | 'Used' | 'Refurbished';
-	isSale?: boolean;
-}
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [searchFilter, setSearchFilter] = useState<any>(
+	const user = useReactiveVar(userVar);
+	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
 	const [products, setProducts] = useState<Product[]>([]);
@@ -44,47 +42,23 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('Default sorting');
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-	// Sample products for demonstration
-	useEffect(() => {
-		// Replace with actual API call
-		const sampleProducts: Product[] = [
-			{
-				id: 1,
-				image: '/img/product/image1.png',
-				category: 'Engine Parts',
-				title: 'High Performance Engine Filter',
-				originalPrice: 120,
-				salePrice: 99.99,
-				discount: 20,
-				compatibility: 'Hyundai Avante 2016–2020',
-				condition: 'New',
-				isSale: true,
-			},
-			{
-				id: 2,
-				image: '/img/product/image2.png',
-				category: 'Body Parts',
-				title: 'Premium Car Bumper',
-				salePrice: 299.99,
-				compatibility: 'Toyota Camry 2018–2022',
-				condition: 'New',
-			},
-			{
-				id: 3,
-				image: '/img/product/image1.png',
-				category: 'Accessories',
-				title: 'Luxury Car Seat Covers',
-				originalPrice: 150,
-				salePrice: 129.99,
-				discount: 15,
-				compatibility: 'Honda Accord 2015–2021',
-				condition: 'Refurbished',
-				isSale: true,
-			},
-		];
-		setProducts(sampleProducts);
-		setTotal(sampleProducts.length);
-	}, []);
+	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setProducts(data?.getProducts?.list || []);
+			setTotal(data?.getProducts?.metaCounter[0]?.total || 0);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -95,17 +69,47 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
 
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		const storedMode = localStorage.getItem('productListViewMode');
+		if (storedMode === 'grid' || storedMode === 'list') {
+			setViewMode(storedMode);
+		}
+	}, []);
+
+	useEffect(() => {
+		console.log('searchFilter', searchFilter);
+		// getProductsRefetch({ input: searchFilter }).then();
+	}, [searchFilter]);
+
 	/** HANDLERS **/
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		await router.push(
-			`/products?input=${JSON.stringify(searchFilter)}`,
-			`/products?input=${JSON.stringify(searchFilter)}`,
+			`/product?input=${JSON.stringify(searchFilter)}`,
+			`/product?input=${JSON.stringify(searchFilter)}`,
 			{
 				scroll: false,
 			},
 		);
 		setCurrentPage(value);
+	};
+
+	const likeProductHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await likeTargetProduct({
+				variables: { input: id },
+			});
+			await getProductsRefetch({ input: searchFilter });
+
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeProductHandler:', err);
+			sweetMixinErrorAlert(err.message).then();
+		}
 	};
 
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
@@ -121,20 +125,31 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const sortingHandler = (e: React.MouseEvent<HTMLLIElement>) => {
 		switch (e.currentTarget.id) {
 			case 'default':
+				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: Direction.DESC });
 				setFilterSortName('Default sorting');
 				break;
 			case 'new':
+				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: Direction.DESC });
 				setFilterSortName('New');
 				break;
 			case 'lowest':
+				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.ASC });
 				setFilterSortName('Lowest Price');
 				break;
 			case 'highest':
+				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.DESC });
 				setFilterSortName('Highest Price');
 				break;
 		}
 		setSortingOpen(false);
 		setAnchorEl(null);
+	};
+
+	const handleViewModeChange = (mode: 'grid' | 'list') => {
+		setViewMode(mode);
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('productListViewMode', mode);
+		}
 	};
 
 	if (device === 'mobile') {
@@ -182,10 +197,18 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 									</Menu>
 								</Box>
 								<Stack className={'view-controls'} direction={'row'} spacing={0}>
-									<IconButton className={`view-btn grid-btn ${viewMode === 'grid' ? 'active' : ''}`}>
+									<IconButton
+										className={`view-btn grid-btn ${viewMode === 'grid' ? 'active' : ''}`}
+										onClick={() => handleViewModeChange('grid')}
+										aria-label="Grid view"
+									>
 										<ViewModuleIcon />
 									</IconButton>
-									<IconButton className={`view-btn list-btn ${viewMode === 'list' ? 'active' : ''}`}>
+									<IconButton
+										className={`view-btn list-btn ${viewMode === 'list' ? 'active' : ''}`}
+										onClick={() => handleViewModeChange('list')}
+										aria-label="List view"
+									>
 										<ViewListIcon />
 									</IconButton>
 								</Stack>
@@ -194,20 +217,29 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 							{/* Product Grid/List */}
 							<Stack className={'list-config'}>
 								{products?.length === 0 ? (
-									<div className={'no-data'}>
+									<Stack className={'no-data'}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
-										<p>No Products found!</p>
-									</div>
+										<Typography component="p">No Products found!</Typography>
+									</Stack>
 								) : (
 									products.map((product: Product) => {
-										return (
+										return viewMode === 'grid' ? (
 											<ProductCard
 												product={product}
-												key={product.id}
-												addToCartHandler={(id) => console.log('Add to cart:', id)}
-												wishlistHandler={(id) => console.log('Add to wishlist:', id)}
-												compareHandler={(id) => console.log('Add to compare:', id)}
-												quickViewHandler={(id) => console.log('Quick view:', id)}
+												key={product._id}
+												likeProductHandler={likeProductHandler}
+												addToCartHandler={(id: string) => console.log('Add to cart:', id)}
+												compareHandler={(id: string) => console.log('Add to compare:', id)}
+												quickViewHandler={(id: string) => console.log('Quick view:', id)}
+											/>
+										) : (
+											<BigProductCard
+												product={product}
+												key={product._id}
+												likeProductHandler={likeProductHandler}
+												addToCartHandler={(id: string) => console.log('Add to cart:', id)}
+												compareHandler={(id: string) => console.log('Add to compare:', id)}
+												quickViewHandler={(id: string) => console.log('Quick view:', id)}
 											/>
 										);
 									})

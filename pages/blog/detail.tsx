@@ -5,7 +5,7 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Button, Stack, Typography, Tab, Tabs, IconButton, Backdrop, Pagination } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import Moment from 'react-moment';
 import { userVar } from '../../apollo/store';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
@@ -13,23 +13,29 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ChatIcon from '@mui/icons-material/Chat';
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
-import { CommentsInquiry } from '../../libs/types/comment/comment.input';
+import { CommentsInquiry, CommentInput } from '../../libs/types/comment/comment.input';
 import { Comment } from '../../libs/types/comment/comment';
+import { CommentUpdate } from '../../libs/types/comment/comment.update';
 import dynamic from 'next/dynamic';
-import { CommentStatus } from '../../libs/enums/comment.enum';
+import { CommentStatus, CommentGroup } from '../../libs/enums/comment.enum';
 import { T } from '../../libs/types/common';
 import EditIcon from '@mui/icons-material/Edit';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { BoardArticle } from '../../libs/types/blog/board-article';
 import RecentPostCard from '../../libs/components/blog/RecentPostCard';
-import { TabContext, TabList } from '@mui/lab';
+import { GET_BOARD_ARTICLE, GET_BOARD_ARTICLES, GET_COMMENTS } from '../../apollo/user/query';
+import { LIKE_TARGET_BOARD_ARTICLE, CREATE_COMMENT, UPDATE_COMMENT } from '../../apollo/user/mutation';
+import { Messages, REACT_APP_API_URL } from '../../libs/config';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { Direction } from '../../libs/enums/common.enum';
+import { BoardArticleCategory } from '../../libs/enums/blog.enum';
 const ToastViewerComponent = dynamic(() => import('../../libs/components/blog/TViewer'), { ssr: false });
 
-// export const getStaticProps = async ({ locale }: any) => ({
-// 	props: {
-// 		...(await serverSideTranslations(locale, ['common'])),
-// 	},
-// });
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const device = useDeviceDetect();
@@ -37,7 +43,7 @@ const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const { query } = router;
 
 	const articleId = query?.id as string;
-	const articleCategory = query?.articleCategory as string;
+	const articleCategory = (query?.articleCategory as string) || BoardArticleCategory.REVIEWS;
 
 	const [comment, setComment] = useState<string>('');
 	const [wordsCnt, setWordsCnt] = useState<number>(0);
@@ -45,6 +51,9 @@ const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const user = useReactiveVar(userVar);
 	const [searchFilter, setSearchFilter] = useState<CommentsInquiry>({
 		...initialInput,
+		search: {
+			commentRefId: articleId || '',
+		},
 	});
 	const [memberImage, setMemberImage] = useState<string>('/img/logo/logoText.svg');
 	const [anchorEl, setAnchorEl] = useState<any | null>(null);
@@ -54,278 +63,122 @@ const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const [updatedComment, setUpdatedComment] = useState<string>('');
 	const [updatedCommentId, setUpdatedCommentId] = useState<string>('');
 	const [likeLoading, setLikeLoading] = useState<boolean>(false);
-	const [boardArticle, setBoardArticle] = useState<BoardArticle>({
-		_id: '1',
-		articleCategory: 'REVIEWS' as any,
-		articleStatus: 'ACTIVE' as any,
-		articleTitle: '2024 Tesla Model 3 Performance Review: The Electric Revolution Continues',
-		articleContent: `# Introduction
-
-The 2024 Tesla Model 3 Performance represents the pinnacle of electric vehicle engineering, combining blistering acceleration with cutting-edge technology and impressive efficiency. After spending two weeks with this electric sedan, I can confidently say it's redefined what we should expect from performance cars in the modern era.
-
-## Performance That Defies Belief
-
-Let's start with the numbers that matter. The dual-motor all-wheel-drive setup produces a combined 450 horsepower, launching this sedan from 0-60 mph in just 3.1 seconds. That's supercar territory, folks. The instant torque delivery is something you need to experience to believe - there's zero lag, just pure, relentless acceleration that pins you to your seat.
-
-### Handling and Dynamics
-
-What impressed me most wasn't just the straight-line speed, but how well this car handles. The low center of gravity, thanks to the battery pack placement, gives the Model 3 Performance a planted, stable feel through corners. The adaptive suspension does an excellent job of balancing comfort and sportiness.
-
-## Technology and Interior
-
-The minimalist interior is dominated by the 15.4-inch central touchscreen, which controls virtually every function. While it takes some getting used to, the interface is intuitive and responsive. The build quality has improved significantly over earlier models, with better materials and tighter panel gaps.
-
-### Autopilot and FSD
-
-Tesla's Autopilot system continues to be one of the most advanced driver assistance systems available. Navigate on Autopilot works flawlessly on highways, and the Full Self-Driving capability (optional) shows promise for the future.
-
-## Range and Charging
-
-With an EPA-estimated range of 315 miles, range anxiety is becoming a thing of the past. The extensive Supercharger network makes long-distance travel surprisingly convenient. During my test, I averaged about 290 miles of real-world range, which is more than sufficient for daily driving.
-
-## Final Verdict
-
-The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a great car, period. At $54,990, it offers performance that would cost twice as much from traditional manufacturers. If you're ready to make the switch to electric, this is the car that will make you wonder why you waited so long.
-
-**Rating: 9.5/10**
-
-**Pros:**
-- Incredible acceleration and handling
-- Extensive Supercharger network
-- Advanced technology features
-- Low running costs
-
-**Cons:**
-- Firm ride on rough roads
-- Touch screen for everything takes getting used to
-- Build quality still not quite up to luxury standards`,
-		articleImage: '/img/banner/cities/BUSAN.webp',
-		articleViews: 3420,
-		articleLikes: 287,
-		articleComments: 5,
-		memberId: 'member1',
-		createdAt: new Date('2024-11-18T10:30:00'),
-		updatedAt: new Date('2024-11-18T10:30:00'),
-		memberData: {
-			_id: 'member1',
-			memberNick: 'AutoExpert_Mike',
-			memberImage: '/img/logo/logoText.svg',
-			memberType: 'USER' as any,
-			memberStatus: 'ACTIVE' as any,
-			memberAuthType: 'EMAIL' as any,
-			memberPhone: '+1234567890',
-			memberFullName: 'Mike Johnson',
-			memberProperties: 0,
-			memberRank: 5,
-			memberArticles: 24,
-			memberPoints: 1250,
-			memberLikes: 890,
-			memberViews: 15420,
-			memberComments: 342,
-			memberWarnings: 0,
-			memberBlocks: 0,
-			createdAt: new Date('2023-05-10'),
-			updatedAt: new Date('2024-11-18'),
-		},
-		meLiked: [
-			{
-				memberId: 'currentUser',
-				likeRefId: '1',
-				myFavorite: true,
-			},
-		],
+	const [boardArticle, setBoardArticle] = useState<BoardArticle | null>(null);
+	const [recentPosts, setRecentPosts] = useState<BoardArticle[]>([]);
+	const [insertCommentData, setInsertCommentData] = useState<CommentInput>({
+		commentGroup: CommentGroup.ARTICLE,
+		commentContent: '',
+		commentRefId: articleId || '',
 	});
 
-	const [comments, setComments] = useState<Comment[]>([
-		{
-			_id: 'comment1',
-			commentStatus: 'ACTIVE' as any,
-			commentGroup: 'ARTICLE' as any,
-			commentContent:
-				'Great review! I just ordered my Model 3 Performance last week and this makes me even more excited to receive it. The acceleration numbers are insane!',
-			commentRefId: '1',
-			memberId: 'member2',
-			createdAt: new Date('2024-11-18T11:15:00'),
-			updatedAt: new Date('2024-11-18T11:15:00'),
-			memberData: {
-				_id: 'member2',
-				memberNick: 'EVEnthusiast2024',
-				memberImage: '/img/logo/logoText.svg',
-				memberType: 'USER' as any,
-				memberStatus: 'ACTIVE' as any,
-				memberAuthType: 'EMAIL' as any,
-				memberPhone: '+1234567891',
-				memberFullName: 'Sarah Chen',
-				memberProperties: 0,
-				memberRank: 3,
-				memberArticles: 5,
-				memberPoints: 320,
-				memberLikes: 145,
-				memberViews: 2340,
-				memberComments: 89,
-				memberWarnings: 0,
-				memberBlocks: 0,
-				createdAt: new Date('2024-01-15'),
-				updatedAt: new Date('2024-11-18'),
-			},
-		},
-		{
-			_id: 'comment2',
-			commentStatus: 'ACTIVE' as any,
-			commentGroup: 'ARTICLE' as any,
-			commentContent: "How does it compare to the BMW M3 in terms of handling? I'm torn between the two.",
-			commentRefId: '1',
-			memberId: 'member3',
-			createdAt: new Date('2024-11-18T12:45:00'),
-			updatedAt: new Date('2024-11-18T12:45:00'),
-			memberData: {
-				_id: 'member3',
-				memberNick: 'BimmerFan',
-				memberImage: '/img/logo/logoText.svg',
-				memberType: 'USER' as any,
-				memberStatus: 'ACTIVE' as any,
-				memberAuthType: 'EMAIL' as any,
-				memberPhone: '+1234567892',
-				memberFullName: 'David Martinez',
-				memberProperties: 1,
-				memberRank: 4,
-				memberArticles: 12,
-				memberPoints: 670,
-				memberLikes: 234,
-				memberViews: 5680,
-				memberComments: 156,
-				memberWarnings: 0,
-				memberBlocks: 0,
-				createdAt: new Date('2023-08-20'),
-				updatedAt: new Date('2024-11-18'),
-			},
-		},
-		{
-			_id: 'comment3',
-			commentStatus: 'ACTIVE' as any,
-			commentGroup: 'ARTICLE' as any,
-			commentContent:
-				'The build quality concerns are real. I had panel gap issues with my 2023 model. Has it really improved?',
-			commentRefId: '1',
-			memberId: 'member4',
-			createdAt: new Date('2024-11-18T14:20:00'),
-			updatedAt: new Date('2024-11-18T14:20:00'),
-			memberData: {
-				_id: 'member4',
-				memberNick: 'TeslaOwner2023',
-				memberImage: '/img/logo/logoText.svg',
-				memberType: 'USER' as any,
-				memberStatus: 'ACTIVE' as any,
-				memberAuthType: 'EMAIL' as any,
-				memberPhone: '+1234567893',
-				memberFullName: 'Emily Watson',
-				memberProperties: 0,
-				memberRank: 4,
-				memberArticles: 8,
-				memberPoints: 450,
-				memberLikes: 178,
-				memberViews: 3240,
-				memberComments: 92,
-				memberWarnings: 0,
-				memberBlocks: 0,
-				createdAt: new Date('2023-06-12'),
-				updatedAt: new Date('2024-11-18'),
-			},
-		},
-		{
-			_id: 'comment4',
-			commentStatus: 'ACTIVE' as any,
-			commentGroup: 'ARTICLE' as any,
-			commentContent:
-				'Excellent write-up! The charging network is definitely a huge advantage. Road trips in my Model 3 have been a breeze.',
-			commentRefId: '1',
-			memberId: 'member5',
-			createdAt: new Date('2024-11-18T15:50:00'),
-			updatedAt: new Date('2024-11-18T15:50:00'),
-			memberData: {
-				_id: 'member5',
-				memberNick: 'RoadTripKing',
-				memberImage: '/img/logo/logoText.svg',
-				memberType: 'USER' as any,
-				memberStatus: 'ACTIVE' as any,
-				memberAuthType: 'EMAIL' as any,
-				memberPhone: '+1234567894',
-				memberFullName: 'James Anderson',
-				memberProperties: 0,
-				memberRank: 5,
-				memberArticles: 18,
-				memberPoints: 920,
-				memberLikes: 456,
-				memberViews: 8920,
-				memberComments: 234,
-				memberWarnings: 0,
-				memberBlocks: 0,
-				createdAt: new Date('2023-03-05'),
-				updatedAt: new Date('2024-11-18'),
-			},
-		},
-		{
-			_id: 'comment5',
-			commentStatus: 'ACTIVE' as any,
-			commentGroup: 'ARTICLE' as any,
-			commentContent: '3.1 seconds 0-60 is absolutely mental for a family sedan. The future is here!',
-			commentRefId: '1',
-			memberId: 'member6',
-			createdAt: new Date('2024-11-18T17:30:00'),
-			updatedAt: new Date('2024-11-18T17:30:00'),
-			memberData: {
-				_id: 'member6',
-				memberNick: 'SpeedDemon88',
-				memberImage: '/img/logo/logoText.svg',
-				memberType: 'USER' as any,
-				memberStatus: 'ACTIVE' as any,
-				memberAuthType: 'EMAIL' as any,
-				memberPhone: '+1234567895',
-				memberFullName: 'Alex Thompson',
-				memberProperties: 0,
-				memberRank: 3,
-				memberArticles: 6,
-				memberPoints: 280,
-				memberLikes: 98,
-				memberViews: 1560,
-				memberComments: 45,
-				memberWarnings: 0,
-				memberBlocks: 0,
-				createdAt: new Date('2024-02-28'),
-				updatedAt: new Date('2024-11-18'),
-			},
-		},
-	]);
-	const [total, setTotal] = useState<number>(5);
-
-	// Recent posts data
-	const recentPosts = [
-		{
-			id: '4',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Aliquam efficitur dolor',
-		},
-		{
-			id: '5',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Sed et quam quis',
-		},
-		{
-			id: '6',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Sed mattis est libero',
-		},
-	];
-
 	/** APOLLO REQUESTS **/
+	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
+	const [createComment] = useMutation(CREATE_COMMENT);
+	const [updateComment] = useMutation(UPDATE_COMMENT);
+
+	// Fetch board article
+	const {
+		loading: boardArticleLoading,
+		data: boardArticleData,
+		error: boardArticleError,
+		refetch: boardArticleRefetch,
+	} = useQuery(GET_BOARD_ARTICLE, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: articleId,
+		},
+		skip: !articleId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getBoardArticle) {
+				setBoardArticle(data.getBoardArticle);
+				if (data.getBoardArticle.memberData?.memberImage) {
+					setMemberImage(`${REACT_APP_API_URL}/${data.getBoardArticle.memberData.memberImage}`);
+				}
+			}
+		},
+		onError: (error) => {
+			console.error('Error fetching board article:', error);
+		},
+	});
+
+	// Fetch comments
+	const {
+		loading: commentsLoading,
+		data: commentsData,
+		error: commentsError,
+		refetch: commentsRefetch,
+	} = useQuery(GET_COMMENTS, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: searchFilter,
+		},
+		skip: !searchFilter.search.commentRefId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getComments) {
+				setComments(data.getComments.list || []);
+				setTotal(data.getComments.metaCounter[0]?.total || 0);
+			}
+		},
+		onError: (error) => {
+			console.error('Error fetching comments:', error);
+		},
+	});
+
+	// Fetch recent posts - use articleCategory from URL or from fetched article
+	const { loading: recentPostsLoading, data: recentPostsData } = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: {
+				page: 1,
+				limit: 4,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {},
+			},
+		},
+		skip: !articleCategory && !boardArticle?.articleCategory,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getBoardArticles) {
+				// Filter out current article from recent posts
+				const filteredPosts = (data.getBoardArticles.list || []).filter((post: BoardArticle) => post._id !== articleId);
+				setRecentPosts(filteredPosts);
+			}
+		},
+		onError: (error) => {
+			console.error('Error fetching recent posts:', error);
+		},
+	});
+
+	const [comments, setComments] = useState<Comment[]>([]);
+	const [total, setTotal] = useState<number>(0);
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (articleId) setSearchFilter({ ...searchFilter, search: { commentRefId: articleId } });
+		if (articleId) {
+			setSearchFilter({ ...searchFilter, search: { commentRefId: articleId } });
+			setInsertCommentData({
+				...insertCommentData,
+				commentRefId: articleId,
+			});
+		}
 	}, [articleId]);
+
+	// Update URL with articleCategory when article is loaded
+	useEffect(() => {
+		if (boardArticle?.articleCategory && !query?.articleCategory) {
+			router.replace(
+				{
+					pathname: '/blog/detail',
+					query: { articleCategory: boardArticle.articleCategory, id: articleId },
+				},
+				undefined,
+				{ shallow: true },
+			);
+		}
+	}, [boardArticle?.articleCategory, articleId, query?.articleCategory, router]);
 
 	/** HANDLERS **/
 	const tabChangeHandler = (event: React.SyntheticEvent, value: string) => {
@@ -339,12 +192,70 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 		);
 	};
 
-	const creteCommentHandler = async () => {};
+	const creteCommentHandler = async () => {
+		try {
+			if (!user?._id) throw new Error(Messages.error2);
+			if (!comment.trim()) throw new Error(Messages.error4);
 
-	const updateButtonHandler = async (commentId: string, commentStatus?: CommentStatus.DELETE) => {};
+			await createComment({
+				variables: {
+					input: {
+						...insertCommentData,
+						commentContent: comment,
+					},
+				},
+			});
+
+			setComment('');
+			setWordsCnt(0);
+			await commentsRefetch({ input: searchFilter });
+			await boardArticleRefetch({ input: articleId });
+			await sweetTopSmallSuccessAlert('Comment added successfully!', 800);
+		} catch (err: any) {
+			console.error('ERROR, creteCommentHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	const updateButtonHandler = async (commentId: string, commentStatus?: CommentStatus.DELETE) => {
+		try {
+			if (!user?._id) throw new Error(Messages.error2);
+
+			const updateData: CommentUpdate = {
+				_id: commentId,
+			};
+
+			if (commentStatus === CommentStatus.DELETE) {
+				updateData.commentStatus = CommentStatus.DELETE;
+			} else if (updatedComment.trim()) {
+				updateData.commentContent = updatedComment;
+			} else {
+				throw new Error(Messages.error4);
+			}
+
+			await updateComment({
+				variables: {
+					input: updateData,
+				},
+			});
+
+			setOpenBackdrop(false);
+			setUpdatedComment('');
+			setUpdatedCommentWordsCnt(0);
+			setUpdatedCommentId('');
+			await commentsRefetch({ input: searchFilter });
+			await sweetTopSmallSuccessAlert(
+				commentStatus === CommentStatus.DELETE ? 'Comment deleted successfully!' : 'Comment updated successfully!',
+				800,
+			);
+		} catch (err: any) {
+			console.error('ERROR, updateButtonHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
 
 	const getCommentMemberImage = (imageUrl: string | undefined) => {
-		if (imageUrl) return imageUrl;
+		if (imageUrl) return `${REACT_APP_API_URL}/${imageUrl}`;
 		else return '/img/logo/logoText.svg';
 	};
 
@@ -366,8 +277,47 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 	};
 
 	const paginationHandler = (e: T, value: number) => {
-		setSearchFilter({ ...searchFilter, page: value });
+		const updatedFilter = { ...searchFilter, page: value };
+		setSearchFilter(updatedFilter);
 	};
+
+	const likeArticleHandler = async () => {
+		try {
+			if (!user?._id) throw new Error(Messages.error2);
+			if (!articleId) return;
+
+			setLikeLoading(true);
+			await likeTargetBoardArticle({
+				variables: {
+					input: articleId,
+				},
+			});
+
+			await boardArticleRefetch({ input: articleId });
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.error('ERROR, likeArticleHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		} finally {
+			setLikeLoading(false);
+		}
+	};
+
+	if (boardArticleLoading) {
+		return (
+			<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh' }}>
+				<Typography>Loading...</Typography>
+			</Stack>
+		);
+	}
+
+	if (!boardArticle) {
+		return (
+			<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh' }}>
+				<Typography>Article not found</Typography>
+			</Stack>
+		);
+	}
 
 	if (device === 'mobile') {
 		return <div>COMMUNITY DETAIL PAGE MOBILE</div>;
@@ -421,7 +371,11 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 										</Stack>
 										<Stack className="info">
 											<Stack className="icon-info">
-												{boardArticle?.meLiked ? <ThumbUpAltIcon /> : <ThumbUpOffAltIcon />}
+												{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
+													<ThumbUpAltIcon />
+												) : (
+													<ThumbUpOffAltIcon />
+												)}
 
 												<Typography className="text">{boardArticle?.articleLikes}</Typography>
 											</Stack>
@@ -447,8 +401,12 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 									</Stack>
 									<Stack className="like-and-dislike">
 										<Stack className="top">
-											<Button>
-												{boardArticle?.meLiked ? <ThumbUpAltIcon /> : <ThumbUpOffAltIcon />}
+											<Button onClick={likeArticleHandler} disabled={likeLoading}>
+												{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
+													<ThumbUpAltIcon />
+												) : (
+													<ThumbUpOffAltIcon />
+												)}
 												<Typography className="text">{boardArticle?.articleLikes}</Typography>
 											</Button>
 										</Stack>
@@ -456,10 +414,10 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 								</Stack>
 								<Stack
 									className="second-box-config"
-									sx={{ 
-										borderBottom: total > 0 ? 'none' : '1px solid var(--carmo-border)', 
+									sx={{
+										borderBottom: total > 0 ? 'none' : '1px solid var(--carmo-border)',
 										border: '1px solid var(--carmo-border)',
-										color: 'var(--carmo-text)'
+										color: 'var(--carmo-text)',
 									}}
 								>
 									<Typography className="title-text">Comments ({total})</Typography>
@@ -473,9 +431,9 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 												setWordsCnt(e.target.value.length);
 												setComment(e.target.value);
 											}}
-											style={{ 
+											style={{
 												color: 'var(--carmo-text)',
-												backgroundColor: 'var(--carmo-bg-soft)'
+												backgroundColor: 'var(--carmo-bg-soft)',
 											}}
 										/>
 										<Stack className="button-box">
@@ -659,15 +617,28 @@ The 2024 Tesla Model 3 Performance isn't just a great electric car - it's a grea
 							<Stack className="recent-articles">
 								<Typography className="recent-title-heading">Recent Posts</Typography>
 								<Stack className="recent-posts-list">
-									{recentPosts.map((post) => (
-										<RecentPostCard
-											key={post.id}
-											image={post.image}
-											category={post.category}
-											title={post.title}
-											articleId={post.id}
-										/>
-									))}
+									{recentPosts.length > 0 ? (
+										recentPosts.map((post: BoardArticle) => {
+											const imagePath: string = post?.articleImage
+												? `${REACT_APP_API_URL}/${post?.articleImage}`
+												: '/img/community/communityImg.png';
+											return (
+												<RecentPostCard
+													key={post._id}
+													image={imagePath}
+													category={post.articleCategory}
+													title={post.articleTitle}
+													articleId={post._id}
+													articleCategory={post.articleCategory}
+												/>
+											);
+										})
+									) : (
+										<Stack className={'no-data'}>
+											<img src="/img/icons/icoAlert.svg" alt="" />
+											<p>No recent posts</p>
+										</Stack>
+									)}
 								</Stack>
 							</Stack>
 						</Stack>

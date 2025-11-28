@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -12,137 +12,127 @@ import { T } from '../../libs/types/common';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { BoardArticlesInquiry } from '../../libs/types/blog/board-article.input';
 import { BoardArticleCategory } from '../../libs/enums/blog.enum';
+import { Direction } from '../../libs/enums/common.enum';
+import { LIKE_TARGET_BOARD_ARTICLE } from '../../apollo/user/mutation';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_BOARD_ARTICLES } from '../../apollo/user/query';
+import { Messages, REACT_APP_API_URL } from '../../libs/config';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
-// export const getStaticProps = async ({ locale }: any) => ({
-// 	props: {
-// 		...(await serverSideTranslations(locale, ['common'])),
-// 	},
-// });
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
+
+// Helper constants for category titles and subtitles
+const CATEGORY_INFO: Record<BoardArticleCategory, { title: string; subtitle: string }> = {
+	[BoardArticleCategory.REVIEWS]: {
+		title: 'CAR REVIEWS',
+		subtitle: 'Expert reviews and comparisons of the latest vehicles',
+	},
+	[BoardArticleCategory.REPAIR]: {
+		title: 'REPAIR & DIY',
+		subtitle: 'DIY guides and repair tips for car maintenance',
+	},
+	[BoardArticleCategory.PARTS]: {
+		title: 'PARTS GUIDE',
+		subtitle: 'Comprehensive guides for choosing the right car parts',
+	},
+	[BoardArticleCategory.NEWS]: {
+		title: 'AUTO NEWS',
+		subtitle: 'Latest news and updates from the automotive industry',
+	},
+	[BoardArticleCategory.COMMUNITY]: {
+		title: 'COMMUNITY',
+		subtitle: 'Share your experiences and connect with other car enthusiasts',
+	},
+};
 
 const Blog: NextPage = ({ initialInput, ...props }: T) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const { query } = router;
-	const articleCategory = query?.articleCategory as string;
-	const [searchBlog, setSearchBlog] = useState<BoardArticlesInquiry>(initialInput);
-	const [boardArticles, setBoardArticles] = useState<BoardArticle[]>([
-		{
-			_id: '1',
-			articleCategory: BoardArticleCategory.REVIEWS,
-			articleStatus: 'ACTIVE' as any,
-			articleTitle: '2024 Toyota Camry Review: The Perfect Family Sedan',
-			articleContent:
-				'The 2024 Toyota Camry continues to set the standard for midsize sedans with its refined ride, spacious interior, and excellent fuel economy. With a perfect blend of comfort and technology, this vehicle offers exceptional value for families looking for a reliable daily driver. The hybrid variant delivers an impressive 52 MPG combined, making it one of the most fuel-efficient options in its class.',
-			articleImage: '/img/banner/cities/BUSAN.webp',
-			articleViews: 1250,
-			articleLikes: 89,
-			articleComments: 23,
-			memberId: 'member1',
-			createdAt: new Date('2024-11-15'),
-			updatedAt: new Date('2024-11-15'),
-			memberData: {
-				_id: 'member1',
-				memberNick: 'CarEnthusiast',
-				memberImage: '/img/logo/logoText.svg',
-			} as any,
+	const articleCategory = (query?.articleCategory as string) || BoardArticleCategory.REVIEWS;
+
+	// Initialize state properly without mutating props
+	const [searchCommunity, setSearchCommunity] = useState<BoardArticlesInquiry>(() => ({
+		...initialInput,
+		search: {
+			...initialInput.search,
+			articleCategory: (articleCategory as BoardArticleCategory) || initialInput.search.articleCategory,
 		},
-		{
-			_id: '2',
-			articleCategory: BoardArticleCategory.REVIEWS,
-			articleStatus: 'ACTIVE' as any,
-			articleTitle: 'Tesla Model 3 Long Range: Electric Performance Redefined',
-			articleContent:
-				'The Tesla Model 3 Long Range offers an incredible driving experience with its instant torque, cutting-edge autopilot features, and impressive 358-mile range. This electric sedan combines performance with practicality, featuring a minimalist interior dominated by a large touchscreen. The build quality has improved significantly, and the charging network makes long-distance travel surprisingly convenient.',
-			articleImage: '/img/banner/cities/BUSAN.webp',
-			articleViews: 2340,
-			articleLikes: 156,
-			articleComments: 45,
-			memberId: 'member2',
-			createdAt: new Date('2024-11-14'),
-			updatedAt: new Date('2024-11-14'),
-			memberData: {
-				_id: 'member2',
-				memberNick: 'EVExpert',
-				memberImage: '/img/logo/logoText.svg',
-			} as any,
-		},
-		{
-			_id: '3',
-			articleCategory: BoardArticleCategory.REVIEWS,
-			articleStatus: 'ACTIVE' as any,
-			articleTitle: 'Honda CR-V 2024: The Ultimate Compact SUV',
-			articleContent:
-				'Honda has outdone itself with the 2024 CR-V, offering a spacious cabin, advanced safety features, and a smooth hybrid powertrain. This compact SUV excels in practicality with its versatile cargo space and comfortable seating for five. The infotainment system is intuitive, and the ride quality strikes an excellent balance between comfort and handling. Perfect for growing families who need reliable transportation.',
-			articleImage: '/img/banner/cities/BUSAN.webp',
-			articleViews: 1890,
-			articleLikes: 134,
-			articleComments: 38,
-			memberId: 'member3',
-			createdAt: new Date('2024-11-13'),
-			updatedAt: new Date('2024-11-13'),
-			memberData: {
-				_id: 'member3',
-				memberNick: 'SUVReviewer',
-				memberImage: '/img/logo/logoText.svg',
-			} as any,
-		},
-	]);
-	const [totalCount, setTotalCount] = useState<number>(3);
-	
-	// Recent posts data
-	const recentPosts = [
-		{
-			id: '4',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Aliquam efficitur dolor',
-		},
-		{
-			id: '5',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Sed et quam quis sdfsdf sdfdsf sdfdsf sdfsd ',
-		},
-		{
-			id: '6',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Sed mattis est libero',
-		},
-		{
-			id: '6',
-			image: '/img/banner/cities/BUSAN.webp',
-			category: 'BLOG',
-			title: 'Sed mattis ',
-		},
-	];
-	
-	if (articleCategory) initialInput.search.articleCategory = articleCategory;
+	}));
+	const [boardArticles, setBoardArticles] = useState<BoardArticle[]>([]);
+	const [totalCount, setTotalCount] = useState<number>(0);
+	const [recentPosts, setRecentPosts] = useState<BoardArticle[]>([]);
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
+
+	const {
+		loading: boardArticlesLoading,
+		data: boardArticlesData,
+		error: getBoardArticlesError,
+		refetch: boardArticlesRefetch,
+	} = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: searchCommunity,
+		},
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setBoardArticles(data?.getBoardArticles?.list || []);
+			setTotalCount(data?.getBoardArticles?.metaCounter[0]?.total || 0);
+		},
+		onError: (error) => {
+			console.error('Error fetching board articles:', error);
+		},
+	});
+
+	// Fetch recent posts dynamically
+	const { loading: recentPostsLoading, data: recentPostsData } = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: {
+				page: 1,
+				limit: 4,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {},
+			},
+		},
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setRecentPosts(data?.getBoardArticles?.list || []);
+		},
+		onError: (error) => {
+			console.error('Error fetching recent posts:', error);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (!query?.articleCategory)
+		if (!query?.articleCategory) {
 			router.push(
 				{
 					pathname: router.pathname,
-					query: { articleCategory: 'REVIEWS' },
+					query: { articleCategory: BoardArticleCategory.REVIEWS },
 				},
 				router.pathname,
 				{ shallow: true },
 			);
-	}, []);
+		}
+	}, [query?.articleCategory, router]);
 
 	/** HANDLERS **/
 	const tabChangeHandler = async (e: T, value: string) => {
-		console.log(value);
-
-		setSearchBlog({ ...searchBlog, page: 1, search: { articleCategory: value as BoardArticleCategory } });
+		const category = value as BoardArticleCategory;
+		setSearchCommunity({ ...searchCommunity, page: 1, search: { articleCategory: category } });
 		await router.push(
 			{
 				pathname: '/blog',
-				query: { articleCategory: value },
+				query: { articleCategory: category },
 			},
 			router.pathname,
 			{ shallow: true },
@@ -150,7 +140,48 @@ const Blog: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	const paginationHandler = (e: T, value: number) => {
-		setSearchBlog({ ...searchBlog, page: value });
+		setSearchCommunity({ ...searchCommunity, page: value });
+	};
+
+	const likeArticleHandler = async (e: React.SyntheticEvent, user: T, id: string) => {
+		try {
+			e.stopPropagation();
+			if (!id) return;
+			if (!user?._id) throw new Error(Messages.error2);
+
+			await likeTargetBoardArticle({
+				variables: {
+					input: id,
+				},
+			});
+
+			await boardArticlesRefetch({ input: searchCommunity });
+			await sweetTopSmallSuccessAlert('Success!', 800);
+		} catch (err: any) {
+			console.error('ERROR, likeArticleHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	// Memoize category info to avoid recalculation
+	const categoryInfo = useMemo(() => {
+		const category = searchCommunity.search.articleCategory || BoardArticleCategory.REVIEWS;
+		return CATEGORY_INFO[category] || CATEGORY_INFO[BoardArticleCategory.REVIEWS];
+	}, [searchCommunity.search.articleCategory]);
+
+	// Render article list component to avoid duplication
+	const renderArticleList = () => {
+		if (totalCount > 0 && boardArticles.length > 0) {
+			return boardArticles.map((boardArticle: BoardArticle) => (
+				<BlogCard boardArticle={boardArticle} key={boardArticle?._id} likeArticleHandler={likeArticleHandler} />
+			));
+		}
+		return (
+			<Stack className={'no-data'}>
+				<img src="/img/icons/icoAlert.svg" alt="" />
+				<p>No Article found!</p>
+			</Stack>
+		);
 	};
 
 	if (device === 'mobile') {
@@ -159,31 +190,14 @@ const Blog: NextPage = ({ initialInput, ...props }: T) => {
 		return (
 			<div id="blog-list-page">
 				<div className="container">
-					<TabContext value={searchBlog.search.articleCategory || 'REVIEWS'}>
+					<TabContext value={searchCommunity.search.articleCategory || 'REVIEWS'}>
 						<Stack className="main-box">
 							<Stack className="left-config">
 								<Stack className="panel-config">
 									<Stack className="title-box">
 										<Stack className="left">
-											<Typography className="title">
-												{searchBlog.search.articleCategory === 'REVIEWS' && 'CAR REVIEWS'}
-												{searchBlog.search.articleCategory === 'REPAIR' && 'REPAIR & DIY'}
-												{searchBlog.search.articleCategory === 'PARTS' && 'PARTS GUIDE'}
-												{searchBlog.search.articleCategory === 'NEWS' && 'AUTO NEWS'}
-												{searchBlog.search.articleCategory === 'COMMUNITY' && 'COMMUNITY'}
-											</Typography>
-											<Typography className="sub-title">
-												{searchBlog.search.articleCategory === 'REVIEWS' &&
-													'Expert reviews and comparisons of the latest vehicles'}
-												{searchBlog.search.articleCategory === 'REPAIR' &&
-													'DIY guides and repair tips for car maintenance'}
-												{searchBlog.search.articleCategory === 'PARTS' &&
-													'Comprehensive guides for choosing the right car parts'}
-												{searchBlog.search.articleCategory === 'NEWS' &&
-													'Latest news and updates from the automotive industry'}
-												{searchBlog.search.articleCategory === 'COMMUNITY' &&
-													'Share your experiences and connect with other car enthusiasts'}
-											</Typography>
+											<Typography className="title">{categoryInfo.title}</Typography>
+											<Typography className="sub-title">{categoryInfo.subtitle}</Typography>
 										</Stack>
 										<Button
 											onClick={() =>
@@ -200,75 +214,20 @@ const Blog: NextPage = ({ initialInput, ...props }: T) => {
 										</Button>
 									</Stack>
 
-									<TabPanel value="REVIEWS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} />;
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
+									<TabPanel value={BoardArticleCategory.REVIEWS}>
+										<Stack className="list-box">{renderArticleList()}</Stack>
 									</TabPanel>
-									<TabPanel value="REPAIR">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} />;
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
+									<TabPanel value={BoardArticleCategory.REPAIR}>
+										<Stack className="list-box">{renderArticleList()}</Stack>
 									</TabPanel>
-									<TabPanel value="PARTS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} />;
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
+									<TabPanel value={BoardArticleCategory.PARTS}>
+										<Stack className="list-box">{renderArticleList()}</Stack>
 									</TabPanel>
-									<TabPanel value="NEWS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} />;
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
+									<TabPanel value={BoardArticleCategory.NEWS}>
+										<Stack className="list-box">{renderArticleList()}</Stack>
 									</TabPanel>
-									<TabPanel value="COMMUNITY">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <BlogCard boardArticle={boardArticle} key={boardArticle?._id} />;
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
+									<TabPanel value={BoardArticleCategory.COMMUNITY}>
+										<Stack className="list-box">{renderArticleList()}</Stack>
 									</TabPanel>
 								</Stack>
 							</Stack>
@@ -288,69 +247,78 @@ const Blog: NextPage = ({ initialInput, ...props }: T) => {
 									<Tab
 										value={'REVIEWS'}
 										label={'Car Reviews'}
-										className={`tab-button ${searchBlog.search.articleCategory == 'REVIEWS' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'REVIEWS' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'REPAIR'}
 										label={'Repair & DIY'}
-										className={`tab-button ${searchBlog.search.articleCategory == 'REPAIR' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'REPAIR' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'PARTS'}
 										label={'Parts Guide'}
-										className={`tab-button ${searchBlog.search.articleCategory == 'PARTS' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'PARTS' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'NEWS'}
 										label={'Auto News'}
-										className={`tab-button ${searchBlog.search.articleCategory == 'NEWS' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'NEWS' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'COMMUNITY'}
 										label={'Community'}
-										className={`tab-button ${searchBlog.search.articleCategory == 'COMMUNITY' ? 'active' : ''}`}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'COMMUNITY' ? 'active' : ''}`}
 									/>
-							</TabList>
-							<Stack className="recent-articles">
-								<Typography className="recent-title-heading">Recent Posts</Typography>
-								<Stack className="recent-posts-list">
-									{recentPosts.map((post) => (
-										<RecentPostCard
-											key={post.id}
-											image={post.image}
-											category={post.category}
-											title={post.title}
-											articleId={post.id}
-										/>
-									))}
+								</TabList>
+								<Stack className="recent-articles">
+									<Typography className="recent-title-heading">Recent Posts</Typography>
+									<Stack className="recent-posts-list">
+										{recentPosts.length > 0 ? (
+											recentPosts.map((post: BoardArticle) => {
+												const imagePath: string = post?.articleImage
+													? `${REACT_APP_API_URL}/${post?.articleImage}`
+													: '/img/community/communityImg.png';
+												return (
+													<RecentPostCard
+														key={post._id}
+														image={imagePath}
+														category={post.articleCategory}
+														title={post.articleTitle}
+														articleId={post._id}
+														articleCategory={post.articleCategory}
+													/>
+												);
+											})
+										) : (
+											<Stack className={'no-data'}>
+												<img src="/img/icons/icoAlert.svg" alt="" />
+												<p>No recent posts</p>
+											</Stack>
+										)}
+									</Stack>
 								</Stack>
-								
 							</Stack>
-							
-							</Stack>
-							
 						</Stack>
 
-					{totalCount > 0 && (
-						<Stack className="pagination-config">
-							<Stack className="pagination-box">
-								<Pagination
-									count={Math.ceil(totalCount / searchBlog.limit)}
-									page={searchBlog.page}
-									shape="circular"
-									color="primary"
-									onChange={paginationHandler}
-								/>
+						{totalCount > 0 && (
+							<Stack className="pagination-config">
+								<Stack className="pagination-box">
+									<Pagination
+										count={Math.ceil(totalCount / searchCommunity.limit)}
+										page={searchCommunity.page}
+										shape="circular"
+										color="primary"
+										onChange={paginationHandler}
+									/>
+								</Stack>
+								<Stack className="total-result">
+									<Typography>
+										Total {totalCount} article{totalCount > 1 ? 's' : ''} available
+									</Typography>
+								</Stack>
 							</Stack>
-							<Stack className="total-result">
-								<Typography>
-									Total {totalCount} article{totalCount > 1 ? 's' : ''} available
-								</Typography>
-							</Stack>
-						</Stack>
-					)}
+						)}
 					</TabContext>
-
 				</div>
 			</div>
 		);

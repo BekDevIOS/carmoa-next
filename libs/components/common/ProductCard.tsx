@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Stack, Box, Typography, IconButton, Tooltip } from '@mui/material';
+import React, { MouseEvent, useState } from 'react';
+import { Stack, Box, Typography, Tooltip } from '@mui/material';
 import {
 	FavoriteBorder as FavoriteBorderIcon,
 	CompareArrows as CompareArrowsIcon,
@@ -14,6 +14,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { REACT_APP_API_URL } from '../../config';
+import { useRouter } from 'next/router';
 
 interface ProductCardProps {
 	product: Product;
@@ -35,6 +36,7 @@ const ProductCard = ({
 	quickViewHandler,
 }: ProductCardProps) => {
 	const device = useDeviceDetect();
+	const router = useRouter();
 	const user = useReactiveVar(userVar);
 	const [isHovered, setIsHovered] = useState(false);
 	const { isCompared, toggleCompare } = useCompare();
@@ -43,12 +45,22 @@ const ProductCard = ({
 		? `${REACT_APP_API_URL}/${product?.productImages[0]}`
 		: '/img/banner/header1.svg';
 
+	const handleCardClick = () => {
+		if (!product?._id) return;
+		router.push(`/product/detail?id=${product._id}`);
+	};
+
+	const stopPropagation = (event: MouseEvent) => {
+		event.stopPropagation();
+	};
+
 	if (device === 'mobile') {
 		return <div>PRODUCT CARD</div>;
 	} else {
 		return (
 			<Stack
 				className={'product-card'}
+				onClick={handleCardClick}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => {
 					setIsHovered(false);
@@ -64,7 +76,13 @@ const ProductCard = ({
 					)}
 					<img src={imagePath} alt={product.productTitle} className={'product-image'} />
 					<Stack className={`hover-actions ${isHovered ? 'visible' : ''}`}>
-						<Box className={'action-icon'} onClick={() => likeProductHandler(user, product._id)}>
+						<Box
+							className={'action-icon'}
+							onClick={(event) => {
+								stopPropagation(event);
+								likeProductHandler?.(user, product._id);
+							}}
+						>
 							{myFavorites ? (
 								<FavoriteIcon color="primary" />
 							) : product?.meLiked && product?.meLiked[0]?.myFavorite ? (
@@ -76,7 +94,8 @@ const ProductCard = ({
 						<Tooltip title={isInCompare ? 'Remove from Compare' : 'Add to Compare'} arrow>
 							<Box
 								className={`action-icon ${isInCompare ? 'compared' : ''}`}
-								onClick={() => {
+								onClick={(event) => {
+									stopPropagation(event);
 									toggleCompare(product);
 									compareHandler?.(product._id);
 								}}
@@ -84,7 +103,13 @@ const ProductCard = ({
 								<CompareArrowsIcon className={'icon'} />
 							</Box>
 						</Tooltip>
-						<Box className={'action-icon'} onClick={() => quickViewHandler?.(product._id)}>
+						<Box
+							className={'action-icon'}
+							onClick={(event) => {
+								stopPropagation(event);
+								quickViewHandler?.(product._id);
+							}}
+						>
 							<VisibilityIcon className={'icon'} />
 						</Box>
 					</Stack>
@@ -123,7 +148,13 @@ const ProductCard = ({
 							</Typography>
 						</Box>
 					)}
-					<Box className={'add-to-cart-btn'} onClick={() => addToCartHandler?.(product._id)}>
+					<Box
+						className={'add-to-cart-btn'}
+						onClick={(event) => {
+							stopPropagation(event);
+							addToCartHandler?.(product._id);
+						}}
+					>
 						<ShoppingCartOutlinedIcon className={'cart-icon'} />
 					</Box>
 				</Stack>

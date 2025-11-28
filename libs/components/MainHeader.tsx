@@ -162,43 +162,99 @@ const MainHeader = () => {
 				{/* Center: Navigation Links */}
 				<Box component={'div'} className={'nav-links'}>
 					<Link href={'/'}>
-						<Box component={'div'} className={'nav-link active'} sx={{ bgcolor: 'primary.main' }}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'primary.contrastText' }}>
+						<Box
+							component={'div'}
+							className={router.pathname === '/' ? 'nav-link active' : 'nav-link'}
+							sx={router.pathname === '/' ? { bgcolor: 'primary.main' } : {}}
+						>
+							<Typography
+								variant="body2"
+								className={'nav-link-text'}
+								sx={router.pathname === '/' ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
+							>
 								HOME
 							</Typography>
 						</Box>
 					</Link>
-					<Link href={'/products'}>
-						<Box component={'div'} className={'nav-link'}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+					<Link href={'/product'}>
+						<Box
+							component={'div'}
+							className={router.pathname.startsWith('/product') ? 'nav-link active' : 'nav-link'}
+							sx={router.pathname.startsWith('/product') ? { bgcolor: 'primary.main' } : {}}
+						>
+							<Typography
+								variant="body2"
+								className={'nav-link-text'}
+								sx={
+									router.pathname.startsWith('/product')
+										? { color: 'primary.contrastText' }
+										: { color: 'text.primary' }
+								}
+							>
 								Products
 							</Typography>
 						</Box>
 					</Link>
 					<Link href={'/blog'}>
-						<Box component={'div'} className={'nav-link'}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+						<Box
+							component={'div'}
+							className={router.pathname.startsWith('/blog') || router.pathname.startsWith('/community') ? 'nav-link active' : 'nav-link'}
+							sx={router.pathname.startsWith('/blog') || router.pathname.startsWith('/community') ? { bgcolor: 'primary.main' } : {}}
+						>
+							<Typography
+								variant="body2"
+								className={'nav-link-text'}
+								sx={
+									router.pathname.startsWith('/blog') || router.pathname.startsWith('/community')
+										? { color: 'primary.contrastText' }
+										: { color: 'text.primary' }
+								}
+							>
 								Blog
 							</Typography>
 						</Box>
 					</Link>
 					<Link href={'/about'}>
-						<Box component={'div'} className={'nav-link no-icon'}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+						<Box
+							component={'div'}
+							className={router.pathname === '/about' ? 'nav-link active no-icon' : 'nav-link no-icon'}
+							sx={router.pathname === '/about' ? { bgcolor: 'primary.main' } : {}}
+						>
+							<Typography
+								variant="body2"
+								className={'nav-link-text'}
+								sx={router.pathname === '/about' ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
+							>
 								About Us
 							</Typography>
 						</Box>
 					</Link>
 					<Link href={'/mypage'}>
-						<Box component={'div'} className={'nav-link no-icon'}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+						<Box
+							component={'div'}
+							className={router.pathname.startsWith('/mypage') ? 'nav-link active no-icon' : 'nav-link no-icon'}
+							sx={router.pathname.startsWith('/mypage') ? { bgcolor: 'primary.main' } : {}}
+						>
+							<Typography
+								variant="body2"
+								className={'nav-link-text'}
+								sx={router.pathname.startsWith('/mypage') ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
+							>
 								My Page
 							</Typography>
 						</Box>
 					</Link>
 					<Link href={'/cs'}>
-						<Box component={'div'} className={'nav-link no-icon'}>
-							<Typography variant="body2" className={'nav-link-text'} sx={{ color: 'text.primary' }}>
+						<Box
+							component={'div'}
+							className={router.pathname === '/cs' ? 'nav-link active no-icon' : 'nav-link no-icon'}
+							sx={router.pathname === '/cs' ? { bgcolor: 'primary.main' } : {}}
+						>
+							<Typography
+								variant="body2"
+								className={'nav-link-text'}
+								sx={router.pathname === '/cs' ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
+							>
 								CS
 							</Typography>
 						</Box>
