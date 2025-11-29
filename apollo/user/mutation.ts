@@ -16,6 +16,25 @@ export const SIGN_UP = gql`
 			memberFullName
 			memberImage
 			memberAddress
+			memberShippingAddress {
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberBillingAddress {
+				country
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
 			memberDesc
 			memberArticles
 			memberFollowers
@@ -50,6 +69,78 @@ export const LOGIN = gql`
 			memberFullName
 			memberImage
 			memberAddress
+			memberShippingAddress {
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberBillingAddress {
+				country
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberDesc
+			memberArticles
+			memberFollowers
+			memberFollowings
+			memberPoints
+			memberLikes
+			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
+			deletedAt
+			createdAt
+			updatedAt
+			memberProducts
+			memberProvider
+			memberEmail
+			accessToken
+		}
+	}
+`;
+
+export const GOOGLE_LOGIN = gql`
+	mutation GoogleLogin($input: GoogleLoginInput!) {
+		googleLogin(input: $input) {
+			_id
+			memberType
+			memberStatus
+			memberAuthType
+			memberPhone
+			memberNick
+			memberFullName
+			memberImage
+			memberAddress
+			memberShippingAddress {
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberBillingAddress {
+				country
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
 			memberDesc
 			memberArticles
 			memberFollowers
@@ -84,6 +175,25 @@ export const UPDATE_MEMBER = gql`
 			memberFullName
 			memberImage
 			memberAddress
+			memberShippingAddress {
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberBillingAddress {
+				country
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
 			memberDesc
 			memberArticles
 			memberFollowers
@@ -118,6 +228,25 @@ export const LIKE_TARGET_MEMBER = gql`
 			memberFullName
 			memberImage
 			memberAddress
+			memberShippingAddress {
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberBillingAddress {
+				country
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
 			memberDesc
 			memberArticles
 			memberFollowers

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { REACT_APP_API_URL } from '../../config';
+import { getMemberImageUrl } from '../../config';
 import Moment from 'react-moment';
 import { useRouter } from 'next/router';
 import { Star as StarIcon, StarBorder as StarBorderIcon } from '@mui/icons-material';
@@ -28,9 +28,7 @@ const Review = (props: ReviewProps) => {
 	const { comment, rating = 5 } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const imagePath: string = comment?.memberData?.memberImage
-		? `${REACT_APP_API_URL}/${comment?.memberData?.memberImage}`
-		: '/img/profile/defaultUser.svg';
+	const imagePath: string = getMemberImageUrl(comment?.memberData?.memberImage);
 
 	/** HANDLERS **/
 	const goMemberPage = (id?: string) => {

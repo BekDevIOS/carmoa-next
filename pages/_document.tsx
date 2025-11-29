@@ -4,6 +4,9 @@ export default function Document() {
 	return (
 		<Html lang="en">
 			<Head>
+				{/* Google Identity Services */}
+				<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 				{/* Robots + Favicon */}
 				<meta name="robots" content="index,follow" />
 				<link rel="icon" type="image/png" href="/img/logo/favicon.png" />

@@ -4,7 +4,7 @@ import { Stack, Typography, Box, List, ListItem, Button, useTheme } from '@mui/m
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { Member } from '../../types/member/member';
-import { REACT_APP_API_URL } from '../../config';
+import { getMemberImageUrl } from '../../config';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { GET_MEMBER } from '../../../apollo/user/query';
 import { userVar } from '../../../apollo/store';
@@ -82,7 +82,7 @@ const MemberMenu = (props: MemberMenuProps) => {
 				<Stack className={'profile'}>
 					<Box component={'div'} className={'profile-img'}>
 						<img
-							src={member?.memberImage ? `${REACT_APP_API_URL}/${member?.memberImage}` : '/img/profile/defaultUser.svg'}
+							src={getMemberImageUrl(member?.memberImage)}
 							alt={'member-photo'}
 						/>
 					</Box>

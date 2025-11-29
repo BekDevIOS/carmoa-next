@@ -70,10 +70,10 @@ const LatestBlogs = (props: LatestBlogsProps) => {
 				<Stack className={'section-header'}>
 					<Stack className={'title-section'}>
 						<Typography variant="h2" className={'main-title'}>
-							<span className={'title-highlight'}>LATEST</span> BLOG
+							<span className={'title-highlight'}>MOST LIKED</span> BLOGS
 						</Typography>
 						<Typography variant="body1" className={'subtitle'}>
-							The latest blog of Autusin
+							The most liked blogs of Carmoa
 						</Typography>
 					</Stack>
 				</Stack>
@@ -115,7 +115,7 @@ LatestBlogs.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 6,
-		sort: 'createdAt',
+		sort: 'articleLikes',
 		direction: 'DESC',
 		search: {},
 	},

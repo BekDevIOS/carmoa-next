@@ -3,7 +3,7 @@ import { initializeApollo } from '../../apollo/client';
 import { userVar } from '../../apollo/store';
 import { CustomJwtPayload } from '../types/customJwtPayload';
 import { sweetMixinErrorAlert } from '../sweetAlert';
-import { LOGIN, SIGN_UP } from '../../apollo/user/mutation';
+import { GOOGLE_LOGIN, LOGIN, SIGN_UP } from '../../apollo/user/mutation';
 
 export function getJwtToken(): any {
 	if (typeof window !== 'undefined') {
@@ -76,6 +76,71 @@ export const signUp = async (nick: string, email: string, password: string, phon
 		console.warn('login err', err);
 		logOut();
 		// throw new Error('Login Err');
+	}
+};
+
+/**
+ * Google Login Handler
+ * 
+ * Sends Google ID token to backend for verification and authentication.
+ * Backend verifies token, creates/updates user, and returns JWT access token.
+ * 
+ * @param idToken - Google ID token from google.accounts.id credential response
+ * @throws Error with descriptive message if login fails
+ */
+export const googleLogIn = async (idToken: string): Promise<void> => {
+	if (!idToken || typeof idToken !== 'string') {
+		throw new Error('Invalid Google token provided.');
+	}
+
+	try {
+		const apolloClient = await initializeApollo();
+
+		const result = await apolloClient.mutate({
+			mutation: GOOGLE_LOGIN,
+			variables: { input: { idToken } },
+			fetchPolicy: 'network-only',
+		});
+
+		const { accessToken } = result?.data?.googleLogin || {};
+
+		if (!accessToken) {
+			throw new Error('Backend did not return an access token.');
+		}
+
+		// Store token and update user info
+		updateStorage({ jwtToken: accessToken });
+		updateUserInfo(accessToken);
+	} catch (err: any) {
+		console.error('Google login error:', err);
+
+		// Extract meaningful error message
+		let errorMessage = 'Google login failed. Please try again.';
+
+		if (err?.graphQLErrors && err.graphQLErrors.length > 0) {
+			const graphQLError = err.graphQLErrors[0];
+			const message = graphQLError.message;
+
+			// Handle specific backend error messages
+			if (message.includes('expired') || message.includes('ExpiredTokenError')) {
+				errorMessage = 'Google token has expired. Please try again.';
+			} else if (message.includes('invalid') || message.includes('InvalidTokenError')) {
+				errorMessage = 'Invalid Google token. Please try again.';
+			} else if (message.includes('blocked')) {
+				errorMessage = 'Your account has been blocked. Please contact support.';
+			} else if (message) {
+				errorMessage = message;
+			}
+		} else if (err?.networkError) {
+			errorMessage = 'Network error. Please check your connection and try again.';
+		} else if (err?.message) {
+			errorMessage = err.message;
+		}
+
+		// Clear any partial auth state
+		logOut();
+
+		throw new Error(errorMessage);
 	}
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Stack } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Member } from '../../types/member/member';
+import { getMemberImageUrl } from '../../config';
 
 interface DealerCardProps {
 	dealer: Member;
@@ -10,9 +11,7 @@ interface DealerCardProps {
 const DealerCard = (props: DealerCardProps) => {
 	const { dealer } = props;
 	const device = useDeviceDetect();
-	const dealerImage = dealer?.memberImage
-		? `${process.env.REACT_APP_API_URL}/${dealer?.memberImage}`
-		: '/img/profile/defaultUser.svg';
+	const dealerImage = getMemberImageUrl(dealer?.memberImage);
 
 	if (device === 'mobile') {
 		return (

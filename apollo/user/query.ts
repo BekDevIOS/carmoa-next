@@ -19,6 +19,25 @@ export const GET_AGENTS = gql`
 				memberFullName
 				memberImage
 				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
 				memberDesc
 				memberProducts
 				memberArticles
@@ -62,6 +81,25 @@ query GetMember($input: String!) {
         memberFullName
         memberImage
         memberAddress
+        memberShippingAddress {
+            firstName
+            lastName
+            address1
+            address2
+            city
+            postalCode
+            phone
+        }
+        memberBillingAddress {
+            country
+            firstName
+            lastName
+            address1
+            address2
+            city
+            postalCode
+            phone
+        }
         memberDesc
         memberProducts
         memberArticles
@@ -137,6 +175,25 @@ export const GET_PRODUCT = gql`
 				memberFullName
 				memberImage
 				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
 				memberDesc
 				memberProducts
 				memberArticles
@@ -201,9 +258,28 @@ export const GET_PRODUCTS = gql`
 					memberPhone
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -311,9 +387,28 @@ export const GET_FAVORITES = gql`
 					memberPhone
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -378,9 +473,28 @@ export const GET_VISITED = gql`
 					memberPhone
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -438,6 +552,25 @@ export const GET_BOARD_ARTICLE = gql`
 				memberFullName
 				memberImage
 				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
 				memberDesc
 				memberProducts
 				memberArticles
@@ -493,9 +626,28 @@ export const GET_BOARD_ARTICLES = gql`
 					memberPhone
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -546,9 +698,28 @@ export const GET_COMMENTS = gql`
 					memberPhone
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -607,9 +778,28 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberEmail
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberProducts
 					memberArticles
 					memberFollowers
@@ -653,9 +843,28 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberEmail
 					memberNick
 					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
 					memberProducts
 					memberArticles
 					memberFollowers

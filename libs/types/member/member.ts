@@ -3,6 +3,27 @@ import { MeLiked } from '../like/like';
 import { MeFollowed } from '../follow/follow';
 import { TotalCounter } from '../product/product';
 
+export interface MemberShippingAddress {
+	firstName?: string;
+	lastName?: string;
+	address1?: string;
+	address2?: string;
+	city?: string;
+	postalCode?: string;
+	phone?: string;
+}
+
+export interface MemberBillingAddress {
+	country?: string;
+	firstName?: string;
+	lastName?: string;
+	address1?: string;
+	address2?: string;
+	city?: string;
+	postalCode?: string;
+	phone?: string;
+}
+
 export interface Member {
 	_id: string;
 	memberType: MemberType;
@@ -16,6 +37,8 @@ export interface Member {
 	memberFullName?: string;
 	memberImage: string;
 	memberAddress?: string;
+	memberShippingAddress?: MemberShippingAddress;
+	memberBillingAddress?: MemberBillingAddress;
 	memberDesc?: string;
 	memberProducts: number;
 	memberArticles: number;

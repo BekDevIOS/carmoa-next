@@ -8,6 +8,7 @@ import { Box, Button, Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/
 import { useRouter } from 'next/router';
 import { logIn, signUp } from '../../libs/auth';
 import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
+import GoogleLoginButton from '../../libs/components/common/GoogleLoginButton';
 
 const Join: NextPage = () => {
 	const router = useRouter();
@@ -63,12 +64,20 @@ const Join: NextPage = () => {
 		}
 	}, [input]);
 
+	/** GOOGLE LOGIN HANDLERS **/
+	const handleGoogleLoginSuccess = useCallback(() => {
+		router.push(`${router.query.referrer ?? '/'}`);
+	}, [router]);
+
+	const handleGoogleLoginError = useCallback((error: string) => {
+		sweetMixinErrorAlert(error).then();
+	}, []);
+
 	if (device === 'mobile') {
 		return <div>LOGIN MOBILE</div>;
 	}
 
 	const mainClassName = loginView ? 'main' : 'main main--swapped';
-	console.log("+++++", process.env.REACT_APP_API_URL)
 
 	return (
 		<Stack className={'join-page'}>
@@ -209,18 +218,16 @@ const Join: NextPage = () => {
 
 							{/* GOOGLE LOGIN */}
 							{loginView && (
-								<Button
-									variant="outlined"
-									style={{
-										marginTop: '15px',
-										height: '55px',
-										borderRadius: '12px',
-										background: '#fff',
-									}}
-								>
-									<img src="/img/icons/image.png" width="25" style={{ marginRight: '10px' }} />
-									Login with Google
-								</Button>
+								<Box sx={{ marginTop: '15px', width: '100%' }}>
+									<GoogleLoginButton
+										onSuccess={handleGoogleLoginSuccess}
+										onError={handleGoogleLoginError}
+										showOneTap={true}
+										buttonTheme="outline"
+										buttonSize="large"
+										buttonText="signin_with"
+									/>
+								</Box>
 							)}
 						</Box>
 
