@@ -16,6 +16,7 @@ export interface BoardArticlesInquiry {
 	search: {
 		articleCategory?: BoardArticleCategory;
 		text?: string;
+		memberId?: string;
 	};
 }
 

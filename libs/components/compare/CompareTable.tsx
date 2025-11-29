@@ -1,12 +1,13 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography, Box, Stack, Button } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { CompareProduct } from '../../../apollo/store';
+import { Product } from '../../types/product/product';
+import { REACT_APP_API_URL } from '../../config';
 
 interface CompareTableProps {
-	items: CompareProduct[];
-	onRemove?: (id: number) => void;
-	onAddToCart?: (product: CompareProduct) => void;
+	items: Product[];
+	onRemove?: (id: string) => void;
+	onAddToCart?: (product: Product) => void;
 }
 
 const CompareTable: React.FC<CompareTableProps> = ({ items, onRemove, onAddToCart }) => {
@@ -31,31 +32,49 @@ const CompareTable: React.FC<CompareTableProps> = ({ items, onRemove, onAddToCar
 		{ label: 'Condition', key: 'condition' },
 	];
 
-	const getValue = (product: CompareProduct, key: string): string | number | React.ReactNode => {
+	const getValue = (product: Product, key: string): string | number | React.ReactNode => {
 		switch (key) {
 			case 'image':
 				return (
 					<Box
 						component="img"
-						src={product.image}
-						alt={product.title}
+						src={
+							product.productImages?.[0]
+								? `${REACT_APP_API_URL}/${product.productImages[0]}`
+								: '/img/banner/header1.svg'
+						}
+						alt={product.productTitle}
 						className="compare-table-image"
 					/>
 				);
 			case 'title':
-				return product.title;
+				return product.productTitle;
 			case 'brand':
-				return product.brand || '—';
+				return product.productCarBrand || '—';
 			case 'compatibility':
-				return product.compatibility || '—';
+				return product.productCarModel || '—';
 			case 'year':
-				return product.year || '—';
+				if (product.productYearFrom && product.productYearTo) {
+					return `${product.productYearFrom} - ${product.productYearTo}`;
+				}
+				if (product.productYearFrom) return product.productYearFrom;
+				if (product.productYearTo) return product.productYearTo;
+				return '—';
 			case 'price':
-				return `$${product.salePrice.toFixed(2)}`;
+				// Prefer sale price when available
+				// @ts-ignore productPrice may be number | undefined
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				{
+					const sale =
+						typeof product.productSalePrice === 'number' && product.productSalePrice > 0
+							? product.productSalePrice
+							: product.productPrice;
+					return typeof sale === 'number' ? `$${sale.toFixed(2)}` : '—';
+				}
 			case 'oemNumber':
-				return product.oemNumber || '—';
+				return product.productOemNumbers?.join(', ') || '—';
 			case 'condition':
-				return product.condition || '—';
+				return product.productCondition || '—';
 			default:
 				return '—';
 		}
@@ -76,15 +95,15 @@ const CompareTable: React.FC<CompareTableProps> = ({ items, onRemove, onAddToCar
 								</CardContent>
 							</Card>
 						</Grid>
-						{items.map((item) => (
-							<Grid key={item.id} item xs={12} sm={6} md={3} lg={1.5}>
+						{items.map((item, index) => (
+							<Grid key={item._id || index} item xs={12} sm={6} md={3} lg={2}>
 								<Card className="compare-table-product-card">
 									<CardContent className="compare-table-card-content">
 										{onRemove && (
 											<Box className="compare-table-remove-container">
 												<Typography
 													variant="body2"
-													onClick={() => onRemove(item.id)}
+													onClick={() => onRemove(item._id as string)}
 													className="compare-table-remove-text"
 												>
 													Remove
@@ -113,8 +132,8 @@ const CompareTable: React.FC<CompareTableProps> = ({ items, onRemove, onAddToCar
 								</Card>
 							</Grid>
 							{/* Product columns */}
-							{items.map((item) => (
-								<Grid key={item.id} item xs={12} sm={6} md={3} lg={1.5}>
+							{items.map((item, index) => (
+								<Grid key={item._id || index} item xs={12} sm={6} md={3} lg={2}>
 									<Card className="compare-table-data-card">
 										<CardContent className="compare-table-card-content compare-table-card-content-full">
 											{typeof getValue(item, row.key) === 'string' ||
@@ -149,8 +168,8 @@ const CompareTable: React.FC<CompareTableProps> = ({ items, onRemove, onAddToCar
 							</Card>
 						</Grid>
 						{/* Add to Cart buttons for each product */}
-						{items.map((item) => (
-							<Grid key={item.id} item xs={12} sm={6} md={3} lg={1.5}>
+						{items.map((item, index) => (
+							<Grid key={item._id || index} item xs={12} sm={6} md={3} lg={2}>
 								<Card className="compare-table-data-card">
 									<CardContent className="compare-table-card-content compare-table-card-content-full">
 										<Button

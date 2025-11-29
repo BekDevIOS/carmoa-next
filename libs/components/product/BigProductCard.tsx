@@ -78,9 +78,7 @@ const BigProductCard = ({
 			salePrice,
 			regularPrice,
 			discountPercentage:
-				hasSale && regularPrice && salePrice
-					? Math.round(((regularPrice - salePrice) / regularPrice) * 100)
-					: null,
+				hasSale && regularPrice && salePrice ? Math.round(((regularPrice - salePrice) / regularPrice) * 100) : null,
 		};
 	}, [product.productPrice, product.productSalePrice]);
 
@@ -172,14 +170,19 @@ const BigProductCard = ({
 				{/* Pricing */}
 				<Stack className={'big-card-prices'}>
 					{typeof priceInfo.regularPrice === 'number' && priceInfo.hasSale && (
-						<Typography className={'big-card-regular-price strike'}>
+						<Typography
+							className={'big-card-regular-price strike'}
+							sx={{ fontSize: '18px', fontWeight: 500}}
+						>
 							${priceInfo.regularPrice.toFixed(2)}
 						</Typography>
 					)}
 					{typeof priceInfo.salePrice === 'number' ? (
 						<Typography className={'big-card-sale-price'}>${priceInfo.salePrice.toFixed(2)}</Typography>
 					) : typeof priceInfo.regularPrice === 'number' ? (
-						<Typography className={'big-card-sale-price'}>${priceInfo.regularPrice.toFixed(2)}</Typography>
+						<Typography className={'big-card-regular-price'} sx={{ fontSize: '28px', fontWeight: 700 }}>
+							${priceInfo.regularPrice.toFixed(2)}
+						</Typography>
 					) : null}
 				</Stack>
 
@@ -203,11 +206,7 @@ const BigProductCard = ({
 								className={'quantity-input'}
 								inputProps={{ min: 1 }}
 							/>
-							<Button
-								variant="outlined"
-								onClick={() => handleQuantityChange(quantity + 1)}
-								className={'quantity-btn'}
-							>
+							<Button variant="outlined" onClick={() => handleQuantityChange(quantity + 1)} className={'quantity-btn'}>
 								+
 							</Button>
 						</Stack>
@@ -234,4 +233,3 @@ const BigProductCard = ({
 };
 
 export default BigProductCard;
-

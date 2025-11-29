@@ -109,7 +109,7 @@ const TrendProducts = (props: TrendProductsProps) => {
 TrendProducts.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 8,
+		limit: 10,
 		sort: 'productLikes',
 		direction: 'DESC',
 		search: { },

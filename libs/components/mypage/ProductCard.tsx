@@ -35,12 +35,12 @@ export const ProductCard = (props: ProductCardProps) => {
 	};
 
 	const pushProductDetail = async (id: string) => {
-		if (memberPage)
-			await router.push({
-				pathname: '/products/detail',
-				query: { id: id },
-			});
-		else return;
+		if (!memberPage || !id) return;
+
+		await router.push({
+			pathname: '/product/detail',
+			query: { id },
+		});
 	};
 
 	const handleClick = (event: any) => {
@@ -72,13 +72,13 @@ export const ProductCard = (props: ProductCardProps) => {
 					<Typography className="price">
 						{product.productSalePrice && product.productSalePrice > 0 ? (
 							<>
-								<strong>₩{formatterStr(product.productSalePrice)}</strong>
+								<strong>${formatterStr(product.productSalePrice)}</strong>
 								<span style={{ textDecoration: 'line-through', marginLeft: '8px', color: '#999' }}>
-									₩{formatterStr(product.productPrice)}
+									${formatterStr(product.productPrice)}
 								</span>
 							</>
 						) : (
-							<strong>₩{formatterStr(product?.productPrice)}</strong>
+							<strong>${formatterStr(product?.productPrice)}</strong>
 						)}
 					</Typography>
 				</Stack>

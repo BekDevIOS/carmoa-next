@@ -2,17 +2,34 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../property/PropertyCard';
-import { Property } from '../../types/property/property';
+import ProductCard from '../common/ProductCard';
+import { Product } from '../../types/product/product';
 import { T } from '../../types/common';
+import { useQuery } from '@apollo/client';
+import { GET_VISITED } from '../../../apollo/user/query';
 
 const RecentlyVisited: NextPage = () => {
 	const device = useDeviceDetect();
-	const [recentlyVisited, setRecentlyVisited] = useState<Property[]>([]);
+	const [recentlyVisited, setRecentlyVisited] = useState<Product[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [searchVisited, setSearchVisited] = useState<T>({ page: 1, limit: 6 });
 
 	/** APOLLO REQUESTS **/
+	const {
+		loading: getVisitedLoading,
+		data: getVisitedData,
+		error: getVisitedError,
+		refetch: getVisitedRefetch,
+	} = useQuery(GET_VISITED, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: searchVisited,
+		},
+		onCompleted(data: T) {
+			setRecentlyVisited(data.getVisited?.list);
+			setTotal(data.getVisited?.metaCounter?.[0]?.total || 0);
+		},
+	});
 
 	/** HANDLERS **/
 	const paginationHandler = (e: T, value: number) => {
@@ -32,8 +49,12 @@ const RecentlyVisited: NextPage = () => {
 				</Stack>
 				<Stack className="favorites-list-box">
 					{recentlyVisited?.length ? (
-						recentlyVisited?.map((property: Property) => {
-							return <PropertyCard property={property} recentlyVisited={true} />;
+						recentlyVisited?.map((product: Product) => {
+							return (
+								<Stack key={product._id} sx={{ width: '296px', height: '413px' }}>
+									<ProductCard product={product} recentlyVisited={true} />
+								</Stack>
+							);
 						})
 					) : (
 						<div className={'no-data'}>
