@@ -14,12 +14,15 @@ import { useReactiveVar } from '@apollo/client';
 import { themeVar } from '../../apollo/store';
 import Link from 'next/link';
 import Cart from './Cart';
+import { useCart } from '../hooks/useCart';
 
 const TopHeader = () => {
 	const themeMode = useReactiveVar(themeVar);
+	const { getCartCount } = useCart();
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
 	const categoryMenuOpen = Boolean(categoryAnchor);
 	const [cartOpen, setCartOpen] = useState(false);
+	const cartCount = getCartCount();
 
 	const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
 		setCategoryAnchor(event.currentTarget);
@@ -168,11 +171,13 @@ const TopHeader = () => {
 						<Typography variant="body2" className={'cart-text'} sx={{ color: 'primary.contrastText' }}>
 							Cart
 						</Typography>
-						<Box component={'div'} className={'cart-badge'} sx={{ bgcolor: 'text.primary' }}>
-							<Typography variant="caption" className={'cart-badge-text'} sx={{ color: 'background.paper' }}>
-								0
-							</Typography>
-						</Box>
+						{cartCount > 0 && (
+							<Box component={'div'} className={'cart-badge'} sx={{ bgcolor: 'text.primary' }}>
+								<Typography variant="caption" className={'cart-badge-text'} sx={{ color: 'background.paper' }}>
+									{cartCount}
+								</Typography>
+							</Box>
+						)}
 					</Box>
 				</Box>
 			</Stack>

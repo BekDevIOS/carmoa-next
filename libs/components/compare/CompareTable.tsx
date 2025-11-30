@@ -62,15 +62,13 @@ const CompareTable: React.FC<CompareTableProps> = ({ items, onRemove, onAddToCar
 				return '—';
 			case 'price':
 				// Prefer sale price when available
-				// @ts-ignore productPrice may be number | undefined
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				{
-					const sale =
-						typeof product.productSalePrice === 'number' && product.productSalePrice > 0
-							? product.productSalePrice
-							: product.productPrice;
-					return typeof sale === 'number' ? `$${sale.toFixed(2)}` : '—';
-				}
+				const salePrice =
+					typeof product.productSalePrice === 'number' && product.productSalePrice > 0
+						? product.productSalePrice
+						: typeof product.productPrice === 'number'
+						? product.productPrice
+						: null;
+				return salePrice !== null ? `$${salePrice.toFixed(2)}` : '—';
 			case 'oemNumber':
 				return product.productOemNumbers?.join(', ') || '—';
 			case 'condition':

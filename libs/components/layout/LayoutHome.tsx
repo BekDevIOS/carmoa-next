@@ -17,19 +17,20 @@ import FeatureCard from '../FeatureCard';
 import HeroBannerOverlay from '../homepage/HeroBannerOverlay';
 import CompareFab from '../compare/CompareFab';
 import CompareModal from '../compare/CompareModal';
-import { CompareProduct } from '../../../apollo/store';
+import { Product } from '../../types/product/product';
 import { getJwtToken, updateUserInfo } from '../../auth';
+import { useCart } from '../../hooks/useCart';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
+		const { addToCart } = useCart();
 		const [compareModalOpen, setCompareModalOpen] = useState(false);
 
-		const handleAddToCart = (product: CompareProduct) => {
-			// TODO: Implement actual cart functionality
-			// This should add the product to the cart state/drawer
-			console.log('Add to cart from compare:', product);
-			// You can integrate with your cart state management here
+		const handleAddToCart = (product: Product) => {
+			if (product && product._id) {
+				addToCart(product, 1);
+			}
 		};
 
 		// Features data

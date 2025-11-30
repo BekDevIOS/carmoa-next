@@ -1,4 +1,5 @@
 export const REACT_APP_API_URL = `${process.env.REACT_APP_API_URL}`;
+export const CART_STORAGE_KEY = 'carmoa_cart';
 
 /**
  * Get the full image URL for a member image

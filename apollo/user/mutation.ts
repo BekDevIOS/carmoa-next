@@ -491,3 +491,44 @@ export const UNSUBSCRIBE = gql`
 		}
 	}
 `;
+
+/**************************
+ *         ORDER         *
+ *************************/
+
+export const CREATE_ORDER = gql`
+	mutation CreateOrder($input: OrderInput!) {
+		createOrder(input: $input) {
+			_id
+			memberId
+			orderStatus
+			paymentStatus
+			paymentMethod
+			totalPrice
+			shippingFee
+			notes
+			createdAt
+			orderItems {
+				_id
+				productId
+				itemQuantity
+				itemPrice
+			}
+		}
+	}
+`;
+
+export const UPDATE_MY_ORDER = gql`
+	mutation UpdateMyOrder($input: OrderUpdate!) {
+		updateMyOrder(input: $input) {
+			_id
+			orderStatus
+			paymentStatus
+			paymentMethod
+			totalPrice
+			shippingFee
+			notes
+			updatedAt
+		}
+	}
+`;

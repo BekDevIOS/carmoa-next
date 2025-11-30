@@ -122,3 +122,41 @@ export const syncCompareToLocalStorage = (items: Product[]) => {
 		}
 	}
 };
+
+// Cart Item Interface
+export interface CartItem {
+	_id: string;
+	product: Product;
+	quantity: number;
+	price: number; // Price at time of adding to cart
+}
+
+// Initialize cart items from localStorage
+const getInitialCartItems = (): CartItem[] => {
+	if (typeof window !== 'undefined') {
+		try {
+			const saved = localStorage.getItem('cartData');
+			if (saved) {
+				const parsed = JSON.parse(saved);
+				return Array.isArray(parsed) ? parsed : [];
+			}
+		} catch (error) {
+			console.error('Error loading cart items from localStorage:', error);
+		}
+	}
+	return [];
+};
+
+// Cart State
+export const cartVar = makeVar<CartItem[]>(getInitialCartItems());
+
+// Helper function to sync localStorage with cartVar
+export const syncCartToLocalStorage = (items: CartItem[]) => {
+	if (typeof window !== 'undefined') {
+		try {
+			localStorage.setItem('cartData', JSON.stringify(items));
+		} catch (error) {
+			console.error('Error saving cart items to localStorage:', error);
+		}
+	}
+};

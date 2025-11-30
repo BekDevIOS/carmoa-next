@@ -898,3 +898,327 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 		}
 	}
 `;
+
+/**************************
+ *         ORDER         *
+ *************************/
+
+export const GET_ORDER = gql`
+	query GetOrder($orderId: String!) {
+		getOrder(orderId: $orderId) {
+			_id
+			memberId
+			orderStatus
+			paymentStatus
+			paymentMethod
+			totalPrice
+			shippingFee
+			notes
+			deliveredAt
+			cancelledAt
+			createdAt
+			updatedAt
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberProvider
+				memberPhone
+				memberEmail
+				memberNick
+				memberFullName
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
+				memberProducts
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+			orderItems {
+				_id
+				productId
+				itemQuantity
+				itemPrice
+				createdAt
+				updatedAt
+				product {
+					_id
+					productType
+					productStatus
+					productCondition
+					productMainCategory
+					productSubCategory
+					productCarBrand
+					productCarModel
+					productYearFrom
+					productYearTo
+					productOemNumbers
+					productTitle
+					productPrice
+					productSalePrice
+					productStock
+					productViews
+					productLikes
+					productComments
+					productRank
+					productImages
+					productDescription
+					dealerId
+					soldAt
+					deletedAt
+					createdAt
+					updatedAt
+					
+				}
+			}
+		}
+	}
+`;
+
+export const GET_MY_ORDERS = gql`
+	query GetMyOrders($input: OrdersInquiry!) {
+		getMyOrders(input: $input) {
+			list {
+				_id
+				memberId
+				orderStatus
+				paymentStatus
+				paymentMethod
+				totalPrice
+				shippingFee
+				notes
+				deliveredAt
+				cancelledAt
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberProvider
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+				orderItems {
+					_id
+					productId
+					itemQuantity
+					itemPrice
+					createdAt
+					updatedAt
+					product {
+						_id
+						productType
+						productStatus
+						productCondition
+						productMainCategory
+						productSubCategory
+						productCarBrand
+						productCarModel
+						productYearFrom
+						productYearTo
+						productOemNumbers
+						productTitle
+						productPrice
+						productSalePrice
+						productStock
+						productViews
+						productLikes
+						productComments
+						productRank
+						productImages
+						productDescription
+						dealerId
+						soldAt
+						deletedAt
+						createdAt
+						updatedAt
+					}
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+export const GET_ORDERS = gql`
+	query GetOrders($input: OrdersInquiry!) {
+		getOrders(input: $input) {
+			list {
+				_id
+				memberId
+				orderStatus
+				paymentStatus
+				paymentMethod
+				totalPrice
+				shippingFee
+				notes
+				deliveredAt
+				cancelledAt
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberProvider
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+				orderItems {
+					_id
+					productId
+					itemQuantity
+					itemPrice
+					createdAt
+					updatedAt
+					product {
+						_id
+						productType
+						productStatus
+						productCondition
+						productMainCategory
+						productSubCategory
+						productCarBrand
+						productCarModel
+						productYearFrom
+						productYearTo
+						productOemNumbers
+						productTitle
+						productPrice
+						productSalePrice
+						productStock
+						productViews
+						productLikes
+						productComments
+						productRank
+						productImages
+						productDescription
+						dealerId
+						soldAt
+						deletedAt
+						createdAt
+						updatedAt
+					}
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;

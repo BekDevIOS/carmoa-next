@@ -15,6 +15,8 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { REACT_APP_API_URL } from '../../config';
 import { useRouter } from 'next/router';
+import { useCart } from '../../hooks/useCart';
+import { sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
 interface ProductCardProps {
 	product: Product;
@@ -29,7 +31,7 @@ interface ProductCardProps {
 const ProductCard = ({
 	product,
 	likeProductHandler,
-	addToCartHandler,
+	addToCartHandler: propAddToCartHandler,
 	myFavorites,
 	recentlyVisited,
 	compareHandler,
@@ -38,6 +40,7 @@ const ProductCard = ({
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
+	const { addToCart } = useCart();
 	const [isHovered, setIsHovered] = useState(false);
 	const { isCompared, toggleCompare } = useCompare();
 	const isInCompare = isCompared(product._id);
@@ -152,7 +155,12 @@ const ProductCard = ({
 						className={'add-to-cart-btn'}
 						onClick={(event) => {
 							stopPropagation(event);
-							addToCartHandler?.(product._id);
+							if (propAddToCartHandler) {
+								propAddToCartHandler(product._id);
+							} else {
+								addToCart(product, 1);
+								sweetTopSmallSuccessAlert('Product added to cart').then();
+							}
 						}}
 					>
 						<ShoppingCartOutlinedIcon className={'cart-icon'} />

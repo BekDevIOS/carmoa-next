@@ -16,6 +16,8 @@ import { userVar } from '../../../apollo/store';
 import { Product } from '../../types/product/product';
 import { REACT_APP_API_URL } from '../../config';
 import { useCompare } from '../../hooks/useCompare';
+import { useCart } from '../../hooks/useCart';
+import { sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
 interface BigProductCardProps {
 	product: Product;
@@ -28,12 +30,13 @@ interface BigProductCardProps {
 const BigProductCard = ({
 	product,
 	likeProductHandler,
-	addToCartHandler,
+	addToCartHandler: propAddToCartHandler,
 	compareHandler,
 	quickViewHandler,
 }: BigProductCardProps) => {
 	const user = useReactiveVar(userVar);
 	const { isCompared, toggleCompare } = useCompare();
+	const { addToCart } = useCart();
 	const [quantity, setQuantity] = useState(1);
 	const [activeImageIndex, setActiveImageIndex] = useState(0);
 	const imageSwiperRef = useRef<any>(null);
@@ -64,8 +67,11 @@ const BigProductCard = ({
 	};
 
 	const handleAddToCart = () => {
-		if (addToCartHandler) {
-			addToCartHandler(product._id);
+		if (propAddToCartHandler) {
+			propAddToCartHandler(product._id);
+		} else {
+			addToCart(product, quantity);
+			sweetTopSmallSuccessAlert('Product added to cart').then();
 		}
 	};
 

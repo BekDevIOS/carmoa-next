@@ -19,6 +19,9 @@ import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import FreeShippingProgress from './common/FreeShippingProgress';
+import { useCart } from '../hooks/useCart';
+import { useRouter } from 'next/router';
+import { REACT_APP_API_URL } from '../config';
 
 interface CartProps {
 	open: boolean;
@@ -28,7 +31,8 @@ interface CartProps {
 type ActiveView = 'cart' | 'note' | 'coupon' | 'shipping';
 
 const Cart: React.FC<CartProps> = ({ open, onClose }) => {
-	const [quantity, setQuantity] = useState(1);
+	const router = useRouter();
+	const { cartItems, updateQuantity, removeFromCart, getCartTotal, getCartCount } = useCart();
 	const [activeView, setActiveView] = useState<ActiveView>('cart');
 	const [note, setNote] = useState('');
 	const [couponCode, setCouponCode] = useState('');
@@ -36,25 +40,26 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 	const [city, setCity] = useState('');
 	const [postcode, setPostcode] = useState('');
 
-	// Mock cart data
-	const cartItem = {
-		id: 1,
-		name: 'AMAZ Air Compressor Combo Kit with Brad Nailer DWC1KIT',
-		price: 200.0,
-		image: '/img/product/image1.png',
+	const freeShippingThreshold = 300.0;
+	const currentTotal = getCartTotal();
+	const cartCount = getCartCount();
+
+	const getImageSrc = (img?: string) => {
+		if (!img) return '/img/banner/header1.svg';
+		if (img.startsWith('http') || img.startsWith('/img')) return img;
+		return `${REACT_APP_API_URL}/${img}`;
 	};
 
-	const freeShippingThreshold = 300.0;
-	const currentTotal = cartItem.price * quantity;
-
-	const handleQuantityDecrease = () => {
-		if (quantity > 1) {
-			setQuantity(quantity - 1);
+	const handleQuantityDecrease = (productId: string, currentQuantity: number) => {
+		if (currentQuantity > 1) {
+			updateQuantity(productId, currentQuantity - 1);
+		} else {
+			removeFromCart(productId);
 		}
 	};
 
-	const handleQuantityIncrease = () => {
-		setQuantity(quantity + 1);
+	const handleQuantityIncrease = (productId: string, currentQuantity: number) => {
+		updateQuantity(productId, currentQuantity + 1);
 	};
 
 	const handleViewChange = (view: ActiveView) => {
@@ -67,12 +72,22 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 		setActiveView('cart');
 	};
 
+	const handleViewCart = () => {
+		onClose();
+		router.push('/order/cart');
+	};
+
+	const handleCheckout = () => {
+		onClose();
+		router.push('/order/checkout');
+	};
+
 	return (
 		<Drawer anchor="right" open={open} onClose={onClose} className="cart-drawer">
 			<Box className="cart-drawer-container">
 				{/* Header */}
 				<Box className="cart-header">
-					<Typography className="cart-title">Shopping Cart (1)</Typography>
+					<Typography className="cart-title">Shopping Cart ({cartCount})</Typography>
 					<IconButton onClick={onClose} className="cart-close-btn">
 						<CloseIcon />
 					</IconButton>
@@ -81,37 +96,68 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 				{activeView === 'cart' ? (
 					<>
 						{/* Free Shipping Progress */}
-						<FreeShippingProgress 
-							threshold={freeShippingThreshold} 
-							current={currentTotal} 
-							currency="$" 
-						/>
+						{cartItems.length > 0 && (
+							<FreeShippingProgress 
+								threshold={freeShippingThreshold} 
+								current={currentTotal} 
+								currency="$" 
+							/>
+						)}
 
 						{/* Cart Items */}
 						<Box className="cart-items">
-							<Box className="cart-item">
-								<Box className="cart-item-image">
-									<img src={cartItem.image} alt={cartItem.name} />
+							{cartItems.length === 0 ? (
+								<Box sx={{ p: 3, textAlign: 'center' }}>
+									<Typography variant="body1" sx={{ color: 'text.secondary' }}>
+										Your cart is empty
+									</Typography>
 								</Box>
-								<Box className="cart-item-details">
-									<Typography className="cart-item-name">{cartItem.name}</Typography>
-									<Typography className="cart-item-price">${cartItem.price.toFixed(2)}</Typography>
-									<Box className="cart-item-actions">
-										<Box className="quantity-controls">
-											<IconButton onClick={handleQuantityDecrease} className="quantity-btn">
-												<RemoveIcon />
-											</IconButton>
-											<Typography className="quantity-value">{quantity}</Typography>
-											<IconButton onClick={handleQuantityIncrease} className="quantity-btn">
-												<AddIcon />
-											</IconButton>
+							) : (
+								cartItems.map((item) => {
+									const productImage = item.product?.productImages?.[0] 
+										? getImageSrc(item.product.productImages[0])
+										: '/img/banner/header1.svg';
+									
+									return (
+										<Box key={item._id} className="cart-item">
+											<Box className="cart-item-image">
+												<img src={productImage} alt={item.product?.productTitle || 'Product'} />
+											</Box>
+											<Box className="cart-item-details">
+												<Typography className="cart-item-name">
+													{item.product?.productTitle || 'Product'}
+												</Typography>
+												<Typography className="cart-item-price">
+													${item.price.toFixed(2)}
+												</Typography>
+												<Box className="cart-item-actions">
+													<Box className="quantity-controls">
+														<IconButton 
+															onClick={() => handleQuantityDecrease(item._id, item.quantity)} 
+															className="quantity-btn"
+														>
+															<RemoveIcon />
+														</IconButton>
+														<Typography className="quantity-value">{item.quantity}</Typography>
+														<IconButton 
+															onClick={() => handleQuantityIncrease(item._id, item.quantity)} 
+															className="quantity-btn"
+														>
+															<AddIcon />
+														</IconButton>
+													</Box>
+													<IconButton 
+														className="delete-btn"
+														onClick={() => removeFromCart(item._id)}
+													>
+														<DeleteOutlineIcon />
+													</IconButton>
+												</Box>
+											</Box>
 										</Box>
-										<IconButton className="delete-btn">
-											<DeleteOutlineIcon />
-										</IconButton>
-									</Box>
-								</Box>
-							</Box>
+									);
+								})
+							)}
 						</Box>
 
 						{/* Action Buttons */}
@@ -242,8 +288,10 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 
 				{/* Footer Buttons */}
 				<Box className="cart-footer">
-					<Button className="view-cart-btn">View Cart</Button>
-					<Button className="checkout-btn">Checkout</Button>
+					<Button className="view-cart-btn" onClick={handleViewCart}>View Cart</Button>
+					<Button className="checkout-btn" onClick={handleCheckout} disabled={cartItems.length === 0}>
+						Checkout
+					</Button>
 				</Box>
 			</Box>
 		</Drawer>

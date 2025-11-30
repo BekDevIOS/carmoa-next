@@ -43,6 +43,7 @@ import { Direction, Message } from '../../libs/enums/common.enum';
 import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { T } from '../../libs/types/common';
+import { useCart } from '../../libs/hooks/useCart';
 
 const ReactImageMagnify = dynamic(() => import('react-image-magnify'), { ssr: false });
 const Lightbox = dynamic(() => import('yet-another-react-lightbox'), { ssr: false });
@@ -67,6 +68,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
+	const { addToCart } = useCart();
 	const [productId, setProductId] = useState<string | null>(null);
 	const [product, setProduct] = useState<ProductDetailData | null>(null);
 	const [selectedImage, setSelectedImage] = useState<string>('');
@@ -361,7 +363,9 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	};
 
 	const handleAddToCart = () => {
-		console.log('Add to cart:', product?._id, 'Quantity:', quantity);
+		if (!product) return;
+		addToCart(product, quantity);
+		sweetTopSmallSuccessAlert('Product added to cart').then();
 	};
 
 	const handleWishlist = async () => {
@@ -887,7 +891,13 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 												<ProductCard
 													product={relatedProduct}
 													likeProductHandler={likeProductHandler}
-													addToCartHandler={(id: string) => console.log('Add to cart:', id)}
+													addToCartHandler={(id: string) => {
+														const productToAdd = displayedRelatedProducts.find((p) => p._id === id);
+														if (productToAdd) {
+															addToCart(productToAdd, 1);
+															sweetTopSmallSuccessAlert('Product added to cart').then();
+														}
+													}}
 													compareHandler={(id: string) => console.log('Add to compare:', id)}
 													quickViewHandler={(id: string) => console.log('Quick view:', id)}
 												/>
@@ -930,7 +940,13 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 												<ProductCard
 													product={recentProduct}
 													likeProductHandler={likeProductHandler}
-													addToCartHandler={(id: string) => console.log('Add to cart:', id)}
+													addToCartHandler={(id: string) => {
+														const productToAdd = filteredRecentlyViewed.find((p) => p._id === id);
+														if (productToAdd) {
+															addToCart(productToAdd, 1);
+															sweetTopSmallSuccessAlert('Product added to cart').then();
+														}
+													}}
 													compareHandler={(id: string) => console.log('Add to compare:', id)}
 													quickViewHandler={(id: string) => console.log('Quick view:', id)}
 												/>

@@ -12,6 +12,7 @@ import { GET_PRODUCTS } from '../../../apollo/user/query';
 import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { useCart } from '../../hooks/useCart';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -22,6 +23,7 @@ interface TopProductsProps {
 const TopProducts = (props: TopProductsProps) => {
 	const { initialInput } = props;
 	const swiperRef = useRef<any>(null);
+	const { addToCart } = useCart();
 	const [topProducts, setTopProducts] = useState<Product[]>([]);
 
 	/** APOLLO REQUESTS **/
@@ -61,8 +63,12 @@ const TopProducts = (props: TopProductsProps) => {
 
 	if (!topProducts) return null;
 
-	const addToCartHandler = (productId: number | string) => {
-		console.log('Add to cart:', productId);
+	const addToCartHandler = (productId: string) => {
+		const productToAdd = topProducts.find((p) => p._id === productId);
+		if (productToAdd) {
+			addToCart(productToAdd, 1);
+			sweetTopSmallSuccessAlert('Product added to cart').then();
+		}
 	};
 
 	const compareHandler = (productId: number | string) => {

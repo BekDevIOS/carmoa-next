@@ -10,6 +10,7 @@ import { GET_PRODUCTS } from '../../../apollo/user/query';
 import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { useCart } from '../../hooks/useCart';
 
 interface TrendProductsProps {
 	initialInput: ProductsInquiry;
@@ -19,6 +20,7 @@ const TrendProducts = (props: TrendProductsProps) => {
 
 	const { initialInput } = props;
 	const device = useDeviceDetect();
+	const { addToCart } = useCart();
 	const [trendProducts, setTrendProducts] = useState<Product[]>([]);
 
 	/** APOLLO REQUESTS **/
@@ -60,19 +62,23 @@ const TrendProducts = (props: TrendProductsProps) => {
 	if (!trendProducts) return null;
 
 
-	const addToCartHandler = (productId: number) => {
-		console.log('Add to cart:', productId);
+	const addToCartHandler = (productId: string) => {
+		const productToAdd = trendProducts.find((p) => p._id === productId);
+		if (productToAdd) {
+			addToCart(productToAdd, 1);
+			sweetTopSmallSuccessAlert('Product added to cart').then();
+		}
 	};
 
-	const wishlistHandler = (productId: number) => {
+	const wishlistHandler = (productId: string) => {
 		console.log('Add to wishlist:', productId);
 	};
 
-	const compareHandler = (productId: number) => {
+	const compareHandler = (productId: string) => {
 		console.log('Add to compare:', productId);
 	};
 
-	const quickViewHandler = (productId: number) => {
+	const quickViewHandler = (productId: string) => {
 		console.log('Quick view:', productId);
 	};
 

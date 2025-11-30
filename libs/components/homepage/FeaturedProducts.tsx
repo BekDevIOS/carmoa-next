@@ -13,6 +13,7 @@ import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { userVar } from '../../../apollo/store';
+import { useCart } from '../../hooks/useCart';
 import 'swiper/css';
 
 interface FeaturedProductsProps {
@@ -26,6 +27,7 @@ const FeaturedProducts = ({ latestInput, mostViewedInput, onSaleInput }: Feature
 	const mostViewedSwiperRef = useRef<any>(null);
 	const onSaleSwiperRef = useRef<any>(null);
 	const user = useReactiveVar(userVar);
+	const { addToCart } = useCart();
 
 	const [latestProducts, setLatestProducts] = useState<Product[]>([]);
 	const [mostViewedProducts, setMostViewedProducts] = useState<Product[]>([]);
@@ -101,7 +103,16 @@ const FeaturedProducts = ({ latestInput, mostViewedInput, onSaleInput }: Feature
 	};
 
 	const addToCartHandler = (productId: string) => {
-		console.log('Add to cart:', productId);
+		// Find product in any of the three lists
+		const productToAdd = 
+			latestProducts.find((p) => p._id === productId) ||
+			mostViewedProducts.find((p) => p._id === productId) ||
+			onSaleProducts.find((p) => p._id === productId);
+		
+		if (productToAdd) {
+			addToCart(productToAdd, 1);
+			sweetTopSmallSuccessAlert('Product added to cart').then();
+		}
 	};
 
 	const wishlistHandler = (productId: string) => {

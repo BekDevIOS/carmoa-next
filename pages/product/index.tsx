@@ -20,6 +20,7 @@ import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import { T } from '../../libs/types/common';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
+import { useCart } from '../../libs/hooks/useCart';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -31,6 +32,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
+	const { addToCart } = useCart();
 	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
@@ -228,7 +230,13 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 												product={product}
 												key={product._id}
 												likeProductHandler={likeProductHandler}
-												addToCartHandler={(id: string) => console.log('Add to cart:', id)}
+												addToCartHandler={(id: string) => {
+													const productToAdd = products.find((p) => p._id === id);
+													if (productToAdd) {
+														addToCart(productToAdd, 1);
+														sweetTopSmallSuccessAlert('Product added to cart').then();
+													}
+												}}
 												compareHandler={(id: string) => console.log('Add to compare:', id)}
 												quickViewHandler={(id: string) => console.log('Quick view:', id)}
 											/>
@@ -237,7 +245,13 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 												product={product}
 												key={product._id}
 												likeProductHandler={likeProductHandler}
-												addToCartHandler={(id: string) => console.log('Add to cart:', id)}
+												addToCartHandler={(id: string) => {
+													const productToAdd = products.find((p) => p._id === id);
+													if (productToAdd) {
+														addToCart(productToAdd, 1);
+														sweetTopSmallSuccessAlert('Product added to cart').then();
+													}
+												}}
 												compareHandler={(id: string) => console.log('Add to compare:', id)}
 												quickViewHandler={(id: string) => console.log('Quick view:', id)}
 											/>
