@@ -1,12 +1,98 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { Stack, Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { Stack, Box, Typography, CircularProgress } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { T } from '../../libs/types/common';
+import { useQuery } from '@apollo/client';
+import { GET_ORDER } from '../../apollo/user/query';
+import { Order } from '../../libs/types/order/order';
+import { PaymentMethod } from '../../libs/enums/order.enum';
+import { REACT_APP_API_URL } from '../../libs/config';
 
 const OrderDetailPage: NextPage = (props: T) => {
 	const device = useDeviceDetect();
+	const router = useRouter();
+	const { orderId } = router.query;
+
+	const { data, loading, error } = useQuery(GET_ORDER, {
+		variables: { orderId: orderId as string },
+		skip: !orderId,
+		fetchPolicy: 'network-only',
+	});
+
+	const order: Order | undefined = data?.getOrder;
+
+	// Format date
+	const formatDate = (dateString: string | Date | undefined) => {
+		if (!dateString) return 'N/A';
+		const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
+		return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+	};
+
+	// Format payment method
+	const formatPaymentMethod = (method: PaymentMethod | undefined) => {
+		if (!method) return 'N/A';
+		switch (method) {
+			case PaymentMethod.TRANSFER:
+				return 'Direct bank transfer';
+			case PaymentMethod.CASH:
+				return 'Cash on delivery';
+			case PaymentMethod.CARD:
+				return 'Credit card';
+			case PaymentMethod.KAKAOPAY:
+				return 'Kakao Pay';
+			default:
+				return method;
+		}
+	};
+
+	// Format address
+	const formatAddress = (address: any, isBilling: boolean = false) => {
+		if (!address) return [];
+		const lines: string[] = [];
+		if (address.firstName || address.lastName) {
+			lines.push(`${address.firstName || ''} ${address.lastName || ''}`.trim());
+		}
+		if (address.address1) lines.push(address.address1);
+		if (address.address2) lines.push(address.address2);
+		if (address.city) lines.push(address.city);
+		if (address.postalCode) lines.push(address.postalCode);
+		if (isBilling && address.country) lines.push(address.country);
+		return lines;
+	};
+
+	if (loading) {
+		return (
+			<div id="order-detail-page">
+				<div className="container">
+					<Stack alignItems="center" justifyContent="center" sx={{ minHeight: '400px' }}>
+						<CircularProgress />
+					</Stack>
+				</div>
+			</div>
+		);
+	}
+
+	if (error || !order) {
+		return (
+			<div id="order-detail-page">
+				<div className="container">
+					<Stack alignItems="center" justifyContent="center" sx={{ minHeight: '400px' }}>
+						<Typography>Error loading order. Please try again.</Typography>
+					</Stack>
+				</div>
+			</div>
+		);
+	}
+
+	const subtotal = order.orderItems?.reduce((sum, item) => sum + item.itemPrice * item.itemQuantity, 0) || 0;
+	const shippingFee = order.shippingFee || 0;
+	const total = order.totalPrice || subtotal + shippingFee;
+	const shippingAddress = order.memberData?.memberShippingAddress;
+	const billingAddress = order.memberData?.memberBillingAddress;
+	const email = order.memberData?.memberEmail || '';
 
 	if (device === 'mobile') {
 		return <div>ORDER DETAIL PAGE MOBILE</div>;
@@ -17,29 +103,29 @@ const OrderDetailPage: NextPage = (props: T) => {
 			<div className="container">
 				<Stack className="order-confirmation">
 					<Typography className="order-confirmation-title">
-          Order Overview
+						Order Overview
 					</Typography>
 
-					<Stack className="order-meta" >
+					<Stack className="order-meta">
 						<Stack className="order-meta-item">
 							<Typography className="label">Order number:</Typography>
-							<Typography className="value">13606</Typography>
+							<Typography className="value">{order._id}</Typography>
 						</Stack>
 						<Stack className="order-meta-item">
 							<Typography className="label">Date:</Typography>
-							<Typography className="value">November 21, 2025</Typography>
+							<Typography className="value">{formatDate(order.createdAt)}</Typography>
 						</Stack>
 						<Stack className="order-meta-item">
 							<Typography className="label">Email:</Typography>
-							<Typography className="value">umekhmomonboev@gmail.com</Typography>
+							<Typography className="value">{email}</Typography>
 						</Stack>
 						<Stack className="order-meta-item">
 							<Typography className="label">Total:</Typography>
-							<Typography className="value">$532.00</Typography>
+							<Typography className="value">${total.toFixed(2)}</Typography>
 						</Stack>
 						<Stack className="order-meta-item">
 							<Typography className="label">Payment method:</Typography>
-							<Typography className="value">Direct bank transfer</Typography>
+							<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
 						</Stack>
 					</Stack>
 				</Stack>
@@ -55,31 +141,38 @@ const OrderDetailPage: NextPage = (props: T) => {
 							</Box>
 
 							<Box className="order-table-body">
-								<Box className="order-table-row product-row">
-									<Typography className="product-name">
-										Black Decker 20V Li Ion Compact Cordless Electric Hand Drill × 2
-									</Typography>
-									<Typography className="product-total">$532.00</Typography>
-								</Box>
+								{order.orderItems?.map((item) => {
+									const itemTotal = item.itemPrice * item.itemQuantity;
+									return (
+										<Box key={item._id} className="order-table-row product-row">
+											<Typography className="product-name">
+												{item.product?.productTitle || 'Product'} × {item.itemQuantity}
+											</Typography>
+											<Typography className="product-total">${itemTotal.toFixed(2)}</Typography>
+										</Box>
+									);
+								})}
 
 								<Box className="order-table-row">
 									<Typography className="label">Subtotal:</Typography>
-									<Typography className="value">$532.00</Typography>
+									<Typography className="value">${subtotal.toFixed(2)}</Typography>
 								</Box>
 
 								<Box className="order-table-row">
 									<Typography className="label">Shipping:</Typography>
-									<Typography className="value">Free shipping</Typography>
+									<Typography className="value">
+										{shippingFee === 0 ? 'Free shipping' : `$${shippingFee.toFixed(2)}`}
+									</Typography>
 								</Box>
 
 								<Box className="order-table-row total-row">
 									<Typography className="label">Total:</Typography>
-									<Typography className="value">$532.00</Typography>
+									<Typography className="value">${total.toFixed(2)}</Typography>
 								</Box>
 
 								<Box className="order-table-row">
 									<Typography className="label">Payment method:</Typography>
-									<Typography className="value">Direct bank transfer</Typography>
+									<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
 								</Box>
 							</Box>
 						</Box>
@@ -88,23 +181,33 @@ const OrderDetailPage: NextPage = (props: T) => {
 					<Box className="order-addresses">
 						<Box className="address-card billing-address">
 							<Typography className="address-title">Billing address</Typography>
-							<Typography className="address-line">dfsfd sdfsd</Typography>
-							<Typography className="address-line">dsfd</Typography>
-							<Typography className="address-line">201호</Typography>
-							<Typography className="address-line">sdfsd</Typography>
-							<Typography className="address-line">52819</Typography>
-							<Typography className="address-line">South Korea</Typography>
-							<Typography className="address-line email">umekhmomonboev@gmail.com</Typography>
+							{billingAddress ? (
+								<>
+									{formatAddress(billingAddress, true).map((line, index) => (
+										<Typography key={index} className="address-line">
+											{line}
+										</Typography>
+									))}
+									{email && <Typography className="address-line email">{email}</Typography>}
+								</>
+							) : (
+								<Typography className="address-line">No billing address provided</Typography>
+							)}
 						</Box>
 
 						<Box className="address-card shipping-address">
 							<Typography className="address-title">Shipping address</Typography>
-							<Typography className="address-line">dfsfd sdfsd</Typography>
-							<Typography className="address-line">dsfd</Typography>
-							<Typography className="address-line">201호</Typography>
-							<Typography className="address-line">sdfsd</Typography>
-							<Typography className="address-line">52819</Typography>
-							<Typography className="address-line">South Korea</Typography>
+							{shippingAddress ? (
+								<>
+									{formatAddress(shippingAddress, false).map((line, index) => (
+										<Typography key={index} className="address-line">
+											{line}
+										</Typography>
+									))}
+								</>
+							) : (
+								<Typography className="address-line">No shipping address provided</Typography>
+							)}
 						</Box>
 					</Box>
 				</Stack>

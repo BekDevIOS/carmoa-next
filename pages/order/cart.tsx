@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { NextPage } from 'next';
 import { Stack, Box, Typography, Button } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -8,41 +8,49 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import CartContent, { CartItem } from '../../libs/components/order/CartContent';
 import CheckoutSummaryPanel from '../../libs/components/order/CheckoutSummaryPanel';
 import { T } from '../../libs/types/common';
+import { useCart } from '../../libs/hooks/useCart';
+import { REACT_APP_API_URL } from '../../libs/config';
 
 const CartPage: NextPage = (props: T) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-
-	// Mock cart data - replace with actual cart state management later
-	const [cartItems, setCartItems] = useState<CartItem[]>([
-		{
-			id: '1',
-			name: 'Circular Saw with Overload Protection Lawazim 1400W',
-			price: 255.0,
-			quantity: 1,
-			image: '/img/product/image1.png', // Using public/img/product images
-		},
-		
-	]);
+	const { cartItems: cartItemsFromHook, updateQuantity, removeFromCart, getCartTotal } = useCart();
 
 	const [shippingMethod, setShippingMethod] = useState<'free' | 'flat'>('free');
 
 	const FREE_SHIPPING_THRESHOLD = 300.0;
 	const FLAT_RATE = 20.0;
 
+	// Map cart items from useCart to CartContent format
+	const cartItems: CartItem[] = useMemo(() => {
+		return cartItemsFromHook.map((item) => {
+			const productImage = item.product?.productImages?.[0]
+				? item.product.productImages[0].startsWith('http') || item.product.productImages[0].startsWith('/img')
+					? item.product.productImages[0]
+					: `${REACT_APP_API_URL}/${item.product.productImages[0]}`
+				: '/img/banner/header1.svg';
+
+			return {
+				id: item._id,
+				name: item.product?.productTitle || 'Product',
+				price: item.price,
+				quantity: item.quantity,
+				image: productImage,
+			};
+		});
+	}, [cartItemsFromHook]);
+
 	// Calculate subtotal
-	const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+	const subtotal = getCartTotal();
 
 	// Handle quantity change
 	const handleQuantityChange = (id: string, newQuantity: number) => {
-		setCartItems((prevItems) =>
-			prevItems.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item)),
-		);
+		updateQuantity(id, newQuantity);
 	};
 
 	// Handle remove item
 	const handleRemoveItem = (id: string) => {
-		setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+		removeFromCart(id);
 	};
 
 	// Handle apply coupon
@@ -69,7 +77,7 @@ const CartPage: NextPage = (props: T) => {
 
 	// Handle return to shop
 	const handleReturnToShop = () => {
-		router.push('/products');
+		router.push('/product');
 	};
 
 	if (device === 'mobile') {

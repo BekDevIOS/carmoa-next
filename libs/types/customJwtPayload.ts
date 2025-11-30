@@ -1,4 +1,5 @@
 import { JwtPayload } from 'jwt-decode';
+import { MemberShippingAddress, MemberBillingAddress } from './member/member';
 
 export interface CustomJwtPayload extends JwtPayload {
 	_id: string;
@@ -10,6 +11,8 @@ export interface CustomJwtPayload extends JwtPayload {
 	memberFullName?: string;
 	memberImage?: string;
 	memberAddress?: string;
+	memberShippingAddress?: MemberShippingAddress;
+	memberBillingAddress?: MemberBillingAddress;
 	memberDesc?: string;
 	memberArticles: number;
 	memberFollowers: number;

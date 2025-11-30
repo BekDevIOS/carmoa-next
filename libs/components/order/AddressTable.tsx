@@ -1,26 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Stack, Typography, TextField, Checkbox, FormControlLabel, MenuItem, Select, FormControl } from '@mui/material';
+import { MemberShippingAddress, MemberBillingAddress } from '../../types/member/member';
 
 interface AddressTableProps {
 	title: string;
+	type: 'shipping' | 'billing';
 	showUseForBillingCheckbox?: boolean;
 	onToggleUseForBillingSame?: (useSame: boolean) => void;
+	shippingData?: MemberShippingAddress;
+	billingData?: MemberBillingAddress;
+	onShippingChange?: (data: MemberShippingAddress) => void;
+	onBillingChange?: (data: MemberBillingAddress) => void;
 }
+
+const COUNTRIES = [
+	'South Korea',
+	'China',
+	'Japan',
+	'Russia',
+	'Mongolia',
+	'Taiwan',
+	'Philippines',
+	'Vietnam',
+	'Thailand',
+	'Singapore',
+	'Malaysia',
+];
 
 const AddressTable: React.FC<AddressTableProps> = ({
 	title,
+	type,
 	showUseForBillingCheckbox = false,
 	onToggleUseForBillingSame,
+	shippingData,
+	billingData,
+	onShippingChange,
+	onBillingChange,
 }) => {
-	const [country, setCountry] = useState('South Korea');
-	const [firstName, setFirstName] = useState('dsfsd');
-	const [lastName, setLastName] = useState('sdfsd');
-	const [address, setAddress] = useState('dsfd');
-	const [apartment, setApartment] = useState('201호');
-	const [city, setCity] = useState('sdfsd');
-	const [postcode, setPostcode] = useState('52819');
-	const [phone, setPhone] = useState('');
+	const isBilling = type === 'billing';
+	const addressData = isBilling ? billingData : shippingData;
+
+	// Initialize state with existing data
+	const [country, setCountry] = useState(
+		isBilling && billingData?.country ? billingData.country : 'South Korea'
+	);
+	const [firstName, setFirstName] = useState(addressData?.firstName || '');
+	const [lastName, setLastName] = useState(addressData?.lastName || '');
+	const [address, setAddress] = useState(addressData?.address1 || '');
+	const [apartment, setApartment] = useState(addressData?.address2 || '');
+	const [city, setCity] = useState(addressData?.city || '');
+	const [postcode, setPostcode] = useState(addressData?.postalCode || '');
+	const [phone, setPhone] = useState(addressData?.phone || '');
 	const [useSameForBilling, setUseSameForBilling] = useState(true);
+
+	// Update local state when props change
+	useEffect(() => {
+		if (addressData) {
+			if (isBilling) {
+				const billing = addressData as MemberBillingAddress;
+				if (billing.country) {
+					setCountry(billing.country);
+				}
+			}
+			setFirstName(addressData.firstName || '');
+			setLastName(addressData.lastName || '');
+			setAddress(addressData.address1 || '');
+			setApartment(addressData.address2 || '');
+			setCity(addressData.city || '');
+			setPostcode(addressData.postalCode || '');
+			setPhone(addressData.phone || '');
+		} else {
+			// Reset to empty if no data
+			if (isBilling) {
+				setCountry('South Korea');
+			}
+			setFirstName('');
+			setLastName('');
+			setAddress('');
+			setApartment('');
+			setCity('');
+			setPostcode('');
+			setPhone('');
+		}
+	}, [addressData, isBilling]);
+
+	// Notify parent of changes when user types
+	const notifyChange = useCallback(() => {
+		if (isBilling && onBillingChange) {
+			onBillingChange({
+				country,
+				firstName,
+				lastName,
+				address1: address,
+				address2: apartment,
+				city,
+				postalCode: postcode,
+				phone,
+			});
+		} else if (!isBilling && onShippingChange) {
+			onShippingChange({
+				firstName,
+				lastName,
+				address1: address,
+				address2: apartment,
+				city,
+				postalCode: postcode,
+				phone,
+			});
+		}
+	}, [country, firstName, lastName, address, apartment, city, postcode, phone, isBilling, onShippingChange, onBillingChange]);
+
+	// Notify on change with debounce effect
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			notifyChange();
+		}, 300);
+		return () => clearTimeout(timer);
+	}, [notifyChange]);
 
 	const handleToggleUseForBilling = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = event.target.checked;
@@ -35,25 +131,29 @@ const AddressTable: React.FC<AddressTableProps> = ({
 				Enter the address where you want your order delivered.
 			</Typography>
 
-			{/* Country / Region */}
-			<Stack className="field-group">
-				<FormControl fullWidth>
-					<Select
-						value={country}
-						onChange={(e) => setCountry(e.target.value)}
-						className="field-select"
-						displayEmpty
-					>
+			{/* Country / Region - Only show for billing address, required */}
+			{isBilling && (
+				<Stack className="field-group">
+					<FormControl fullWidth required>
+						<Select
+							value={country}
+							onChange={(e) => setCountry(e.target.value)}
+							className="field-select"
+							displayEmpty
+							required
+						>
 						<MenuItem value="" disabled>
 							Country/Region
 						</MenuItem>
-						<MenuItem value="South Korea">South Korea</MenuItem>
-						<MenuItem value="United States">United States</MenuItem>
-						<MenuItem value="Japan">Japan</MenuItem>
-						<MenuItem value="China">China</MenuItem>
+						{COUNTRIES.map((countryName) => (
+							<MenuItem key={countryName} value={countryName}>
+								{countryName}
+							</MenuItem>
+						))}
 					</Select>
 				</FormControl>
 			</Stack>
+			)}
 
 			{/* Name row */}
 			<Stack className="field-row">
@@ -63,7 +163,9 @@ const AddressTable: React.FC<AddressTableProps> = ({
 						label="First name"
 						placeholder="First name"
 						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
+						onChange={(e) => {
+							setFirstName(e.target.value);
+						}}
 						className="field-input"
 						required
 					/>
@@ -76,7 +178,6 @@ const AddressTable: React.FC<AddressTableProps> = ({
 						value={lastName}
 						onChange={(e) => setLastName(e.target.value)}
 						className="field-input"
-						required
 					/>
 				</Stack>
 			</Stack>
@@ -116,7 +217,6 @@ const AddressTable: React.FC<AddressTableProps> = ({
 						value={city}
 						onChange={(e) => setCity(e.target.value)}
 						className="field-input"
-						required
 					/>
 				</Stack>
 				<Stack className="field-group half">
@@ -132,15 +232,16 @@ const AddressTable: React.FC<AddressTableProps> = ({
 				</Stack>
 			</Stack>
 
-			{/* Phone */}
+			{/* Phone - Required for shipping, optional for billing */}
 			<Stack className="field-group">
 				<TextField
 					fullWidth
-					label="Phone (optional)"
-					placeholder="Phone (optional)"
+					label={isBilling ? 'Phone (optional)' : 'Phone'}
+					placeholder={isBilling ? 'Phone (optional)' : 'Phone'}
 					value={phone}
 					onChange={(e) => setPhone(e.target.value)}
 					className="field-input"
+					required={!isBilling}
 				/>
 			</Stack>
 

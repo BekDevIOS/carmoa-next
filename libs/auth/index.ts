@@ -17,11 +17,11 @@ export function setJwtToken(token: string) {
 
 export const logIn = async (email: string, password: string): Promise<void> => {
 	try {
-		const { jwtToken } = await requestJwtToken({ email, password });
+		const { jwtToken, memberData } = await requestJwtToken({ email, password });
 
 		if (jwtToken) {
 			updateStorage({ jwtToken });
-			updateUserInfo(jwtToken);
+			updateUserInfo(jwtToken, memberData);
 		}
 	} catch (err) {
 		console.warn('login err', err);
@@ -36,7 +36,7 @@ const requestJwtToken = async ({
 }: {
 	email: string;
 	password: string;
-}): Promise<{ jwtToken: string }> => {
+}): Promise<{ jwtToken: string; memberData?: any }> => {
 	const apolloClient = await initializeApollo();
 
 	try {
@@ -47,9 +47,10 @@ const requestJwtToken = async ({
 		});
 
 		console.log('---------- login ----------');
-		const { accessToken } = result?.data?.login;
+		const loginData = result?.data?.login;
+		const { accessToken } = loginData;
 
-		return { jwtToken: accessToken };
+		return { jwtToken: accessToken, memberData: loginData };
 	} catch (err: any) {
 		console.log('request token err', err.graphQLErrors);
 		switch (err.graphQLErrors[0].message) {
@@ -66,11 +67,11 @@ const requestJwtToken = async ({
 
 export const signUp = async (nick: string, email: string, password: string, phone: string, type: string): Promise<void> => {
 	try {
-		const { jwtToken } = await requestSignUpJwtToken({ nick, email, password, phone, type });
+		const { jwtToken, memberData } = await requestSignUpJwtToken({ nick, email, password, phone, type });
 
 		if (jwtToken) {
 			updateStorage({ jwtToken });
-			updateUserInfo(jwtToken);
+			updateUserInfo(jwtToken, memberData);
 		}
 	} catch (err) {
 		console.warn('login err', err);
@@ -109,8 +110,9 @@ export const googleLogIn = async (idToken: string): Promise<void> => {
 		}
 
 		// Store token and update user info
+		const googleLoginData = result?.data?.googleLogin;
 		updateStorage({ jwtToken: accessToken });
-		updateUserInfo(accessToken);
+		updateUserInfo(accessToken, googleLoginData);
 	} catch (err: any) {
 		console.error('Google login error:', err);
 
@@ -156,7 +158,7 @@ const requestSignUpJwtToken = async ({
 	password: string;
 	phone: string;
 	type: string;
-}): Promise<{ jwtToken: string }> => {
+}): Promise<{ jwtToken: string; memberData?: any }> => {
 	const apolloClient = await initializeApollo();
 
 	try {
@@ -169,9 +171,10 @@ const requestSignUpJwtToken = async ({
 		});
 
 		console.log('---------- login ----------');
-		const { accessToken } = result?.data?.signup;
+		const signupData = result?.data?.signup;
+		const { accessToken } = signupData;
 
-		return { jwtToken: accessToken };
+		return { jwtToken: accessToken, memberData: signupData };
 	} catch (err: any) {
 		console.log('request token err', err.graphQLErrors);
 		switch (err.graphQLErrors[0].message) {
@@ -191,10 +194,15 @@ export const updateStorage = ({ jwtToken }: { jwtToken: any }) => {
 	window.localStorage.setItem('login', Date.now().toString());
 };
 
-export const updateUserInfo = (jwtToken: any) => {
+export const updateUserInfo = (jwtToken: any, memberData?: any) => {
 	if (!jwtToken) return false;
 
 	const claims = decodeJWT<CustomJwtPayload>(jwtToken);
+	
+	// Extract address data from GraphQL response if available, otherwise from JWT claims
+	const shippingAddress = memberData?.memberShippingAddress || claims.memberShippingAddress;
+	const billingAddress = memberData?.memberBillingAddress || claims.memberBillingAddress;
+	
 	userVar({
 		_id: claims._id ?? '',
 		memberType: claims.memberType ?? '',
@@ -208,6 +216,8 @@ export const updateUserInfo = (jwtToken: any) => {
 				? '/img/profile/defaultUser.svg'
 				: `${claims.memberImage}`,
 		memberAddress: claims.memberAddress ?? '',
+		memberShippingAddress: shippingAddress,
+		memberBillingAddress: billingAddress,
 		memberDesc: claims.memberDesc ?? '',
 		memberArticles: claims.memberArticles ?? 0,
 		memberFollowers: claims.memberFollowers ?? 0,
@@ -252,6 +262,8 @@ const deleteUserInfo = () => {
 		memberFullName: '',
 		memberImage: '',
 		memberAddress: '',
+		memberShippingAddress: undefined,
+		memberBillingAddress: undefined,
 		memberDesc: '',
 		memberArticles: 0,
 		memberFollowers: 0,

@@ -2,6 +2,7 @@ import { makeVar } from '@apollo/client';
 
 import { CustomJwtPayload } from '../libs/types/customJwtPayload';
 import { Product } from '../libs/types/product/product';
+import { MemberShippingAddress, MemberBillingAddress } from '../libs/types/member/member';
 
 // QuickView Product Interface
 export interface QuickViewProduct {
@@ -45,6 +46,25 @@ export const userVar = makeVar<CustomJwtPayload>({
 	memberFullName: '',
 	memberImage: '',
 	memberAddress: '',
+	memberShippingAddress: {
+		firstName: '',
+		lastName: '',
+		address1: '',
+		address2: '',
+		city: '',
+		postalCode: '',
+		phone: '',
+	} as MemberShippingAddress,
+	memberBillingAddress: {
+		country: '',
+		firstName: '',
+		lastName: '',
+		address1: '',
+		address2: '',
+		city: '',
+		postalCode: '',
+		phone: '',
+	} as MemberBillingAddress,
 	memberDesc: '',
 	memberArticles: 0,
 	memberFollowers: 0,
