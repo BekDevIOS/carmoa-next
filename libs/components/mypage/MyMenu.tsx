@@ -32,7 +32,6 @@ const MyMenu = () => {
 	const pathname = router.query.category ?? 'myProfile';
 	const category: any = router.query?.category ?? 'myProfile';
 	const user = useReactiveVar(userVar);
-	user.memberType = 'DEALER';
 
 	// Helper function to get icon color based on active state
 	const getIconColor = (isActive: boolean) => {
