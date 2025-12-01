@@ -15,7 +15,7 @@ import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { Product } from '../../libs/types/product/product';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { GET_PRODUCTS } from '../../apollo/user/query';
+import { GET_PRODUCTS, GET_FAVORITES } from '../../apollo/user/query';
 import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import { T } from '../../libs/types/common';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
@@ -104,6 +104,12 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 
 			await likeTargetProduct({
 				variables: { input: id },
+				refetchQueries: [
+					{
+						query: GET_FAVORITES,
+						variables: { input: { page: 1, limit: 1 } },
+					},
+				],
 			});
 			await getProductsRefetch({ input: searchFilter });
 

@@ -17,7 +17,7 @@ import { Product } from '../../types/product/product';
 import { REACT_APP_API_URL } from '../../config';
 import { useCompare } from '../../hooks/useCompare';
 import { useCart } from '../../hooks/useCart';
-import { sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { sweetTopSmallSuccessAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface BigProductCardProps {
 	product: Product;
@@ -62,6 +62,13 @@ const BigProductCard = ({
 
 	const handleQuantityChange = (newQuantity: number) => {
 		if (newQuantity >= 1) {
+			// Limit quantity to available product stock
+			const maxStock = product?.productStock || 0;
+			if (newQuantity > maxStock) {
+				sweetMixinErrorAlert(`Only ${maxStock} item${maxStock !== 1 ? 's' : ''} available in stock`).then();
+				setQuantity(maxStock);
+				return;
+			}
 			setQuantity(newQuantity);
 		}
 	};
@@ -210,9 +217,14 @@ const BigProductCard = ({
 								value={quantity}
 								onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
 								className={'quantity-input'}
-								inputProps={{ min: 1 }}
+								inputProps={{ min: 1, max: product?.productStock || 1 }}
 							/>
-							<Button variant="outlined" onClick={() => handleQuantityChange(quantity + 1)} className={'quantity-btn'}>
+							<Button 
+								variant="outlined" 
+								onClick={() => handleQuantityChange(quantity + 1)} 
+								disabled={quantity >= (product?.productStock || 0)}
+								className={'quantity-btn'}
+							>
 								+
 							</Button>
 						</Stack>
@@ -224,7 +236,7 @@ const BigProductCard = ({
 						{isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
 					</IconButton>
 					<IconButton
-						className={'compare-btn'}
+						className={`compare-btn ${isInCompare ? 'compared' : ''}`}
 						onClick={() => {
 							toggleCompare(product);
 							compareHandler?.(product._id);

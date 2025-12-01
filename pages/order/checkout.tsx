@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -28,7 +28,7 @@ import { OrderInput, OrderItemInput } from '../../libs/types/order/order.input';
 import { PaymentMethod } from '../../libs/enums/order.enum';
 import { MemberShippingAddress, MemberBillingAddress } from '../../libs/types/member/member';
 import { sweetErrorHandling, sweetMixinSuccessAlert, sweetMixinErrorAlert } from '../../libs/sweetAlert';
-import { REACT_APP_API_URL } from '../../libs/config';
+import { Messages, REACT_APP_API_URL } from '../../libs/config';
 
 const CheckoutPage: NextPage<T> = (props: T) => {
 	const device = useDeviceDetect();
@@ -53,6 +53,15 @@ const CheckoutPage: NextPage<T> = (props: T) => {
 
 	const FREE_SHIPPING_THRESHOLD = 300.0;
 	const FLAT_RATE = 20.0;
+
+	// Check authentication on mount
+	useEffect(() => {
+		if (!user?._id) {
+			sweetMixinErrorAlert(Messages.error2).then(() => {
+				router.push('/account/join');
+			});
+		}
+	}, [user, router]);
 
 	// Map cart items from useCart to CartContent format
 	const cartItems: CartItem[] = useMemo(() => {
@@ -201,6 +210,11 @@ const CheckoutPage: NextPage<T> = (props: T) => {
 			sweetErrorHandling(err).then();
 		}
 	}, [cartItemsFromHook, shippingAddress, billingAddress, email, paymentMethod, orderNote, noteEnabled, createOrder, clearCart, router]);
+
+	// Don't render checkout page if user is not authenticated
+	if (!user?._id) {
+		return null;
+	}
 
 	if (device === 'mobile') {
 		return <div>CHECKOUT PAGE MOBILE</div>;

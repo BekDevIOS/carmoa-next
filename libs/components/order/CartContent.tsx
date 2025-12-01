@@ -11,6 +11,7 @@ export interface CartItem {
 	price: number;
 	quantity: number;
 	image: string;
+	maxStock?: number;
 }
 
 interface CartContentProps {
@@ -38,7 +39,10 @@ const CartContent = ({
 		}
 	};
 
-	const handleIncrement = (id: string, currentQuantity: number) => {
+	const handleIncrement = (id: string, currentQuantity: number, maxStock?: number) => {
+		if (maxStock && currentQuantity >= maxStock) {
+			return; // Don't increment if already at max stock
+		}
 		onQuantityChange(id, currentQuantity + 1);
 	};
 
@@ -86,7 +90,8 @@ const CartContent = ({
 									<Typography className="quantity-value">{item.quantity}</Typography>
 									<IconButton
 										className="quantity-btn plus"
-										onClick={() => handleIncrement(item.id, item.quantity)}
+										onClick={() => handleIncrement(item.id, item.quantity, item.maxStock)}
+										disabled={item.maxStock !== undefined && item.quantity >= item.maxStock}
 									>
 										<AddIcon />
 									</IconButton>

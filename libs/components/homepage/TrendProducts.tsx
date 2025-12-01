@@ -6,7 +6,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Product } from '../../types/product/product';
 import { useMutation, useQuery } from '@apollo/client';
 import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
-import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { GET_PRODUCTS, GET_FAVORITES } from '../../../apollo/user/query';
 import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
@@ -48,6 +48,12 @@ const TrendProducts = (props: TrendProductsProps) => {
 
 			await likeTargetProduct({
 				variables: { input: id },
+				refetchQueries: [
+					{
+						query: GET_FAVORITES,
+						variables: { input: { page: 1, limit: 1 } },
+					},
+				],
 			});
 			await getProductsRefetch({ input: initialInput });
 

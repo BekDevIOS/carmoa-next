@@ -1,10 +1,18 @@
 import React from 'react';
 import { Stack, Typography, Box } from '@mui/material';
+import { useReactiveVar } from '@apollo/client';
+import { themeVar } from '../../../apollo/store';
+import { useRouter } from 'next/router';
+import { ProductsInquiry } from '../../types/product/product.input';
+import { Direction } from '../../enums/common.enum';
+import { CarBrand } from '../../enums/product.enum';
 
 interface Brand {
 	id: number;
 	name: string;
-	image: string;
+	imageLight: string;
+	imageDark: string;
+
 }
 
 interface BrandProductsProps {
@@ -12,60 +20,94 @@ interface BrandProductsProps {
 }
 
 const BrandProducts = ({ brands }: BrandProductsProps) => {
+	const themeMode = useReactiveVar(themeVar);
+	const router = useRouter();
 	const defaultBrands: Brand[] = [
 		{
 			id: 1,
-			name: 'Land Rover',
-			image: '/img/brand/bmw.png',
+			name: 'HYUNDAI',
+			imageLight: '/img/brand/hyundai-seeklogo.png',
+			imageDark: '/img/brand/hyundai-seeklogo.png',
 		},
 		{
 			id: 2,
-			name: 'Nissan',
-			image: '/img/brand/kia.png',
+			name: 'KIA',
+			imageLight: '/img/brand/kia-new-2021-seeklogo.png',
+			imageDark: '/img/brand/kia-new-2021-seeklogoDARK.png',
 		},
 		{
 			id: 3,
-			name: 'Toyota',
-			image: '/img/brand/bmw.png',
+			name: 'GENESIS',
+			imageLight: '/img/brand/image.png',
+			imageDark: '/img/brand/image.png',
 		},
 		{
 			id: 4,
-			name: 'Bentley',
-			image: '/img/brand/kia.png',
+			name: 'BMW',
+			imageLight: '/img/brand/bmw-seeklogo.png',
+			imageDark: '/img/brand/bmw-seeklogo.png',
 		},
 		{
 			id: 5,
-			name: 'Chevrolet',
-			image: '/img/brand/bmw.png',
+			name: 'MERCEDES',
+			imageLight: '/img/brand/mercedes-benz-seeklogo.png',
+			imageDark: '/img/brand/mercedes-benz-seeklogo.png',
 		},
 		{
 			id: 6,
-			name: 'Mitsubishi',
-			image: '/img/brand/kia.png',
+			name: 'AUDI',
+			imageLight: '/img/brand/audi-seeklogo.png',
+			imageDark: '/img/brand/audi-seeklogo.png',
 		},
 		{
 			id: 7,
-			name: 'Subaru',
-			image: '/img/brand/bmw.png',
+			name: 'VOLKSWAGEN',
+			imageLight: '/img/brand/volkswagen-seeklogo.png',
+			imageDark: '/img/brand/volkswagen-seeklogo.png',
 		},
 		{
 			id: 8,
-			name: 'Volkswagen',
-			image: '/img/brand/kia.png',
+			name: 'TOYOTA',
+			imageLight: '/img/brand/toyota-seeklogo.png',
+			imageDark: '/img/brand/toyota-seeklogo.png',
 		},
 		{
 			id: 9,
-			name: 'BMW',
-			image: '/img/brand/bmw.png',
+			name: 'HONDA',
+			imageLight: '/img/brand/honda-silver-seeklogo.png',
+			imageDark: '/img/brand/honda-silver-seeklogo.png',
 		},
 		{
 			id: 10,
-			name: 'Ford',
-			image: '/img/brand/kia.png',
+			name: 'CHEVROLET',
+			imageLight: '/img/brand/chevrolet-seeklogo.png',
+			imageDark: '/img/brand/chevrolet-seeklogo.png',
 		},
 	];
 
 	const displayBrands = brands || defaultBrands;
+
+	const handleBrandClick = async (brandName: string) => {
+		try {
+			// Map brand name to CarBrand enum
+			const brandEnum = brandName.toUpperCase() as CarBrand;
+			
+			const searchInput: ProductsInquiry = {
+				page: 1,
+				limit: 9,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {
+					brandList: [brandEnum],
+				},
+			};
+
+			const queryString = JSON.stringify(searchInput);
+			await router.push(`/product?input=${queryString}`);
+		} catch (err: any) {
+			console.log('ERROR, handleBrandClick:', err);
+		}
+	};
 
 	const viewAllHandler = () => {
 		console.log('View all brands');
@@ -84,9 +126,18 @@ const BrandProducts = ({ brands }: BrandProductsProps) => {
 				</Stack>
 				<Stack className={'brands-grid'}>
 					{displayBrands.map((brand) => (
-						<Box key={brand.id} className={'brand-card'}>
+						<Box
+							key={brand.id}
+							className={'brand-card'}
+							onClick={() => handleBrandClick(brand.name)}
+							sx={{ cursor: 'pointer' }}
+						>
 							<Box className={'brand-image-wrapper'}>
-								<img src={brand.image} alt={brand.name} className={'brand-image'} />
+								<img
+									src={themeMode === 'dark' ? brand.imageDark : brand.imageLight}
+									alt={brand.name}
+									className={'brand-image'}
+								/>
 							</Box>
 						</Box>
 					))}

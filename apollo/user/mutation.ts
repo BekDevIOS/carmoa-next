@@ -532,3 +532,18 @@ export const UPDATE_MY_ORDER = gql`
 		}
 	}
 `;
+
+export const UPDATE_ORDER = gql`
+	mutation UpdateOrder($input: OrderUpdate!) {
+		updateOrder(input: $input) {
+			_id
+			orderStatus
+			paymentStatus
+			paymentMethod
+			totalPrice
+			shippingFee
+			notes
+			updatedAt
+		}
+	}
+`;

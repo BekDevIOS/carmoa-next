@@ -36,6 +36,7 @@ const CartPage: NextPage = (props: T) => {
 				price: item.price,
 				quantity: item.quantity,
 				image: productImage,
+				maxStock: item.product?.productStock,
 			};
 		});
 	}, [cartItemsFromHook]);

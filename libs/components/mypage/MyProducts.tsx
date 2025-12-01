@@ -52,12 +52,12 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 
 	const deleteProductHandler = async (id: string) => {
 		try {
-			if (await sweetConfirmAlert('Are you sure to delete this property?')) {
+			if (await sweetConfirmAlert('Are you sure to delete this product?')) {
 				await updateProduct({
 					variables: {
 						input: {
 							_id: id,
-							propertyStatus: 'DELETE',
+							productStatus: ProductStatus.DELETED,
 						},
 					},
 				});
@@ -75,7 +75,7 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 					variables: {
 						input: {
 							_id: id,
-							propertyStatus: status,
+							productStatus: status,
 						},
 					},
 				});
@@ -111,10 +111,10 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 							Active
 						</Typography>
 						<Typography
-							onClick={() => changeStatusHandler(ProductStatus.SOLD)}
-							className={searchFilter.search.productStatus === ProductStatus.SOLD ? 'active-tab-name' : 'tab-name'}
+							onClick={() => changeStatusHandler(ProductStatus.SOLD_OUT)}
+							className={searchFilter.search.productStatus === ProductStatus.SOLD_OUT ? 'active-tab-name' : 'tab-name'}
 						>
-							Sold
+							Sold Out
 						</Typography>
 						<Typography
 							onClick={() => changeStatusHandler(ProductStatus.HOLD)}

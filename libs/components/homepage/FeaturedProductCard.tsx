@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Stack, Box, Typography } from '@mui/material';
 import {
 	ShoppingCart as ShoppingCartIcon,
-	FavoriteBorder as FavoriteBorderIcon,
 	CompareArrows as ShuffleIcon,
 } from '@mui/icons-material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Product } from '../../types/product/product';
 import { REACT_APP_API_URL } from '../../config';
+import { useCompare } from '../../hooks/useCompare';
 
 interface FeaturedProductCardProps {
 	product: Product;
@@ -22,6 +23,13 @@ const FeaturedProductCard = ({
 	compareHandler,
 }: FeaturedProductCardProps) => {
 	const [isHovered, setIsHovered] = useState(false);
+	const { isCompared, toggleCompare } = useCompare();
+	
+	// Check if product is liked
+	const isLiked = Boolean(product?.meLiked && product?.meLiked[0]?.myFavorite);
+	
+	// Check if product is in compare
+	const isInCompare = isCompared(product._id);
 
 	// Map product fields
 	const imageUrl = product?.productImages?.[0]
@@ -82,10 +90,19 @@ const FeaturedProductCard = ({
 						<Box className={'action-btn'} onClick={() => addToCartHandler?.(product._id)}>
 							<ShoppingCartIcon className={'action-icon'} />
 						</Box>
-						<Box className={'action-btn'} onClick={() => wishlistHandler?.(product._id)}>
-							<FavoriteBorderIcon className={'action-icon'} />
+						<Box 
+							className={`action-btn ${isLiked ? 'liked' : ''}`} 
+							onClick={() => wishlistHandler?.(product._id)}
+						>
+							<FavoriteIcon className={'action-icon'} />
 						</Box>
-						<Box className={'action-btn'} onClick={() => compareHandler?.(product._id)}>
+						<Box 
+							className={`action-btn ${isInCompare ? 'compared' : ''}`} 
+							onClick={() => {
+								toggleCompare(product);
+								compareHandler?.(product._id);
+							}}
+						>
 							<ShuffleIcon className={'action-icon'} />
 						</Box>
 					</Stack>

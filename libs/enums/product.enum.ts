@@ -8,7 +8,7 @@ export enum ProductType {
 export enum ProductStatus {
 	ACTIVE = 'ACTIVE',
 	HOLD = 'HOLD',
-	SOLD = 'SOLD',
+	SOLD_OUT = 'SOLD_OUT',
 	DELETED = 'DELETED',
 }
 

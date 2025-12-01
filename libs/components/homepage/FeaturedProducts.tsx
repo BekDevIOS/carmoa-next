@@ -7,7 +7,7 @@ import FeaturedProductCard from './FeaturedProductCard';
 import { Product } from '../../types/product/product';
 import { ProductsInquiry } from '../../types/product/product.input';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
-import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { GET_PRODUCTS, GET_FAVORITES } from '../../../apollo/user/query';
 import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
 import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
@@ -86,6 +86,12 @@ const FeaturedProducts = ({ latestInput, mostViewedInput, onSaleInput }: Feature
 
 			await likeTargetProduct({
 				variables: { input: id },
+				refetchQueries: [
+					{
+						query: GET_FAVORITES,
+						variables: { input: { page: 1, limit: 1 } },
+					},
+				],
 			});
 
 			// Refetch all queries to update like status

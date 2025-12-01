@@ -11,16 +11,21 @@ import {
 	DarkMode as DarkModeIcon,
 } from '@mui/icons-material';
 import { useReactiveVar } from '@apollo/client';
-import { themeVar } from '../../apollo/store';
+import { themeVar, userVar } from '../../apollo/store';
 import Link from 'next/link';
+import { ProductMainCategory, ProductSubCategory } from '../enums/product.enum';
+import { ProductsInquiry } from '../types/product/product.input';
+import { Direction } from '../enums/common.enum';
 
 const MainHeader = () => {
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
+	const [expandedCategory, setExpandedCategory] = useState<ProductMainCategory | null>(null);
 	const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
 	const [lang, setLang] = useState<string | null>('en');
 	const themeMode = useReactiveVar(themeVar);
+	const user = useReactiveVar(userVar);
 	const categoryMenuOpen = Boolean(categoryAnchor);
 	const langMenuOpen = Boolean(langAnchor);
 
@@ -41,7 +46,84 @@ const MainHeader = () => {
 
 	const handleCategoryClose = () => {
 		setCategoryAnchor(null);
+		setExpandedCategory(null);
 	};
+
+	const handleCategoryToggle = (category: ProductMainCategory) => {
+		setExpandedCategory(expandedCategory === category ? null : category);
+	};
+
+	// Get subcategories based on main category
+	const getSubCategories = (mainCategory: ProductMainCategory): ProductSubCategory[] => {
+		switch (mainCategory) {
+			case ProductMainCategory.ENGINE:
+				return [
+					ProductSubCategory.ENGINE_OIL_FILTER,
+					ProductSubCategory.AIR_FILTER,
+					ProductSubCategory.FUEL_PUMP,
+					ProductSubCategory.RADIATOR,
+					ProductSubCategory.ALTERNATOR,
+					ProductSubCategory.BATTERY,
+				];
+			case ProductMainCategory.EXTERIOR:
+				return [
+					ProductSubCategory.BUMPER,
+					ProductSubCategory.HEADLIGHT,
+					ProductSubCategory.TAILLIGHT,
+					ProductSubCategory.MIRROR,
+				];
+			case ProductMainCategory.INTERIOR:
+				return [ProductSubCategory.STEERING_WHEEL, ProductSubCategory.SEAT, ProductSubCategory.DASHBOARD];
+			case ProductMainCategory.SUSPENSION:
+				return [ProductSubCategory.SHOCK_ABSORBER, ProductSubCategory.SPRING, ProductSubCategory.CONTROL_ARM];
+			case ProductMainCategory.ELECTRICAL:
+				return [ProductSubCategory.SENSOR, ProductSubCategory.ECU, ProductSubCategory.CABLE];
+			default:
+				return [];
+		}
+	};
+
+	// Format category name for display
+	const formatCategoryName = (category: string): string => {
+		return category
+			.split('_')
+			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+			.join(' ');
+	};
+
+	// Handle category navigation
+	const handleCategoryNavigation = async (mainCategory?: ProductMainCategory, subCategory?: ProductSubCategory) => {
+		try {
+			const searchInput: ProductsInquiry = {
+				page: 1,
+				limit: 9,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {},
+			};
+
+			if (mainCategory) {
+				searchInput.search.mainCategoryList = [mainCategory];
+			}
+
+			if (subCategory) {
+				searchInput.search.subCategoryList = [subCategory];
+			}
+
+			const queryString = JSON.stringify(searchInput);
+			await router.push(
+				`/product?input=${queryString}`,
+				`/product?input=${queryString}`,
+				{ scroll: false },
+			);
+			handleCategoryClose();
+		} catch (err: any) {
+			console.log('ERROR, handleCategoryNavigation:', err);
+		}
+	};
+
+
+	const mainCategories: ProductMainCategory[] = Object.values(ProductMainCategory) as ProductMainCategory[];
 
 	const handleLangClick = (event: React.MouseEvent<HTMLElement>) => {
 		setLangAnchor(event.currentTarget);
@@ -152,11 +234,74 @@ const MainHeader = () => {
 				</Box>
 
 				<StyledMenu anchorEl={categoryAnchor} open={categoryMenuOpen} onClose={handleCategoryClose}>
-					<MenuItem onClick={handleCategoryClose}>All Categories</MenuItem>
-					<MenuItem onClick={handleCategoryClose}>Engine Parts</MenuItem>
-					<MenuItem onClick={handleCategoryClose}>Body Parts</MenuItem>
-					<MenuItem onClick={handleCategoryClose}>Interior Parts</MenuItem>
-					<MenuItem onClick={handleCategoryClose}>Accessories</MenuItem>
+					<MenuItem onClick={() => handleCategoryNavigation()}>All Categories</MenuItem>
+					{mainCategories.map((mainCategory: ProductMainCategory) => {
+						const subCategories = getSubCategories(mainCategory);
+						const hasSubCategories = subCategories.length > 0;
+						const isExpanded = expandedCategory === mainCategory;
+						return (
+							<React.Fragment key={String(mainCategory)}>
+								<MenuItem
+									onClick={() => {
+										if (hasSubCategories) {
+											handleCategoryToggle(mainCategory);
+										} else {
+											handleCategoryNavigation(mainCategory);
+										}
+									}}
+									sx={{
+										fontWeight: 600,
+										'&:hover': {
+											backgroundColor: alpha(themeMode === 'light' ? '#000' : '#fff', 0.05),
+										},
+									}}
+								>
+									{formatCategoryName(String(mainCategory))}
+									{hasSubCategories && (
+										<ExpandMoreIcon
+											sx={{
+												ml: 'auto',
+												fontSize: 18,
+												color: 'text.secondary',
+												transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+												transition: 'transform 0.2s',
+											}}
+										/>
+									)}
+								</MenuItem>
+								{isExpanded && hasSubCategories && (
+									<>
+										<MenuItem
+											onClick={() => handleCategoryNavigation(mainCategory)}
+											sx={{
+												pl: 4,
+												fontSize: 13,
+												fontWeight: 600,
+												color: 'text.secondary',
+												borderBottom: `1px solid ${alpha(themeMode === 'light' ? '#000' : '#fff', 0.1)}`,
+												mb: 0.5,
+											}}
+										>
+											All {formatCategoryName(String(mainCategory))}
+										</MenuItem>
+										{subCategories.map((subCategory: ProductSubCategory) => (
+											<MenuItem
+												key={String(subCategory)}
+												onClick={() => handleCategoryNavigation(mainCategory, subCategory)}
+												sx={{
+													pl: 4,
+													fontSize: 13,
+													color: 'text.secondary',
+												}}
+											>
+												{formatCategoryName(String(subCategory))}
+											</MenuItem>
+										))}
+									</>
+								)}
+							</React.Fragment>
+						);
+					})}
 				</StyledMenu>
 
 				{/* Center: Navigation Links */}
@@ -229,21 +374,23 @@ const MainHeader = () => {
 							</Typography>
 						</Box>
 					</Link>
-					<Link href={'/mypage'}>
-						<Box
-							component={'div'}
-							className={router.pathname.startsWith('/mypage') ? 'nav-link active no-icon' : 'nav-link no-icon'}
-							sx={router.pathname.startsWith('/mypage') ? { bgcolor: 'primary.main' } : {}}
-						>
-							<Typography
-								variant="body2"
-								className={'nav-link-text'}
-								sx={router.pathname.startsWith('/mypage') ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
+					{user?._id && (
+						<Link href={'/mypage'}>
+							<Box
+								component={'div'}
+								className={router.pathname.startsWith('/mypage') ? 'nav-link active no-icon' : 'nav-link no-icon'}
+								sx={router.pathname.startsWith('/mypage') ? { bgcolor: 'primary.main' } : {}}
 							>
-								My Page
-							</Typography>
-						</Box>
-					</Link>
+								<Typography
+									variant="body2"
+									className={'nav-link-text'}
+									sx={router.pathname.startsWith('/mypage') ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
+								>
+									My Page
+								</Typography>
+							</Box>
+						</Link>
+					)}
 					<Link href={'/cs'}>
 						<Box
 							component={'div'}

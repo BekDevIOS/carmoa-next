@@ -904,6 +904,42 @@
 							color: var(--carmo-text);
 						}
 					}
+
+					// Compare Icon Active State
+					&.compared {
+						background-color: var(--carmo-primary);
+						color: var(--carmo-bg);
+
+						.action-icon {
+							color: var(--carmo-bg);
+						}
+
+						&:hover {
+							background-color: var(--carmo-primary-hover);
+
+							.action-icon {
+								color: var(--carmo-bg);
+							}
+						}
+					}
+
+					// Like Icon Active State
+					&.liked {
+						background-color: var(--carmo-primary);
+						color: var(--carmo-bg);
+
+						.action-icon {
+							color: var(--carmo-bg);
+						}
+
+						&:hover {
+							background-color: var(--carmo-primary-hover);
+
+							.action-icon {
+								color: var(--carmo-bg);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -1528,7 +1564,7 @@
 
 					.card-image-wrapper {
 						width: 100%;
-						height: auto;
+						height: 389px;
 						overflow: hidden;
 						margin-bottom: 16px;
 						position: relative;

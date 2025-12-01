@@ -11,6 +11,7 @@
 				height: auto;
 				flex-direction: row;
 				justify-content: space-between;
+				align-items: center;
 				.right-box {
 					width: 315px;
 					.main-title {
@@ -32,8 +33,34 @@
 						line-height: 26px;
 					}
 				}
+				.status-filter {
+					.MuiOutlinedInput-root {
+						background-color: var(--carmo-bg);
+						color: var(--carmo-text);
+						&:hover {
+							.MuiOutlinedInput-notchedOutline {
+								border-color: var(--carmo-primary);
+							}
+						}
+						&.Mui-focused {
+							.MuiOutlinedInput-notchedOutline {
+								border-color: var(--carmo-primary);
+							}
+						}
+					}
+					.MuiInputLabel-root {
+						color: var(--carmo-text-secondary);
+						&.Mui-focused {
+							color: var(--carmo-primary);
+						}
+					}
+					.MuiSelect-select {
+						color: var(--carmo-text);
+					}
+				}
 			}
 			.order-table-container {
+				margin-top: 30px;
 				width: 100%;
 				height: auto;
 				.order-table-wrapper {
@@ -41,7 +68,7 @@
 					height: auto;
 					background: var(--carmo-bg);
 					border-radius: 12px;
-					border: 1px solid #c4c4c4;
+					border: 1px solid var(--carmo-border);
 					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 					overflow: hidden;
 					.order-table {
@@ -53,12 +80,13 @@
 							display: flex;
 							flex-direction: row;
 							width: 100%;
-							background: var(--carmo-text)000;
+							background: var(--carmo-bg-soft);
+							border: 1px solid var(--carmo-border);
 							padding: 0;
 							.header-cell {
 								flex: 1;
 								padding: 16px 20px;
-								color: var(--carmo-bg);
+								color: var(--carmo-text);
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
@@ -69,6 +97,9 @@
 									flex: 1.2;
 								}
 								&.header-date {
+									flex: 1.5;
+								}
+								&.header-customer {
 									flex: 1.5;
 								}
 								&.header-status {
@@ -92,12 +123,7 @@
 								flex-direction: row;
 								width: 100%;
 								padding: 0;
-								&.even {
-									background: var(--carmo-bg-soft);
-								}
-								&.odd {
-									background: var(--carmo-bg);
-								}
+
 								&:hover {
 									background: var(--carmo-bg-soft);
 								}
@@ -122,8 +148,19 @@
 									&.cell-date {
 										flex: 1.5;
 									}
+									&.cell-customer {
+										flex: 1.5;
+									}
 									&.cell-status {
 										flex: 1;
+										.MuiFormControl-root {
+											width: 100%;
+											.MuiSelect-select {
+												padding: 8px 14px;
+												font-size: 14px;
+												font-family: $font;
+											}
+										}
 									}
 									&.cell-total {
 										flex: 1.5;
@@ -149,8 +186,8 @@
 											box-shadow: none;
 											min-width: auto;
 											&:hover {
-												background: var(--carmo-text)000;
-												color: var(--carmo-bg);
+												background: var(--carmo-primary-hover);
+												color: var(--carmo-text);
 												transform: translateY(-1px);
 												box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
 											}
@@ -192,4 +229,3 @@
 		}
 	}
 }
-

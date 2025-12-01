@@ -44,6 +44,7 @@ const ProductCard = ({
 	const [isHovered, setIsHovered] = useState(false);
 	const { isCompared, toggleCompare } = useCompare();
 	const isInCompare = isCompared(product._id);
+	const isLiked = myFavorites || Boolean(product?.meLiked && product?.meLiked[0]?.myFavorite);
 	const imagePath: string = product?.productImages?.[0]
 		? `${REACT_APP_API_URL}/${product?.productImages[0]}`
 		: '/img/banner/header1.svg';
@@ -80,18 +81,16 @@ const ProductCard = ({
 					<img src={imagePath} alt={product.productTitle} className={'product-image'} />
 					<Stack className={`hover-actions ${isHovered ? 'visible' : ''}`}>
 						<Box
-							className={'action-icon'}
+							className={`action-icon ${isLiked ? 'liked' : ''}`}
 							onClick={(event) => {
 								stopPropagation(event);
 								likeProductHandler?.(user, product._id);
 							}}
 						>
-							{myFavorites ? (
-								<FavoriteIcon color="primary" />
-							) : product?.meLiked && product?.meLiked[0]?.myFavorite ? (
-								<FavoriteIcon color="primary" />
+							{isLiked ? (
+								<FavoriteIcon className={'icon'} />
 							) : (
-								<FavoriteBorderIcon />
+								<FavoriteBorderIcon className={'icon'} />
 							)}
 						</Box>
 						<Tooltip title={isInCompare ? 'Remove from Compare' : 'Add to Compare'} arrow>

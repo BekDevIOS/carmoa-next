@@ -317,8 +317,8 @@
 			font-weight: 600;
 			line-height: 22px;
 			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
+			-webkit-line-clamp: 1;
+			line-clamp: 1;
 			-webkit-box-orient: vertical;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -453,6 +453,40 @@
 				.icon {
 					font-size: 20px;
 					color: var(--carmo-text);
+				}
+
+				// Compare Icon Active State
+				&.compared {
+					background-color: var(--carmo-primary);
+					color: var(--carmo-bg);
+
+					.icon {
+						color: var(--carmo-bg);
+					}
+
+					&:hover {
+						background-color: var(--carmo-primary-hover);
+						transform: scale(1.1);
+					}
+				}
+
+				// Like Icon Active State
+				&.liked {
+					background-color: var(--carmo-primary);
+					color: var(--carmo-bg);
+
+					.icon {
+						color: var(--carmo-bg);
+					}
+
+					&:hover {
+						background-color: var(--carmo-primary-hover);
+						transform: scale(1.1);
+
+						.icon {
+							color: var(--carmo-bg);
+						}
+					}
 				}
 			}
 		}

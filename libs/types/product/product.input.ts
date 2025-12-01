@@ -39,6 +39,7 @@ export interface PISearch {
 	yearsRange?: Range;
 	text?: string;
 	onSale?: boolean;
+	options?: ProductMainCategory[] | CarBrand[];
 }
 
 export interface ProductsInquiry {

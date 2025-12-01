@@ -242,24 +242,6 @@
 	}
 }
 
-// Product Card Compare Icon Active State
-.product-card {
-	.action-icon {
-		&.compared {
-			background-color: var(--carmo-primary);
-			color: var(--carmo-bg);
-
-			.icon {
-				color: var(--carmo-bg);
-			}
-
-			&:hover {
-				background-color: var(--carmo-primary-hover);
-			}
-		}
-	}
-}
-
 // Responsive adjustments
 @media (max-width: 960px) {
 	.compare-table-container {

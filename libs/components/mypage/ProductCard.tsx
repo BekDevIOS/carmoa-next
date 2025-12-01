@@ -64,6 +64,9 @@ export const ProductCard = (props: ProductCardProps) => {
 				</Stack>
 				<Stack className="information-box" onClick={() => pushProductDetail(product?._id)}>
 					<Typography className="name">{product.productTitle}</Typography>
+					<Typography className="quantity" style={{ fontSize: '11px', color: 'var(--carmo-text-secondary)', marginBottom: '8px' }}>
+						Quantity: {product.productStock?.toLocaleString() || 0}
+					</Typography>
 					<Stack className="category-box" direction="row" spacing={1}>
 						<Typography className="category">{product.productMainCategory}</Typography>
 						<Typography className="category-separator">•</Typography>
@@ -94,7 +97,7 @@ export const ProductCard = (props: ProductCardProps) => {
 						</Typography>
 					</Stack>
 				</Stack>
-				{!memberPage && product.productStatus !== ProductStatus.SOLD && (
+				{!memberPage && (
 					<Menu
 						anchorEl={anchorEl}
 						open={open}
@@ -121,7 +124,7 @@ export const ProductCard = (props: ProductCardProps) => {
 									disableRipple
 									onClick={() => {
 										handleClose();
-										updateProductHandler(ProductStatus.SOLD, product?._id);
+										updateProductHandler(ProductStatus.SOLD_OUT, product?._id);
 									}}
 								>
 									Sold
@@ -138,6 +141,17 @@ export const ProductCard = (props: ProductCardProps) => {
 							</>
 						)}
 						{product.productStatus === ProductStatus.HOLD && (
+							<MenuItem
+								disableRipple
+								onClick={() => {
+									handleClose();
+									updateProductHandler(ProductStatus.ACTIVE, product?._id);
+								}}
+							>
+								Activate
+							</MenuItem>
+						)}
+						{product.productStatus === ProductStatus.SOLD_OUT && (
 							<MenuItem
 								disableRipple
 								onClick={() => {

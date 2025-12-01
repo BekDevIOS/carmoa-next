@@ -10,6 +10,12 @@ interface CompareFabProps {
 const CompareFab: React.FC<CompareFabProps> = ({ onClick }) => {
 	const { items } = useCompare();
 	const [shouldPulse, setShouldPulse] = useState(false);
+	const [mounted, setMounted] = useState(false);
+
+	// Only render on client side to avoid hydration mismatch
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	// Trigger pulse animation when first item is added
 	useEffect(() => {
@@ -20,7 +26,8 @@ const CompareFab: React.FC<CompareFabProps> = ({ onClick }) => {
 		}
 	}, [items.length]);
 
-	if (items.length === 0) {
+	// Don't render until mounted (client-side only)
+	if (!mounted || items.length === 0) {
 		return null;
 	}
 

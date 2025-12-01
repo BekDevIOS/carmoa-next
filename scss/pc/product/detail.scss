@@ -396,6 +396,22 @@
 							font-size: 20px;
 						}
 					}
+
+					.compare-btn {
+						&.compared {
+							background-color: var(--carmo-primary);
+							color: var(--carmo-bg);
+							border-color: var(--carmo-primary);
+
+							svg {
+								color: var(--carmo-bg);
+							}
+
+							&:hover {
+								background-color: var(--carmo-primary-hover);
+							}
+						}
+					}
 				}
 
 				.buy-now-section {

@@ -50,6 +50,12 @@ const MyFavorites: NextPage = () => {
 				variables: {
 					input: id,
 				},
+				refetchQueries: [
+					{
+						query: GET_FAVORITES,
+						variables: { input: { page: 1, limit: 1 } },
+					},
+				],
 			});
 
 			await getFavoritesRefetch({ input: searchFavorites });

@@ -33,7 +33,7 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import { useLazyQuery, useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Product } from '../../libs/types/product/product';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
-import { GET_COMMENTS, GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
+import { GET_COMMENTS, GET_PRODUCT, GET_PRODUCTS, GET_FAVORITES } from '../../apollo/user/query';
 import { LIKE_TARGET_PRODUCT, CREATE_COMMENT } from '../../apollo/user/mutation';
 import { userVar } from '../../apollo/store';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
@@ -44,6 +44,7 @@ import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } f
 import { REACT_APP_API_URL } from '../../libs/config';
 import { T } from '../../libs/types/common';
 import { useCart } from '../../libs/hooks/useCart';
+import { useCompare } from '../../libs/hooks/useCompare';
 
 const ReactImageMagnify = dynamic(() => import('react-image-magnify'), { ssr: false });
 const Lightbox = dynamic(() => import('yet-another-react-lightbox'), { ssr: false });
@@ -69,6 +70,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 	const { addToCart } = useCart();
+	const { isCompared, toggleCompare } = useCompare();
 	const [productId, setProductId] = useState<string | null>(null);
 	const [product, setProduct] = useState<ProductDetailData | null>(null);
 	const [selectedImage, setSelectedImage] = useState<string>('');
@@ -177,27 +179,12 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 		const search: ProductsInquiry['search'] = {};
 		
 		// Use main category and brand for broader results (exclude subcategory to get more products)
-		if (product.productMainCategory) search.mainCategoryList = [product.productMainCategory];
-		if (product.productCarBrand) search.brandList = [product.productCarBrand];
-		
-		// If no main category, use brand only
-		if (!product.productMainCategory && product.productCarBrand) {
-			search.brandList = [product.productCarBrand];
-		}
-		
-		// If no brand, use main category only
-		if (!product.productCarBrand && product.productMainCategory) {
-			search.mainCategoryList = [product.productMainCategory];
-		}
-		
-		// If still no criteria, use main category as fallback
-		if (Object.keys(search).length === 0 && product.productMainCategory) {
-			search.mainCategoryList = [product.productMainCategory];
-		}
+		//:TODO: use options instead of conditionList(condition is for developing purpose)
+		if (product.productCondition) search.conditionList = [product.productCondition];
 		
 		return {
 			page: 1,
-			limit: 20, // Request more products to ensure we have enough after filtering
+			limit: 10, // Request more products to ensure we have enough after filtering
 			sort: 'createdAt',
 			direction: Direction.DESC,
 			search,
@@ -354,6 +341,13 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const handleQuantityChange = (value: number) => {
 		if (value >= 1) {
+			// Limit quantity to available product stock
+			const maxStock = product?.productStock || 0;
+			if (value > maxStock) {
+				sweetMixinErrorAlert(`Only ${maxStock} item${maxStock !== 1 ? 's' : ''} available in stock`).then();
+				setQuantity(maxStock);
+				return;
+			}
 			setQuantity(value);
 		}
 	};
@@ -374,6 +368,12 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 			if (!user?._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await likeTargetProductMutation({
 				variables: { input: product._id },
+				refetchQueries: [
+					{
+						query: GET_FAVORITES,
+						variables: { input: { page: 1, limit: 1 } },
+					},
+				],
 			});
 			await getProductRefetch({ input: product._id });
 			await sweetTopSmallSuccessAlert('Success!', 800);
@@ -404,6 +404,12 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 			if (!currentUser?._id) throw new Error(Message.NOT_AUTHENTICATED);
 			await likeTargetProductMutation({
 				variables: { input: id },
+				refetchQueries: [
+					{
+						query: GET_FAVORITES,
+						variables: { input: { page: 1, limit: 1 } },
+					},
+				],
 			});
 			await sweetTopSmallSuccessAlert('Success!', 800);
 			if (id === product?._id) {
@@ -449,6 +455,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const displaySelectedImage = selectedImage || productImages[0] || '/img/product/image1.png';
 	const isWishlisted = Boolean(product?.meLiked?.[0]?.myFavorite);
+	const isInCompare = product?._id ? isCompared(product._id) : false;
 	const viewersCount = product?.viewersCount ?? product?.productViews;
 	const productLikes = product?.productLikes;
 
@@ -666,11 +673,12 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 											value={quantity}
 											onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
 											className={'quantity-input'}
-											inputProps={{ min: 1 }}
+											inputProps={{ min: 1, max: product?.productStock || 1 }}
 										/>
 										<Button
 											variant="outlined"
 											onClick={() => handleQuantityChange(quantity + 1)}
+											disabled={quantity >= (product?.productStock || 0)}
 											className={'quantity-btn'}
 										>
 											+
@@ -687,7 +695,14 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 								<IconButton className={'wishlist-btn'} onClick={handleWishlist}>
 									{isWishlisted ? <FavoriteIcon /> : <FavoriteBorderIcon />}
 								</IconButton>
-								<IconButton className={'compare-btn'} onClick={() => console.log('Compare:', product?._id)}>
+								<IconButton 
+									className={`compare-btn ${isInCompare ? 'compared' : ''}`} 
+									onClick={() => {
+										if (product) {
+											toggleCompare(product);
+										}
+									}}
+								>
 									<CompareArrowsIcon />
 								</IconButton>
 							</Stack>

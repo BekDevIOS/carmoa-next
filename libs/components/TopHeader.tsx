@@ -10,19 +10,44 @@ import {
 	FavoriteBorder as FavoriteBorderIcon,
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 } from '@mui/icons-material';
-import { useReactiveVar } from '@apollo/client';
-import { themeVar } from '../../apollo/store';
+import { useReactiveVar, useQuery } from '@apollo/client';
+import { themeVar, userVar } from '../../apollo/store';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Cart from './Cart';
 import { useCart } from '../hooks/useCart';
+import { logOut } from '../auth';
+import { Logout } from '@mui/icons-material';
+import { getMemberImageUrl } from '../config';
+import { GET_FAVORITES } from '../../apollo/user/query';
+import { ProductMainCategory } from '../enums/product.enum';
+import { ProductsInquiry } from '../types/product/product.input';
+import { Direction } from '../enums/common.enum';
 
 const TopHeader = () => {
 	const themeMode = useReactiveVar(themeVar);
+	const user = useReactiveVar(userVar);
+	const router = useRouter();
 	const { getCartCount } = useCart();
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
 	const categoryMenuOpen = Boolean(categoryAnchor);
+	const [selectedCategory, setSelectedCategory] = useState<ProductMainCategory | null>(null);
+	const [searchText, setSearchText] = useState<string>('');
 	const [cartOpen, setCartOpen] = useState(false);
+	const [logoutAnchor, setLogoutAnchor] = useState<null | HTMLElement>(null);
+	const logoutOpen = Boolean(logoutAnchor);
 	const cartCount = getCartCount();
+
+	// Get favorites count - will update automatically via refetchQueries
+	const { data: favoritesData } = useQuery(GET_FAVORITES, {
+		skip: !user?._id,
+		fetchPolicy: 'cache-and-network',
+		variables: {
+			input: { page: 1, limit: 1 },
+		},
+	});
+
+	const favoritesCount = favoritesData?.getFavorites?.metaCounter?.[0]?.total || 0;
 
 	const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
 		setCategoryAnchor(event.currentTarget);
@@ -31,6 +56,52 @@ const TopHeader = () => {
 	const handleCategoryClose = () => {
 		setCategoryAnchor(null);
 	};
+
+	// Format category name for display
+	const formatCategoryName = (category: string): string => {
+		return category
+			.split('_')
+			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+			.join(' ');
+	};
+
+	// Handle category selection
+	const handleCategorySelect = (category: ProductMainCategory | null) => {
+		setSelectedCategory(category);
+		handleCategoryClose();
+	};
+
+	// Handle search
+	const handleSearch = async () => {
+		try {
+			const searchInput: ProductsInquiry = {
+				page: 1,
+				limit: 9,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {},
+			};
+
+			if (selectedCategory) {
+				searchInput.search.mainCategoryList = [selectedCategory];
+			}
+
+			if (searchText.trim()) {
+				searchInput.search.text = searchText.trim();
+			}
+
+			const queryString = JSON.stringify(searchInput);
+			await router.push(
+				`/product?input=${queryString}`,
+				`/product?input=${queryString}`,
+				{ scroll: false },
+			);
+		} catch (err: any) {
+			console.log('ERROR, handleSearch:', err);
+		}
+	};
+
+	const mainCategories = Object.values(ProductMainCategory) as ProductMainCategory[];
 
 	const handleCartOpen = () => {
 		setCartOpen(true);
@@ -97,21 +168,22 @@ const TopHeader = () => {
 							component={'div'}
 							className={'category-dropdown'}
 							onClick={handleCategoryClick}
-							sx={{ px: 2, py: 1.5, borderColor: 'grey.300', bgcolor: 'background.default' }}
+							sx={{ px: 2, py: 1.5, borderColor: 'grey.300', bgcolor: 'background.default', cursor: 'pointer' }}
 						>
 							<Typography variant="body2" className={'category-text'} sx={{ color: 'text.primary', mr: 1 }}>
-								All Categories
+								{selectedCategory ? formatCategoryName(selectedCategory) : 'All Categories'}
 							</Typography>
 							<ExpandMoreIcon className={'category-icon'} sx={{ color: 'text.primary' }} />
 						</Box>
 						<Box component={'div'} className={'vertical-separator'} sx={{ bgcolor: 'divider' }} />
 
 						<StyledMenu anchorEl={categoryAnchor} open={categoryMenuOpen} onClose={handleCategoryClose}>
-							<MenuItem onClick={handleCategoryClose}>All Categories</MenuItem>
-							<MenuItem onClick={handleCategoryClose}>Engine Parts</MenuItem>
-							<MenuItem onClick={handleCategoryClose}>Body Parts</MenuItem>
-							<MenuItem onClick={handleCategoryClose}>Interior Parts</MenuItem>
-							<MenuItem onClick={handleCategoryClose}>Accessories</MenuItem>
+							<MenuItem onClick={() => handleCategorySelect(null)}>All Categories</MenuItem>
+							{mainCategories.map((category: ProductMainCategory) => (
+								<MenuItem key={String(category)} onClick={() => handleCategorySelect(category)}>
+									{formatCategoryName(String(category))}
+								</MenuItem>
+							))}
 						</StyledMenu>
 
 						{/* Search Input */}
@@ -120,11 +192,23 @@ const TopHeader = () => {
 							type="text"
 							placeholder="Search for anything"
 							className={'search-input'}
+							value={searchText}
+							onChange={(e) => setSearchText(e.target.value)}
+							onKeyPress={(e) => {
+								if (e.key === 'Enter') {
+									handleSearch();
+								}
+							}}
 							sx={{ px: 2, py: 1.5, color: 'text.primary', bgcolor: 'background.default' }}
 						/>
 
 						{/* Search Button */}
-						<Box component={'div'} className={'search-btn'} sx={{ bgcolor: 'background.paper' }}>
+						<Box
+							component={'div'}
+							className={'search-btn'}
+							sx={{ bgcolor: 'background.paper', cursor: 'pointer' }}
+							onClick={handleSearch}
+						>
 							<SearchIcon className={'search-icon'} sx={{ color: 'text.primary' }} />
 						</Box>
 					</Box>
@@ -146,11 +230,39 @@ const TopHeader = () => {
 				{/* Icons */}
 				<Box component={'div'} className={'utility-icons'} sx={{ gap: 1, ml: 2 }}>
 					{/* Profile */}
-					<Link href={'/account/join'}>
-						<Box className={'icon-btn'} sx={{ borderColor: 'divider', cursor: 'pointer' }}>
-							<PersonOutlineIcon className={'icon'} sx={{ color: 'text.primary' }} />
-						</Box>
-					</Link>
+					{user?._id ? (
+						<>
+							<Box
+								className={'icon-btn login-user'}
+								onClick={(event: any) => setLogoutAnchor(event.currentTarget)}
+							>
+								<img
+									src={getMemberImageUrl(user?.memberImage)}
+									alt="User"
+								/>
+							</Box>
+							<Menu
+								id="basic-menu"
+								anchorEl={logoutAnchor}
+								open={logoutOpen}
+								onClose={() => {
+									setLogoutAnchor(null);
+								}}
+								sx={{ mt: '5px' }}
+							>
+								<MenuItem onClick={() => logOut()}>
+									<Logout fontSize="small" className={'logout-icon'} />
+									Logout
+								</MenuItem>
+							</Menu>
+						</>
+					) : (
+						<Link href={'/account/join'}>
+							<Box className={'icon-btn'} sx={{ borderColor: 'divider', cursor: 'pointer' }}>
+								<PersonOutlineIcon className={'icon'} sx={{ color: 'text.primary' }} />
+							</Box>
+						</Link>
+					)}
 
 					{/* Notification */}
 					<Box className={'icon-btn'} sx={{ borderColor: 'divider' }}>
@@ -158,12 +270,14 @@ const TopHeader = () => {
 					</Box>
 
 					{/* Wishlist */}
-					<Box className={'icon-btn wishlist-btn'} sx={{ borderColor: 'divider' }}>
-						<FavoriteBorderIcon className={'icon'} sx={{ color: 'text.primary' }} />
-						<Box component={'span'} className={'wishlist-badge'} sx={{ color: 'text.primary' }}>
-							0
+					<Link href={'/mypage?category=myFavorites'}>
+						<Box className={'icon-btn wishlist-btn'} sx={{ borderColor: 'divider', cursor: 'pointer' }}>
+							<FavoriteBorderIcon className={'icon'} sx={{ color: 'text.primary' }} />
+							<Box component={'span'} className={'wishlist-badge'}>
+								{favoritesCount}
+							</Box>
 						</Box>
-					</Box>
+					</Link>
 
 					{/* Cart Button */}
 					<Box className={'cart-btn'} sx={{ px: 2, py: 1, bgcolor: 'primary.main', cursor: 'pointer' }} onClick={handleCartOpen}>
