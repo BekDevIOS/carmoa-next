@@ -6,6 +6,7 @@ import {
 	Visibility as VisibilityIcon,
 	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 	StarBorder as StarBorderIcon,
+	Star as StarIcon,
 } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCompare } from '../../hooks/useCompare';
@@ -125,11 +126,38 @@ const ProductCard = ({
 							{product.productDescription}
 						</Typography>
 					)}
-					
-					<Stack className={'rating-section'}>
-						{[1, 2, 3, 4, 5].map((star) => (
-							<StarBorderIcon key={star} className={'star-icon'} />
-						))}
+
+					{/* Rating summary (stars + count) */}
+					<Stack className={'rating-section'} direction="row" alignItems="center" spacing={0.5}>
+						{(() => {
+							const ratingAverage = product.ratingAverage ?? product.productRank ?? 0;
+							const ratingCount = product.ratingCount ?? 0;
+
+							if (ratingCount > 0) {
+								return (
+									<>
+										<Stack direction="row" spacing={0.25} alignItems="center">
+											{[1, 2, 3, 4, 5].map((star) => (
+												<StarIcon
+													key={star}
+													className={star <= Math.round(ratingAverage) ? 'star-icon filled' : 'star-icon empty'}
+													fontSize="small"
+												/>
+											))}
+										</Stack>
+										<Typography variant="caption" className={'rating-count'}>
+											({ratingCount})
+										</Typography>
+									</>
+								);
+							}
+
+							return (
+								<Typography variant="caption" className={'rating-count'}>
+									No ratings yet
+								</Typography>
+							);
+						})()}
 					</Stack>
 					<Stack className={'price-section'}>
 						{product.productPrice && (

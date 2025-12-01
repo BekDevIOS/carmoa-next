@@ -141,6 +141,8 @@ export const GET_PRODUCT = gql`
 			productType
 			productStatus
 			productCondition
+			ratingAverage
+			ratingCount
 			productMainCategory
 			productSubCategory
 			productCarBrand
@@ -228,6 +230,8 @@ export const GET_PRODUCTS = gql`
 				productType
 				productStatus
 				productCondition
+				ratingAverage
+				ratingCount
 				productMainCategory
 				productSubCategory
 				productCarBrand
@@ -688,6 +692,7 @@ export const GET_COMMENTS = gql`
 				commentContent
 				commentRefId
 				memberId
+				rating
 				createdAt
 				updatedAt
 				memberData {

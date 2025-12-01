@@ -554,6 +554,14 @@
 
 			.star-icon {
 				font-size: 16px;
+				color: var(--carmo-primary);
+
+				&.empty {
+					color: var(--carmo-text-secondary);
+				}
+			}
+
+			.rating-count {
 				color: var(--carmo-text-secondary);
 			}
 		}

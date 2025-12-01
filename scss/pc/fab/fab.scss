@@ -102,7 +102,7 @@
 		background-color: transparent;
 		border-radius: 0;
 		box-shadow: none;
-		animation: aiBotBreathing 2s ease-in-out infinite;
+		animation: aiBotBreathing 2s ease-in-out infinite, aiBotDefaultGlow 2s ease-in-out infinite;
 		transition: all 0.3s ease;
 
 		.ai-bot-icon {
@@ -115,7 +115,7 @@
 	&:hover {
 		.ai-bot-icon-wrapper {
 			box-shadow: none;
-			animation: aiBotBreathing 2s ease-in-out infinite, aiBotGlow 1.5s ease-in-out infinite;
+			animation: aiBotBreathing 2s ease-in-out infinite, aiBotHoverGlow 1.5s ease-in-out infinite;
 		}
 	}
 }
@@ -140,13 +140,23 @@
 	}
 }
 
-// Hover glow animation (filter-based for image)
-@keyframes aiBotGlow {
+// Default glow animation (yellow/gold - what was previously hover)
+@keyframes aiBotDefaultGlow {
 	0%, 100% {
 		filter: drop-shadow(0px 0px 8px rgba(255, 184, 0, 0.6));
 	}
 	50% {
 		filter: drop-shadow(0px 0px 16px rgba(255, 184, 0, 0.8));
+	}
+}
+
+// Hover glow animation (cyan/blue for tech/AI theme)
+@keyframes aiBotHoverGlow {
+	0%, 100% {
+		filter: drop-shadow(0px 0px 12px rgba(0, 191, 255, 0.7));
+	}
+	50% {
+		filter: drop-shadow(0px 0px 20px rgba(0, 191, 255, 0.9));
 	}
 }
 

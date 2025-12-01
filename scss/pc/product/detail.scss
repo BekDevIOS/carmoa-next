@@ -733,6 +733,10 @@
 									background-color: transparent;
 								}
 
+								&.selected {
+									color: var(--carmo-primary);
+								}
+
 								.star-icon {
 									font-size: 32px;
 								}

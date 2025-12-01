@@ -17,18 +17,27 @@ interface Comment {
 	commentContent: string;
 	createdAt: string | Date;
 	_id?: string;
+	rating?: number | null;
 }
 
 interface ReviewProps {
 	comment: Comment;
-	rating?: number; // Optional rating (1-5)
+	// Optional explicit rating override; if not provided, falls back to comment.rating.
+	rating?: number | null;
 }
 
 const Review = (props: ReviewProps) => {
-	const { comment, rating = 5 } = props;
+	const { comment, rating } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const imagePath: string = getMemberImageUrl(comment?.memberData?.memberImage);
+
+	const effectiveRating =
+		typeof rating === 'number'
+			? rating
+			: typeof comment.rating === 'number'
+			? comment.rating
+			: undefined;
 
 	/** HANDLERS **/
 	const goMemberPage = (id?: string) => {
@@ -51,17 +60,19 @@ const Review = (props: ReviewProps) => {
 								{comment.memberData?.memberNick || 'Anonymous'}
 							</Typography>
 							<Stack className={'review-meta'}>
-								<Stack className={'star-rating'}>
-									{[1, 2, 3, 4, 5].map((star) => (
-										<Box key={star} className={'star-icon'}>
-											{star <= rating ? (
-												<StarIcon className={'star-filled'} />
-											) : (
-												<StarBorderIcon className={'star-empty'} />
-											)}
-										</Box>
-									))}
-								</Stack>
+								{typeof effectiveRating === 'number' && effectiveRating > 0 && (
+									<Stack className={'star-rating'}>
+										{[1, 2, 3, 4, 5].map((star) => (
+											<Box key={star} className={'star-icon'}>
+												{star <= effectiveRating ? (
+													<StarIcon className={'star-filled'} />
+												) : (
+													<StarBorderIcon className={'star-empty'} />
+												)}
+											</Box>
+										))}
+									</Stack>
+								)}
 								<Typography className={'review-date'}>
 									<Moment format={'MMMM DD, YYYY'}>{comment.createdAt}</Moment>
 								</Typography>

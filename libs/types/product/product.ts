@@ -34,6 +34,8 @@ export interface Product {
 	productLikes: number;
 	productComments: number;
 	productRank: number;
+	ratingAverage?: number;
+	ratingCount?: number;
 	productImages: string[];
 	productDescription?: string;
 	dealerId: string;

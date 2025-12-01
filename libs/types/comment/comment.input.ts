@@ -6,6 +6,7 @@ export interface CommentInput {
 	commentContent: string;
 	commentRefId: string;
 	memberId?: string;
+	rating?: number | null;
 }
 
 interface CISearch {

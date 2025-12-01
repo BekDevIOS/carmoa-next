@@ -19,6 +19,7 @@ import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 import { useRouter } from 'next/router';
 import { Pagination as MuiPagination } from '@mui/material';
 import Link from 'next/link';
@@ -62,6 +63,7 @@ type ProductDetailData = Product & {
 	compatibility?: string;
 	estimatedDelivery?: string;
 	viewersCount?: number;
+	// Legacy rating field used by existing UI; prefer ratingAverage when available.
 	rating?: number;
 };
 
@@ -84,6 +86,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
 	const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
+	const [selectedRating, setSelectedRating] = useState<number | null>(null);
 	const [insertCommentData, setInsertCommentData] = useState<CommentInput>({
 		commentGroup: CommentGroup.PRODUCT,
 		commentContent: '',
@@ -122,10 +125,12 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data: T) => {
 			if (data?.getProduct) {
+				const p = data.getProduct as ProductDetailData;
+				const ratingAvg = p.ratingAverage ?? p.productRank ?? 0;
 				setProduct({
-					...data.getProduct,
-					viewersCount: data.getProduct.productViews,
-					rating: data.getProduct.productRank,
+					...p,
+					viewersCount: p.productViews,
+					rating: ratingAvg,
 				});
 			} else {
 				setProduct(null);
@@ -429,11 +434,32 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 		try {
 			if (!user?._id) throw new Error(Message.NOT_AUTHENTICATED);
 			if (!insertCommentData.commentRefId || insertCommentData.commentContent === '') return;
+			const input: CommentInput = {
+				...insertCommentData,
+			};
+
+			// Only send rating for PRODUCT comments when user selected a rating
+			if (input.commentGroup === CommentGroup.PRODUCT) {
+				if (selectedRating && selectedRating >= 1 && selectedRating <= 5) {
+					input.rating = selectedRating;
+				} else {
+					// Explicitly null to be clear that no rating was provided
+					input.rating = null;
+				}
+			}
+
 			await createComment({
-				variables: { input: insertCommentData },
+				variables: { input },
 			});
 			setInsertCommentData({ ...insertCommentData, commentContent: '' });
+			setSelectedRating(null);
 			await getCommentsRefetch({ input: commentInquiry });
+
+			// Keep product rating stats in sync after a rated product comment
+			if (input.commentGroup === CommentGroup.PRODUCT && input.rating && productId) {
+				await getProductRefetch({ input: productId });
+			}
+
 			await sweetTopSmallSuccessAlert('Review submitted!', 800);
 		} catch (err: any) {
 			await sweetErrorHandling(err);
@@ -441,6 +467,9 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	};
 
 	const activeProductId = product?._id || '';
+
+	const ratingAverage = product?.ratingAverage ?? product?.rating ?? product?.productRank ?? 0;
+	const ratingCount = product?.ratingCount ?? commentTotal ?? 0;
 	const displayedRelatedProducts = useMemo(() => {
 		if (!activeProductId) {
 			return relatedProducts.slice(0, 8);
@@ -739,6 +768,33 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 									</Link>
 								</Typography>
 							)}
+
+							{/* Rating summary */}
+							<Stack className={'product-rating-summary'} direction="row" alignItems="center" spacing={1} mt={1}>
+								{ratingCount > 0 ? (
+									<>
+										<Stack direction="row" spacing={0.5} alignItems="center">
+											{[1, 2, 3, 4, 5].map((star) => (
+												<StarIcon
+													key={star}
+													className={star <= Math.round(ratingAverage) ? 'star-filled' : 'star-empty'}
+													fontSize="small"
+												/>
+											))}
+										</Stack>
+										<Typography variant="body2" className={'rating-value'}>
+											{ratingAverage.toFixed(1)}
+										</Typography>
+										<Typography variant="body2" className={'rating-count'}>
+											({ratingCount} {ratingCount === 1 ? 'review' : 'reviews'})
+										</Typography>
+									</>
+								) : (
+									<Typography variant="body2" className={'rating-count'}>
+										No ratings yet
+									</Typography>
+								)}
+							</Stack>
 						</Stack>
 					</Stack>
 				</Stack>
@@ -823,7 +879,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 									) : (
 										<Stack className={'reviews-list'}>
 											{productComments?.map((comment: Comment, index: number) => (
-												<Review comment={comment} key={comment?._id || index} rating={product?.rating || product?.productRank} />
+												<Review comment={comment} key={comment?._id || index} rating={comment.rating ?? null} />
 											))}
 											{commentTotal > 5 && (
 												<Box component={'div'} className={'pagination-box'}>
@@ -845,12 +901,22 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 										<Stack className={'rating-section'}>
 											<Typography className={'rating-label'}>
-												Your rating <span className={'required'}>*</span>
+												Your rating <span className={'required'}>(optional)</span>
 											</Typography>
 											<Stack direction={'row'} className={'star-rating-selector'}>
 												{[1, 2, 3, 4, 5].map((star) => (
-													<IconButton key={star} className={'star-btn'}>
-														<StarBorderIcon className={'star-icon'} />
+													<IconButton
+														key={star}
+														className={`star-btn${selectedRating && star <= selectedRating ? ' selected' : ''}`}
+														onClick={() =>
+															setSelectedRating((prev) => (prev === star ? null : star))
+														}
+													>
+														{selectedRating && star <= selectedRating ? (
+															<StarIcon className={'star-icon'} />
+														) : (
+															<StarBorderIcon className={'star-icon'} />
+														)}
 													</IconButton>
 												))}
 											</Stack>
