@@ -1177,132 +1177,169 @@
 	}
 
 	.events {
-		position: relative;
-		padding: 80px 0px;
+		padding: 80px 0;
 		width: 100%;
-		height: 810px;
-		display: flex;
-		flex-direction: row;
 		background: var(--carmo-bg-soft);
-
+	
 		.container {
-			width: 100%;
 			max-width: 1300px;
+			width: 100%;
+			margin: auto;
+			display: flex;
 			flex-direction: column;
 			align-items: center;
-
+	
+			/* Section Header */
 			.section-header {
-				width: 100%;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
 				margin-bottom: 48px;
-
-				.title-section {
-					display: flex;
-					flex-direction: column;
-					align-items: center;
-					gap: 8px;
-
-					.main-title {
-						font-family: $font;
-						font-size: 48px;
-						font-weight: 700;
-						line-height: 1.2em;
-						text-align: center;
-
-						.title-highlight {
-							color: var(--carmo-primary);
-						}
-					}
-
-					.subtitle {
-						font-family: $font;
-						font-size: 16px;
-						font-weight: 400;
-						line-height: 1.5em;
-						text-align: center;
-						color: var(--carmo-text-secondary);
+				text-align: center;
+	
+				.main-title {
+					font-size: 48px;
+					font-weight: 700;
+	
+					.title-highlight {
+						color: var(--carmo-primary);
 					}
 				}
+	
+				.subtitle {
+					margin-top: 10px;
+					font-size: 16px;
+					color: var(--carmo-text-secondary);
+				}
 			}
-
-			.card-wrapper {
-				position: relative;
+	
+			/* Card Grid */
+			.card-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 28px;
 				width: 100%;
-				height: auto;
-				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
-				.event-card {
-					position: relative;
-					width: 300px;
-					height: 420px;
-					border-radius: 12px;
-					opacity: 0.9;
-					cursor: pointer;
-					transition: opacity 0.4s;
-					&:hover {
-						opacity: 1;
-						scale: 1.05;
-						transition: 0.3s;
-						.more {
-							opacity: 1;
+			}
+	
+			/* Event Card */
+			.event-card {
+				position: relative;
+				height: 420px;
+				width: 100%;
+				border-radius: 12px;
+				overflow: hidden;
+				cursor: pointer;
+				transition: transform 0.4s ease, box-shadow 0.3s ease;
+				box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.08);
+	
+				&:hover {
+					transform: translateY(-8px);
+					box-shadow: 0px 14px 35px rgba(0, 0, 0, 0.12);
+				}
+	
+				/* Image */
+				img {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+					transition: transform 0.5s ease;
+				}
+	
+				&:hover img {
+					transform: scale(1.1);
+				}
+	
+				/* Dark bottom gradient */
+				.gradient-overlay {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					height: 65%;
+					background: linear-gradient(
+						180deg,
+						rgba(0, 0, 0, 0) 0%,
+						rgba(0, 0, 0, 0.8) 100%
+					);
+					pointer-events: none;
+					z-index: 1;
+				}
+	
+				/* Title + City - Normal State */
+				.content {
+					position: absolute;
+					bottom: 26px;
+					left: 20px;
+					z-index: 2;
+					display: flex;
+					flex-direction: column;
+					gap: 4px;
+					opacity: 1;
+					transition: opacity 0.3s ease;
+	
+					.city {
+						font-size: 18px;
+						font-weight: 600;
+						color: var(--carmo-primary);
+						text-transform: capitalize;
+					}
+	
+					.title {
+						font-size: 20px;
+						font-weight: 700;
+						color: #fff;
+						line-height: 1.2;
+					}
+				}
+	
+				/* Hide title & city on hover */
+				&:hover .content {
+					opacity: 0;
+				}
+	
+				/* Hover Layer */
+				.hover-layer {
+					position: absolute;
+					inset: 0;
+					padding: 28px;
+					padding-bottom: 38px;
+					background: rgba(0, 0, 0, 0.55);
+					display: flex;
+					flex-direction: column;
+					justify-content: flex-end;
+					gap: 14px;
+					opacity: 0;
+					transition: opacity 0.35s ease;
+					z-index: 3;
+	
+					.hover-description {
+						color: #fff;
+						font-size: 15px;
+						line-height: 1.45;
+						max-width: 85%;
+					}
+	
+					.hover-btn {
+						align-self: flex-start;
+						padding: 4px 14px;
+						color: var(--carmo-primary);
+						background: rgba(255, 255, 255, 0.08);
+						border-radius: 6px;
+						font-size: 14px;
+						text-transform: none;
+						transition: background 0.25s ease;
+	
+						&:hover {
+							background: rgba(255, 255, 255, 0.18);
 						}
 					}
-					.info {
-						position: absolute;
-						display: flex;
-						flex-direction: column;
-						top: 35px;
-						left: 10px;
-						right: 10px;
-						strong {
-							color: var(--carmo-primary);
-							font-family: $font;
-							font-size: 25px;
-							font-style: normal;
-							font-weight: 600;
-							line-height: normal;
-							text-transform: capitalize;
-						}
-						span {
-							color: var(--carmo-primary);
-							font-family: $font;
-							font-size: 20px;
-							font-style: normal;
-							font-weight: 500;
-							line-height: 28px;
-							text-transform: capitalize;
-						}
-					}
-					.more {
-						position: absolute;
-						left: 10px;
-						right: 10px;
-						bottom: 41px;
-						display: flex;
-						flex-direction: row;
-						align-items: center;
-						opacity: 0;
-						span {
-							padding: 0px 5px;
-							border-radius: 5px;
-							background: var(--carmo-card-bg);
-							color: var(--carmo-primary);
-							font-family: $font;
-							font-size: 16px;
-							font-style: normal;
-							font-weight: 400;
-							line-height: 26px;
-							text-align: justify;
-							cursor: pointer;
-						}
-					}
+				}
+	
+				/* Show hover layer on hover */
+				&:hover .hover-layer {
+					opacity: 1;
 				}
 			}
 		}
 	}
+	
 
 	.latest-blogs {
 		width: 100%;

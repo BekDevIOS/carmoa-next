@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Footer from '../Footer';
 import { Stack, Box, Typography } from '@mui/material';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -26,6 +27,7 @@ import { useCart } from '../../hooks/useCart';
 const withLayoutBasic = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
+		const router = useRouter();
 		const { addToCart } = useCart();
 		const [compareModalOpen, setCompareModalOpen] = useState(false);
 		const [cartOpen, setCartOpen] = useState(false);
@@ -59,6 +61,31 @@ const withLayoutBasic = (Component: any) => {
 				description: 'Pay with Multiple Credit Cards',
 			},
 		];
+
+		/** HELPERS **/
+		const getPageTitle = () => {
+			const segments = router.pathname.split('/').filter(Boolean);
+			if (segments.length === 0) return 'Home';
+			const last = segments[segments.length - 1];
+			return last
+				.split('-')
+				.map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+				.join(' ');
+		};
+
+		const getBreadcrumb = () => {
+			const segments = router.pathname.split('/').filter(Boolean);
+			if (segments.length === 0) return 'Home';
+			const formatted = segments
+				.map((seg) =>
+					seg
+						.split('-')
+						.map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+						.join(' ')
+				)
+				.join(' > ');
+			return `Home > ${formatted}`;
+		};
 
 		/** LIFECYCLES **/
 		useEffect(() => {
@@ -109,8 +136,8 @@ const withLayoutBasic = (Component: any) => {
 						</Stack>
 						<Stack className={'header-basic'}>
 							<Box className={'header-basic-container'}>
-								<Typography className={'header-title'}>Shop</Typography>
-								<Typography className={'header-breadcrumb'}>Home &gt; Products</Typography>
+								<Typography className={'header-title'}>{getPageTitle()}</Typography>
+								<Typography className={'header-breadcrumb'}>{getBreadcrumb()}</Typography>
 							</Box>
 						</Stack>
 						<Stack id={'main'}>
