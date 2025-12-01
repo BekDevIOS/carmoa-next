@@ -15,8 +15,11 @@ import TopHeader from '../TopHeader';
 import MainHeader from '../MainHeader';
 import FeatureCard from '../FeatureCard';
 import HeroBannerOverlay from '../homepage/HeroBannerOverlay';
+import FloatingAction from '../fab/FloatingAction';
 import CompareFab from '../compare/CompareFab';
 import CompareModal from '../compare/CompareModal';
+import CartFab from '../cart/CartFab';
+import Cart from '../Cart';
 import { Product } from '../../types/product/product';
 import { getJwtToken, updateUserInfo } from '../../auth';
 import { useCart } from '../../hooks/useCart';
@@ -26,6 +29,7 @@ const withLayoutMain = (Component: any) => {
 		const device = useDeviceDetect();
 		const { addToCart } = useCart();
 		const [compareModalOpen, setCompareModalOpen] = useState(false);
+		const [cartOpen, setCartOpen] = useState(false);
 
 		const handleAddToCart = (product: Product) => {
 			if (product && product._id) {
@@ -87,6 +91,8 @@ const withLayoutMain = (Component: any) => {
 							onClose={() => setCompareModalOpen(false)}
 							onAddToCart={handleAddToCart}
 						/>
+						<CartFab onClick={() => setCartOpen(true)} />
+						<Cart open={cartOpen} onClose={() => setCartOpen(false)} />
 					</Stack>
 				</>
 			);
@@ -125,12 +131,7 @@ const withLayoutMain = (Component: any) => {
 						<Stack id={'footer'}>
 							<Footer />
 						</Stack>
-						<CompareFab onClick={() => setCompareModalOpen(true)} />
-						<CompareModal
-							open={compareModalOpen}
-							onClose={() => setCompareModalOpen(false)}
-							onAddToCart={handleAddToCart}
-						/>
+						<FloatingAction />
 					</Stack>
 				</>
 			);

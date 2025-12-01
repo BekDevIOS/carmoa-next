@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography, useTheme } from '@mui/material';
 import axios from 'axios';
 import { Messages, REACT_APP_API_URL, getMemberImageUrl } from '../../config';
 import { getJwtToken, updateStorage, updateUserInfo } from '../../auth';
@@ -15,6 +15,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const token = getJwtToken();
 	const user = useReactiveVar(userVar);
+	const theme = useTheme();
 	const [updateData, setUpdateData] = useState<MemberUpdate>(initialValues);
 
 	/** APOLLO REQUESTS **/
@@ -155,6 +156,11 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 								placeholder="Your username"
 								value={updateData.memberNick}
 								onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberNick: value })}
+								style={{
+									backgroundColor: theme.palette.background.paper,
+									color: theme.palette.text.primary,
+									borderColor: theme.palette.divider,
+								}}
 							/>
 						</Stack>
 						<Stack className="input-box">
@@ -164,6 +170,11 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 								placeholder="Your Phone"
 								value={updateData.memberPhone}
 								onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberPhone: value })}
+								style={{
+									backgroundColor: theme.palette.background.paper,
+									color: theme.palette.text.primary,
+									borderColor: theme.palette.divider,
+								}}
 							/>
 						</Stack>
 					</Stack>
@@ -174,6 +185,11 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 							placeholder="Your email"
 							value={updateData.memberEmail}
 							onChange={({ target: { value } }) => setUpdateData({ ...updateData, memberEmail: value })}
+							style={{
+								backgroundColor: theme.palette.background.paper,
+								color: theme.palette.text.primary,
+								borderColor: theme.palette.divider,
+							}}
 						/>
 					</Stack>
 					<Stack className="about-me-box">
@@ -183,7 +199,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 								<g clipPath="url(#clip0_7065_6985)">
 									<path
 										d="M12.6389 0H4.69446C4.49486 0 4.33334 0.161518 4.33334 0.361122C4.33334 0.560727 4.49486 0.722245 4.69446 0.722245H11.7672L0.105803 12.3836C-0.0352676 12.5247 -0.0352676 12.7532 0.105803 12.8942C0.176321 12.9647 0.268743 13 0.361131 13C0.453519 13 0.545907 12.9647 0.616459 12.8942L12.2778 1.23287V8.30558C12.2778 8.50518 12.4393 8.6667 12.6389 8.6667C12.8385 8.6667 13 8.50518 13 8.30558V0.361122C13 0.161518 12.8385 0 12.6389 0Z"
-										fill="white"
+										fill={theme.palette.mode === 'dark' ? '#1A1A1A' : '#FFFFFF'}
 									/>
 								</g>
 								<defs>

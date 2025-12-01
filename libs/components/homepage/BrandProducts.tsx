@@ -109,8 +109,8 @@ const BrandProducts = ({ brands }: BrandProductsProps) => {
 		}
 	};
 
-	const viewAllHandler = () => {
-		console.log('View all brands');
+	const viewAllHandler = async () => {
+		await router.push('/product');
 	};
 
 	return (

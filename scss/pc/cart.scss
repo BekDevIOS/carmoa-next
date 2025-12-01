@@ -1,0 +1,48 @@
+// Cart Floating Action Button Styles
+
+// Floating Action Button
+.cart-fab {
+	position: fixed;
+	right: 24px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 1001; // Higher than compare fab to ensure visibility
+	transition: transform 0.3s ease;
+
+	&.pulse {
+		animation: cartPulse 1s ease-in-out;
+	}
+
+	.cart-fab-badge {
+		.MuiBadge-badge {
+			background-color: var(--carmo-primary);
+			color: var(--carmo-bg);
+			font-weight: 600;
+		}
+	}
+
+	.cart-fab-button {
+		width: 62px;
+		height: 62px;
+		background-color: var(--carmo-primary);
+		color: #fff;
+		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+
+		&:hover {
+			background-color: var(--carmo-primary-hover);
+		}
+	}
+}
+
+@keyframes cartPulse {
+	0% {
+		transform: translateY(-50%) scale(1);
+	}
+	50% {
+		transform: translateY(-50%) scale(1.1);
+	}
+	100% {
+		transform: translateY(-50%) scale(1);
+	}
+}
+

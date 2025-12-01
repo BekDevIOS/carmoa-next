@@ -25,7 +25,7 @@ import { BoardArticle } from '../../libs/types/blog/board-article';
 import RecentPostCard from '../../libs/components/blog/RecentPostCard';
 import { GET_BOARD_ARTICLE, GET_BOARD_ARTICLES, GET_COMMENTS } from '../../apollo/user/query';
 import { LIKE_TARGET_BOARD_ARTICLE, CREATE_COMMENT, UPDATE_COMMENT } from '../../apollo/user/mutation';
-import { Messages, REACT_APP_API_URL } from '../../libs/config';
+import { Messages, REACT_APP_API_URL, getMemberImageUrl } from '../../libs/config';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { Direction } from '../../libs/enums/common.enum';
 import { BoardArticleCategory } from '../../libs/enums/blog.enum';
@@ -92,9 +92,7 @@ const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 		onCompleted: (data: T) => {
 			if (data?.getBoardArticle) {
 				setBoardArticle(data.getBoardArticle);
-				if (data.getBoardArticle.memberData?.memberImage) {
-					setMemberImage(`${REACT_APP_API_URL}/${data.getBoardArticle.memberData.memberImage}`);
-				}
+				setMemberImage(getMemberImageUrl(data.getBoardArticle.memberData?.memberImage, '/img/logo/logoText.svg'));
 			}
 		},
 		onError: (error) => {
@@ -255,8 +253,7 @@ const BlogDetail: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	const getCommentMemberImage = (imageUrl: string | undefined) => {
-		if (imageUrl) return `${REACT_APP_API_URL}/${imageUrl}`;
-		else return '/img/logo/logoText.svg';
+		return getMemberImageUrl(imageUrl, '/img/logo/logoText.svg');
 	};
 
 	const goMemberPage = (id: any) => {

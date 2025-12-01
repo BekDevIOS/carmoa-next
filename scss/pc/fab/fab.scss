@@ -1,0 +1,211 @@
+// Floating Action Cluster Styles
+
+.floating-action-cluster {
+	position: fixed;
+	right: 32px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 9999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
+
+.floating-action-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 64px;
+	width: 100%;
+
+	// Hide if no visible children (when CartFab/CompareFab return null)
+	&:empty {
+		display: none;
+	}
+}
+
+.floating-action-center {
+	// Always visible - this is the AiBot container
+	display: flex !important;
+	min-height: 64px;
+	width: 100%;
+}
+
+// CartFab and CompareFab adjustments for cluster
+.floating-action-cluster {
+	.cart-fab {
+		position: static;
+		transform: none;
+		right: auto;
+		top: auto;
+		bottom: auto;
+		z-index: auto;
+
+		&.pulse {
+			animation: cartPulseCluster 1s ease-in-out;
+		}
+	}
+
+	.compare-fab {
+		position: static;
+		transform: none;
+		right: auto;
+		top: auto;
+		bottom: auto;
+		z-index: auto;
+
+		&.pulse {
+			animation: comparePulseCluster 1s ease-in-out;
+		}
+	}
+}
+
+// Pulse animations for cluster context
+@keyframes cartPulseCluster {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+@keyframes comparePulseCluster {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+// AI Bot Styles
+.ai-bot {
+	width: 64px;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.3s ease;
+	animation: aiBotFloating 3s ease-in-out infinite;
+
+	.ai-bot-icon-wrapper {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: transparent;
+		border-radius: 0;
+		box-shadow: none;
+		animation: aiBotBreathing 2s ease-in-out infinite;
+		transition: all 0.3s ease;
+
+		.ai-bot-icon {
+			width: 66px;
+			height: 66px;
+			object-fit: contain;
+		}
+	}
+
+	&:hover {
+		.ai-bot-icon-wrapper {
+			box-shadow: none;
+			animation: aiBotBreathing 2s ease-in-out infinite, aiBotGlow 1.5s ease-in-out infinite;
+		}
+	}
+}
+
+// Breathing animation (scale)
+@keyframes aiBotBreathing {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+}
+
+// Floating animation (translateY)
+@keyframes aiBotFloating {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
+// Hover glow animation (filter-based for image)
+@keyframes aiBotGlow {
+	0%, 100% {
+		filter: drop-shadow(0px 0px 8px rgba(255, 184, 0, 0.6));
+	}
+	50% {
+		filter: drop-shadow(0px 0px 16px rgba(255, 184, 0, 0.8));
+	}
+}
+
+// AI Bot Modal Styles
+.ai-bot-modal-paper {
+	border-radius: 12px;
+	box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.ai-bot-modal-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 24px;
+	border-bottom: 1px solid var(--carmo-border);
+	position: relative;
+
+	.ai-bot-modal-close-btn {
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+		color: var(--carmo-text);
+		&:hover {
+			background-color: var(--carmo-bg-soft);
+		}
+	}
+}
+
+.ai-bot-modal-content {
+	padding: 40px 24px;
+}
+
+.ai-bot-modal-placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	min-height: 200px;
+
+	.ai-bot-modal-image {
+		margin-bottom: 16px;
+	}
+}
+
+// Dark mode support
+body.theme-dark {
+	.ai-bot {
+		.ai-bot-icon-wrapper {
+			background-color: transparent;
+			box-shadow: none;
+		}
+
+		&:hover {
+			.ai-bot-icon-wrapper {
+				box-shadow: none;
+			}
+		}
+	}
+}
+

@@ -39,7 +39,7 @@
 				margin-top: 35px;
 				gap: 25px;
 				border-radius: 12px;
-				border: 1px solid #c4c4c4;
+				border: 1px solid var(--carmo-border);
 				background: var(--carmo-bg);
 				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 				.photo-box {
@@ -89,7 +89,7 @@
 								align-items: center;
 								cursor: pointer;
 								border-radius: 12px;
-								border: 1px solid #181a20;
+								border: 1px solid var(--carmo-border);
 								p {
 									color: var(--carmo-text);
 									font-family: $font;
@@ -132,7 +132,9 @@
 							outline: none;
 							padding: 0px 15px;
 							border-radius: 8px;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
+							background-color: var(--carmo-bg-soft);
+							color: var(--carmo-text);
 							::placeholder {
 								color: var(--carmo-text-secondary);
 								font-family: $font;
@@ -159,7 +161,9 @@
 						outline: none;
 						padding: 0px 15px;
 						border-radius: 8px;
-						border: 1px solid #ddd;
+						border: 1px solid var(--carmo-border);
+						background-color: var(--carmo-bg-soft);
+						color: var(--carmo-text);
 						::placeholder {
 							color: var(--carmo-text-secondary);
 							font-family: $font;
@@ -184,8 +188,9 @@
 						height: 170px;
 						padding: 20px 15px;
 						border-radius: 8px;
-						border: 1px solid #ddd;
-						color: var(--carmo-text-secondary);
+						border: 1px solid var(--carmo-border);
+						background-color: var(--carmo-bg-soft);
+						color: var(--carmo-text);
 						font-family: $font;
 						font-size: 12px;
 						font-style: normal;
@@ -202,9 +207,13 @@
 						align-self: flex-end;
 						margin-top: 30px;
 						border-radius: 12px;
-						background-color: var(--carmo-text);
+						background-color: var(--carmo-primary);
+						transition: background-color 0.2s ease;
+						&:hover {
+							background-color: var(--carmo-primary-hover);
+						}
 						p {
-							color: var(--carmo-bg);
+							color: #1a1a1a;
 							font-family: $font;
 							font-size: 13px;
 							font-style: normal;
@@ -213,7 +222,9 @@
 						}
 					}
 					button:disabled {
-						background: var(--carmo-text);
+						background: var(--carmo-text-secondary);
+						opacity: 0.5;
+						cursor: not-allowed;
 					}
 				}
 			}
@@ -222,7 +233,7 @@
 				padding: 30px;
 				gap: 25px;
 				border-radius: 12px;
-				border: 1px solid #c4c4c4;
+				border: 1px solid var(--carmo-border);
 				background: var(--carmo-bg);
 				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 				.top-inner-box {
@@ -283,7 +294,9 @@
 							outline: none;
 							padding: 0px 15px;
 							border-radius: 8px;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
+							background-color: var(--carmo-bg-soft);
+							color: var(--carmo-text);
 							::placeholder {
 								color: var(--carmo-text-secondary);
 								font-family: $font;

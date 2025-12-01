@@ -16,7 +16,7 @@ import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentGroup } from '../../libs/enums/comment.enum';
-import { Messages, REACT_APP_API_URL } from '../../libs/config';
+import { Messages, REACT_APP_API_URL, getMemberImageUrl } from '../../libs/config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GET_COMMENTS, GET_MEMBER, GET_PRODUCTS } from '../../apollo/user/query';
 import { CREATE_COMMENT, LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
@@ -131,13 +131,13 @@ const DealerDetail: NextPage = ({ initialInput, initialComment, ...props }: any)
 	};
 
 	const productPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
-		searchFilter.page = value;
-		setSearchFilter({ ...searchFilter });
+		const updatedFilter = { ...searchFilter, page: value };
+		setSearchFilter(updatedFilter);
 	};
 
 	const commentPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
-		commentInquiry.page = value;
-		setCommentInquiry({ ...commentInquiry });
+		const updatedInquiry = { ...commentInquiry, page: value };
+		setCommentInquiry(updatedInquiry);
 	};
 
 	const createCommentHandler = async () => {
@@ -186,7 +186,7 @@ const DealerDetail: NextPage = ({ initialInput, initialComment, ...props }: any)
 				<Stack className={'container'}>
 					<Stack className={'dealer-info'}>
 						<img
-							src={dealer?.memberImage ? `${REACT_APP_API_URL}/${dealer?.memberImage}` : '/img/profile/defaultUser.svg'}
+							src={getMemberImageUrl(dealer?.memberImage)}
 							alt=""
 						/>
 						<Box

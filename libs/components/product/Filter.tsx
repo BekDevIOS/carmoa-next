@@ -45,7 +45,7 @@ const Filter = (props: FilterType) => {
 	const [selectedSubCategory, setSelectedSubCategory] = useState<ProductSubCategory | ''>('');
 	const [selectedBrand, setSelectedBrand] = useState<CarBrand | ''>('');
 	const [selectedCondition, setSelectedCondition] = useState<ProductCondition | ''>('');
-	const [priceRange, setPriceRange] = useState<number[]>([200, 560]);
+	const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
 	const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
 		parts: true,
 		categories: false,
@@ -94,7 +94,13 @@ const Filter = (props: FilterType) => {
 	useEffect(() => {
 		setSearchText(searchFilter?.search?.text || '');
 		if (searchFilter?.search?.pricesRange) {
-			setPriceRange([searchFilter.search.pricesRange.start || 0, searchFilter.search.pricesRange.end || 1000]);
+			setPriceRange([
+				searchFilter.search.pricesRange.start ?? 0,
+				searchFilter.search.pricesRange.end ?? 1000,
+			]);
+		} else {
+			// Reset to default [min, max] when no price filter is applied
+			setPriceRange([0, 1000]);
 		}
 	}, [searchFilter]);
 
@@ -106,7 +112,7 @@ const Filter = (props: FilterType) => {
 			setSelectedSubCategory('');
 			setSelectedBrand('');
 			setSelectedCondition('');
-			setPriceRange([200, 560]);
+			setPriceRange([0, 1000]);
 			await router.push(
 				`/product?input=${JSON.stringify(initialInput)}`,
 				`/product?input=${JSON.stringify(initialInput)}`,
@@ -134,6 +140,7 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								mainCategoryList: currentList.filter((item: ProductMainCategory) => item !== categoryEnum),
@@ -141,6 +148,7 @@ const Filter = (props: FilterType) => {
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								mainCategoryList: currentList.filter((item: ProductMainCategory) => item !== categoryEnum),
@@ -152,6 +160,7 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								mainCategoryList: [...currentList, categoryEnum],
@@ -159,6 +168,7 @@ const Filter = (props: FilterType) => {
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								mainCategoryList: [...currentList, categoryEnum],
@@ -184,6 +194,7 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								brandList: currentList.filter((item: CarBrand) => item !== brandEnum),
@@ -191,6 +202,7 @@ const Filter = (props: FilterType) => {
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								brandList: currentList.filter((item: CarBrand) => item !== brandEnum),
@@ -202,6 +214,7 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								brandList: [...currentList, brandEnum],
@@ -209,6 +222,7 @@ const Filter = (props: FilterType) => {
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
+							page: 1,
 							search: {
 								...searchFilter.search,
 								brandList: [...currentList, brandEnum],
@@ -225,7 +239,11 @@ const Filter = (props: FilterType) => {
 	);
 
 	const handlePriceChange = (_event: any, newValue: number | number[]) => {
-		setPriceRange(newValue as number[]);
+		const newRange = newValue as number[];
+		// Ensure min <= max
+		if (newRange[0] <= newRange[1]) {
+			setPriceRange(newRange);
+		}
 	};
 
 	const handlePriceFilter = useCallback(async () => {
@@ -233,6 +251,7 @@ const Filter = (props: FilterType) => {
 			await router.push(
 				`/product?input=${JSON.stringify({
 					...searchFilter,
+					page: 1,
 					search: {
 						...searchFilter.search,
 						pricesRange: {
@@ -243,6 +262,7 @@ const Filter = (props: FilterType) => {
 				})}`,
 				`/product?input=${JSON.stringify({
 					...searchFilter,
+					page: 1,
 					search: {
 						...searchFilter.search,
 						pricesRange: {
@@ -277,10 +297,12 @@ const Filter = (props: FilterType) => {
 									await router.push(
 										`/product?input=${JSON.stringify({
 											...searchFilter,
+											page: 1,
 											search: { ...searchFilter.search, text: searchText },
 										})}`,
 										`/product?input=${JSON.stringify({
 											...searchFilter,
+											page: 1,
 											search: { ...searchFilter.search, text: searchText },
 										})}`,
 										{ scroll: false },
@@ -295,10 +317,12 @@ const Filter = (props: FilterType) => {
 											await router.push(
 												`/product?input=${JSON.stringify({
 													...searchFilter,
+													page: 1,
 													search: { ...searchFilter.search, text: '' },
 												})}`,
 												`/product?input=${JSON.stringify({
 													...searchFilter,
+													page: 1,
 													search: { ...searchFilter.search, text: '' },
 												})}`,
 												{ scroll: false },
@@ -433,10 +457,12 @@ const Filter = (props: FilterType) => {
 										await router.push(
 											`/product?input=${JSON.stringify({
 												...searchFilter,
+												page: 1,
 												search: { ...searchFilter.search, ...searchUpdates },
 											})}`,
 											`/product?input=${JSON.stringify({
 												...searchFilter,
+												page: 1,
 												search: { ...searchFilter.search, ...searchUpdates },
 											})}`,
 											{ scroll: false },
@@ -498,21 +524,32 @@ const Filter = (props: FilterType) => {
 							<Slider
 								value={priceRange}
 								onChange={handlePriceChange}
-								valueLabelDisplay="off"
+								valueLabelDisplay="auto"
 								min={0}
 								max={1000}
 								className={'price-slider'}
 							/>
 							<Stack className={'price-inputs'}>
 								<OutlinedInput
+									type="number"
 									value={priceRange[0]}
-									onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+									onChange={(e) => {
+										const minValue = Math.max(0, Math.min(Number(e.target.value), priceRange[1]));
+										setPriceRange([minValue, priceRange[1]]);
+									}}
 									className={'price-input'}
+									inputProps={{ min: 0, max: priceRange[1] }}
 								/>
+								<Typography sx={{ px: 1 }}>-</Typography>
 								<OutlinedInput
+									type="number"
 									value={priceRange[1]}
-									onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+									onChange={(e) => {
+										const maxValue = Math.min(1000, Math.max(Number(e.target.value), priceRange[0]));
+										setPriceRange([priceRange[0], maxValue]);
+									}}
 									className={'price-input'}
+									inputProps={{ min: priceRange[0], max: 1000 }}
 								/>
 								<Button className={'filter-btn'} onClick={handlePriceFilter}>
 									FILTER

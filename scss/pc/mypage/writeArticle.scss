@@ -54,21 +54,35 @@
 				font-size: 14px;
 				padding: 0 16px;
 				margin-top: 16px;
-				border: 1px solid #eee;
+				border: 1px solid var(--carmo-border);
 				border-radius: 4px;
+				background-color: var(--carmo-bg-soft);
+				color: var(--carmo-text);
+				&::placeholder {
+					color: var(--carmo-text-secondary);
+				}
 			}
 			.btn-flex { margin-top: 40px; }
 		}
 		.css-guvl2y-MuiButtonBase-root-MuiButton-root {
 			background: var(--carmo-primary);
+			transition: background-color 0.2s ease;
+			&:hover {
+				background: var(--carmo-primary-hover);
+			}
 			svg {
-				fill: #000000;
+				fill: #1a1a1a;
 			}
 		}
 		.toastui-editor-popup-body { padding: 20px; }
 		.youtube-input {
 			padding: 8px 16px;
-			border: 1px solid #ddd;
+			border: 1px solid var(--carmo-border);
+			background-color: var(--carmo-bg-soft);
+			color: var(--carmo-text);
+			&::placeholder {
+				color: var(--carmo-text-secondary);
+			}
 		}
 		.youtube-div {
 			display:flex;

@@ -33,14 +33,14 @@
 				flex-direction: row;
 				gap: 59px;
 				padding: 18px 0px 0px 35px;
-				border-bottom: 1px solid #ddd;
+				border-bottom: 1px solid var(--carmo-border);
 				border-radius: 12px 12px 0px 0px;
-				border: 1px solid rgba(196, 196, 196, 0.79);
+				border: 1px solid var(--carmo-border);
 				background: var(--carmo-bg);
 				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 				.active {
 					height: 30px;
-					border-bottom: 2px solid #181a20;
+					border-bottom: 2px solid var(--carmo-primary);
 					color: var(--carmo-text);
 					font-family: $font;
 					font-size: 14px;
@@ -85,7 +85,12 @@
 							outline: none;
 							border-radius: 8px;
 							padding: 0px 15px;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
+							background-color: var(--carmo-bg-soft);
+							color: var(--carmo-text);
+							&::placeholder {
+								color: var(--carmo-text-secondary);
+							}
 						}
 						.description-text {
 							margin-top: 15px;
@@ -94,10 +99,13 @@
 							border-radius: 8px;
 							padding: 8px 15px;
 							appearance: none;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
 							resize: none;
-							background: var(--carmo-bg);
-							color: var(--carmo-text-secondary);
+							background: var(--carmo-bg-soft);
+							color: var(--carmo-text);
+							&::placeholder {
+								color: var(--carmo-text-secondary);
+							}
 							font-family: $font;
 							font-size: 14px;
 							font-style: normal;
@@ -120,7 +128,7 @@
 							align-items: center;
 							gap: 10px;
 							border-radius: 12px;
-							border: 1px solid #181a20;
+							border: 1px solid var(--carmo-border);
 							.prev-button-text {
 								color: var(--carmo-text);
 								font-family: $font;
@@ -138,9 +146,13 @@
 							align-items: center;
 							gap: 10px;
 							border-radius: 12px;
-							background: var(--carmo-text);
+							background: var(--carmo-primary);
+							transition: background-color 0.2s ease;
+							&:hover {
+								background: var(--carmo-primary-hover);
+							}
 							.next-button-text {
-								color: var(--carmo-bg);
+								color: #1a1a1a;
 								font-family: $font;
 								font-size: 15px;
 								font-style: normal;
@@ -187,13 +199,13 @@
 								width: 100%;
 								height: 47px;
 								border-radius: 8px;
-								border: 1px solid #ddd;
-								background: var(--carmo-bg);
+								border: 1px solid var(--carmo-border);
+								background: var(--carmo-bg-soft);
 								outline: none;
 								padding-left: 15px;
 								appearance: none;
 								cursor: pointer;
-								color: var(--carmo-text-secondary);
+								color: var(--carmo-text);
 								font-family: $font;
 								font-size: 14px;
 								font-style: normal;
@@ -203,7 +215,7 @@
 							.divider {
 								position: absolute;
 								height: 46px;
-								border-left: 1px solid #ddd;
+								border-left: 1px solid var(--carmo-border);
 								right: 52px;
 								top: 42px;
 							}
@@ -271,7 +283,7 @@
 							align-items: center;
 							gap: 10px;
 							border-radius: 12px;
-							border: 1px solid #181a20;
+							border: 1px solid var(--carmo-border);
 							.browse-button-text {
 								color: var(--carmo-text);
 								font-family: $font;
@@ -319,7 +331,9 @@
 					flex-direction: row;
 					justify-content: flex-end;
 					button:disabled {
-						background: var(--carmo-text);
+						background: var(--carmo-text-secondary);
+						opacity: 0.5;
+						cursor: not-allowed;
 					}
 					.prev-button {
 						width: 190px;
@@ -383,7 +397,12 @@
 					outline: none;
 					border-radius: 8px;
 					padding: 0px 15px;
-					border: 1px solid #ddd;
+					border: 1px solid var(--carmo-border);
+					background-color: var(--carmo-bg-soft);
+					color: var(--carmo-text);
+					&::placeholder {
+						color: var(--carmo-text-secondary);
+					}
 				}
 				.config-row {
 					width: 100%;
@@ -409,7 +428,12 @@
 							outline: none;
 							border-radius: 8px;
 							padding: 0px 15px;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
+							background-color: var(--carmo-bg-soft);
+							color: var(--carmo-text);
+							&::placeholder {
+								color: var(--carmo-text-secondary);
+							}
 						}
 						.select-description {
 							width: 100%;
@@ -486,7 +510,12 @@
 							outline: none;
 							border-radius: 8px;
 							padding: 0px 15px;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
+							background-color: var(--carmo-bg-soft);
+							color: var(--carmo-text);
+							&::placeholder {
+								color: var(--carmo-text-secondary);
+							}
 						}
 						.select-description {
 							width: 100%;
@@ -524,7 +553,9 @@
 							width: 270px;
 							height: 47.352px;
 							border-radius: 8px;
-							border: 1px solid #ddd;
+							border: 1px solid var(--carmo-border);
+							background-color: var(--carmo-bg-soft);
+							color: var(--carmo-text);
 						}
 					}
 				}
@@ -542,10 +573,14 @@
 					margin-top: 20px;
 					margin-bottom: 41px;
 					border-radius: 8px;
-					border: 1px solid #ddd;
+					border: 1px solid var(--carmo-border);
+					background-color: var(--carmo-bg-soft);
 					padding: 8px 15px;
 					resize: none;
-					color: var(--carmo-text-secondary);
+					color: var(--carmo-text);
+					&::placeholder {
+						color: var(--carmo-text-secondary);
+					}
 					font-family: $font;
 					font-size: 14px;
 					font-style: normal;

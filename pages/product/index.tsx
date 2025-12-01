@@ -67,8 +67,8 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		if (router.query.input) {
 			const inputObj = JSON.parse(router?.query?.input as string);
 			setSearchFilter(inputObj);
+			setCurrentPage(inputObj.page === undefined ? 1 : inputObj.page);
 		}
-		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
 
 	useEffect(() => {
@@ -86,10 +86,11 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 
 	/** HANDLERS **/
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
-		searchFilter.page = value;
+		const updatedFilter = { ...searchFilter, page: value };
+		setSearchFilter(updatedFilter);
 		await router.push(
-			`/product?input=${JSON.stringify(searchFilter)}`,
-			`/product?input=${JSON.stringify(searchFilter)}`,
+			`/product?input=${JSON.stringify(updatedFilter)}`,
+			`/product?input=${JSON.stringify(updatedFilter)}`,
 			{
 				scroll: false,
 			},
@@ -133,19 +134,19 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const sortingHandler = (e: React.MouseEvent<HTMLLIElement>) => {
 		switch (e.currentTarget.id) {
 			case 'default':
-				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: Direction.DESC });
+				setSearchFilter({ ...searchFilter, page: 1, sort: 'createdAt', direction: Direction.DESC });
 				setFilterSortName('Default sorting');
 				break;
 			case 'new':
-				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: Direction.DESC });
+				setSearchFilter({ ...searchFilter, page: 1, sort: 'createdAt', direction: Direction.DESC });
 				setFilterSortName('New');
 				break;
 			case 'lowest':
-				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.ASC });
+				setSearchFilter({ ...searchFilter, page: 1, sort: 'productPrice', direction: Direction.ASC });
 				setFilterSortName('Lowest Price');
 				break;
 			case 'highest':
-				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.DESC });
+				setSearchFilter({ ...searchFilter, page: 1, sort: 'productPrice', direction: Direction.DESC });
 				setFilterSortName('Highest Price');
 				break;
 		}
@@ -225,7 +226,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 							{/* Product Grid/List */}
 							<Stack className={'list-config'}>
 								{products?.length === 0 ? (
-									<Stack className={'no-data'}>
+									<Stack className={'no-data'} sx={{ marginLeft: '250px' }}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
 										<Typography component="p">No Products found!</Typography>
 									</Stack>

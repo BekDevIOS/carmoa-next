@@ -60,8 +60,8 @@ const MemberFollowings = (props: MemberFollowingsProps) => {
 
 	/** HANDLERS **/
 	const paginationHandler = async (event: ChangeEvent<unknown>, value: number) => {
-		followInquiry.page = value;
-		setFollowInquiry({ ...followInquiry });
+		const updatedInquiry = { ...followInquiry, page: value };
+		setFollowInquiry(updatedInquiry);
 	};
 
 	if (device === 'mobile') {
