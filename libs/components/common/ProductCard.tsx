@@ -13,7 +13,7 @@ import { useCompare } from '../../hooks/useCompare';
 import { Product } from '../../types/product/product';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
+import { userVar, openQuickView } from '../../../apollo/store';
 import { REACT_APP_API_URL } from '../../config';
 import { useRouter } from 'next/router';
 import { useCart } from '../../hooks/useCart';
@@ -110,7 +110,7 @@ const ProductCard = ({
 							className={'action-icon'}
 							onClick={(event) => {
 								stopPropagation(event);
-								quickViewHandler?.(product._id);
+									openQuickView(product);
 							}}
 						>
 							<VisibilityIcon className={'icon'} />

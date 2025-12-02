@@ -18,8 +18,8 @@ const CartPage: NextPage = (props: T) => {
 
 	const [shippingMethod, setShippingMethod] = useState<'free' | 'flat'>('free');
 
-	const FREE_SHIPPING_THRESHOLD = 300.0;
-	const FLAT_RATE = 20.0;
+	const FREE_SHIPPING_THRESHOLD = 200.0;
+	const FLAT_RATE = 5.0;
 
 	// Map cart items from useCart to CartContent format
 	const cartItems: CartItem[] = useMemo(() => {

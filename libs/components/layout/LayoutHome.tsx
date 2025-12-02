@@ -20,6 +20,7 @@ import CompareFab from '../compare/CompareFab';
 import CompareModal from '../compare/CompareModal';
 import CartFab from '../cart/CartFab';
 import Cart from '../Cart';
+import QuickViewModal from '../product/QuickViewModal';
 import { Product } from '../../types/product/product';
 import { getJwtToken, updateUserInfo } from '../../auth';
 import { useCart } from '../../hooks/useCart';
@@ -42,7 +43,7 @@ const withLayoutMain = (Component: any) => {
 			{
 				icon: LocalShippingOutlinedIcon,
 				title: 'Free Shipping',
-				description: 'Free shipping for orders over $99',
+				description: 'Free shipping for orders over $200',
 			},
 			{
 				icon: VerifiedUserOutlinedIcon,
@@ -93,6 +94,7 @@ const withLayoutMain = (Component: any) => {
 						/>
 						<CartFab onClick={() => setCartOpen(true)} />
 						<Cart open={cartOpen} onClose={() => setCartOpen(false)} />
+						<QuickViewModal />
 					</Stack>
 				</>
 			);
@@ -132,6 +134,7 @@ const withLayoutMain = (Component: any) => {
 							<Footer />
 						</Stack>
 						<FloatingAction />
+						<QuickViewModal />
 					</Stack>
 				</>
 			);

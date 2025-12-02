@@ -51,8 +51,8 @@ const CheckoutPage: NextPage<T> = (props: T) => {
 	const [orderNote, setOrderNote] = useState('');
 	const [noteEnabled, setNoteEnabled] = useState(false);
 
-	const FREE_SHIPPING_THRESHOLD = 300.0;
-	const FLAT_RATE = 20.0;
+	const FREE_SHIPPING_THRESHOLD = 200.0;
+	const FLAT_RATE = 5.0;
 
 	// Check authentication on mount
 	useEffect(() => {

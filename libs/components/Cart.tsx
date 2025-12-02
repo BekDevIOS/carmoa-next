@@ -40,9 +40,13 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 	const [city, setCity] = useState('');
 	const [postcode, setPostcode] = useState('');
 
-	const freeShippingThreshold = 300.0;
+	const freeShippingThreshold = 200.0;
+	const FLAT_RATE = 5.0;
 	const currentTotal = getCartTotal();
 	const cartCount = getCartCount();
+	
+	// Calculate shipping fee based on subtotal
+	const calculatedShippingFee = currentTotal >= freeShippingThreshold ? 0 : FLAT_RATE;
 
 	const getImageSrc = (img?: string) => {
 		if (!img) return '/img/banner/header1.svg';
@@ -283,7 +287,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 				{/* Total */}
 				<Box className="cart-total">
 					<Typography className="total-label">Total:</Typography>
-					<Typography className="total-value">${(currentTotal + 20).toFixed(2)}</Typography>
+					<Typography className="total-value">${(currentTotal + calculatedShippingFee).toFixed(2)}</Typography>
 				</Box>
 
 				{/* Footer Buttons */}

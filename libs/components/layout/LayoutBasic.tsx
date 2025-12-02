@@ -43,7 +43,7 @@ const withLayoutBasic = (Component: any) => {
 			{
 				icon: LocalShippingOutlinedIcon,
 				title: 'Free Shipping',
-				description: 'Free shipping for orders over $99',
+				description: 'Free shipping for orders over $200',
 			},
 			{
 				icon: VerifiedUserOutlinedIcon,

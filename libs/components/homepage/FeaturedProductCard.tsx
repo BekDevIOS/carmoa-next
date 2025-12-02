@@ -3,11 +3,13 @@ import { Stack, Box, Typography } from '@mui/material';
 import {
 	ShoppingCart as ShoppingCartIcon,
 	CompareArrows as ShuffleIcon,
+	Visibility as VisibilityIcon,
 } from '@mui/icons-material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Product } from '../../types/product/product';
 import { REACT_APP_API_URL } from '../../config';
 import { useCompare } from '../../hooks/useCompare';
+import { openQuickView } from '../../../apollo/store';
 
 interface FeaturedProductCardProps {
 	product: Product;
@@ -72,14 +74,14 @@ const FeaturedProductCard = ({
 								${salePrice.toFixed(2)}
 							</Typography>
 							{originalPrice && originalPrice > salePrice && (
-								<Typography variant="body2" className={'original-price'}>
+								<Typography variant="body2" className={`original-price ${originalPrice > salePrice ? 'sale' : ''}`}>
 									${originalPrice.toFixed(2)}
 								</Typography>
 							)}
 						</>
 					) : (
 						originalPrice && (
-							<Typography variant="body1" className={'sale-price'}>
+							<Typography variant="body1" className={'original-price'}>
 								${originalPrice.toFixed(2)}
 							</Typography>
 						)
@@ -104,6 +106,14 @@ const FeaturedProductCard = ({
 							}}
 						>
 							<ShuffleIcon className={'action-icon'} />
+						</Box>
+						<Box 
+							className={'action-btn'} 
+							onClick={() => {
+								openQuickView(product);
+							}}
+						>
+							<VisibilityIcon className={'action-icon'} />
 						</Box>
 					</Stack>
 				)}

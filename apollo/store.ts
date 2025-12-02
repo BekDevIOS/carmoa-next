@@ -86,10 +86,10 @@ export const userVar = makeVar<CustomJwtPayload>({
 	memberProperties: 0, // Keep for backward compatibility
 });
 
-// QuickView State
+// QuickView State - Updated to use Product type
 export interface QuickViewState {
 	isOpen: boolean;
-	product: QuickViewProduct | null;
+	product: Product | null;
 }
 
 export const quickViewVar = makeVar<QuickViewState>({
@@ -98,7 +98,7 @@ export const quickViewVar = makeVar<QuickViewState>({
 });
 
 // QuickView Helper Functions
-export const openQuickView = (product: QuickViewProduct) => {
+export const openQuickView = (product: Product) => {
 	quickViewVar({
 		isOpen: true,
 		product,

@@ -2,7 +2,17 @@ import React, { useState, useMemo } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Stack, Box, Typography, Button, CircularProgress, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import {
+	Stack,
+	Box,
+	Typography,
+	Button,
+	CircularProgress,
+	Select,
+	MenuItem,
+	FormControl,
+	InputLabel,
+} from '@mui/material';
 import { useQuery, useMutation, useReactiveVar } from '@apollo/client';
 import { GET_MY_ORDERS, GET_ORDERS } from '../../../apollo/user/query';
 import { UPDATE_ORDER } from '../../../apollo/user/mutation';
@@ -57,10 +67,8 @@ const OrderTable: NextPage = () => {
 
 	// Map backend orders to display format
 	const orders: DisplayOrder[] = useMemo(() => {
-		const ordersList = isDealer 
-			? ordersData?.getOrders?.list 
-			: ordersData?.getMyOrders?.list;
-		
+		const ordersList = isDealer ? ordersData?.getOrders?.list : ordersData?.getMyOrders?.list;
+
 		if (!ordersList) return [];
 
 		return ordersList.map((order: OrderType) => {
@@ -180,11 +188,7 @@ const OrderTable: NextPage = () => {
 					{isDealer && (
 						<FormControl className="status-filter" size="small" sx={{ minWidth: 180 }}>
 							<InputLabel>Filter by Status</InputLabel>
-							<Select
-								value={statusFilter}
-								label="Filter by Status"
-								onChange={handleStatusFilterChange}
-							>
+							<Select value={statusFilter} label="Filter by Status" onChange={handleStatusFilterChange}>
 								<MenuItem value="ALL">All Orders</MenuItem>
 								<MenuItem value={OrderStatus.PENDING}>Pending</MenuItem>
 								<MenuItem value={OrderStatus.PROCESS}>Processing</MenuItem>
@@ -278,4 +282,3 @@ const OrderTable: NextPage = () => {
 };
 
 export default OrderTable;
-

@@ -577,6 +577,7 @@
 				font-family: $font;
 				font-size: 16px;
 				font-weight: 500;
+				line-height: 20px;
 				color: var(--carmo-text);
 				margin: 0;
 				&.sale {
@@ -589,6 +590,7 @@
 			.sale-price {
 				font-family: $font;
 				font-size: 20px;
+				line-height: 20px;
 				font-weight: 700;
 				color: var(--carmo-primary);
 				margin: 0;
