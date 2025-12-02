@@ -14,12 +14,13 @@ import {
 	InputLabel,
 } from '@mui/material';
 import { useQuery, useMutation, useReactiveVar } from '@apollo/client';
-import { GET_MY_ORDERS, GET_ORDERS } from '../../../apollo/user/query';
-import { UPDATE_ORDER } from '../../../apollo/user/mutation';
+import { GET_MY_ORDERS, GET_ORDERS_BY_DEALER } from '../../../apollo/user/query';
+import { UPDATE_ORDER_ITEM_BY_DEALER } from '../../../apollo/user/mutation';
 import { OrdersInquiry } from '../../types/order/order.input';
-import { OrderUpdate } from '../../types/order/order.update';
+import { DealerOrderItemUpdate } from '../../types/order-item/order-item.update';
 import { Order as OrderType } from '../../types/order/order';
-import { OrderStatus } from '../../enums/order.enum';
+import { OrderItem } from '../../types/order-item/order-item';
+import { OrderStatus, OrderItemStatus } from '../../enums/order.enum';
 import { Direction } from '../../enums/common.enum';
 import { MemberType } from '../../enums/member.enum';
 import { userVar } from '../../../apollo/store';
@@ -30,9 +31,10 @@ interface DisplayOrder {
 	orderNumber: string;
 	date: string;
 	status: string;
-	originalStatus: OrderStatus;
+	originalStatus: OrderStatus | OrderItemStatus;
 	total: number;
 	itemCount: number;
+	orderItems?: OrderItem[];
 }
 
 const OrderTable: NextPage = () => {
@@ -55,7 +57,7 @@ const OrderTable: NextPage = () => {
 		data: ordersData,
 		error: ordersError,
 		refetch: ordersRefetch,
-	} = useQuery(isDealer ? GET_ORDERS : GET_MY_ORDERS, {
+	} = useQuery(isDealer ? GET_ORDERS_BY_DEALER : GET_MY_ORDERS, {
 		fetchPolicy: 'network-only',
 		variables: {
 			input: searchOrders,
@@ -63,25 +65,41 @@ const OrderTable: NextPage = () => {
 		notifyOnNetworkStatusChange: true,
 	});
 
-	const [updateOrderStatus] = useMutation(UPDATE_ORDER);
+	const [updateOrderItemByDealer] = useMutation(UPDATE_ORDER_ITEM_BY_DEALER);
 
 	// Map backend orders to display format
 	const orders: DisplayOrder[] = useMemo(() => {
-		const ordersList = isDealer ? ordersData?.getOrders?.list : ordersData?.getMyOrders?.list;
+		const ordersList = isDealer 
+			? ordersData?.getOrdersByDealer?.list 
+			: ordersData?.getMyOrders?.list;
 
 		if (!ordersList) return [];
 
-		return ordersList.map((order: OrderType) => {
+		// Deduplicate orders by _id (in case backend returns duplicates)
+		const uniqueOrdersMap = new Map<string, OrderType>();
+		ordersList.forEach((order: OrderType) => {
+			if (!uniqueOrdersMap.has(order._id)) {
+				uniqueOrdersMap.set(order._id, order);
+			}
+		});
+
+		const uniqueOrders = Array.from(uniqueOrdersMap.values());
+
+		return uniqueOrders.map((order: OrderType) => {
 			// Format order status
-			const formatStatus = (status: OrderStatus): string => {
+			const formatStatus = (status: OrderStatus | OrderItemStatus): string => {
 				switch (status) {
 					case OrderStatus.PENDING:
+					case OrderItemStatus.PENDING:
 						return 'Pending';
 					case OrderStatus.PROCESS:
+					case OrderItemStatus.PROCESS:
 						return 'Processing';
 					case OrderStatus.FINISHED:
+					case OrderItemStatus.FINISHED:
 						return 'Completed';
 					case OrderStatus.CANCELLED:
+					case OrderItemStatus.CANCELLED:
 						return 'Cancelled';
 					default:
 						return status;
@@ -95,23 +113,41 @@ const OrderTable: NextPage = () => {
 				return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 			};
 
-			// Calculate item count
-			const itemCount = order.orderItems?.reduce((sum, item) => sum + item.itemQuantity, 0) || 0;
+			// Filter order items for this dealer if dealer
+			const relevantItems = isDealer 
+				? order.orderItems?.filter(item => item.dealerId === user?._id) || []
+				: order.orderItems || [];
+
+			// Calculate item count from relevant items
+			const itemCount = relevantItems.reduce((sum, item) => sum + item.itemQuantity, 0);
+
+			// Calculate total for relevant items (dealers see only their items' total)
+			const dealerTotal = relevantItems.reduce((sum, item) => sum + (item.itemPrice * item.itemQuantity), 0);
 
 			// Use last 6 characters of _id as order number
 			const orderNumber = order._id.slice(-6).toUpperCase();
+
+			// For dealers, determine the most common status among their items
+			let displayStatus: OrderStatus | OrderItemStatus;
+			if (isDealer && relevantItems.length > 0) {
+				// Use the first item's status as representative (or you could implement more complex logic)
+				displayStatus = relevantItems[0].itemStatus;
+			} else {
+				displayStatus = order.orderStatus;
+			}
 
 			return {
 				_id: order._id,
 				orderNumber,
 				date: formatDate(order.createdAt),
-				status: formatStatus(order.orderStatus),
-				originalStatus: order.orderStatus,
-				total: order.totalPrice || 0,
+				status: formatStatus(displayStatus),
+				originalStatus: displayStatus,
+				total: isDealer ? dealerTotal : (order.totalPrice || 0),
 				itemCount,
+				orderItems: relevantItems,
 			};
 		});
-	}, [ordersData, isDealer]);
+	}, [ordersData, isDealer, user]);
 
 	/** HANDLERS **/
 	const viewOrderHandler = (orderId: string) => {
@@ -129,18 +165,18 @@ const OrderTable: NextPage = () => {
 		});
 	};
 
-	const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
+	const handleStatusChange = async (order: DisplayOrder, newStatus: OrderItemStatus) => {
 		try {
 			// Format status name for confirmation message
-			const formatStatusName = (status: OrderStatus): string => {
+			const formatStatusName = (status: OrderItemStatus): string => {
 				switch (status) {
-					case OrderStatus.PENDING:
+					case OrderItemStatus.PENDING:
 						return 'Pending';
-					case OrderStatus.PROCESS:
+					case OrderItemStatus.PROCESS:
 						return 'Processing';
-					case OrderStatus.FINISHED:
+					case OrderItemStatus.FINISHED:
 						return 'Completed';
-					case OrderStatus.CANCELLED:
+					case OrderItemStatus.CANCELLED:
 						return 'Cancelled';
 					default:
 						return status;
@@ -148,25 +184,35 @@ const OrderTable: NextPage = () => {
 			};
 
 			const statusName = formatStatusName(newStatus);
-			const confirmed = await sweetConfirmAlert(`Are you sure you want to change the order status to ${statusName}?`);
+			const itemText = order.orderItems && order.orderItems.length > 1 
+				? `all ${order.orderItems.length} items` 
+				: 'this item';
+			
+			const confirmed = await sweetConfirmAlert(
+				`Are you sure you want to change the status of ${itemText} in order #${order.orderNumber} to ${statusName}?`
+			);
 
 			if (!confirmed) {
 				return; // User cancelled, don't proceed
 			}
 
-			const updateInput: OrderUpdate = {
-				_id: orderId,
-				orderStatus: newStatus,
-			};
+			// Update all order items for this dealer in this order
+			if (order.orderItems && order.orderItems.length > 0) {
+				// Update all items sequentially
+				for (const item of order.orderItems) {
+					const updateInput: DealerOrderItemUpdate = {
+						orderItemId: item._id,
+						itemStatus: newStatus,
+					};
 
-			await updateOrderStatus({
-				variables: {
-					input: updateInput,
-				},
-			});
+					await updateOrderItemByDealer({
+						variables: { input: updateInput },
+					});
+				}
 
-			await ordersRefetch();
-			await sweetTopSmallSuccessAlert('Order status updated successfully!', 800);
+				await ordersRefetch();
+				await sweetTopSmallSuccessAlert('Order status updated successfully!', 800);
+			}
 		} catch (err: any) {
 			console.log('ERROR, handleStatusChange:', err);
 			sweetMixinErrorAlert(err.message).then();
@@ -231,7 +277,7 @@ const OrderTable: NextPage = () => {
 														<FormControl size="small" sx={{ minWidth: 140 }}>
 															<Select
 																value={order.originalStatus}
-																onChange={(e) => handleStatusChange(order._id, e.target.value as OrderStatus)}
+																onChange={(e) => handleStatusChange(order, e.target.value as OrderItemStatus)}
 																sx={{
 																	fontSize: '14px',
 																	'& .MuiOutlinedInput-notchedOutline': {
@@ -245,10 +291,10 @@ const OrderTable: NextPage = () => {
 																	},
 																}}
 															>
-																<MenuItem value={OrderStatus.PENDING}>Pending</MenuItem>
-																<MenuItem value={OrderStatus.PROCESS}>Processing</MenuItem>
-																<MenuItem value={OrderStatus.FINISHED}>Completed</MenuItem>
-																<MenuItem value={OrderStatus.CANCELLED}>Cancelled</MenuItem>
+																<MenuItem value={OrderItemStatus.PENDING}>Pending</MenuItem>
+																<MenuItem value={OrderItemStatus.PROCESS}>Processing</MenuItem>
+																<MenuItem value={OrderItemStatus.FINISHED}>Completed</MenuItem>
+																<MenuItem value={OrderItemStatus.CANCELLED}>Cancelled</MenuItem>
 															</Select>
 														</FormControl>
 													) : (

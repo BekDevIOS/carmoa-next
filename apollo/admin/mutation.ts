@@ -194,8 +194,8 @@ export const REMOVE_COMMENT_BY_ADMIN = gql`
  *************************/
 
 export const UPDATE_ORDER_BY_ADMIN = gql`
-	mutation UpdateOrder($input: OrderUpdate!) {
-		updateOrder(input: $input) {
+	mutation UpdateOrderByAdmin($input: AdminOrderUpdate!) {
+		updateOrderByAdmin(input: $input) {
 			_id
 			memberId
 			orderStatus
@@ -208,92 +208,6 @@ export const UPDATE_ORDER_BY_ADMIN = gql`
 			cancelledAt
 			createdAt
 			updatedAt
-			memberData {
-				_id
-				memberType
-				memberStatus
-				memberAuthType
-				memberProvider
-				memberPhone
-				memberEmail
-				memberNick
-				memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
-				memberProducts
-				memberArticles
-				memberFollowers
-				memberFollowings
-				memberPoints
-				memberLikes
-				memberViews
-				memberComments
-				memberRank
-				memberWarnings
-				memberBlocks
-				deletedAt
-				createdAt
-				updatedAt
-				accessToken
-			}
-			orderItems {
-				_id
-				orderId
-				productId
-				itemQuantity
-				itemPrice
-				createdAt
-				updatedAt
-				product {
-					_id
-					productType
-					productStatus
-					productCondition
-					productMainCategory
-					productSubCategory
-					productCarBrand
-					productCarModel
-					productYearFrom
-					productYearTo
-					productOemNumbers
-					productTitle
-					productPrice
-					productSalePrice
-					productStock
-					productViews
-					productLikes
-					productComments
-					productRank
-					productImages
-					productDescription
-					dealerId
-					soldAt
-					deletedAt
-					createdAt
-					updatedAt
-
-				}
-			}
 		}
 	}
 `;

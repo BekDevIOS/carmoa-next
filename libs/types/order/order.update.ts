@@ -1,6 +1,6 @@
 import { OrderStatus, PaymentStatus, PaymentMethod } from '../../enums/order.enum';
 
-export interface OrderUpdate {
+export interface AdminOrderUpdate {
 	_id: string;
 	orderStatus?: OrderStatus;
 	paymentStatus?: PaymentStatus;

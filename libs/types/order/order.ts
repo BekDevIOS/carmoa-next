@@ -1,23 +1,13 @@
-import { Product } from '../product/product';
 import { Member } from '../member/member';
+import { Product } from '../product/product';
 import { OrderStatus, PaymentStatus, PaymentMethod } from '../../enums/order.enum';
+import { OrderItem } from '../order-item/order-item';
 
-export interface OrderItem {
-	_id: string;
-	orderId: string;
-	productId: string;
-	itemQuantity: number;
-	itemPrice: number;
-	createdAt: Date;
-	updatedAt: Date;
-	
-	product?: Product;
-}
+
 
 export interface Order {
 	_id: string;
 	memberId: string;
-	dealerId: string;
 	orderStatus: OrderStatus;
 	paymentStatus: PaymentStatus;
 	paymentMethod: PaymentMethod;
@@ -26,11 +16,14 @@ export interface Order {
 	notes?: string;
 	deliveredAt?: Date;
 	cancelledAt?: Date;
-	memberData?: Member;
-	orderItems?: OrderItem[];
-	productData?: Product;
 	createdAt: Date;
 	updatedAt: Date;
+	
+	// Populated fields (optional)
+	memberData?: Member;
+	dealerData?: Member;
+	orderItems?: OrderItem[];
+	productData?: Product; 
 }
 
 export interface TotalCounter {

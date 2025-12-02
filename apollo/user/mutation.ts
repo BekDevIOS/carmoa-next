@@ -508,42 +508,24 @@ export const CREATE_ORDER = gql`
 			totalPrice
 			shippingFee
 			notes
+			deliveredAt
+			cancelledAt
 			createdAt
-			orderItems {
-				_id
-				productId
-				itemQuantity
-				itemPrice
-			}
-		}
-	}
-`;
-
-export const UPDATE_MY_ORDER = gql`
-	mutation UpdateMyOrder($input: OrderUpdate!) {
-		updateMyOrder(input: $input) {
-			_id
-			orderStatus
-			paymentStatus
-			paymentMethod
-			totalPrice
-			shippingFee
-			notes
 			updatedAt
 		}
 	}
 `;
 
-export const UPDATE_ORDER = gql`
-	mutation UpdateOrder($input: OrderUpdate!) {
-		updateOrder(input: $input) {
+export const UPDATE_ORDER_ITEM_BY_DEALER = gql`
+	mutation UpdateOrderItemByDealer($input: DealerOrderItemUpdate!) {
+		updateOrderItemByDealer(input: $input) {
 			_id
-			orderStatus
-			paymentStatus
-			paymentMethod
-			totalPrice
-			shippingFee
-			notes
+			orderId
+			productId
+			itemQuantity
+			itemPrice
+			itemStatus
+			createdAt
 			updatedAt
 		}
 	}

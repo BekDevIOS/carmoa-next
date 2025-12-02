@@ -19,12 +19,12 @@ const CheckoutSummaryPanel = ({
 	onShippingMethodChange: _onShippingMethodChange,
 	onChangeAddress,
 	onCheckout,
-	shippingAddress = 'dsfd, 201호, sdfsd, 52819, South Korea',
+	shippingAddress = '',
 }: CheckoutSummaryPanelProps) => {
 	const [showAddressForm, setShowAddressForm] = useState(false);
 	const [country, setCountry] = useState('South Korea');
-	const [city, setCity] = useState('sdfsd');
-	const [postcode, setPostcode] = useState('52819');
+	const [city, setCity] = useState('');
+	const [postcode, setPostcode] = useState('');
 
 	const shippingCost = shippingMethod === 'free' ? 0 : flatRate;
 	const total = subtotal + shippingCost;

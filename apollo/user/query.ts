@@ -262,28 +262,28 @@ export const GET_PRODUCTS = gql`
 					memberPhone
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -391,28 +391,28 @@ export const GET_FAVORITES = gql`
 					memberPhone
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -477,28 +477,28 @@ export const GET_VISITED = gql`
 					memberPhone
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -630,28 +630,28 @@ export const GET_BOARD_ARTICLES = gql`
 					memberPhone
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -703,28 +703,28 @@ export const GET_COMMENTS = gql`
 					memberPhone
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberArticles
 					memberFollowers
 					memberFollowings
@@ -783,28 +783,28 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberEmail
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberProducts
 					memberArticles
 					memberFollowers
@@ -848,28 +848,28 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberEmail
 					memberNick
 					memberFullName
-				memberImage
-				memberAddress
-				memberShippingAddress {
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberBillingAddress {
-					country
-					firstName
-					lastName
-					address1
-					address2
-					city
-					postalCode
-					phone
-				}
-				memberDesc
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
 					memberProducts
 					memberArticles
 					memberFollowers
@@ -935,6 +935,22 @@ export const GET_ORDER = gql`
 				memberFullName
 				memberImage
 				memberAddress
+				memberDesc
+				memberProducts
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
 				memberShippingAddress {
 					firstName
 					lastName
@@ -954,31 +970,18 @@ export const GET_ORDER = gql`
 					postalCode
 					phone
 				}
-				memberDesc
-				memberProducts
-				memberArticles
-				memberFollowers
-				memberFollowings
-				memberPoints
-				memberLikes
-				memberViews
-				memberComments
-				memberRank
-				memberWarnings
-				memberBlocks
-				deletedAt
-				createdAt
-				updatedAt
-				accessToken
 			}
 			orderItems {
 				_id
+				orderId
 				productId
+				dealerId
 				itemQuantity
 				itemPrice
+				itemStatus
 				createdAt
 				updatedAt
-				product {
+				productData {
 					_id
 					productType
 					productStatus
@@ -997,6 +1000,8 @@ export const GET_ORDER = gql`
 					productViews
 					productLikes
 					productComments
+					ratingAverage
+					ratingCount
 					productRank
 					productImages
 					productDescription
@@ -1005,7 +1010,35 @@ export const GET_ORDER = gql`
 					deletedAt
 					createdAt
 					updatedAt
-					
+				}
+				dealerData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberProvider
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
 				}
 			}
 		}
@@ -1028,62 +1061,17 @@ export const GET_MY_ORDERS = gql`
 				cancelledAt
 				createdAt
 				updatedAt
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberProvider
-					memberPhone
-					memberEmail
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberShippingAddress {
-						firstName
-						lastName
-						address1
-						address2
-						city
-						postalCode
-						phone
-					}
-					memberBillingAddress {
-						country
-						firstName
-						lastName
-						address1
-						address2
-						city
-						postalCode
-						phone
-					}
-					memberDesc
-					memberProducts
-					memberArticles
-					memberFollowers
-					memberFollowings
-					memberPoints
-					memberLikes
-					memberViews
-					memberComments
-					memberRank
-					memberWarnings
-					memberBlocks
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
-				}
 				orderItems {
 					_id
+					orderId
 					productId
+					dealerId
 					itemQuantity
 					itemPrice
+					itemStatus
 					createdAt
 					updatedAt
-					product {
+					productData {
 						_id
 						productType
 						productStatus
@@ -1102,6 +1090,8 @@ export const GET_MY_ORDERS = gql`
 						productViews
 						productLikes
 						productComments
+						ratingAverage
+						ratingCount
 						productRank
 						productImages
 						productDescription
@@ -1110,6 +1100,35 @@ export const GET_MY_ORDERS = gql`
 						deletedAt
 						createdAt
 						updatedAt
+					}
+					dealerData {
+						_id
+						memberType
+						memberStatus
+						memberAuthType
+						memberProvider
+						memberPhone
+						memberEmail
+						memberNick
+						memberFullName
+						memberImage
+						memberAddress
+						memberDesc
+						memberProducts
+						memberArticles
+						memberFollowers
+						memberFollowings
+						memberPoints
+						memberLikes
+						memberViews
+						memberComments
+						memberRank
+						memberWarnings
+						memberBlocks
+						deletedAt
+						createdAt
+						updatedAt
+						accessToken
 					}
 				}
 			}
@@ -1136,6 +1155,100 @@ export const GET_ORDERS = gql`
 				cancelledAt
 				createdAt
 				updatedAt
+				orderItems {
+					_id
+					orderId
+					productId
+					dealerId
+					itemQuantity
+					itemPrice
+					itemStatus
+					createdAt
+					updatedAt
+					productData {
+						_id
+						productType
+						productStatus
+						productCondition
+						productMainCategory
+						productSubCategory
+						productCarBrand
+						productCarModel
+						productYearFrom
+						productYearTo
+						productOemNumbers
+						productTitle
+						productPrice
+						productSalePrice
+						productStock
+						productViews
+						productLikes
+						productComments
+						ratingAverage
+						ratingCount
+						productRank
+						productImages
+						productDescription
+						dealerId
+						soldAt
+						deletedAt
+						createdAt
+						updatedAt
+					}
+					dealerData {
+						_id
+						memberType
+						memberStatus
+						memberAuthType
+						memberProvider
+						memberPhone
+						memberEmail
+						memberNick
+						memberFullName
+						memberImage
+						memberAddress
+						memberDesc
+						memberProducts
+						memberArticles
+						memberFollowers
+						memberFollowings
+						memberPoints
+						memberLikes
+						memberViews
+						memberComments
+						memberRank
+						memberWarnings
+						memberBlocks
+						deletedAt
+						createdAt
+						updatedAt
+						accessToken
+					}
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+export const GET_ORDERS_BY_DEALER = gql`
+	query GetOrdersByDealer($input: OrdersInquiry!) {
+		getOrdersByDealer(input: $input) {
+			list {
+				_id
+				memberId
+				orderStatus
+				paymentStatus
+				paymentMethod
+				totalPrice
+				shippingFee
+				notes
+				deliveredAt
+				cancelledAt
+				createdAt
+				updatedAt
 				memberData {
 					_id
 					memberType
@@ -1148,6 +1261,22 @@ export const GET_ORDERS = gql`
 					memberFullName
 					memberImage
 					memberAddress
+					memberDesc
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
 					memberShippingAddress {
 						firstName
 						lastName
@@ -1167,31 +1296,18 @@ export const GET_ORDERS = gql`
 						postalCode
 						phone
 					}
-					memberDesc
-					memberProducts
-					memberArticles
-					memberFollowers
-					memberFollowings
-					memberPoints
-					memberLikes
-					memberViews
-					memberComments
-					memberRank
-					memberWarnings
-					memberBlocks
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
 				}
 				orderItems {
 					_id
+					orderId
 					productId
+					dealerId
 					itemQuantity
 					itemPrice
+					itemStatus
 					createdAt
 					updatedAt
-					product {
+					productData {
 						_id
 						productType
 						productStatus
@@ -1210,6 +1326,8 @@ export const GET_ORDERS = gql`
 						productViews
 						productLikes
 						productComments
+						ratingAverage
+						ratingCount
 						productRank
 						productImages
 						productDescription
@@ -1220,9 +1338,6 @@ export const GET_ORDERS = gql`
 						updatedAt
 					}
 				}
-			}
-			metaCounter {
-				total
 			}
 		}
 	}

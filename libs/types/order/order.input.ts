@@ -1,15 +1,11 @@
 import { OrderStatus, PaymentStatus, PaymentMethod } from '../../enums/order.enum';
 import { Direction } from '../../enums/common.enum';
+import { OrderItemInput } from '../order-item/order-item.input';
 
-export interface OrderItemInput {
-	productId: string;
-	itemQuantity: number;
-	itemPrice: number;
-}
+
 
 export interface OrderInput {
 	orderItems: OrderItemInput[];
-	dealerId: string;
 	paymentMethod?: PaymentMethod;
 	paymentStatus?: PaymentStatus;
 	notes?: string;
@@ -17,6 +13,9 @@ export interface OrderInput {
 
 interface OISearch {
 	orderStatus?: OrderStatus;
+	paymentStatus?: PaymentStatus;
+	memberId?: string;
+	dealerId?: string;
 }
 
 export interface OrdersInquiry {

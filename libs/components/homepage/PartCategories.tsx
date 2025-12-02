@@ -8,8 +8,8 @@ const PartCategories = () => {
 	const categories = [
 		{
 			id: 1,
-			image: '/img/category/electric.webp',
-			hoverImage: '/img/category/electric2.webp',
+			image: '/img/category/electric2.webp',
+			hoverImage: '/img/category/electric.webp',
 			title: 'ELECTRICAL',
 		},
 		{

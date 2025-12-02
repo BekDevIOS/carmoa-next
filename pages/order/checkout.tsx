@@ -24,7 +24,8 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { useMutation } from '@apollo/client';
 import { CREATE_ORDER } from '../../apollo/user/mutation';
-import { OrderInput, OrderItemInput } from '../../libs/types/order/order.input';
+import { OrderInput } from '../../libs/types/order/order.input';
+import { OrderItemInput } from '../../libs/types/order-item/order-item.input';
 import { PaymentMethod } from '../../libs/enums/order.enum';
 import { MemberShippingAddress, MemberBillingAddress } from '../../libs/types/member/member';
 import { sweetErrorHandling, sweetMixinSuccessAlert, sweetMixinErrorAlert } from '../../libs/sweetAlert';
@@ -187,7 +188,6 @@ const CheckoutPage: NextPage<T> = (props: T) => {
 			// Build order input
 			const orderInput: OrderInput = {
 				orderItems,
-				dealerId,
 				paymentMethod: paymentMethodEnum,
 				paymentStatus: paymentMethod === 'bank' ? undefined : undefined, // Let backend decide
 				notes: noteEnabled && orderNote ? orderNote : undefined,

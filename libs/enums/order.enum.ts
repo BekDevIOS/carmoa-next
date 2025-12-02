@@ -5,6 +5,12 @@ export enum OrderStatus {
   CANCELLED = 'CANCELLED',
 }
 
+export enum OrderItemStatus {
+  PENDING = 'PENDING',
+  PROCESS = 'PROCESS',
+  FINISHED = 'FINISHED',
+  CANCELLED = 'CANCELLED',
+}
 export enum PaymentStatus {
   PAID = 'PAID',
   UNPAID = 'UNPAID',

@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Stack, Box, Typography, CircularProgress } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { T } from '../../libs/types/common';
-import { useQuery } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { GET_ORDER } from '../../apollo/user/query';
 import { Order } from '../../libs/types/order/order';
 import { PaymentMethod } from '../../libs/enums/order.enum';
-import { REACT_APP_API_URL } from '../../libs/config';
+import { MemberType } from '../../libs/enums/member.enum';
+import { userVar } from '../../apollo/store';
 
 const OrderDetailPage: NextPage = (props: T) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const { orderId } = router.query;
+	const user = useReactiveVar(userVar);
+	const isDealer = user?.memberType === MemberType.DEALER;
 
 	const { data, loading, error } = useQuery(GET_ORDER, {
 		variables: { orderId: orderId as string },
@@ -22,16 +25,35 @@ const OrderDetailPage: NextPage = (props: T) => {
 		fetchPolicy: 'network-only',
 	});
 
+
 	const order: Order | undefined = data?.getOrder;
 
-	// Format date
+	const displayOrderItems = useMemo(() => {
+		if (!order || !order.orderItems) return [];
+
+		if (isDealer && user?._id) {
+			return order.orderItems.filter((item) => item.dealerId === user._id);
+		}
+
+		return order.orderItems;
+	}, [order?.orderItems, isDealer, user?._id]);
+
+	const subtotal = displayOrderItems.reduce((sum, item) => sum + item.itemPrice * item.itemQuantity, 0);
+
+	const shippingFee = isDealer ? 0 : order?.shippingFee || 0;
+
+	const total = subtotal + shippingFee;
+
+	const shippingAddress = order?.memberData?.memberShippingAddress;
+	const billingAddress = order?.memberData?.memberBillingAddress;
+	const email = order?.memberData?.memberEmail || '-';
+
 	const formatDate = (dateString: string | Date | undefined) => {
 		if (!dateString) return 'N/A';
 		const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
 		return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 	};
 
-	// Format payment method
 	const formatPaymentMethod = (method: PaymentMethod | undefined) => {
 		if (!method) return 'N/A';
 		switch (method) {
@@ -87,13 +109,6 @@ const OrderDetailPage: NextPage = (props: T) => {
 		);
 	}
 
-	const subtotal = order.orderItems?.reduce((sum, item) => sum + item.itemPrice * item.itemQuantity, 0) || 0;
-	const shippingFee = order.shippingFee || 0;
-	const total = order.totalPrice || subtotal + shippingFee;
-	const shippingAddress = order.memberData?.memberShippingAddress;
-	const billingAddress = order.memberData?.memberBillingAddress;
-	const email = order.memberData?.memberEmail || '';
-
 	if (device === 'mobile') {
 		return <div>ORDER DETAIL PAGE MOBILE</div>;
 	}
@@ -102,10 +117,7 @@ const OrderDetailPage: NextPage = (props: T) => {
 		<div id="order-detail-page">
 			<div className="container">
 				<Stack className="order-confirmation">
-					<Typography className="order-confirmation-title">
-						Order Overview
-					</Typography>
-
+					<Typography className="order-confirmation-title">Order Overview</Typography>
 					<Stack className="order-meta">
 						<Stack className="order-meta-item">
 							<Typography className="label">Order number:</Typography>
@@ -129,47 +141,40 @@ const OrderDetailPage: NextPage = (props: T) => {
 						</Stack>
 					</Stack>
 				</Stack>
-
 				<Stack className="order-content">
 					<Typography className="section-title">Order details</Typography>
-
 					<Box className="order-details-card">
 						<Box className="order-table">
 							<Box className="order-table-header">
 								<Typography className="header-product">Product</Typography>
 								<Typography className="header-total">Total</Typography>
 							</Box>
-
 							<Box className="order-table-body">
-								{order.orderItems?.map((item) => {
+								{displayOrderItems.map((item) => {
 									const itemTotal = item.itemPrice * item.itemQuantity;
 									return (
 										<Box key={item._id} className="order-table-row product-row">
 											<Typography className="product-name">
-												{item.product?.productTitle || 'Product'} × {item.itemQuantity}
+												{item.productData?.productTitle || 'Product'} × {item.itemQuantity}
 											</Typography>
 											<Typography className="product-total">${itemTotal.toFixed(2)}</Typography>
 										</Box>
 									);
 								})}
-
 								<Box className="order-table-row">
 									<Typography className="label">Subtotal:</Typography>
 									<Typography className="value">${subtotal.toFixed(2)}</Typography>
 								</Box>
-
 								<Box className="order-table-row">
 									<Typography className="label">Shipping:</Typography>
 									<Typography className="value">
 										{shippingFee === 0 ? 'Free shipping' : `$${shippingFee.toFixed(2)}`}
 									</Typography>
 								</Box>
-
 								<Box className="order-table-row total-row">
 									<Typography className="label">Total:</Typography>
 									<Typography className="value">${total.toFixed(2)}</Typography>
 								</Box>
-
 								<Box className="order-table-row">
 									<Typography className="label">Payment method:</Typography>
 									<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
@@ -177,23 +182,24 @@ const OrderDetailPage: NextPage = (props: T) => {
 							</Box>
 						</Box>
 					</Box>
-
 					<Box className="order-addresses">
-						<Box className="address-card billing-address">
-							<Typography className="address-title">Billing address</Typography>
-							{billingAddress ? (
-								<>
-									{formatAddress(billingAddress, true).map((line, index) => (
-										<Typography key={index} className="address-line">
-											{line}
-										</Typography>
-									))}
-									{email && <Typography className="address-line email">{email}</Typography>}
-								</>
-							) : (
-								<Typography className="address-line">No billing address provided</Typography>
-							)}
-						</Box>
+						{!isDealer && (
+							<Box className="address-card billing-address">
+								<Typography className="address-title">Billing address</Typography>
+								{billingAddress ? (
+									<>
+										{formatAddress(billingAddress, true).map((line, index) => (
+											<Typography key={index} className="address-line">
+												{line}
+											</Typography>
+										))}
+										{email && <Typography className="address-line email">{email}</Typography>}
+									</>
+								) : (
+									<Typography className="address-line">No billing address provided</Typography>
+								)}
+							</Box>
+						)}
 
 						<Box className="address-card shipping-address">
 							<Typography className="address-title">Shipping address</Typography>
@@ -217,5 +223,3 @@ const OrderDetailPage: NextPage = (props: T) => {
 };
 
 export default withLayoutBasic(OrderDetailPage);
-
-
