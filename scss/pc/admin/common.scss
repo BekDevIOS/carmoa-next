@@ -1,0 +1,526 @@
+// Common Admin Styles - Shared across all admin modules
+
+#pc-wrap {
+	// AppBar (Top Navigation)
+	.MuiAppBar-root {
+		height: 64px;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		padding: 0 24px;
+		position: fixed;
+		left: auto;
+		box-shadow: none;
+		background: var(--carmo-bg);
+		border-bottom: 1px solid var(--carmo-border);
+
+		.settings-icon-admin {
+			margin-right: 15px;
+			color: var(--carmo-text-secondary);
+			cursor: pointer;
+		}
+	}
+
+	// Sidebar (Left Navigation)
+	.aside {
+		.logo-box {
+			display: flex;
+			flex-direction: row;
+			padding: 16px 0;
+
+			img {
+				width: 90px;
+			}
+		}
+
+		.user {
+			background: var(--carmo-bg-soft);
+		}
+
+		hr {
+			margin: 24px 0;
+		}
+
+		.MuiListItemIcon-root {
+			margin-right: 16px;
+		}
+	}
+
+	.user {
+		background: var(--carmo-bg-soft);
+	}
+
+	// Menu List Styles
+	.menu-list {
+		padding: 8px 24px 8px 32px;
+
+		li {
+			padding: 8px 16px 8px 28px;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+
+		li.on {
+			font-weight: 600;
+			background: rgba(255, 184, 0, 0.1);
+			color: var(--carmo-primary);
+
+			span {
+				color: var(--carmo-text);
+			}
+		}
+	}
+
+	// Main Content Area
+	#bunker {
+		width: calc(100% - 280px);
+		margin-left: auto;
+		padding: 116px 24px;
+		align-items: center;
+
+		.flex-space {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.title {
+			margin-bottom: 24px;
+		}
+
+		// Status Badges (Used across all modules)
+		.badge {
+			padding: 3px 8px;
+			font-weight: 500;
+			font-size: 12px;
+			border-radius: 4px;
+		}
+
+		.success {
+			color: #229a16;
+			background: rgba(84, 214, 44, 0.16);
+		}
+
+		.warning {
+			color: #f57c00;
+			background: rgba(245, 124, 0, 0.1);
+			border-radius: 4px;
+		}
+
+		.error {
+			color: #b72136;
+			background: rgba(255, 72, 66, 0.16);
+		}
+
+		.block {
+			color: #ab47bc;
+			background: rgba(171, 71, 188, 0.1);
+			border-radius: 4px;
+		}
+
+		.delete {
+			background: var(--carmo-text-secondary);
+			color: var(--carmo-bg);
+			border-radius: 4px;
+		}
+
+		// Status Text Colors
+		.success-txt {
+			font-size: 14px;
+			color: #229a16;
+		}
+
+		.warning-txt {
+			font-size: 14px;
+			color: #f57c00;
+		}
+
+		.error-txt {
+			font-size: 14px;
+			color: #b72136;
+		}
+
+		.hacking-txt {
+			font-size: 14px;
+			color: #ab47bc;
+		}
+
+		.delete-txt {
+			font-size: 14px;
+			color: var(--carmo-text-secondary);
+		}
+
+		// Trend Indicators
+		.up {
+			color: rgba(45, 153, 255);
+			background: rgba(45, 153, 255, 0.3);
+		}
+
+		.down {
+			color: rgba(255, 48, 48);
+			background: rgba(255, 48, 48, 0.3);
+		}
+
+		// Content Container
+		.content {
+			width: 100%;
+
+			.no-data {
+				font-size: 16px;
+			}
+		}
+
+		// Common Table Wrapper
+		.table-wrap {
+			background: var(--carmo-bg);
+			border-radius: 8px;
+			box-shadow: rgb(145 158 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px;
+
+			// Tab Menu (Status Tabs)
+			.tab-menu {
+				display: flex;
+				flex-direction: row;
+				padding: 0 24px;
+
+				li {
+					width: auto;
+					height: 48px;
+					cursor: pointer;
+					padding: 12px 16px;
+					color: var(--carmo-text-secondary);
+					font-size: 14px;
+				}
+
+				li.on {
+					font-weight: 500;
+					color: var(--carmo-primary);
+					border-bottom: 2px solid var(--carmo-primary);
+				}
+			}
+
+			// Table with Checkboxes
+			&.check-table-wrap {
+				th:nth-child(1),
+				td:first-child {
+					width: 50px;
+					padding: 0 0 0 15px;
+				}
+			}
+
+			// Table Header
+			thead {
+				tr {
+					background: var(--carmo-bg-soft);
+				}
+
+				th {
+					font-weight: bold;
+					color: var(--carmo-text);
+					font-size: 14px;
+					border-bottom: 1px solid var(--carmo-border);
+				}
+
+				th:last-child {
+					padding-right: 24px;
+				}
+
+				th:first-child {
+					padding-left: 24px;
+				}
+			}
+
+			// Table Body
+			tbody {
+				color: var(--carmo-text-secondary);
+
+				tr {
+					border-bottom: 1px solid var(--carmo-border);
+				}
+
+				tr:last-child {
+					border-bottom: 0;
+				}
+
+				th:first-child {
+					padding-left: 24px;
+				}
+
+				td {
+					padding: 12px 16px;
+					border-bottom: 0;
+					font-size: 14px;
+					color: var(--carmo-text-secondary);
+
+					&.info {
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+					}
+				}
+
+				td:first-child {
+					padding-left: 24px;
+				}
+			}
+
+			// Flex Box for Actions
+			.flex-box {
+				button {
+					color: var(--carmo-primary);
+					font-weight: 500;
+					margin-right: 8px;
+				}
+
+				button:last-child {
+					margin-right: 0;
+				}
+			}
+
+			// Edit Options Panel
+			.edit-options {
+				padding: 25px;
+
+				.option-wrap {
+					margin-bottom: 40px;
+
+					.tit {
+						height: 40px;
+						flex-direction: row;
+						align-items: center;
+						justify-content: space-between;
+						margin-bottom: 8px;
+						background: var(--carmo-bg-soft);
+						border-radius: 4px;
+						padding: 2px 16px;
+					}
+
+					.notice {
+						margin: 6px 0 0 30px;
+						color: var(--carmo-text-secondary);
+					}
+				}
+
+				.option {
+					flex-flow: row wrap;
+
+					label {
+						width: 301px;
+						height: 48px;
+						padding-right: 8px;
+						color: var(--carmo-text-secondary);
+
+						span {
+							font-size: 14px;
+						}
+					}
+				}
+			}
+		}
+
+		// Title Section
+		.tit {
+			flex-direction: row;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.info-area {
+			flex-direction: row;
+		}
+
+		// Search Area
+		.search-area {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+
+			img {
+				cursor: pointer;
+			}
+
+			.MuiOutlinedInput-root {
+				height: 48px;
+				background: var(--carmo-bg);
+				font-size: 14px;
+			}
+
+			.MuiTableCell-root {
+				padding: 12px 20px;
+				border-bottom: 1px solid var(--carmo-border);
+			}
+
+			.MuiToolbar-root {
+				align-items: center;
+			}
+		}
+
+		// Action Buttons Wrapper
+		.btn-action-wrap {
+			display: flex;
+			flex-direction: row;
+
+			button {
+				height: 44px;
+				background: var(--carmo-bg);
+				border: 1px solid var(--carmo-border);
+				color: var(--carmo-text-secondary);
+				margin-right: 8px;
+			}
+
+			thead {
+				font-weight: 600;
+			}
+		}
+
+		// Tab Panels
+		.MuiTabPanel-root {
+			padding: 0;
+		}
+
+		// Table Container
+		.MuiTableContainer-root {
+			box-shadow: none;
+		}
+
+		// Input Area
+		.input-area {
+			div:nth-child(1) {
+				margin-right: 16px;
+			}
+
+			.MuiInputAdornment-root {
+				button {
+					margin-right: 0;
+				}
+			}
+		}
+
+		// Button Wrapper
+		.btn-wrap {
+			margin-top: 24px;
+			flex-direction: row;
+			justify-content: flex-end;
+
+			button {
+				font-weight: 500;
+			}
+
+			button:nth-child(2) {
+				color: var(--carmo-text);
+				box-shadow: rgba(255, 184, 0, 0.24) 0px 8px 16px 0px;
+			}
+		}
+
+		// Common Buttons
+		.btn-complete {
+			color: var(--carmo-text);
+			box-shadow: rgba(255, 184, 0, 0.24) 0px 8px 16px 0px;
+		}
+
+		.btn-action {
+			position: static;
+			font-weight: 500;
+			color: var(--carmo-text);
+			border-radius: 8px;
+		}
+
+		.btn-add {
+			color: var(--carmo-text);
+			font-weight: 500;
+			box-shadow: rgba(255, 184, 0, 0.24) 0px 8px 16px 0px;
+		}
+
+		.btn-cancel {
+			color: var(--carmo-text-secondary);
+			border: 1px solid var(--carmo-border);
+		}
+
+		.btn-upload {
+			border: 1px dashed var(--carmo-border);
+		}
+
+		.btn-text {
+			color: var(--carmo-primary);
+		}
+
+		.btn-window {
+			color: var(--carmo-text-secondary);
+			margin-left: 8px;
+
+			svg {
+				font-size: 20px;
+			}
+		}
+
+		// Name Link Styles
+		.name a {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+}
+
+// Right Dashboard Settings Panel
+.right-dashboard-settings {
+	position: relative;
+	padding: 0 10px;
+	width: 360px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+
+	.top {
+		position: relative;
+		padding: 24px;
+		display: flex;
+		flex-direction: column;
+		border-bottom: 1px solid var(--carmo-border);
+		box-sizing: border-box;
+
+		h5 {
+			font-size: 20px;
+			font-family: $font;
+		}
+
+		p {
+			color: var(--carmo-text-secondary);
+			font-family: $font;
+		}
+
+		.close-icon {
+			position: absolute;
+			right: 8px;
+			cursor: pointer;
+			font-size: 20px;
+		}
+	}
+
+	.main {
+		position: relative;
+		padding: 16px 24px 24px 24px;
+		width: 100%;
+		height: auto;
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+
+		.switch-box {
+			width: 100%;
+			height: auto;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+
+			h6 {
+				font-size: 16px;
+				font-family: $font;
+				font-weight: 600;
+			}
+		}
+	}
+}
+

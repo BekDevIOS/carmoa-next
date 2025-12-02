@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import {
 	TableCell,
 	TableHead,
@@ -12,42 +11,25 @@ import {
 	Menu,
 	Fade,
 	MenuItem,
-	Box,
-	Checkbox,
-	Toolbar,
+	Chip,
 } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import { IconButton, Tooltip } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { NotePencil } from 'phosphor-react';
+import { Notice } from '../../../types/notice/notice';
+import { NoticeStatus, NoticeVisibleTo } from '../../../enums/notice.enum';
+import moment from 'moment';
 
-type Order = 'asc' | 'desc';
-
-interface Data {
-	category: string;
-	title: string;
-	id: string;
-	writer: string;
-	date: string;
-	view: number;
-	action: string;
-}
 interface HeadCell {
 	disablePadding: boolean;
-	id: keyof Data;
+	id: string;
 	label: string;
 	numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
-	{
-		id: 'category',
-		numeric: true,
-		disablePadding: false,
-		label: 'Category',
-	},
 	{
 		id: 'title',
 		numeric: true,
@@ -55,28 +37,28 @@ const headCells: readonly HeadCell[] = [
 		label: 'TITLE',
 	},
 	{
-		id: 'id',
+		id: 'content',
 		numeric: true,
 		disablePadding: false,
-		label: 'ID',
+		label: 'CONTENT PREVIEW',
 	},
 	{
-		id: 'writer',
+		id: 'visibleTo',
 		numeric: true,
 		disablePadding: false,
-		label: 'WRITER',
+		label: 'VISIBLE TO',
 	},
 	{
-		id: 'date',
+		id: 'status',
 		numeric: true,
 		disablePadding: false,
-		label: 'DATE',
+		label: 'STATUS',
 	},
 	{
-		id: 'view',
+		id: 'createdAt',
 		numeric: true,
 		disablePadding: false,
-		label: 'VIEW',
+		label: 'CREATED DATE',
 	},
 	{
 		id: 'action',
@@ -86,158 +68,174 @@ const headCells: readonly HeadCell[] = [
 	},
 ];
 
-interface EnhancedTableProps {
-	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	order: Order;
-	orderBy: string;
-	rowCount: number;
-}
-
-interface EnhancedTableToolbarProps {
-	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	order: Order;
-	orderBy: string;
-	rowCount: number;
-}
-
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-	const [select, setSelect] = useState('');
-	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-
+function EnhancedTableHead() {
 	return (
-		<>
-			{numSelected > 0 ? (
-				<>
-					<Toolbar>
-						<Box component={'div'}>
-							<Box component={'div'} className="flex_box">
-								<Checkbox
-									color="primary"
-									indeterminate={numSelected > 0 && numSelected < rowCount}
-									checked={rowCount > 0 && numSelected === rowCount}
-									onChange={onSelectAllClick}
-									inputProps={{
-										'aria-label': 'select all',
-									}}
-								/>
-								<Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="h6" component="div">
-									{numSelected} selected
-								</Typography>
-							</Box>
-							<Button variant={'text'} size={'large'}>
-								Delete
-							</Button>
-						</Box>
-					</Toolbar>
-				</>
-			) : (
-				<TableHead>
-					<TableRow>
-						<TableCell padding="checkbox">
-							<Checkbox
-								color="primary"
-								indeterminate={numSelected > 0 && numSelected < rowCount}
-								checked={rowCount > 0 && numSelected === rowCount}
-								onChange={onSelectAllClick}
-								inputProps={{
-									'aria-label': 'select all',
-								}}
-							/>
-						</TableCell>
-						{headCells.map((headCell) => (
-							<TableCell
-								key={headCell.id}
-								align={headCell.numeric ? 'left' : 'right'}
-								padding={headCell.disablePadding ? 'none' : 'normal'}
-							>
-								{headCell.label}
-							</TableCell>
-						))}
-					</TableRow>
-				</TableHead>
-			)}
-			{numSelected > 0 ? null : null}
-		</>
+		<TableHead>
+			<TableRow>
+				{headCells.map((headCell) => (
+					<TableCell
+						key={headCell.id}
+						align={headCell.numeric ? 'left' : 'center'}
+						padding={headCell.disablePadding ? 'none' : 'normal'}
+					>
+						{headCell.label}
+					</TableCell>
+				))}
+			</TableRow>
+		</TableHead>
 	);
-};
+}
 
 interface NoticeListType {
-	dense?: boolean;
-	membersData?: any;
-	searchMembers?: any;
-	anchorEl?: any;
-	handleMenuIconClick?: any;
-	handleMenuIconClose?: any;
-	generateMentorTypeHandle?: any;
+	notices: Notice[];
+	anchorEl: any;
+	menuIconClickHandler: (e: any, index: number) => void;
+	menuIconCloseHandler: () => void;
+	updateNoticeHandler: (updateData: any, _id: string) => void;
+	deleteNoticeHandler: (_id: string) => void;
+	openEditModal: (notice: Notice) => void;
 }
 
 export const NoticeList = (props: NoticeListType) => {
 	const {
-		dense,
-		membersData,
-		searchMembers,
+		notices,
 		anchorEl,
-		handleMenuIconClick,
-		handleMenuIconClose,
-		generateMentorTypeHandle,
+		menuIconClickHandler,
+		menuIconCloseHandler,
+		updateNoticeHandler,
+		deleteNoticeHandler,
+		openEditModal,
 	} = props;
 	const router = useRouter();
 
-	/** APOLLO REQUESTS **/
-	/** LIFECYCLES **/
-	/** HANDLERS **/
+	const getStatusColor = (status: NoticeStatus) => {
+		switch (status) {
+			case NoticeStatus.ACTIVE:
+				return 'success';
+			case NoticeStatus.DISABLED:
+				return 'error';
+			default:
+				return 'default';
+		}
+	};
+
+	const getVisibilityColor = (visibleTo: NoticeVisibleTo) => {
+		switch (visibleTo) {
+			case NoticeVisibleTo.ALL:
+				return 'primary';
+			case NoticeVisibleTo.USER:
+				return 'info';
+			case NoticeVisibleTo.DEALER:
+				return 'secondary';
+			default:
+				return 'default';
+		}
+	};
+
+	const stripHtml = (html: string) => {
+		const tmp = document.createElement('DIV');
+		tmp.innerHTML = html;
+		return tmp.textContent || tmp.innerText || '';
+	};
 
 	return (
 		<Stack>
 			<TableContainer>
-				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
-					{/*@ts-ignore*/}
-					<EnhancedTableToolbar />
+				<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+					<EnhancedTableHead />
 					<TableBody>
-						{[1, 2, 3, 4, 5].map((ele: any, index: number) => {
-							const member_image = '/img/profile/defaultUser.svg';
+						{notices?.length > 0 ? (
+							notices.map((notice: Notice, index: number) => {
+								const contentPreview = stripHtml(notice.content).substring(0, 80);
 
-							return (
-								<TableRow hover key={'member._id'} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell padding="checkbox">
-										<Checkbox color="primary" />
-									</TableCell>
-									<TableCell align="left">mb id</TableCell>
-									<TableCell align="left">member.mb_full_name</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
-									<TableCell align="left" className={'name'}>
-										<Stack direction={'row'}>
-											<Link href={`/_admin/users/detail?mb_id=$'{member._id'}`}>
-												<div>
-													<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
-												</div>
-											</Link>
-											<Link href={`/_admin/users/detail?mb_id=${'member._id'}`}>
-												<div>member.mb_nick</div>
-											</Link>
-										</Stack>
-									</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
-									<TableCell align="right">
-										<Tooltip title={'delete'}>
-											<IconButton>
-												<DeleteRoundedIcon />
-											</IconButton>
-										</Tooltip>
-										<Tooltip title="edit">
-											<IconButton onClick={() => router.push(`/_admin/cs/notice_create?id=notice._id`)}>
-												<NotePencil size={24} weight="fill" />
-											</IconButton>
-										</Tooltip>
-									</TableCell>
-								</TableRow>
-							);
-						})}
+								return (
+									<TableRow hover key={notice._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+										<TableCell align="left" sx={{ maxWidth: '250px' }}>
+											<Typography variant="body2" sx={{ fontWeight: 600 }}>
+												{notice.title}
+											</Typography>
+										</TableCell>
+										<TableCell align="left" sx={{ maxWidth: '300px' }}>
+											<Typography variant="body2" color="text.secondary" noWrap>
+												{contentPreview}
+												{notice.content.length > 80 && '...'}
+											</Typography>
+										</TableCell>
+										<TableCell align="left">
+											<Chip label={notice.visibleTo} color={getVisibilityColor(notice.visibleTo)} size="small" />
+										</TableCell>
+										<TableCell align="left">
+											<Button
+												onClick={(e: any) => menuIconClickHandler(e, index)}
+												className={`badge ${getStatusColor(notice.status)}`}
+												size="small"
+											>
+												{notice.status}
+											</Button>
+
+											<Menu
+												className={'menu-modal'}
+												MenuListProps={{
+													'aria-labelledby': 'fade-button',
+												}}
+												anchorEl={anchorEl[index]}
+												open={Boolean(anchorEl[index])}
+												onClose={menuIconCloseHandler}
+												TransitionComponent={Fade}
+												sx={{ p: 1 }}
+											>
+												<MenuItem
+													onClick={() =>
+														updateNoticeHandler({ status: NoticeStatus.ACTIVE }, notice._id)
+													}
+												>
+													<Typography variant={'subtitle1'} component={'span'}>
+														ACTIVE
+													</Typography>
+												</MenuItem>
+												<MenuItem
+													onClick={() =>
+														updateNoticeHandler({ status: NoticeStatus.DISABLED }, notice._id)
+													}
+												>
+													<Typography variant={'subtitle1'} component={'span'}>
+														DISABLED
+													</Typography>
+												</MenuItem>
+											</Menu>
+										</TableCell>
+										<TableCell align="left">
+											<Typography variant="body2">
+												{moment(notice.createdAt).format('YYYY-MM-DD')}
+											</Typography>
+											<Typography variant="caption" color="text.secondary">
+												{moment(notice.createdAt).format('HH:mm')}
+											</Typography>
+										</TableCell>
+										<TableCell align="center">
+											<Tooltip title="Edit">
+												<IconButton onClick={() => openEditModal(notice)} color="primary">
+													<NotePencil size={24} weight="fill" />
+												</IconButton>
+											</Tooltip>
+											<Tooltip title="Delete">
+												<IconButton onClick={() => deleteNoticeHandler(notice._id)} color="error">
+													<DeleteRoundedIcon />
+												</IconButton>
+											</Tooltip>
+										</TableCell>
+									</TableRow>
+								);
+							})
+						) : (
+							<TableRow>
+								<TableCell colSpan={6} align="center">
+									<Typography variant="body1" color="text.secondary" sx={{ py: 4 }}>
+										No notices found
+									</Typography>
+								</TableCell>
+							</TableRow>
+						)}
 					</TableBody>
 				</Table>
 			</TableContainer>

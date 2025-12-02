@@ -317,9 +317,9 @@ export const GET_COMMENTS = gql`
  *         ORDER        *
  *************************/
 
-export const GET_ORDERS = gql`
-	query GetOrders($input: OrdersInquiry!) {
-		getOrders(input: $input) {
+export const GET_ORDERS_BY_ADMIN = gql`
+	query GetOrdersByAdmin($input: OrdersInquiry!) {
+		getOrdersByAdmin(input: $input) {
 			list {
 				_id
 				memberId
@@ -345,22 +345,6 @@ export const GET_ORDERS = gql`
 					memberFullName
 					memberImage
 					memberAddress
-					memberDesc
-					memberProducts
-					memberArticles
-					memberFollowers
-					memberFollowings
-					memberPoints
-					memberLikes
-					memberViews
-					memberComments
-					memberRank
-					memberWarnings
-					memberBlocks
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
 					memberShippingAddress {
 						firstName
 						lastName
@@ -380,6 +364,22 @@ export const GET_ORDERS = gql`
 						postalCode
 						phone
 					}
+					memberDesc
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
 				}
 				orderItems {
 					_id
@@ -448,9 +448,55 @@ export const GET_ORDERS = gql`
 						deletedAt
 						createdAt
 						updatedAt
-						accessToken
-					}
+					accessToken
 				}
+			}
+		}
+		metaCounter {
+			total
+		}
+	}
+}
+`;
+
+/**************************
+ *         FAQ          *
+ *************************/
+
+export const GET_FAQ_LIST = gql`
+	query GetFaqList($input: FaqInquiry!) {
+		getFaqList(input: $input) {
+			list {
+				_id
+				category
+				question
+				answer
+				status
+				createdAt
+				updatedAt
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+/**************************
+ *        NOTICE        *
+ *************************/
+
+export const GET_NOTICE_LIST = gql`
+	query GetNoticeList($input: NoticeInquiryInput!) {
+		getNoticeList(input: $input) {
+			list {
+				_id
+				title
+				content
+				visibleTo
+				status
+				createdAt
+				updatedAt
 			}
 			metaCounter {
 				total

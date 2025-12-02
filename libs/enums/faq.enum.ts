@@ -1,0 +1,15 @@
+export enum FAQCategory {
+	ACCOUNT = 'ACCOUNT',
+	ORDER = 'ORDER',
+	PAYMENT = 'PAYMENT',
+	SHIPPING = 'SHIPPING',
+	RETURNS = 'RETURNS',
+	DEALER = 'DEALER',
+	GENERAL = 'GENERAL',
+}
+
+export enum FAQStatus {
+	ACTIVE = 'ACTIVE',
+	DISABLED = 'DISABLED',
+}
+

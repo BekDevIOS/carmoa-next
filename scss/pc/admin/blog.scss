@@ -1,0 +1,82 @@
+// Blog/Community Admin Styles
+
+#pc-wrap {
+	.content {
+		// Blog specific table styles
+		.table-wrap {
+			.info-community {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				a:visited {
+					color: var(--carmo-text-secondary);
+				}
+
+				.img-box {
+					width: 80px;
+					height: 80px;
+					margin-right: 12px;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+						border-radius: 4px;
+					}
+				}
+
+				p.text-ellipsis {
+					width: 280px;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+				}
+			}
+		}
+
+		// Blog editor styles
+		.content-area {
+			strong {
+				margin: 0 3px;
+			}
+
+			.tit {
+				font-size: 20px;
+				padding: 32px 24px;
+			}
+
+			.btn-upload {
+				flex-direction: column;
+
+				.img-area {
+					img {
+						width: 100%;
+					}
+				}
+			}
+
+			.comment {
+				height: 150px;
+
+				textarea {
+					width: 50%;
+					height: 80%;
+					padding: 10px;
+					font-size: 14px;
+					border: 1px solid var(--carmo-border);
+					border-radius: 4px;
+					resize: none;
+				}
+			}
+
+			.desc {
+				span {
+					color: var(--carmo-text-secondary);
+					margin-right: 4px;
+				}
+			}
+		}
+	}
+}
+

@@ -156,7 +156,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 	return (
 		<Box component={'div'} className={'content'}>
 			<Typography variant={'h2'} className={'tit'} sx={{ mb: '24px' }}>
-				Arricle List
+				Article List
 			</Typography>
 			<Box component={'div'} className={'table-wrap'}>
 				<Box component={'div'} sx={{ width: '100%', typography: 'body1' }}>
@@ -177,13 +177,13 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 								>
 									Active
 								</ListItem>
-								<ListItem
-									onClick={(e: any) => tabChangeHandler(e, 'DELETE')}
-									value="DELETE"
-									className={value === 'DELETE' ? 'li on' : 'li'}
-								>
-									Deleted
-								</ListItem>
+							<ListItem
+								onClick={(e: any) => tabChangeHandler(e, 'DELETED')}
+								value="DELETED"
+								className={value === 'DELETED' ? 'li on' : 'li'}
+							>
+								Deleted
+							</ListItem>
 							</List>
 							<Divider />
 							<Stack className={'search-area'} sx={{ m: '24px' }}>

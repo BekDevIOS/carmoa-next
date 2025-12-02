@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import { LightMode, DarkMode } from '@mui/icons-material';
+import { LightMode, DarkMode, NotificationsOutlined } from '@mui/icons-material';
 import { getJwtToken, logOut, updateUserInfo } from '../../auth';
 import { useReactiveVar } from '@apollo/client';
 import { userVar, themeVar } from '../../../apollo/store';
@@ -90,6 +90,32 @@ const withAdminLayout = (Component: ComponentType) => {
 									size="small"
 								>
 									{themeMode === 'light' ? <DarkMode /> : <LightMode />}
+								</IconButton>
+							</Tooltip>
+							<Tooltip title="Notifications">
+								<IconButton
+									onClick={() => router.push('/_admin/cs/notice')}
+									sx={{ 
+										mr: 1,
+										color: 'text.primary',
+										position: 'relative'
+									}}
+									size="small"
+								>
+									<NotificationsOutlined />
+									{/* Optional: Add notification badge for unread count */}
+									{/* <Box
+										component={'span'}
+										sx={{
+											position: 'absolute',
+											top: 8,
+											right: 8,
+											width: 8,
+											height: 8,
+											bgcolor: 'error.main',
+											borderRadius: '50%',
+										}}
+									/> */}
 								</IconButton>
 							</Tooltip>
 							<Tooltip title="Open settings">

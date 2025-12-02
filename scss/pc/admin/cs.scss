@@ -1,0 +1,43 @@
+// Customer Service (CS) Admin Styles - FAQ, Notice, Inquiry
+
+#pc-wrap {
+	.content {
+		// CS specific table styles
+		.table-wrap {
+			// FAQ specific
+			.faq-category-badge {
+				text-transform: uppercase;
+				font-weight: 500;
+			}
+
+			// Notice specific
+			.notice-content-preview {
+				max-width: 300px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			// Inquiry specific
+			.inquiry-status {
+				text-transform: capitalize;
+			}
+		}
+
+		// CS Modal Styles
+		.cs-modal {
+			.modal-header {
+				border-bottom: 1px solid var(--carmo-border);
+				padding-bottom: 16px;
+				margin-bottom: 24px;
+			}
+
+			.modal-footer {
+				border-top: 1px solid var(--carmo-border);
+				padding-top: 16px;
+				margin-top: 24px;
+			}
+		}
+	}
+}
+

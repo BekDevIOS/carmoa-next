@@ -1,0 +1,95 @@
+// Orders Admin Styles
+
+#pc-wrap {
+	.content {
+		// Order specific styles
+		.order-detail {
+			min-width: 1080px;
+
+			.order-info-area {
+				flex-direction: row;
+
+				& > ul {
+					flex: 1;
+				}
+
+				li {
+					padding: 16px 24px;
+				}
+
+				hr {
+					margin: 6px 10px;
+					border-color: var(--carmo-border);
+				}
+
+				span:first-child {
+					width: 220px;
+					min-width: 220px;
+				}
+			}
+
+			.payment-status {
+				&.success {
+					color: #229a16;
+					background: rgba(84, 214, 44, 0.16);
+				}
+
+				&.pending {
+					color: #f57c00;
+					background: rgba(245, 124, 0, 0.1);
+				}
+
+				&.failed {
+					color: #b72136;
+					background: rgba(255, 72, 66, 0.16);
+				}
+			}
+
+			.order-items {
+				margin-top: 24px;
+
+				.item-image {
+					width: 60px;
+					height: 60px;
+					margin-right: 12px;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+						border-radius: 4px;
+					}
+				}
+			}
+		}
+
+		// Order status badges
+		.order-status {
+			&.pending {
+				color: #f57c00;
+				background: rgba(245, 124, 0, 0.1);
+			}
+
+			&.processing {
+				color: #2196f3;
+				background: rgba(33, 150, 243, 0.1);
+			}
+
+			&.shipped {
+				color: #9c27b0;
+				background: rgba(156, 39, 176, 0.1);
+			}
+
+			&.delivered {
+				color: #229a16;
+				background: rgba(84, 214, 44, 0.16);
+			}
+
+			&.cancelled {
+				color: #b72136;
+				background: rgba(255, 72, 66, 0.16);
+			}
+		}
+	}
+}
+

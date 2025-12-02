@@ -35,9 +35,15 @@
 
 @import '/scss/pc/cs/cs.scss';
 
-// @import '/scss/pc/about/about.scss';
+@import '/scss/pc/admin/cs.scss';
+@import '/scss/pc/admin/blog.scss';
+@import '/scss/pc/admin/orders.scss';
+@import '/scss/pc/admin/products.scss';
+@import '/scss/pc/admin/users.scss';
+@import '/scss/pc/admin/common.scss';
 @import '/scss/pc/account/join.scss';
 @import '/scss/pc/admin/admin.scss';
+
 
 @import '/scss/pc/member/memberPage.scss';
 @import '/scss/pc/member/memberFollows.scss';

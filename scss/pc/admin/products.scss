@@ -1,0 +1,126 @@
+// Products Admin Styles
+
+#pc-wrap {
+	.content {
+		// Product specific styles
+		.product-detail {
+			min-width: 1080px;
+
+			.product-images {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 12px;
+				margin-bottom: 24px;
+
+				.image-item {
+					width: 120px;
+					height: 120px;
+					position: relative;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+						border-radius: 8px;
+						border: 1px solid var(--carmo-border);
+					}
+
+					.remove-btn {
+						position: absolute;
+						top: -8px;
+						right: -8px;
+						background: #b72136;
+						color: white;
+						width: 24px;
+						height: 24px;
+						border-radius: 50%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						cursor: pointer;
+						font-size: 16px;
+
+						&:hover {
+							background: #8b1a2a;
+						}
+					}
+				}
+			}
+
+			.product-info-area {
+				flex-direction: row;
+
+				& > ul {
+					flex: 1;
+				}
+
+				li {
+					padding: 16px 24px;
+				}
+
+				hr {
+					margin: 6px 10px;
+					border-color: var(--carmo-border);
+				}
+
+				span:first-child {
+					width: 220px;
+					min-width: 220px;
+					font-weight: 500;
+				}
+			}
+		}
+
+		// Product status badges
+		.product-status {
+			&.active {
+				color: #229a16;
+				background: rgba(84, 214, 44, 0.16);
+			}
+
+			&.sold {
+				color: #2196f3;
+				background: rgba(33, 150, 243, 0.1);
+			}
+
+			&.deleted {
+				color: #b72136;
+				background: rgba(255, 72, 66, 0.16);
+			}
+		}
+
+		// Product condition badges
+		.product-condition {
+			&.new {
+				color: #229a16;
+				background: rgba(84, 214, 44, 0.16);
+			}
+
+			&.used {
+				color: #f57c00;
+				background: rgba(245, 124, 0, 0.1);
+			}
+
+			&.refurbished {
+				color: #2196f3;
+				background: rgba(33, 150, 243, 0.1);
+			}
+		}
+
+		// Stock indicators
+		.stock-indicator {
+			&.in-stock {
+				color: #229a16;
+			}
+
+			&.low-stock {
+				color: #f57c00;
+			}
+
+			&.out-of-stock {
+				color: #b72136;
+			}
+		}
+	}
+}
+

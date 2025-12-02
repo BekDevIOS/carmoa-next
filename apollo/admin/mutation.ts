@@ -211,3 +211,79 @@ export const UPDATE_ORDER_BY_ADMIN = gql`
 		}
 	}
 `;
+
+/**************************
+ *         FAQ          *
+ *************************/
+
+export const CREATE_FAQ = gql`
+	mutation CreateFaq($input: FaqCreateInput!) {
+		createFaq(input: $input) {
+			_id
+			category
+			question
+			answer
+			status
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const UPDATE_FAQ = gql`
+	mutation UpdateFaq($input: FaqUpdateInput!) {
+		updateFaq(input: $input) {
+			_id
+			category
+			question
+			answer
+			status
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const DELETE_FAQ = gql`
+	mutation DeleteFaq($_id: String!) {
+		deleteFaq(_id: $_id)
+	}
+`;
+
+/**************************
+ *        NOTICE        *
+ *************************/
+
+export const CREATE_NOTICE = gql`
+	mutation CreateNotice($input: NoticeCreateInput!) {
+		createNotice(input: $input) {
+			_id
+			title
+			content
+			visibleTo
+			status
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const UPDATE_NOTICE = gql`
+	mutation UpdateNotice($input: NoticeUpdateInput!) {
+		updateNotice(input: $input) {
+			_id
+			title
+			content
+			visibleTo
+			status
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const DELETE_NOTICE = gql`
+	mutation DeleteNotice($_id: String!) {
+		deleteNotice(_id: $_id)
+	}
+`;

@@ -1,11 +1,11 @@
-export enum NoticeCategory {
-	FAQ = 'FAQ',
-	TERMS = 'TERMS',
-	INQUIRY = 'INQUIRY',
+
+export enum NoticeVisibleTo {
+	USER = 'USER',
+	DEALER = 'DEALER',
+	ALL = 'ALL',
 }
 
 export enum NoticeStatus {
-	HOLD = 'HOLD',
 	ACTIVE = 'ACTIVE',
-	DELETE = 'DELETE',
+	DISABLED = 'DISABLED',
 }

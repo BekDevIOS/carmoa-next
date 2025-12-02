@@ -1342,3 +1342,52 @@ export const GET_ORDERS_BY_DEALER = gql`
 		}
 	}
 `;
+
+/**************************
+ *         FAQ          *
+ *************************/
+
+export const GET_PUBLIC_FAQ_LIST = gql`
+	query GetPublicFaqList {
+		getPublicFaqList {
+			_id
+			category
+			question
+			answer
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+/**************************
+ *        NOTICE        *
+ *************************/
+
+export const GET_PUBLIC_NOTICE_LIST = gql`
+	query GetPublicNoticeList {
+		getPublicNoticeList {
+			_id
+			title
+			content
+			visibleTo
+			status
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const GET_NOTICE_DETAIL = gql`
+	query GetNoticeDetail($_id: String!) {
+		getNoticeDetail(_id: $_id) {
+			_id
+			title
+			content
+			visibleTo
+			status
+			createdAt
+			updatedAt
+		}
+	}
+`;
