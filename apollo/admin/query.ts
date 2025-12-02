@@ -12,20 +12,44 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 				memberType
 				memberStatus
 				memberAuthType
+				memberProvider
 				memberPhone
+				memberEmail
 				memberNick
 				memberFullName
 				memberImage
 				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
 				memberDesc
-				memberWarnings
-				memberBlocks
-				memberProperties
-				memberRank
+				memberProducts
 				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
@@ -39,33 +63,39 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 `;
 
 /**************************
- *        PROPERTY        *
+ *        PRODUCT        *
  *************************/
 
-export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
-	query GetAllPropertiesByAdmin($input: AllPropertiesInquiry!) {
-		getAllPropertiesByAdmin(input: $input) {
+export const GET_ALL_PRODUCTS_BY_ADMIN = gql`
+	query GetAllProductsByAdmin($input: AllProductsInquiry!) {
+		getAllProductsByAdmin(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
+				productType
+				productStatus
+				productCondition
+				ratingAverage
+				ratingCount
+				productMainCategory
+				productSubCategory
+				productCarBrand
+				productCarModel
+				productYearFrom
+				productYearTo
+				productOemNumbers
+				productTitle
+				productPrice
+				productSalePrice
+				productStock
+				productViews
+				productLikes
+				productComments
+				productRank
+				productImages
+				productDescription
+				dealerId
 				soldAt
 				deletedAt
-				constructedAt
 				createdAt
 				updatedAt
 				memberData {
@@ -73,23 +103,53 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 					memberType
 					memberStatus
 					memberAuthType
+					memberProvider
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
 					accessToken
+				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
 				}
 			}
 			metaCounter {
@@ -115,27 +175,58 @@ export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
 				articleImage
 				articleViews
 				articleLikes
+				articleComments
 				memberId
 				createdAt
 				updatedAt
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
+				}
 				memberData {
 					_id
 					memberType
 					memberStatus
 					memberAuthType
+					memberProvider
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
@@ -163,6 +254,7 @@ export const GET_COMMENTS = gql`
 				commentContent
 				commentRefId
 				memberId
+				rating
 				createdAt
 				updatedAt
 				memberData {
@@ -170,23 +262,210 @@ export const GET_COMMENTS = gql`
 					memberType
 					memberStatus
 					memberAuthType
+					memberProvider
 					memberPhone
+					memberEmail
 					memberNick
 					memberFullName
 					memberImage
 					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
 					accessToken
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+
+/**************************
+ *         ORDER        *
+ *************************/
+
+export const GET_ORDERS = gql`
+	query GetOrders($input: OrdersInquiry!) {
+		getOrders(input: $input) {
+			list {
+				_id
+				memberId
+				orderStatus
+				paymentStatus
+				paymentMethod
+				totalPrice
+				shippingFee
+				notes
+				deliveredAt
+				cancelledAt
+				createdAt
+				updatedAt
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberProvider
+					memberPhone
+					memberEmail
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberShippingAddress {
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberBillingAddress {
+						country
+						firstName
+						lastName
+						address1
+						address2
+						city
+						postalCode
+						phone
+					}
+					memberDesc
+					memberProducts
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+					accessToken
+				}
+				orderItems {
+					_id
+					orderId
+					productId
+					itemQuantity
+					itemPrice
+					createdAt
+					updatedAt
+					product {
+						_id
+						productType
+						productStatus
+						productCondition
+						productMainCategory
+						productSubCategory
+						productCarBrand
+						productCarModel
+						productYearFrom
+						productYearTo
+						productOemNumbers
+						productTitle
+						productPrice
+						productSalePrice
+						productStock
+						productViews
+						productLikes
+						productComments
+						productRank
+						productImages
+						productDescription
+						dealerId
+						soldAt
+						deletedAt
+						createdAt
+						updatedAt
+						memberData {
+							_id
+							memberType
+							memberStatus
+							memberAuthType
+							memberProvider
+							memberPhone
+							memberEmail
+							memberNick
+							memberFullName
+							memberImage
+							memberAddress
+							memberShippingAddress {
+								firstName
+								lastName
+								address1
+								address2
+								city
+								postalCode
+								phone
+							}
+							memberBillingAddress {
+								country
+								firstName
+								lastName
+								address1
+								address2
+								city
+								postalCode
+								phone
+							}
+							memberDesc
+							memberProducts
+							memberArticles
+							memberFollowers
+							memberFollowings
+							memberPoints
+							memberLikes
+							memberViews
+							memberComments
+							memberRank
+							memberWarnings
+							memberBlocks
+							deletedAt
+							createdAt
+							updatedAt
+							accessToken
+						}
+					}
 				}
 			}
 			metaCounter {

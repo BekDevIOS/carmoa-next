@@ -22,6 +22,8 @@ export interface BoardArticlesInquiry {
 
 interface AIBSearch {
 	memberId?: string;
+	articleStatus?: BoardArticleStatus;
+	articleCategory?: BoardArticleCategory;
 	text?: string;
 }
 

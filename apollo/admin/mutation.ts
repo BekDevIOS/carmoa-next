@@ -11,18 +11,42 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
 			memberType
 			memberStatus
 			memberAuthType
+			memberProvider
 			memberPhone
+			memberEmail
 			memberNick
 			memberFullName
 			memberImage
 			memberAddress
+			memberShippingAddress {
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
+			memberBillingAddress {
+				country
+				firstName
+				lastName
+				address1
+				address2
+				city
+				postalCode
+				phone
+			}
 			memberDesc
-			memberProperties
-			memberRank
+			memberProducts
 			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
 			memberWarnings
 			memberBlocks
 			deletedAt
@@ -34,61 +58,69 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
 `;
 
 /**************************
- *        PROPERTY        *
+ *        PRODUCT        *
  *************************/
 
-export const UPDATE_PROPERTY_BY_ADMIN = gql`
-	mutation UpdatePropertyByAdmin($input: PropertyUpdate!) {
-		updatePropertyByAdmin(input: $input) {
+export const UPDATE_PRODUCT_BY_ADMIN = gql`
+	mutation UpdateProductByAdmin($input: ProductUpdate!) {
+		updateProductByAdmin(input: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
+			productType
+			productStatus
+			productCondition
+			productMainCategory
+			productSubCategory
+			productCarBrand
+			productCarModel
+			productYearFrom
+			productYearTo
+			productOemNumbers
+			productTitle
+			productPrice
+			productSalePrice
+			productStock
+			productViews
+			productLikes
+			productComments
+			productRank
+			productImages
+			productDescription
+			dealerId
 			soldAt
 			deletedAt
-			constructedAt
 			createdAt
 			updatedAt
 		}
 	}
 `;
 
-export const REMOVE_PROPERTY_BY_ADMIN = gql`
-	mutation RemovePropertyByAdmin($input: String!) {
-		removePropertyByAdmin(propertyId: $input) {
+export const REMOVE_PRODUCT_BY_ADMIN = gql`
+	mutation RemoveProductByAdmin($input: String!) {
+		removeProductByAdmin(productId: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
+			productType
+			productStatus
+			productCondition
+			productMainCategory
+			productSubCategory
+			productCarBrand
+			productCarModel
+			productYearFrom
+			productYearTo
+			productOemNumbers
+			productTitle
+			productPrice
+			productSalePrice
+			productStock
+			productViews
+			productLikes
+			productComments
+			productRank
+			productImages
+			productDescription
+			dealerId
 			soldAt
 			deletedAt
-			constructedAt
 			createdAt
 			updatedAt
 		}
@@ -110,6 +142,7 @@ export const UPDATE_BOARD_ARTICLE_BY_ADMIN = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
@@ -128,6 +161,7 @@ export const REMOVE_BOARD_ARTICLE_BY_ADMIN = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
@@ -148,8 +182,118 @@ export const REMOVE_COMMENT_BY_ADMIN = gql`
 			commentContent
 			commentRefId
 			memberId
+			rating
 			createdAt
 			updatedAt
+		}
+	}
+`;
+
+/**************************
+ *         ORDER        *
+ *************************/
+
+export const UPDATE_ORDER_BY_ADMIN = gql`
+	mutation UpdateOrder($input: OrderUpdate!) {
+		updateOrder(input: $input) {
+			_id
+			memberId
+			orderStatus
+			paymentStatus
+			paymentMethod
+			totalPrice
+			shippingFee
+			notes
+			deliveredAt
+			cancelledAt
+			createdAt
+			updatedAt
+			memberData {
+				_id
+				memberType
+				memberStatus
+				memberAuthType
+				memberProvider
+				memberPhone
+				memberEmail
+				memberNick
+				memberFullName
+				memberImage
+				memberAddress
+				memberShippingAddress {
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberBillingAddress {
+					country
+					firstName
+					lastName
+					address1
+					address2
+					city
+					postalCode
+					phone
+				}
+				memberDesc
+				memberProducts
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
+				createdAt
+				updatedAt
+				accessToken
+			}
+			orderItems {
+				_id
+				orderId
+				productId
+				itemQuantity
+				itemPrice
+				createdAt
+				updatedAt
+				product {
+					_id
+					productType
+					productStatus
+					productCondition
+					productMainCategory
+					productSubCategory
+					productCarBrand
+					productCarModel
+					productYearFrom
+					productYearTo
+					productOemNumbers
+					productTitle
+					productPrice
+					productSalePrice
+					productStock
+					productViews
+					productLikes
+					productComments
+					productRank
+					productImages
+					productDescription
+					dealerId
+					soldAt
+					deletedAt
+					createdAt
+					updatedAt
+
+				}
+			}
 		}
 	}
 `;

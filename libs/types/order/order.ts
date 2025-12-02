@@ -10,12 +10,14 @@ export interface OrderItem {
 	itemPrice: number;
 	createdAt: Date;
 	updatedAt: Date;
+	
 	product?: Product;
 }
 
 export interface Order {
 	_id: string;
 	memberId: string;
+	dealerId: string;
 	orderStatus: OrderStatus;
 	paymentStatus: PaymentStatus;
 	paymentMethod: PaymentMethod;
@@ -24,11 +26,11 @@ export interface Order {
 	notes?: string;
 	deliveredAt?: Date;
 	cancelledAt?: Date;
-	createdAt: Date;
-	updatedAt: Date;
 	memberData?: Member;
 	orderItems?: OrderItem[];
 	productData?: Product;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface TotalCounter {

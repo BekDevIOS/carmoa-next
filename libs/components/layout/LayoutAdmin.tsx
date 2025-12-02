@@ -13,9 +13,10 @@ import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import { LightMode, DarkMode } from '@mui/icons-material';
 import { getJwtToken, logOut, updateUserInfo } from '../../auth';
 import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
+import { userVar, themeVar } from '../../../apollo/store';
 import { getMemberImageUrl } from '../../config';
 import { MemberType } from '../../enums/member.enum';
 const drawerWidth = 280;
@@ -24,6 +25,7 @@ const withAdminLayout = (Component: ComponentType) => {
 	return (props: object) => {
 		const router = useRouter();
 		const user = useReactiveVar(userVar);
+		const themeMode = useReactiveVar(themeVar);
 		const [settingsState, setSettingsStateState] = useState(false);
 		const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 		const [openMenu, setOpenMenu] = useState(false);
@@ -58,6 +60,11 @@ const withAdminLayout = (Component: ComponentType) => {
 			router.push('/').then();
 		};
 
+		const handleThemeToggle = () => {
+			const newMode = themeMode === 'light' ? 'dark' : 'light';
+			themeVar(newMode);
+		};
+
 		if (!user || user?.memberType !== MemberType.ADMIN) return null;
 
 		return (
@@ -73,6 +80,18 @@ const withAdminLayout = (Component: ComponentType) => {
 						}}
 					>
 						<Toolbar>
+							<Tooltip title={themeMode === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>
+								<IconButton
+									onClick={handleThemeToggle}
+									sx={{ 
+										mr: 1,
+										color: 'text.primary'
+									}}
+									size="small"
+								>
+									{themeMode === 'light' ? <DarkMode /> : <LightMode />}
+								</IconButton>
+							</Tooltip>
 							<Tooltip title="Open settings">
 								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 									<Avatar
@@ -108,7 +127,7 @@ const withAdminLayout = (Component: ComponentType) => {
 										<Typography variant={'h6'} component={'h6'} sx={{ mb: '4px' }}>
 											{user?.memberNick}
 										</Typography>
-										<Typography variant={'subtitle1'} component={'p'} color={'#757575'}>
+										<Typography variant={'subtitle1'} component={'p'} sx={{ color: 'text.secondary' }}>
 											{user?.memberPhone}
 										</Typography>
 									</Stack>
@@ -140,7 +159,7 @@ const withAdminLayout = (Component: ComponentType) => {
 					>
 						<Toolbar sx={{ flexDirection: 'column', alignItems: 'flexStart' }}>
 							<Stack className={'logo-box'}>
-								<img src={'/img/logo/logoText.svg'} alt={'logo'} />
+								<img src={'/img/logo/favicon.png'} alt={'logo'} />
 							</Stack>
 
 							<Stack
