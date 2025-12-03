@@ -8,10 +8,6 @@ import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
-
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
 import TopHeader from '../TopHeader';
 import MainHeader from '../MainHeader';
 import FeatureCard from '../FeatureCard';
@@ -23,6 +19,10 @@ import Cart from '../Cart';
 import { Product } from '../../types/product/product';
 import { getJwtToken, updateUserInfo } from '../../auth';
 import { useCart } from '../../hooks/useCart';
+import Chat from '../Chat';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const withLayoutBasic = (Component: any) => {
 	return (props: any) => {
@@ -157,6 +157,7 @@ const withLayoutBasic = (Component: any) => {
 								</Stack>
 							</div>
 						</Stack>
+						<Chat />
 						<Stack id={'footer'}>
 							<Footer />
 						</Stack>

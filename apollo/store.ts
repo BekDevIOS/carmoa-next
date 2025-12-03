@@ -86,6 +86,9 @@ export const userVar = makeVar<CustomJwtPayload>({
 	memberProperties: 0, // Keep for backward compatibility
 });
 
+// @ts-ignore
+export const socketVar = makeVar<WebSocket>();
+
 // QuickView State - Updated to use Product type
 export interface QuickViewState {
 	isOpen: boolean;

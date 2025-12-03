@@ -1461,7 +1461,7 @@
 		.overlay-wrapper {
 			margin-top: 140px;
 			width: 100%;
-			max-width: 1600px;
+			max-width: 1300px;
 			padding-left: 0;
 			padding-right: 0;
 			display: grid;
@@ -1591,8 +1591,8 @@
 				.category-card {
 					border-radius: 20px;
 					overflow: hidden;
-					width: 390px;
-					height: 500px;
+					width: 320px;
+					height: 400px;
 					padding-bottom: 20px;
 					position: relative;
 					background-color: var(--carmo-bg-soft);
@@ -1600,7 +1600,7 @@
 
 					.card-image-wrapper {
 						width: 100%;
-						height: 389px;
+						height: 320px;
 						overflow: hidden;
 						margin-bottom: 16px;
 						position: relative;
@@ -1632,7 +1632,7 @@
 						padding-right: 20px;
 
 						.card-title {
-							font-size: 24px;
+							font-size: 20px;
 							font-weight: 700;
 							margin-bottom: 8px;
 							color: var(--carmo-text);
@@ -1640,7 +1640,7 @@
 
 						.card-subtitle {
 							color: var(--carmo-text-secondary);
-							font-size: 18px;
+							font-size: 16px;
 						}
 					}
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import PartCategoryCard from './PartCategoryCard';
 import 'swiper/css';
 
 const PartCategories = () => {
+	const router = useRouter();
 	const categories = [
 		{
 			id: 1,
@@ -38,13 +40,33 @@ const PartCategories = () => {
 		},
 	];
 
+	const handleCategoryClick = (categoryTitle: string) => {
+		const searchParams = {
+			page: 1,
+			limit: 9,
+			sort: 'createdAt',
+			direction: 'DESC',
+			search: {
+				mainCategoryList: [categoryTitle],
+			},
+		};
+
+		const queryString = `input=${JSON.stringify(searchParams)}`;
+		router.push(`/product?${queryString}`);
+	};
+
 	return (
 		<Stack className={'part-categories'}>
 			<Stack className={'container'}>
 				<Swiper spaceBetween={15} slidesPerView={5} className={'categories-swiper'}>
 					{categories.map((category) => (
 						<SwiperSlide key={category.id} className={'category-slide'}>
-							<PartCategoryCard image={category.image} hoverImage={category.hoverImage} title={category.title} />
+							<PartCategoryCard
+								image={category.image}
+								hoverImage={category.hoverImage}
+								title={category.title}
+								onClick={() => handleCategoryClick(category.title)}
+							/>
 						</SwiperSlide>
 					))}
 				</Swiper>

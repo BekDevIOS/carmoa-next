@@ -5,9 +5,10 @@ interface PartCategoryCardProps {
 	image: string;
 	hoverImage?: string;
 	title: string;
+	onClick?: () => void;
 }
 
-const PartCategoryCard = ({ image, hoverImage, title }: PartCategoryCardProps) => {
+const PartCategoryCard = ({ image, hoverImage, title, onClick }: PartCategoryCardProps) => {
 	const [isHovered, setIsHovered] = useState(false);
 
 	return (
@@ -15,6 +16,8 @@ const PartCategoryCard = ({ image, hoverImage, title }: PartCategoryCardProps) =
 			className={'part-category-card'}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
+			onClick={onClick}
+			sx={{ cursor: onClick ? 'pointer' : 'default' }}
 		>
 			<Box className={'card-image-wrapper'}>
 				<img
