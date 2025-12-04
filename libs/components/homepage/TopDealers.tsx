@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Stack, Box } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,6 +22,7 @@ interface TopDealerProps {
 
 const TopDealers = (props: TopDealerProps) => {
 	const { initialInput } = props;
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [topDealers, setTopDealers] = useState<Member[]>([]);
@@ -50,7 +52,7 @@ const TopDealers = (props: TopDealerProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<span>
-							<span className={'title-highlight'}>TOP</span> DEALERS
+							<span className={'title-highlight'}>{t('TOP')}</span> {t('DEALERS')}
 						</span>
 					</Stack>
 					<Stack className={'wrapper'}>
@@ -80,13 +82,13 @@ const TopDealers = (props: TopDealerProps) => {
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
 							<span>
-								<span className={'title-highlight'}>TOP</span> DEALERS
+								<span className={'title-highlight'}>{t('TOP')}</span> {t('DEALERS')}
 							</span>
-							<p>Our Top Dealers always ready to serve you</p>
+							<p>{t('Our Top Dealers always ready to serve you')}</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'more-box'}>
-								<span>See All Dealers</span>
+								<span>{t('See All Dealers')}</span>
 								<img src="/img/icons/rightup.svg" alt="" />
 							</div>
 						</Box>

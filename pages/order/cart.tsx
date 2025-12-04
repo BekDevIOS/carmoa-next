@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { Stack, Box, Typography, Button } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import CartContent, { CartItem } from '../../libs/components/order/CartContent';
@@ -10,6 +11,12 @@ import CheckoutSummaryPanel from '../../libs/components/order/CheckoutSummaryPan
 import { T } from '../../libs/types/common';
 import { useCart } from '../../libs/hooks/useCart';
 import { REACT_APP_API_URL } from '../../libs/config';
+
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const CartPage: NextPage = (props: T) => {
 	const device = useDeviceDetect();

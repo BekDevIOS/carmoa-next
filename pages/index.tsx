@@ -9,6 +9,13 @@ import TopProducts from '../libs/components/homepage/TopProducts';
 import LatestBlogs from '../libs/components/homepage/LatestBlogs';
 import Events from '../libs/components/homepage/Events';
 import { Stack } from '@mui/material';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 function Home() {
 	return (

@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { NextPage } from 'next';
 import { useReactiveVar } from '@apollo/client';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { themeVar } from '../../apollo/store';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
@@ -9,6 +10,12 @@ import { useRouter } from 'next/router';
 import { logIn, signUp } from '../../libs/auth';
 import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
 import GoogleLoginButton from '../../libs/components/common/GoogleLoginButton';
+
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const Join: NextPage = () => {
 	const router = useRouter();

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Box, Typography, Button, Stack, Avatar, Paper, IconButton } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
+import { useTranslation } from 'next-i18next';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
@@ -15,6 +16,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const HeroBannerOverlay = () => {
+	const { t } = useTranslation('common');
 	const swiperRef = useRef<any>(null);
 	const router = useRouter();
 
@@ -106,19 +108,18 @@ const HeroBannerOverlay = () => {
 					<Box className="badge">
 						<StorefrontIcon className="badge-icon" />
 						<Typography variant="body2" className="badge-text">
-							The Best Online Auto Parts Store
+							{t('The Best Online Auto Parts Store')}
 						</Typography>
 					</Box>
 
 					{/* Main Heading */}
 					<Typography variant="h2" className="main-heading">
-						Premium Auto Parts for Every Car
+						{t('Premium Auto Parts for Every Car')}
 					</Typography>
 
 					{/* Sub Text */}
 					<Typography variant="body1" className="sub-text">
-						Discover high-quality auto parts from trusted brands. Fast delivery, competitive prices, and reliable
-						service.
+						{t('Discover high-quality auto parts from trusted brands. Fast delivery, competitive prices, and reliable service.')}
 					</Typography>
 
 					{/* Buttons Row */}
@@ -130,14 +131,14 @@ const HeroBannerOverlay = () => {
 							endIcon={<ArrowForwardIcon />}
 							onClick={() => router.push('/product')}
 						>
-							Shop Now
+							{t('Shop Now')}
 						</Button>
 						<Button
 							variant="text"
 							className="view-all-btn"
 							onClick={() => router.push('/product')}
 						>
-							View All Products
+							{t('View All Products')}
 						</Button>
 					</Stack>
 
@@ -152,10 +153,10 @@ const HeroBannerOverlay = () => {
 						</Box>
 						<Stack direction="column" spacing={0.5} className="rating-text">
 							<Typography variant="h6" className="rating-title">
-								4.9 Ratings+
+								4.9 {t('Ratings')}+
 							</Typography>
 							<Typography variant="caption" className="rating-subtitle">
-								Trusted by 50k+ Customers
+								{t('Trusted by 50k+ Customers')}
 							</Typography>
 						</Stack>
 					</Stack>
@@ -192,10 +193,10 @@ const HeroBannerOverlay = () => {
 									</Box>
 									<Box className="card-content">
 										<Typography variant="h6" className="card-title">
-											{card.title}
+											{t(card.title)}
 										</Typography>
 										<Typography variant="body2" className="card-subtitle">
-											{card.subtitle}
+											{card.subtitle.replace('items', t('items'))}
 										</Typography>
 									</Box>
 									<IconButton className="card-action-btn" onClick={() => handleCardClick(card.title)}>

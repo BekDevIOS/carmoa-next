@@ -1,5 +1,6 @@
 import { Menu, MenuItem, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import IconButton from '@mui/material/IconButton';
 import ModeIcon from '@mui/icons-material/Mode';
@@ -20,10 +21,20 @@ interface ProductCardProps {
 
 export const ProductCard = (props: ProductCardProps) => {
 	const { product, deleteProductHandler, memberPage, updateProductHandler } = props;
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+
+	// Format category name for display with translation
+	const formatCategoryName = (category: string): string => {
+		const formatted = category
+			.split('_')
+			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+			.join(' ');
+		return t(formatted);
+	};
 
 	/** HANDLERS **/
 	const pushEditProduct = async (id: string) => {
@@ -65,12 +76,12 @@ export const ProductCard = (props: ProductCardProps) => {
 				<Stack className="information-box" onClick={() => pushProductDetail(product?._id)}>
 					<Typography className="name">{product.productTitle}</Typography>
 					<Typography className="quantity" style={{ fontSize: '11px', color: 'var(--carmo-text-secondary)', marginBottom: '8px' }}>
-						Quantity: {product.productStock?.toLocaleString() || 0}
+						{t('Quantity')}: {product.productStock?.toLocaleString() || 0}
 					</Typography>
 					<Stack className="category-box" direction="row" spacing={1}>
-						<Typography className="category">{product.productMainCategory}</Typography>
+						<Typography className="category">{formatCategoryName(product.productMainCategory)}</Typography>
 						<Typography className="category-separator">•</Typography>
-						<Typography className="category">{product.productSubCategory}</Typography>
+						<Typography className="category">{formatCategoryName(product.productSubCategory)}</Typography>
 					</Stack>
 					<Typography className="price">
 						{product.productSalePrice && product.productSalePrice > 0 ? (

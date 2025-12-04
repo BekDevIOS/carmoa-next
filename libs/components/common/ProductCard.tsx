@@ -1,5 +1,6 @@
 import React, { MouseEvent, useState } from 'react';
 import { Stack, Box, Typography, Tooltip } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import {
 	FavoriteBorder as FavoriteBorderIcon,
 	CompareArrows as CompareArrowsIcon,
@@ -38,6 +39,7 @@ const ProductCard = ({
 	compareHandler,
 	quickViewHandler,
 }: ProductCardProps) => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
@@ -75,7 +77,7 @@ const ProductCard = ({
 					{product.productSalePrice && product.productSalePrice > 0 && (
 						<Box className={'sale-badge'}>
 							<Typography variant="caption" className={'sale-text'}>
-								SALE
+								{t('SALE')}
 							</Typography>
 						</Box>
 					)}
@@ -94,7 +96,7 @@ const ProductCard = ({
 								<FavoriteBorderIcon className={'icon'} />
 							)}
 						</Box>
-						<Tooltip title={isInCompare ? 'Remove from Compare' : 'Add to Compare'} arrow>
+						<Tooltip title={isInCompare ? t('Remove from Compare') : t('Add to Compare')} arrow>
 							<Box
 								className={`action-icon ${isInCompare ? 'compared' : ''}`}
 								onClick={(event) => {
@@ -154,7 +156,7 @@ const ProductCard = ({
 
 							return (
 								<Typography variant="caption" className={'rating-count'}>
-									No ratings yet
+									{t('No ratings yet')}
 								</Typography>
 							);
 						})()}

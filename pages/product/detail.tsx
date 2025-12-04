@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Box, Button, Checkbox, Stack, Typography, Tabs, Tab, OutlinedInput, Chip, IconButton, CircularProgress } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { NextPage } from 'next';
@@ -68,6 +69,7 @@ type ProductDetailData = Product & {
 };
 
 const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
@@ -225,10 +227,11 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const formatText = (value?: string | number | null) => {
 		if (value === undefined || value === null) return '';
 		if (typeof value === 'number') return value.toString();
-		return value
+		const formatted = value
 			.split('_')
 			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
 			.join(' ');
+		return t(formatted);
 	};
 
 	const productImages = useMemo(() => {
@@ -256,8 +259,8 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const additionalInfoEntries = useMemo(() => {
 		if (!product) return [];
 		const info: [string, string][] = [];
-		if (product.productCarBrand) info.push(['Brand', formatText(product.productCarBrand)]);
-		if (product.productCarModel) info.push(['Model', product.productCarModel]);
+		if (product.productCarBrand) info.push([t('Brand'), formatText(product.productCarBrand)]);
+		if (product.productCarModel) info.push([t('Model'), product.productCarModel]);
 		if (product.productYearFrom || product.productYearTo) {
 			const range =
 				product.productYearFrom && product.productYearTo
@@ -265,12 +268,12 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 					: product.productYearFrom
 					? `${product.productYearFrom}+`
 					: `${product.productYearTo}`;
-			info.push(['Year Range', range]);
+			info.push([t('Year Range'), range]);
 		}
-		if (product.productCondition) info.push(['Condition', formatText(product.productCondition)]);
-		if (product.productMainCategory) info.push(['Main Category', formatText(product.productMainCategory)]);
-		if (product.productSubCategory) info.push(['Sub Category', formatText(product.productSubCategory)]);
-		if (product.productOemNumbers?.length) info.push(['OEM Numbers', product.productOemNumbers.join(', ')]);
+		if (product.productCondition) info.push([t('Condition'), formatText(product.productCondition)]);
+		if (product.productMainCategory) info.push([t('Main Category'), formatText(product.productMainCategory)]);
+		if (product.productSubCategory) info.push([t('Sub Category'), formatText(product.productSubCategory)]);
+		if (product.productOemNumbers?.length) info.push([t('OEM Numbers'), product.productOemNumbers.join(', ')]);
 		return info;
 	}, [product]);
 
@@ -289,8 +292,8 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	const stockStatus = useMemo(() => {
 		if (product?.productStock === undefined) return undefined;
-		return product.productStock > 0 ? 'In stock' : 'Out of stock';
-	}, [product?.productStock]);
+		return product.productStock > 0 ? t('In stock') : t('Out of stock');
+	}, [product?.productStock, t]);
 
 	const isOnSale = Boolean(product?.productSalePrice && product.productSalePrice > 0);
 
@@ -762,7 +765,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 							{/* Category */}
 							{product?.productMainCategory && (
 								<Typography className={'product-category'}>
-									Category:{' '}
+									{t('Category')}:{' '}
 									<Link href={`/product?category=${product.productMainCategory}`}>
 										{formatText(product.productMainCategory)}
 									</Link>

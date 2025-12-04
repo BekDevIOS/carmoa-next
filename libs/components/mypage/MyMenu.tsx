@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography, Box, List, ListItem, useTheme } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Link from 'next/link';
 import { useReactiveVar } from '@apollo/client';
@@ -26,6 +27,7 @@ import { logOut } from '../../auth';
 import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
 const MyMenu = () => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const theme = useTheme();
@@ -44,7 +46,7 @@ const MyMenu = () => {
 	/** HANDLERS **/
 	const logoutHandler = async () => {
 		try {
-			if (await sweetConfirmAlert('Do you want to logout?')) logOut();
+			if (await sweetConfirmAlert(t('Do you want to logout?'))) logOut();
 		} catch (err: any) {
 			console.log('ERROR, logoutHandler:', err.message);
 		}
@@ -80,7 +82,7 @@ const MyMenu = () => {
 				<Stack className={'sections'}>
 					<Stack className={'section'} style={{ height: user.memberType === 'DEALER' ? '270px' : '195px' }}>
 						<Typography className="title" variant={'h5'}>
-							My Activity
+							{t('My Activity')}
 						</Typography>
 						<List className={'sub-section'}>
 							{user.memberType === 'DEALER' && (
@@ -102,7 +104,7 @@ const MyMenu = () => {
 													}}
 												/>
 												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-													Add Product
+													{t('Add Product')}
 												</Typography>
 												<IconButton aria-label="delete" sx={{ ml: '36px' }}>
 													<PortraitIcon style={{ color: 'red' }} />
@@ -127,7 +129,7 @@ const MyMenu = () => {
 													}}
 												/>
 												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-													My Products
+													{t('My Products')}
 												</Typography>
 												<IconButton aria-label="delete" sx={{ ml: '36px' }}>
 													<PortraitIcon style={{ color: 'red' }} />
@@ -155,7 +157,7 @@ const MyMenu = () => {
 										/>
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											Orders
+											{t('Orders')}
 										</Typography>
 									</div>
 								</Link>
@@ -188,7 +190,7 @@ const MyMenu = () => {
 										)}
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Favorites
+											{t('My Favorites')}
 										</Typography>
 									</div>
 								</Link>
@@ -211,7 +213,7 @@ const MyMenu = () => {
 										/>
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											Recently Visited
+											{t('Recently Visited')}
 										</Typography>
 									</div>
 								</Link>
@@ -233,7 +235,7 @@ const MyMenu = () => {
 											}}
 										/>
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Followers
+											{t('My Followers')}
 										</Typography>
 									</div>
 								</Link>
@@ -256,7 +258,7 @@ const MyMenu = () => {
 										/>
 
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Followings
+											{t('My Followings')}
 										</Typography>
 									</div>
 								</Link>
@@ -266,7 +268,7 @@ const MyMenu = () => {
 					<Stack className={'section'} sx={{ marginTop: '10px' }}>
 						<div>
 							<Typography className="title" variant={'h5'}>
-								Blog
+								{t('Blog')}
 							</Typography>
 							<List className={'sub-section'}>
 								<ListItem className={pathname === 'myArticles' ? 'focus' : ''}>
@@ -287,7 +289,7 @@ const MyMenu = () => {
 											/>
 
 											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-												Articles
+												{t('Articles')}
 											</Typography>
 										</div>
 									</Link>
@@ -309,7 +311,7 @@ const MyMenu = () => {
 												}}
 											/>
 											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-												Write Article
+												{t('Write Article')}
 											</Typography>
 										</div>
 									</Link>
@@ -319,7 +321,7 @@ const MyMenu = () => {
 					</Stack>
 					<Stack className={'section'} sx={{ marginTop: '30px' }}>
 						<Typography className="title" variant={'h5'}>
-							Account Settings
+							{t('Account Settings')}
 						</Typography>
 						<List className={'sub-section'}>
 							<ListItem className={pathname === 'myProfile' ? 'focus' : ''}>
@@ -339,7 +341,7 @@ const MyMenu = () => {
 											}}
 										/>
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											My Profile
+											{t('My Profile')}
 										</Typography>
 									</div>
 								</Link>
@@ -361,7 +363,7 @@ const MyMenu = () => {
 											}}
 										/>
 										<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-											Addresses
+											{t('Addresses')}
 										</Typography>
 									</div>
 								</Link>
@@ -376,7 +378,7 @@ const MyMenu = () => {
 										}}
 									/>
 									<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-										Logout
+										{t('Logout')}
 									</Typography>
 								</div>
 							</ListItem>

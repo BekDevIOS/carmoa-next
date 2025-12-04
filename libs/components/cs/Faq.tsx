@@ -4,6 +4,7 @@ import { AccordionDetails, Box, Stack, Typography, CircularProgress } from '@mui
 import MuiAccordionSummary, { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
+import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { useQuery } from '@apollo/client';
@@ -40,6 +41,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 }));
 
 const Faq = () => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [category, setCategory] = useState<FAQCategory>(FAQCategory.GENERAL);
@@ -61,13 +63,13 @@ const Faq = () => {
 
 	const getCategoryLabel = (cat: FAQCategory) => {
 		const labels: { [key in FAQCategory]: string } = {
-			[FAQCategory.ACCOUNT]: 'Account',
-			[FAQCategory.ORDER]: 'Order',
-			[FAQCategory.PAYMENT]: 'Payment',
-			[FAQCategory.SHIPPING]: 'Shipping',
-			[FAQCategory.RETURNS]: 'Returns',
-			[FAQCategory.DEALER]: 'For Dealers',
-			[FAQCategory.GENERAL]: 'General',
+			[FAQCategory.ACCOUNT]: t('Account'),
+			[FAQCategory.ORDER]: t('Order'),
+			[FAQCategory.PAYMENT]: t('Payment'),
+			[FAQCategory.SHIPPING]: t('Shipping'),
+			[FAQCategory.RETURNS]: t('Returns'),
+			[FAQCategory.DEALER]: t('For Dealers'),
+			[FAQCategory.GENERAL]: t('General'),
 		};
 		return labels[cat];
 	};
@@ -93,7 +95,7 @@ const Faq = () => {
 			<Stack className={'faq-content'} alignItems="center" justifyContent="center" sx={{ py: 8 }}>
 				<CircularProgress />
 				<Typography sx={{ mt: 2 }} color="text.secondary">
-					Loading FAQs...
+					{t('Loading FAQs...')}
 				</Typography>
 			</Stack>
 		);
@@ -102,7 +104,7 @@ const Faq = () => {
 	if (error) {
 		return (
 			<Stack className={'faq-content'} alignItems="center" justifyContent="center" sx={{ py: 8 }}>
-				<Typography color="error">Failed to load FAQs</Typography>
+				<Typography color="error">{t('Failed to load FAQs')}</Typography>
 			</Stack>
 		);
 	}
@@ -152,7 +154,7 @@ const Faq = () => {
 				) : (
 					<Box component={'div'} sx={{ py: 8, textAlign: 'center' }}>
 						<Typography color="text.secondary">
-							No FAQs available for {getCategoryLabel(category)}
+							{t('No FAQs available for')} {getCategoryLabel(category)}
 						</Typography>
 					</Box>
 				)}

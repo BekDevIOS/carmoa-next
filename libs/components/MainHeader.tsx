@@ -31,13 +31,14 @@ const MainHeader = () => {
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (localStorage.getItem('locale') === null) {
+		const storedLocale = localStorage.getItem('locale');
+		if (!storedLocale) {
 			localStorage.setItem('locale', 'en');
 			setLang('en');
 		} else {
-			setLang(localStorage.getItem('locale'));
+			setLang(storedLocale);
 		}
-	}, [router]);
+	}, []);
 
 	/** HANDLERS **/
 	const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -83,12 +84,13 @@ const MainHeader = () => {
 		}
 	};
 
-	// Format category name for display
+	// Format category name for display with translation
 	const formatCategoryName = (category: string): string => {
-		return category
+		const formatted = category
 			.split('_')
 			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
 			.join(' ');
+		return t(formatted);
 	};
 
 	// Handle category navigation
@@ -140,10 +142,13 @@ const MainHeader = () => {
 
 	const langChoice = useCallback(
 		async (e: any) => {
-			setLang(e.target.id);
-			localStorage.setItem('locale', e.target.id);
-			setLangAnchor(null);
-			await router.push(router.asPath, router.asPath, { locale: e.target.id });
+			const selectedLang = e.currentTarget.getAttribute('data-lang');
+			if (selectedLang) {
+				setLang(selectedLang);
+				localStorage.setItem('locale', selectedLang);
+				setLangAnchor(null);
+				await router.push(router.asPath, router.asPath, { locale: selectedLang });
+			}
 		},
 		[router],
 	);
@@ -228,13 +233,13 @@ const MainHeader = () => {
 				<Box component={'div'} className={'shop-categories-btn'} onClick={handleCategoryClick}>
 					<MenuIcon className={'menu-icon'} sx={{ color: 'text.primary' }} />
 					<Typography variant="body2" className={'categories-text'} sx={{ color: 'text.primary' }}>
-						SHOP BY CATEGORIES
+						{t('SHOP BY CATEGORIES')}
 					</Typography>
 					<ExpandMoreIcon className={'expand-icon'} sx={{ color: 'text.primary' }} />
 				</Box>
 
 				<StyledMenu anchorEl={categoryAnchor} open={categoryMenuOpen} onClose={handleCategoryClose}>
-					<MenuItem onClick={() => handleCategoryNavigation()}>All Categories</MenuItem>
+					<MenuItem onClick={() => handleCategoryNavigation()}>{t('All Categories')}</MenuItem>
 					{mainCategories.map((mainCategory: ProductMainCategory) => {
 						const subCategories = getSubCategories(mainCategory);
 						const hasSubCategories = subCategories.length > 0;
@@ -282,7 +287,7 @@ const MainHeader = () => {
 												mb: 0.5,
 											}}
 										>
-											All {formatCategoryName(String(mainCategory))}
+											{t('All')} {formatCategoryName(String(mainCategory))}
 										</MenuItem>
 										{subCategories.map((subCategory: ProductSubCategory) => (
 											<MenuItem
@@ -317,7 +322,7 @@ const MainHeader = () => {
 								className={'nav-link-text'}
 								sx={router.pathname === '/' ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
 							>
-								HOME
+								{t('Home').toUpperCase()}
 							</Typography>
 						</Box>
 					</Link>
@@ -336,7 +341,7 @@ const MainHeader = () => {
 										: { color: 'text.primary' }
 								}
 							>
-								Products
+								{t('Products')}
 							</Typography>
 						</Box>
 					</Link>
@@ -355,7 +360,7 @@ const MainHeader = () => {
 										: { color: 'text.primary' }
 								}
 							>
-								Blog
+								{t('Blog')}
 							</Typography>
 						</Box>
 					</Link>
@@ -370,7 +375,7 @@ const MainHeader = () => {
 								className={'nav-link-text'}
 								sx={router.pathname === '/about' ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
 							>
-								About Us
+								{t('About Us')}
 							</Typography>
 						</Box>
 					</Link>
@@ -386,7 +391,7 @@ const MainHeader = () => {
 									className={'nav-link-text'}
 									sx={router.pathname.startsWith('/mypage') ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
 								>
-									My Page
+									{t('My Page')}
 								</Typography>
 							</Box>
 						</Link>
@@ -402,7 +407,7 @@ const MainHeader = () => {
 								className={'nav-link-text'}
 								sx={router.pathname === '/cs' ? { color: 'primary.contrastText' } : { color: 'text.primary' }}
 							>
-								CS
+								{t('CS')}
 							</Typography>
 						</Box>
 					</Link>
@@ -414,7 +419,7 @@ const MainHeader = () => {
 					<Box component={'div'} className={'sale-off'}>
 						<LocalOfferIcon className={'sale-icon'} sx={{ color: 'text.primary' }} />
 						<Typography variant="body2" className={'sale-text'} sx={{ color: 'text.primary' }}>
-							Sale Off
+							{t('Sale Off')}
 						</Typography>
 					</Box>
 
@@ -423,24 +428,28 @@ const MainHeader = () => {
 
 					{/* Language Selector */}
 					<Box component={'div'} className={'lang-selector'} onClick={handleLangClick}>
-						<img className="img-flag" src={'/img/flag/langen.png'} alt={'usaFlag'} />
+						<img 
+							className="img-flag" 
+							src={lang === 'en' ? '/img/flag/langen.png' : lang === 'kr' ? '/img/flag/langkr.png' : '/img/flag/langru.png'} 
+							alt={'flag'} 
+						/>
 						<Typography variant="body2" className={'lang-text'} sx={{ color: 'text.primary' }}>
-							English
+							{lang === 'en' ? t('English') : lang === 'kr' ? t('Korean') : t('Russian')}
 						</Typography>
 						<ExpandMoreIcon className={'lang-icon'} sx={{ color: 'text.primary' }} />
 					</Box>
 
 					<StyledLangMenu anchorEl={langAnchor} open={langMenuOpen} onClose={handleLangClose}>
-						<MenuItem disableRipple onClick={langChoice} id="en">
-							<img className="img-flag" src={'/img/flag/langen.png'} onClick={langChoice} id="en" alt={'usaFlag'} />
+						<MenuItem disableRipple onClick={langChoice} data-lang="en">
+							<img className="img-flag" src={'/img/flag/langen.png'} alt={'usaFlag'} />
 							{t('English')}
 						</MenuItem>
-						<MenuItem disableRipple onClick={langChoice} id="kr">
-							<img className="img-flag" src={'/img/flag/langkr.png'} onClick={langChoice} id="kr" alt={'koreanFlag'} />
+						<MenuItem disableRipple onClick={langChoice} data-lang="kr">
+							<img className="img-flag" src={'/img/flag/langkr.png'} alt={'koreanFlag'} />
 							{t('Korean')}
 						</MenuItem>
-						<MenuItem disableRipple onClick={langChoice} id="ru">
-							<img className="img-flag" src={'/img/flag/langru.png'} onClick={langChoice} id="ru" alt={'russiaFlag'} />
+						<MenuItem disableRipple onClick={langChoice} data-lang="ru">
+							<img className="img-flag" src={'/img/flag/langru.png'} alt={'russiaFlag'} />
 							{t('Russian')}
 						</MenuItem>
 					</StyledLangMenu>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Stack, Box, Typography, MenuItem, Menu, MenuProps } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
+import { useTranslation } from 'next-i18next';
 import {
 	Search as SearchIcon,
 	ExpandMore as ExpandMoreIcon,
@@ -25,6 +26,7 @@ import { ProductsInquiry } from '../types/product/product.input';
 import { Direction } from '../enums/common.enum';
 
 const TopHeader = () => {
+	const { t } = useTranslation('common');
 	const themeMode = useReactiveVar(themeVar);
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
@@ -57,12 +59,13 @@ const TopHeader = () => {
 		setCategoryAnchor(null);
 	};
 
-	// Format category name for display
+	// Format category name for display with translation
 	const formatCategoryName = (category: string): string => {
-		return category
+		const formatted = category
 			.split('_')
 			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
 			.join(' ');
+		return t(formatted);
 	};
 
 	// Handle category selection
@@ -171,14 +174,14 @@ const TopHeader = () => {
 							sx={{ px: 2, py: 1.5, borderColor: 'grey.300', bgcolor: 'background.default', cursor: 'pointer' }}
 						>
 							<Typography variant="body2" className={'category-text'} sx={{ color: 'text.primary', mr: 1 }}>
-								{selectedCategory ? formatCategoryName(selectedCategory) : 'All Categories'}
+								{selectedCategory ? formatCategoryName(selectedCategory) : t('All Categories')}
 							</Typography>
 							<ExpandMoreIcon className={'category-icon'} sx={{ color: 'text.primary' }} />
 						</Box>
 						<Box component={'div'} className={'vertical-separator'} sx={{ bgcolor: 'divider' }} />
 
 						<StyledMenu anchorEl={categoryAnchor} open={categoryMenuOpen} onClose={handleCategoryClose}>
-							<MenuItem onClick={() => handleCategorySelect(null)}>All Categories</MenuItem>
+							<MenuItem onClick={() => handleCategorySelect(null)}>{t('All Categories')}</MenuItem>
 							{mainCategories.map((category: ProductMainCategory) => (
 								<MenuItem key={String(category)} onClick={() => handleCategorySelect(category)}>
 									{formatCategoryName(String(category))}
@@ -190,7 +193,7 @@ const TopHeader = () => {
 						<Box
 							component={'input'}
 							type="text"
-							placeholder="Search for anything"
+							placeholder={t('Search for anything')}
 							className={'search-input'}
 							value={searchText}
 							onChange={(e) => setSearchText(e.target.value)}
@@ -252,7 +255,7 @@ const TopHeader = () => {
 							>
 								<MenuItem onClick={() => logOut()}>
 									<Logout fontSize="small" className={'logout-icon'} />
-									Logout
+									{t('Logout')}
 								</MenuItem>
 							</Menu>
 						</>
@@ -283,7 +286,7 @@ const TopHeader = () => {
 					<Box className={'cart-btn'} sx={{ px: 2, py: 1, bgcolor: 'primary.main', cursor: 'pointer' }} onClick={handleCartOpen}>
 						<ShoppingCartOutlinedIcon className={'cart-icon'} sx={{ color: 'primary.contrastText' }} />
 						<Typography variant="body2" className={'cart-text'} sx={{ color: 'primary.contrastText' }}>
-							Cart
+							{t('Cart')}
 						</Typography>
 						{cartCount > 0 && (
 							<Box component={'div'} className={'cart-badge'} sx={{ bgcolor: 'text.primary' }}>

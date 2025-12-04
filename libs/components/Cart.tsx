@@ -11,6 +11,7 @@ import {
 	MenuItem,
 	FormControl,
 } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -31,6 +32,7 @@ interface CartProps {
 type ActiveView = 'cart' | 'note' | 'coupon' | 'shipping';
 
 const Cart: React.FC<CartProps> = ({ open, onClose }) => {
+	const { t } = useTranslation('common');
 	const router = useRouter();
 	const { cartItems, updateQuantity, removeFromCart, getCartTotal, getCartCount } = useCart();
 	const [activeView, setActiveView] = useState<ActiveView>('cart');
@@ -91,7 +93,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 			<Box className="cart-drawer-container">
 				{/* Header */}
 				<Box className="cart-header">
-					<Typography className="cart-title">Shopping Cart ({cartCount})</Typography>
+					<Typography className="cart-title">{t('Shopping Cart')} ({cartCount})</Typography>
 					<IconButton onClick={onClose} className="cart-close-btn">
 						<CloseIcon />
 					</IconButton>
@@ -113,7 +115,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 							{cartItems.length === 0 ? (
 								<Box sx={{ p: 3, textAlign: 'center' }}>
 									<Typography variant="body1" sx={{ color: 'text.secondary' }}>
-										Your cart is empty
+										{t('Your cart is empty')}
 									</Typography>
 								</Box>
 							) : (
@@ -168,15 +170,15 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 						<Box className="cart-action-buttons">
 							<Box className="action-button-item" onClick={() => handleViewChange('note')}>
 								<EditNoteOutlinedIcon className="action-icon" />
-								<Typography className="action-label">Add Note</Typography>
+								<Typography className="action-label">{t('Add Note')}</Typography>
 							</Box>
 							<Box className="action-button-item" onClick={() => handleViewChange('coupon')}>
 								<LocalOfferOutlinedIcon className="action-icon" />
-								<Typography className="action-label">Coupon</Typography>
+								<Typography className="action-label">{t('Coupon')}</Typography>
 							</Box>
 							<Box className="action-button-item" onClick={() => handleViewChange('shipping')}>
 								<LocalShippingOutlinedIcon className="action-icon" />
-								<Typography className="action-label">Shipping</Typography>
+								<Typography className="action-label">{t('Shipping')}</Typography>
 							</Box>
 						</Box>
 					</>
@@ -189,21 +191,21 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 								onClick={() => setActiveView('note')}
 							>
 								<EditNoteOutlinedIcon />
-								<Typography>Add Note</Typography>
+								<Typography>{t('Add Note')}</Typography>
 							</Box>
 							<Box
 								className={`cart-subview-tab ${activeView === 'coupon' ? 'active' : ''}`}
 								onClick={() => setActiveView('coupon')}
 							>
 								<LocalOfferOutlinedIcon />
-								<Typography>Coupon</Typography>
+								<Typography>{t('Coupon')}</Typography>
 							</Box>
 							<Box
 								className={`cart-subview-tab ${activeView === 'shipping' ? 'active' : ''}`}
 								onClick={() => setActiveView('shipping')}
 							>
 								<LocalShippingOutlinedIcon />
-								<Typography>Shipping</Typography>
+								<Typography>{t('Shipping')}</Typography>
 							</Box>
 						</Box>
 
@@ -214,7 +216,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 									multiline
 									rows={8}
 									fullWidth
-									placeholder="Add your note here..."
+									placeholder={t('Add your note here...')}
 									value={note}
 									onChange={(e) => setNote(e.target.value)}
 									className="cart-textarea"
@@ -224,7 +226,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 							{activeView === 'coupon' && (
 								<TextField
 									fullWidth
-									placeholder="Coupon code"
+									placeholder={t('Coupon code')}
 									value={couponCode}
 									onChange={(e) => setCouponCode(e.target.value)}
 									className="cart-input"
@@ -234,23 +236,23 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 							{activeView === 'shipping' && (
 								<Box className="shipping-form">
 									<Box className="shipping-form-group">
-										<Typography className="shipping-label">Country / region</Typography>
+										<Typography className="shipping-label">{t('Country / region')}</Typography>
 										<FormControl fullWidth>
 											<Select
 												value={country}
 												onChange={(e) => setCountry(e.target.value)}
 												className="shipping-select"
 											>
-												<MenuItem value="South Korea">South Korea</MenuItem>
-												<MenuItem value="United States">United States</MenuItem>
-												<MenuItem value="Japan">Japan</MenuItem>
-												<MenuItem value="China">China</MenuItem>
+												<MenuItem value="South Korea">{t('South Korea')}</MenuItem>
+												<MenuItem value="United States">{t('United States')}</MenuItem>
+												<MenuItem value="Japan">{t('Japan')}</MenuItem>
+												<MenuItem value="China">{t('China')}</MenuItem>
 											</Select>
 										</FormControl>
 									</Box>
 
 									<Box className="shipping-form-group">
-										<Typography className="shipping-label">Town / City *</Typography>
+										<Typography className="shipping-label">{t('Town / City')} *</Typography>
 										<TextField
 											fullWidth
 											value={city}
@@ -260,7 +262,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 									</Box>
 
 									<Box className="shipping-form-group">
-										<Typography className="shipping-label">Postcode / ZIP *</Typography>
+										<Typography className="shipping-label">{t('Postcode / ZIP')} *</Typography>
 										<TextField
 											fullWidth
 											value={postcode}
@@ -275,10 +277,10 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 						{/* Sub-view Actions */}
 						<Box className="cart-subview-actions">
 							<Button onClick={handleSaveAndClose} className="save-btn">
-								Save
+								{t('Save')}
 							</Button>
 							<Button onClick={() => setActiveView('cart')} className="close-btn">
-								Close
+								{t('Close')}
 							</Button>
 						</Box>
 					</>
@@ -286,15 +288,15 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 
 				{/* Total */}
 				<Box className="cart-total">
-					<Typography className="total-label">Total:</Typography>
+					<Typography className="total-label">{t('Total')}:</Typography>
 					<Typography className="total-value">${(currentTotal + calculatedShippingFee).toFixed(2)}</Typography>
 				</Box>
 
 				{/* Footer Buttons */}
 				<Box className="cart-footer">
-					<Button className="view-cart-btn" onClick={handleViewCart}>View Cart</Button>
+					<Button className="view-cart-btn" onClick={handleViewCart}>{t('View Cart')}</Button>
 					<Button className="checkout-btn" onClick={handleCheckout} disabled={cartItems.length === 0}>
-						Checkout
+						{t('Checkout')}
 					</Button>
 				</Box>
 			</Box>

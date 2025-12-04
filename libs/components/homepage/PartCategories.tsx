@@ -2,10 +2,12 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import PartCategoryCard from './PartCategoryCard';
 import 'swiper/css';
 
 const PartCategories = () => {
+	const { t } = useTranslation('common');
 	const router = useRouter();
 	const categories = [
 		{
@@ -64,7 +66,7 @@ const PartCategories = () => {
 							<PartCategoryCard
 								image={category.image}
 								hoverImage={category.hoverImage}
-								title={category.title}
+								title={t(category.title)}
 								onClick={() => handleCategoryClick(category.title)}
 							/>
 						</SwiperSlide>

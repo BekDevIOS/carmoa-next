@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Stack, Box, Typography, CircularProgress } from '@mui/material';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { T } from '../../libs/types/common';
@@ -11,6 +12,12 @@ import { Order } from '../../libs/types/order/order';
 import { PaymentMethod } from '../../libs/enums/order.enum';
 import { MemberType } from '../../libs/enums/member.enum';
 import { userVar } from '../../apollo/store';
+
+export const getServerSideProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const OrderDetailPage: NextPage = (props: T) => {
 	const device = useDeviceDetect();

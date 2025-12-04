@@ -13,6 +13,7 @@ import {
 	IconButton,
 	Slider,
 } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -38,6 +39,7 @@ interface FilterType {
 
 const Filter = (props: FilterType) => {
 	const { searchFilter, setSearchFilter, initialInput } = props;
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [searchText, setSearchText] = useState<string>('');
@@ -89,6 +91,15 @@ const Filter = (props: FilterType) => {
 	};
 
 	const availableSubCategories = selectedMainCategory ? getSubCategories(selectedMainCategory) : [];
+
+	// Format category name for display with translation
+	const formatCategoryName = (category: string): string => {
+		const formatted = category
+			.split('_')
+			.map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+			.join(' ');
+		return t(formatted);
+	};
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -284,13 +295,13 @@ const Filter = (props: FilterType) => {
 		return (
 			<Stack className={'filter-main'}>
 				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Product</Typography>
+					<Typography className={'title-main'}>{t('Find Your Product')}</Typography>
 					<Stack className={'input-box'}>
 						<OutlinedInput
 							value={searchText}
 							type={'text'}
 							className={'search-input'}
-							placeholder={'What are you looking for?'}
+							placeholder={t('What are you looking for?')}
 							onChange={(e: any) => setSearchText(e.target.value)}
 							onKeyDown={async (event: any) => {
 								if (event.key == 'Enter') {
@@ -341,7 +352,7 @@ const Filter = (props: FilterType) => {
 								fontSize: '24px',
 							}}
 						/>
-						<Tooltip title="Reset">
+						<Tooltip title={t('Reset')}>
 							<IconButton onClick={refreshHandler}>
 								<RefreshIcon />
 							</IconButton>
@@ -350,7 +361,7 @@ const Filter = (props: FilterType) => {
 				</Stack>
 				<Stack className={'parts-search-form'} mb={'30px'}>
 					<Stack className={'section-header'} onClick={() => toggleSection('parts')}>
-						<Typography className={'section-title'}>Parts For Any Car</Typography>
+						<Typography className={'section-title'}>{t('Parts For Any Car')}</Typography>
 						<ExpandMoreIcon
 							className={`expand-icon ${expandedSections.parts ? 'expanded' : ''}`}
 							sx={{
@@ -363,7 +374,7 @@ const Filter = (props: FilterType) => {
 						<Stack className={'parts-form'} mt={'20px'}>
 							<Stack className={'input-box'}>
 								<FormControl fullWidth>
-									<InputLabel>Main Category</InputLabel>
+									<InputLabel>{t('Main Category')}</InputLabel>
 									<Select
 										value={selectedMainCategory}
 										onChange={(e) => {
@@ -372,11 +383,11 @@ const Filter = (props: FilterType) => {
 										}}
 										displayEmpty
 										className={'select-field'}
-										label="Main Category"
+										label={t('Main Category')}
 									>
 										{mainCategories.map((category) => (
 											<MenuItem key={category} value={category}>
-												{category}
+												{formatCategoryName(category)}
 											</MenuItem>
 										))}
 									</Select>
@@ -384,18 +395,18 @@ const Filter = (props: FilterType) => {
 							</Stack>
 							<Stack className={'input-box'}>
 								<FormControl fullWidth>
-									<InputLabel>Sub Category</InputLabel>
+									<InputLabel>{t('Sub Category')}</InputLabel>
 									<Select
 										value={selectedSubCategory}
 										onChange={(e) => setSelectedSubCategory(e.target.value as ProductSubCategory)}
 										displayEmpty
 										className={'select-field'}
-										label="Sub Category"
+										label={t('Sub Category')}
 										disabled={!selectedMainCategory}
 									>
 										{availableSubCategories.map((subCategory) => (
 											<MenuItem key={subCategory} value={subCategory}>
-												{subCategory}
+												{formatCategoryName(subCategory)}
 											</MenuItem>
 										))}
 									</Select>
@@ -403,17 +414,17 @@ const Filter = (props: FilterType) => {
 							</Stack>
 							<Stack className={'input-box'}>
 								<FormControl fullWidth>
-									<InputLabel>Brand</InputLabel>
+									<InputLabel>{t('Brand')}</InputLabel>
 									<Select
 										value={selectedBrand}
 										onChange={(e) => setSelectedBrand(e.target.value as CarBrand)}
 										displayEmpty
 										className={'select-field'}
-										label="Brand"
+										label={t('Brand')}
 									>
 										{carBrands.map((brand) => (
 											<MenuItem key={brand} value={brand}>
-												{brand}
+												{formatCategoryName(brand)}
 											</MenuItem>
 										))}
 									</Select>
@@ -421,17 +432,17 @@ const Filter = (props: FilterType) => {
 							</Stack>
 							<Stack className={'input-box'}>
 								<FormControl fullWidth>
-									<InputLabel>Condition</InputLabel>
+									<InputLabel>{t('Condition')}</InputLabel>
 									<Select
 										value={selectedCondition}
 										onChange={(e) => setSelectedCondition(e.target.value as ProductCondition)}
 										displayEmpty
 										className={'select-field'}
-										label="Condition"
+										label={t('Condition')}
 									>
 										{conditions.map((condition) => (
 											<MenuItem key={condition} value={condition}>
-												{condition}
+												{formatCategoryName(condition)}
 											</MenuItem>
 										))}
 									</Select>
@@ -472,7 +483,7 @@ const Filter = (props: FilterType) => {
 									}
 								}}
 							>
-								SEARCH
+								{t('SEARCH')}
 							</Button>
 						</Stack>
 					)}
@@ -480,7 +491,7 @@ const Filter = (props: FilterType) => {
 
 				<Stack className={'product-categories'} mb={'30px'}>
 					<Stack className={'section-header'} onClick={() => toggleSection('categories')}>
-						<Typography className={'section-title'}>Product Categories</Typography>
+						<Typography className={'section-title'}>{t('Product Categories')}</Typography>
 						<ExpandMoreIcon
 							className={`expand-icon ${expandedSections.categories ? 'expanded' : ''}`}
 							sx={{
@@ -500,7 +511,7 @@ const Filter = (props: FilterType) => {
 											onChange={() => handleCategoryToggle(category)}
 											className={'category-checkbox'}
 										/>
-										<Typography className={`category-name ${isSelected ? 'selected' : ''}`}>{category}</Typography>
+										<Typography className={`category-name ${isSelected ? 'selected' : ''}`}>{formatCategoryName(category)}</Typography>
 									</Stack>
 								);
 							})}
@@ -510,7 +521,7 @@ const Filter = (props: FilterType) => {
 
 				<Stack className={'price-filter'} mb={'30px'}>
 					<Stack className={'section-header'} onClick={() => toggleSection('price')}>
-						<Typography className={'section-title'}>Price</Typography>
+						<Typography className={'section-title'}>{t('Price')}</Typography>
 						<ExpandMoreIcon
 							className={`expand-icon ${expandedSections.price ? 'expanded' : ''}`}
 							sx={{
@@ -552,7 +563,7 @@ const Filter = (props: FilterType) => {
 									inputProps={{ min: priceRange[0], max: 1000 }}
 								/>
 								<Button className={'filter-btn'} onClick={handlePriceFilter}>
-									FILTER
+									{t('FILTER')}
 								</Button>
 							</Stack>
 						</Stack>
@@ -561,7 +572,7 @@ const Filter = (props: FilterType) => {
 
 				<Stack className={'brands-filter'}>
 					<Stack className={'section-header'} onClick={() => toggleSection('brands')}>
-						<Typography className={'section-title'}>Brands</Typography>
+						<Typography className={'section-title'}>{t('Brands')}</Typography>
 						<ExpandMoreIcon
 							className={`expand-icon ${expandedSections.brands ? 'expanded' : ''}`}
 							sx={{
@@ -581,7 +592,7 @@ const Filter = (props: FilterType) => {
 											onChange={() => handleBrandToggle(brand)}
 											className={'brand-checkbox'}
 										/>
-										<Typography className={'brand-name'}>{brand}</Typography>
+										<Typography className={'brand-name'}>{formatCategoryName(brand)}</Typography>
 									</Stack>
 								);
 							})}

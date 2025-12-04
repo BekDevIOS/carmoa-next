@@ -1,6 +1,7 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography, IconButton } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import ProductCard from '../../libs/components/common/ProductCard';
 import BigProductCard from '../../libs/components/product/BigProductCard';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -29,6 +30,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 });
 
 const ProductList: NextPage = ({ initialInput, ...props }: any) => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
@@ -41,7 +43,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [sortingOpen, setSortingOpen] = useState(false);
-	const [filterSortName, setFilterSortName] = useState('Default sorting');
+	const [filterSortName, setFilterSortName] = useState(t('Default sorting'));
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
 	/** APOLLO REQUESTS **/
@@ -135,19 +137,19 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		switch (e.currentTarget.id) {
 			case 'default':
 				setSearchFilter({ ...searchFilter, page: 1, sort: 'createdAt', direction: Direction.DESC });
-				setFilterSortName('Default sorting');
+				setFilterSortName(t('Default sorting'));
 				break;
 			case 'new':
 				setSearchFilter({ ...searchFilter, page: 1, sort: 'createdAt', direction: Direction.DESC });
-				setFilterSortName('New');
+				setFilterSortName(t('New'));
 				break;
 			case 'lowest':
 				setSearchFilter({ ...searchFilter, page: 1, sort: 'productPrice', direction: Direction.ASC });
-				setFilterSortName('Lowest Price');
+				setFilterSortName(t('Lowest Price'));
 				break;
 			case 'highest':
 				setSearchFilter({ ...searchFilter, page: 1, sort: 'productPrice', direction: Direction.DESC });
-				setFilterSortName('Highest Price');
+				setFilterSortName(t('Highest Price'));
 				break;
 		}
 		setSortingOpen(false);
@@ -192,16 +194,16 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 									</Button>
 									<Menu anchorEl={anchorEl} open={sortingOpen} onClose={sortingCloseHandler} sx={{ paddingTop: '5px' }}>
 										<MenuItem onClick={sortingHandler} id={'default'} disableRipple>
-											Default sorting
+											{t('Default sorting')}
 										</MenuItem>
 										<MenuItem onClick={sortingHandler} id={'new'} disableRipple>
-											New
+											{t('New')}
 										</MenuItem>
 										<MenuItem onClick={sortingHandler} id={'lowest'} disableRipple>
-											Lowest Price
+											{t('Lowest Price')}
 										</MenuItem>
 										<MenuItem onClick={sortingHandler} id={'highest'} disableRipple>
-											Highest Price
+											{t('Highest Price')}
 										</MenuItem>
 									</Menu>
 								</Box>
@@ -228,7 +230,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 								{products?.length === 0 ? (
 									<Stack className={'no-data'} sx={{ marginLeft: '250px' }}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
-										<Typography component="p">No Products found!</Typography>
+										<Typography component="p">{t('No Products found!')}</Typography>
 									</Stack>
 								) : (
 									products.map((product: Product) => {
@@ -284,7 +286,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 								{products.length !== 0 && (
 									<Stack className="total-result">
 										<Typography component="p">
-											Total {total} product{total > 1 ? 's' : ''} available
+											{t('Total')} {total} {total > 1 ? t('products') : t('product')} {t('available')}
 										</Typography>
 									</Stack>
 								)}

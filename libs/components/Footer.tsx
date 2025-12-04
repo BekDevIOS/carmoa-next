@@ -7,8 +7,10 @@ import { themeVar } from '../../apollo/store';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import { Stack, Box, Typography } from '@mui/material';
 import moment from 'moment';
+import { useTranslation } from 'next-i18next';
 
 const Footer = () => {
+	const { t } = useTranslation('common');
 	const device = useDeviceDetect();
 	const themeMode = useReactiveVar(themeVar);
 	const logoSrc = themeMode === 'dark' ? '/img/logo/logoFooterDark.png' : '/img/logo/logoFooterLight.png';
@@ -26,19 +28,19 @@ const Footer = () => {
 							<img src={logoSrc} alt="Carmoa Logo" className="logo" />
 						</Box>
 
-						<Box className={'footer-box'}>
-							<span className="footer-title">Customer Support</span>
-							<p>+82 10 5700 4474</p>
-						</Box>
+					<Box className={'footer-box'}>
+						<span className="footer-title">{t('Customer Support')}</span>
+						<p>+82 10 5700 4474</p>
+					</Box>
 
-						<Box className={'footer-box'}>
-							<span className="footer-title">Email</span>
-							<p>support@carmoa.kr</p>
-						</Box>
+					<Box className={'footer-box'}>
+						<span className="footer-title">{t('Email')}</span>
+						<p>support@carmoa.kr</p>
+					</Box>
 
-						{/* Social Icons */}
-						<Box className={'footer-box'}>
-							<p>Follow Us</p>
+					{/* Social Icons */}
+					<Box className={'footer-box'}>
+						<p>{t('Follow Us')}</p>
 							<div className={'media-box'}>
 								<FacebookOutlinedIcon />
 								<TelegramIcon />
@@ -52,33 +54,33 @@ const Footer = () => {
 					<Stack className={'right'}>
 						<Box className={'bottom'}>
 							<div>
-								<strong>Customer Service</strong>
-								<span>My Orders</span>
-								<span>Return Policy</span>
-								<span>FAQ</span>
-								<span>Contact Us</span>
+								<strong>{t('Customer Service')}</strong>
+								<span>{t('My Orders')}</span>
+								<span>{t('Return Policy')}</span>
+								<span>{t('FAQ')}</span>
+								<span>{t('Contact Us')}</span>
 							</div>
 
 							<div>
-								<strong>CarMoa</strong>
-								<span>About Us</span>
-								<span>Dealer Program</span>
-								<span>Community</span>
-								<span>Blog</span>
+								<strong>{t('CarMoa')}</strong>
+								<span>{t('About Us')}</span>
+								<span>{t('Dealer Program')}</span>
+								<span>{t('Community')}</span>
+								<span>{t('Blog')}</span>
 							</div>
 
 							<div>
-								<strong>Quick Links</strong>
-								<span>Privacy Policy</span>
-								<span>Terms & Conditions</span>
-								<span>Shipping Info</span>
+								<strong>{t('Quick Links')}</strong>
+								<span>{t('Privacy Policy')}</span>
+								<span>{t('Terms & Conditions')}</span>
+								<span>{t('Shipping Info')}</span>
 							</div>
 						</Box>
 					</Stack>
 				</Stack>
 
 				<Stack className={'second'}>
-					<span>© CarMoa {moment().year()} – All rights reserved.</span>
+					<span>© {t('CarMoa')} {moment().year()} – {t('All rights reserved')}.</span>
 				</Stack>
 			</Stack>
 		);
@@ -96,18 +98,18 @@ const Footer = () => {
 						<img src={logoSrc} alt="Carmoa Logo" className="logo" />
 					</Box>
 
-					<Box className={'footer-box'}>
-						<span className="footer-title">Customer Support</span>
-						<p>+82 10 5700 4474</p>
-					</Box>
+				<Box className={'footer-box'}>
+					<span className="footer-title">{t('Customer Support')}</span>
+					<p>+82 10 5700 4474</p>
+				</Box>
 
-					<Box className={'footer-box'}>
-						<span className="footer-title">Email</span>
-						<p>support@carmoa.kr</p>
-					</Box>
+				<Box className={'footer-box'}>
+					<span className="footer-title">{t('Email')}</span>
+					<p>support@carmoa.kr</p>
+				</Box>
 
-					<Box className={'footer-box'}>
-						<p>Follow Us</p>
+				<Box className={'footer-box'}>
+					<p>{t('Follow Us')}</p>
 						<div className={'media-box'}>
 							<FacebookOutlinedIcon />
 							<TelegramIcon />
@@ -121,44 +123,44 @@ const Footer = () => {
 				<Stack className={'right'}>
 					{/* Newsletter */}
 					<Box className={'top'}>
-						<strong>Join Our Newsletter</strong>
+						<strong>{t('Join Our Newsletter')}</strong>
 						<div>
-							<input type="text" placeholder="Your Email" />
-							<span>Subscribe</span>
+							<input type="text" placeholder={t('Your Email')} />
+							<span>{t('Subscribe')}</span>
 						</div>
 					</Box>
 
 					{/* Links */}
 					<Box className={'bottom'}>
 						<div>
-							<strong>Customer Service</strong>
-							<span>Track Order</span>
-							<span>Return Policy</span>
-							<span>FAQ</span>
-							<span>Support</span>
+							<strong>{t('Customer Service')}</strong>
+							<span>{t('Track Order')}</span>
+							<span>{t('Return Policy')}</span>
+							<span>{t('FAQ')}</span>
+							<span>{t('Support')}</span>
 						</div>
 
 						<div>
-							<strong>Dealers</strong>
-							<span>Become a Dealer</span>
-							<span>Dealer Dashboard</span>
-							<span>Dealer Support</span>
+							<strong>{t('Dealers')}</strong>
+							<span>{t('Become a Dealer')}</span>
+							<span>{t('Dealer Dashboard')}</span>
+							<span>{t('Dealer Support')}</span>
 						</div>
 
 						<div>
-							<strong>CarMoa</strong>
-							<span>About Us</span>
-							<span>Community</span>
-							<span>Blog</span>
-							<span>Contact</span>
+							<strong>{t('CarMoa')}</strong>
+							<span>{t('About Us')}</span>
+							<span>{t('Community')}</span>
+							<span>{t('Blog')}</span>
+							<span>{t('Contact')}</span>
 						</div>
 
 						<div>
-							<strong>Quick Links</strong>
-							<span>Privacy Policy</span>
-							<span>Terms of Service</span>
-							<span>Shipping Policy</span>
-							<span>Help Center</span>
+							<strong>{t('Quick Links')}</strong>
+							<span>{t('Privacy Policy')}</span>
+							<span>{t('Terms of Service')}</span>
+							<span>{t('Shipping Policy')}</span>
+							<span>{t('Help Center')}</span>
 						</div>
 					</Box>
 				</Stack>
@@ -166,8 +168,8 @@ const Footer = () => {
 
 			{/* Bottom Footer */}
 			<Stack className={'second'}>
-				<span>© CarMoa {moment().year()} – All rights reserved.</span>
-				<span>Privacy · Terms · Sitemap</span>
+				<span>© {t('CarMoa')} {moment().year()} – {t('All rights reserved')}.</span>
+				<span>{t('Privacy')} · {t('Terms')} · {t('Sitemap')}</span>
 			</Stack>
 		</Stack>
 	);

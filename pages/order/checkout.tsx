@@ -13,6 +13,7 @@ import {
 	Checkbox,
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { T } from '../../libs/types/common';
@@ -30,6 +31,12 @@ import { PaymentMethod } from '../../libs/enums/order.enum';
 import { MemberShippingAddress, MemberBillingAddress } from '../../libs/types/member/member';
 import { sweetErrorHandling, sweetMixinSuccessAlert, sweetMixinErrorAlert } from '../../libs/sweetAlert';
 import { Messages, REACT_APP_API_URL } from '../../libs/config';
+
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const CheckoutPage: NextPage<T> = (props: T) => {
 	const device = useDeviceDetect();

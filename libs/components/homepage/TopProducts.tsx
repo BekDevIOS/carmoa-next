@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
+import { useTranslation } from 'next-i18next';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '../common/ProductCard';
 import { ProductsInquiry } from '../../types/product/product.input';
@@ -22,6 +23,7 @@ interface TopProductsProps {
 
 const TopProducts = (props: TopProductsProps) => {
 	const { initialInput } = props;
+	const { t } = useTranslation('common');
 	const swiperRef = useRef<any>(null);
 	const { addToCart } = useCart();
 	const [topProducts, setTopProducts] = useState<Product[]>([]);
@@ -91,10 +93,10 @@ const TopProducts = (props: TopProductsProps) => {
 				<Stack className={'section-header'}>
 					<Stack className={'title-section'}>
 						<Typography variant="h2" className={'main-title'}>
-							<span className={'title-highlight'}>TOP</span> PRODUCTS
+							<span className={'title-highlight'}>{t('TOP')}</span> {t('PRODUCTS')}
 						</Typography>
 						<Typography variant="body1" className={'subtitle'}>
-							The best products of Carmoa
+							{t('The best products of Carmoa')}
 						</Typography>
 					</Stack>
 				</Stack>

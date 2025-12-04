@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  carmoa-next:
+    container_name: carmoa-next
+    restart: always
+    image: node:20.10.0
+    ports:
+      - 4000:3000
+    volumes:
+      - ./:/usr/src/carmoa-next
+    working_dir: /usr/src/carmoa-next
+    networks:
+      - client-network
+    environment:
+      - NODE_ENV=production
+    # For Production
+    command: bash -c "yarn && yarn run build && yarn run start"
+
+networks:
+  client-network:
+    driver: bridge
+
+    #carmoa-next localhost:4000 ==> container: 3000
+    # carmoa-api localhost:4009 ==> container: 3007
+    # carmoa-batch localhost:4010 ==> container: 3008

@@ -1,10 +1,17 @@
 import React from 'react';
 import { NextPage } from 'next';
 import { Stack, Typography } from '@mui/material';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Advertisement from '../../libs/components/common/Advertisement';
 import { T } from '../../libs/types/common';
+
+export const getStaticProps = async ({ locale }: any) => ({
+	props: {
+		...(await serverSideTranslations(locale, ['common'])),
+	},
+});
 
 const AboutUs: NextPage = (props: T) => {
 	const device = useDeviceDetect();
