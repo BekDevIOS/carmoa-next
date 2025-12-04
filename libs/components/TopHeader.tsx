@@ -193,7 +193,7 @@ const TopHeader = () => {
 						<Box
 							component={'input'}
 							type="text"
-							placeholder={t('Search for anything')}
+							placeholder={(t('Search for anything') as string) || 'Search for anything'}
 							className={'search-input'}
 							value={searchText}
 							onChange={(e) => setSearchText(e.target.value)}

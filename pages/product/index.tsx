@@ -43,7 +43,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [sortingOpen, setSortingOpen] = useState(false);
-	const [filterSortName, setFilterSortName] = useState(t('Default sorting'));
+	const [filterSortName, setFilterSortName] = useState<string>(t('Default sorting'));
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
 	/** APOLLO REQUESTS **/

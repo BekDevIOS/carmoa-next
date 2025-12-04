@@ -301,7 +301,7 @@ const Filter = (props: FilterType) => {
 							value={searchText}
 							type={'text'}
 							className={'search-input'}
-							placeholder={t('What are you looking for?')}
+							placeholder={(t('What are you looking for?') as string) || 'What are you looking for?'}
 							onChange={(e: any) => setSearchText(e.target.value)}
 							onKeyDown={async (event: any) => {
 								if (event.key == 'Enter') {

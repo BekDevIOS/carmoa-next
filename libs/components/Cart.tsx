@@ -216,7 +216,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 									multiline
 									rows={8}
 									fullWidth
-									placeholder={t('Add your note here...')}
+									placeholder={(t('Add your note here...') as string) || 'Add your note here...'}
 									value={note}
 									onChange={(e) => setNote(e.target.value)}
 									className="cart-textarea"
@@ -226,7 +226,7 @@ const Cart: React.FC<CartProps> = ({ open, onClose }) => {
 							{activeView === 'coupon' && (
 								<TextField
 									fullWidth
-									placeholder={t('Coupon code')}
+									placeholder={(t('Coupon code') as string) || 'Coupon code'}
 									value={couponCode}
 									onChange={(e) => setCouponCode(e.target.value)}
 									className="cart-input"

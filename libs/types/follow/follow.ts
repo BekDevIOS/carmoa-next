@@ -1,4 +1,4 @@
-import { MeLiked, TotalCounter } from '../product/property';
+import { MeLiked, TotalCounter } from '../product/product';
 import { Member } from '../member/member';
 
 export interface MeFollowed {

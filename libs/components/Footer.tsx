@@ -125,7 +125,7 @@ const Footer = () => {
 					<Box className={'top'}>
 						<strong>{t('Join Our Newsletter')}</strong>
 						<div>
-							<input type="text" placeholder={t('Your Email')} />
+							<input type="text" placeholder={(t('Your Email') as string) || 'Your Email'} />
 							<span>{t('Subscribe')}</span>
 						</div>
 					</Box>
