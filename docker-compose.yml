@@ -4,7 +4,7 @@ services:
     restart: always
     image: node:20.10.0
     ports:
-      - 4003:3000
+      - 5000:3000
     volumes:
       - ./:/usr/src/carmoa-next
     working_dir: /usr/src/carmoa-next
