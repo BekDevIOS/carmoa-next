@@ -15,7 +15,7 @@ import FloatingAction from '../fab/FloatingAction';
 import CompareFab from '../compare/CompareFab';
 import CompareModal from '../compare/CompareModal';
 import CartFab from '../cart/CartFab';
-import Cart from '../Cart';
+import Cart from '../cart/Cart';
 import QuickViewModal from '../product/QuickViewModal';
 import { Product } from '../../types/product/product';
 import { getJwtToken, updateUserInfo } from '../../auth';
@@ -78,7 +78,7 @@ const withLayoutMain = (Component: any) => {
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}></Stack>
-
+						<TopHeader />
 						<Stack id={'main'}>
 							<Component {...props} />
 						</Stack>
@@ -92,7 +92,6 @@ const withLayoutMain = (Component: any) => {
 							onClose={() => setCompareModalOpen(false)}
 							onAddToCart={handleAddToCart}
 						/>
-						<CartFab onClick={() => setCartOpen(true)} />
 						<Cart open={cartOpen} onClose={() => setCartOpen(false)} />
 						<QuickViewModal />
 					</Stack>

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Stack, Box, Typography, Button } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
+import 'swiper/css';
 
 interface EventData {
   eventTitle: string;
@@ -57,6 +60,45 @@ const EventCard = ({ event }: { event: EventData }) => {
 };
 
 const Events = () => {
+  const device = useDeviceDetect();
+
+  if (device === 'mobile') {
+    return (
+      <Stack className="events">
+        <Stack className="container">
+          <Stack className="section-header">
+            <Typography variant="h2" className="main-title">
+              <span className="title-highlight">EVENTS</span>
+            </Typography>
+          </Stack>
+          <Swiper
+            className="events-swiper mobile"
+            slidesPerView={1.1}
+            spaceBetween={18}
+            centeredSlides
+            modules={[Autoplay]}
+            autoplay={{ delay: 2600, disableOnInteraction: false }}
+          >
+            {eventsData.map((event) => (
+              <SwiperSlide key={event.eventTitle} className="event-slide-mobile">
+                <Box className="event-card mobile">
+                  <img src={event?.imageSrc} alt={event?.eventTitle} />
+                  <Box className="gradient-overlay" />
+                  <Box className="content">
+                    <Typography className="city">{event.city}</Typography>
+                    <Typography className="title">{event.eventTitle}</Typography>
+					<Typography className="description">{event.description}</Typography>
+					<Button className="cta" size="small">Learn More</Button>
+                  </Box>
+                </Box>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Stack>
+      </Stack>
+    );
+  }
+
   return (
     <Stack className="events">
       <Stack className="container">

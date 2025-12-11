@@ -10,6 +10,7 @@ import LatestBlogs from '../libs/components/homepage/LatestBlogs';
 import Events from '../libs/components/homepage/Events';
 import { Stack } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -18,19 +19,36 @@ export const getStaticProps = async ({ locale }: any) => ({
 });
 
 function Home() {
-	return (
-		<Stack className={'home-page'}>
-			<PartCategories />
-			<TrendProducts />
-			<BrandProducts />
-			<Advertisement />
-			<FeaturedProducts />
-			<TopDealers />
-			<TopProducts />
-			<Events />
-			<LatestBlogs />
-		</Stack>
-	);
+	const device = useDeviceDetect();
+
+	if (device === 'mobile') {
+		return (
+			<Stack className={'home-page mobile'}>
+				<PartCategories />
+				<TrendProducts />
+				<BrandProducts />
+				<Advertisement />
+				<TopDealers />
+				<TopProducts />
+				<Events />
+				<LatestBlogs />
+			</Stack>
+		);
+	} else {
+		return (
+			<Stack className={'home-page'}>
+				<PartCategories />
+				<TrendProducts />
+				<BrandProducts />
+				<Advertisement />
+				<FeaturedProducts />
+				<TopDealers />
+				<TopProducts />
+				<Events />
+				<LatestBlogs />
+			</Stack>
+		);
+	}
 }
 
 export default LayoutHome(Home);

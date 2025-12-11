@@ -6,6 +6,10 @@ import { useRouter } from 'next/router';
 import { ProductsInquiry } from '../../types/product/product.input';
 import { Direction } from '../../enums/common.enum';
 import { CarBrand } from '../../enums/product.enum';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
+import 'swiper/css';
 
 interface Brand {
 	id: number;
@@ -20,6 +24,7 @@ interface BrandProductsProps {
 }
 
 const BrandProducts = ({ brands }: BrandProductsProps) => {
+	const device = useDeviceDetect();
 	const themeMode = useReactiveVar(themeVar);
 	const router = useRouter();
 	const defaultBrands: Brand[] = [
@@ -112,6 +117,43 @@ const BrandProducts = ({ brands }: BrandProductsProps) => {
 	const viewAllHandler = async () => {
 		await router.push('/product');
 	};
+
+	if (device === 'mobile') {
+		return (
+			<Stack className={'brand-products mobile'}>
+				<Stack className={'container'}>
+				<Stack className={'section-header'}>
+					<Typography variant="h2" className={'main-title'}>
+						SHOP BY <span className={'brand-title'}>BRAND</span>
+					</Typography>
+				</Stack>
+				<Box className={'brands-scroll-container mobile'}>
+					{displayBrands.map((brand) => (
+						<Box
+							key={brand.id}
+							className={'brand-card mobile'}
+							onClick={() => handleBrandClick(brand.name)}
+							sx={{ cursor: 'pointer' }}
+						>
+							<Box className={'brand-image-wrapper mobile'}>
+								<img
+									src={themeMode === 'dark' ? brand.imageDark : brand.imageLight}
+									alt={brand.name}
+									className={'brand-image mobile'}
+								/>
+							</Box>
+						</Box>
+					))}
+				</Box>
+				<Box className={'view-all-btn mobile'} onClick={viewAllHandler}>
+					<Typography variant="body1" className={'view-all-text mobile'}>
+						VIEW ALL
+					</Typography>
+				</Box>
+				</Stack>
+			</Stack>
+		);
+	}
 
 	return (
 		<Stack className={'brand-products'}>

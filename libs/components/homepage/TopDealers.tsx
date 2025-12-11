@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Box } from '@mui/material';
+import { Stack, Box, Typography } from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -44,28 +44,22 @@ const TopDealers = (props: TopDealerProps) => {
 
 	/** HANDLERS **/
 
-	if (!topDealers) return null; 
+	if (!topDealers) return null;
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'top-dealers'}>
+			<Stack className={'top-dealers mobile'}>
 				<Stack className={'container'}>
-					<Stack className={'info-box'}>
-						<span>
+					<Stack className={'section-header mobile'}>
+						<Typography variant="h2" className={'main-title mobile'}>
 							<span className={'title-highlight'}>{t('TOP')}</span> {t('DEALERS')}
-						</span>
+						</Typography>
 					</Stack>
-					<Stack className={'wrapper'}>
-						<Swiper
-							className={'top-dealers-swiper'}
-							slidesPerView={'auto'}
-							centeredSlides={true}
-							spaceBetween={29}
-							modules={[Autoplay]}
-						>
+					<Stack className={'wrapper mobile'}>
+						<Swiper className={'top-dealers-swiper mobile'} slidesPerView={1} spaceBetween={16} centeredSlides={false}>
 							{topDealers.map((dealer: Member) => {
 								return (
-									<SwiperSlide className={'top-dealers-slide'} key={dealer._id}>
+									<SwiperSlide className={'top-dealers-slide mobile'} key={dealer._id}>
 										<DealerCard dealer={dealer} />
 									</SwiperSlide>
 								);
@@ -138,5 +132,3 @@ TopDealers.defaultProps = {
 };
 
 export default TopDealers;
-
-

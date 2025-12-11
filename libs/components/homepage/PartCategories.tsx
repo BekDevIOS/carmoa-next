@@ -5,10 +5,13 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import PartCategoryCard from './PartCategoryCard';
 import 'swiper/css';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { Autoplay } from 'swiper';
 
 const PartCategories = () => {
 	const { t } = useTranslation('common');
 	const router = useRouter();
+	const device = useDeviceDetect();
 	const categories = [
 		{
 			id: 1,
@@ -57,6 +60,33 @@ const PartCategories = () => {
 		router.push(`/product?${queryString}`);
 	};
 
+	if (device === 'mobile') {
+		return (
+			<Stack className={'part-categories'}>
+				<Stack className={'container'}>
+					<Swiper
+						className={'categories-swiper mobile'}
+						slidesPerView={1.2}
+						centeredSlides
+						spaceBetween={16}
+						modules={[Autoplay]}
+						autoplay={{ delay: 2400, disableOnInteraction: false }}
+					>
+						{categories.map((category) => (
+							<SwiperSlide key={category.id} className={'category-slide mobile-category-slide'}>
+								<PartCategoryCard
+									image={category.image}
+									hoverImage={category.hoverImage}
+									title={t(category.title)}
+									onClick={() => handleCategoryClick(category.title)}
+								/>
+							</SwiperSlide>
+						))}
+					</Swiper>
+				</Stack>
+			</Stack>
+		);
+	} else {
 	return (
 		<Stack className={'part-categories'}>
 			<Stack className={'container'}>
@@ -74,7 +104,8 @@ const PartCategories = () => {
 				</Swiper>
 			</Stack>
 		</Stack>
-	);
+		);
+	}
 };
 
 export default PartCategories;

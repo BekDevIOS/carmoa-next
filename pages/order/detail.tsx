@@ -32,7 +32,6 @@ const OrderDetailPage: NextPage = (props: T) => {
 		fetchPolicy: 'network-only',
 	});
 
-
 	const order: Order | undefined = data?.getOrder;
 
 	const displayOrderItems = useMemo(() => {
@@ -118,115 +117,115 @@ const OrderDetailPage: NextPage = (props: T) => {
 
 	if (device === 'mobile') {
 		return <div>ORDER DETAIL PAGE MOBILE</div>;
-	}
-
-	return (
-		<div id="order-detail-page">
-			<div className="container">
-				<Stack className="order-confirmation">
-					<Typography className="order-confirmation-title">Order Overview</Typography>
-					<Stack className="order-meta">
-						<Stack className="order-meta-item">
-							<Typography className="label">Order number:</Typography>
-							<Typography className="value">{order._id}</Typography>
-						</Stack>
-						<Stack className="order-meta-item">
-							<Typography className="label">Date:</Typography>
-							<Typography className="value">{formatDate(order.createdAt)}</Typography>
-						</Stack>
-						<Stack className="order-meta-item">
-							<Typography className="label">Email:</Typography>
-							<Typography className="value">{email}</Typography>
-						</Stack>
-						<Stack className="order-meta-item">
-							<Typography className="label">Total:</Typography>
-							<Typography className="value">${total.toFixed(2)}</Typography>
-						</Stack>
-						<Stack className="order-meta-item">
-							<Typography className="label">Payment method:</Typography>
-							<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
+	} else {
+		return (
+			<div id="order-detail-page">
+				<div className="container">
+					<Stack className="order-confirmation">
+						<Typography className="order-confirmation-title">Order Overview</Typography>
+						<Stack className="order-meta">
+							<Stack className="order-meta-item">
+								<Typography className="label">Order number:</Typography>
+								<Typography className="value">{order._id}</Typography>
+							</Stack>
+							<Stack className="order-meta-item">
+								<Typography className="label">Date:</Typography>
+								<Typography className="value">{formatDate(order.createdAt)}</Typography>
+							</Stack>
+							<Stack className="order-meta-item">
+								<Typography className="label">Email:</Typography>
+								<Typography className="value">{email}</Typography>
+							</Stack>
+							<Stack className="order-meta-item">
+								<Typography className="label">Total:</Typography>
+								<Typography className="value">${total.toFixed(2)}</Typography>
+							</Stack>
+							<Stack className="order-meta-item">
+								<Typography className="label">Payment method:</Typography>
+								<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
+							</Stack>
 						</Stack>
 					</Stack>
-				</Stack>
-				<Stack className="order-content">
-					<Typography className="section-title">Order details</Typography>
-					<Box className="order-details-card">
-						<Box className="order-table">
-							<Box className="order-table-header">
-								<Typography className="header-product">Product</Typography>
-								<Typography className="header-total">Total</Typography>
-							</Box>
-							<Box className="order-table-body">
-								{displayOrderItems.map((item) => {
-									const itemTotal = item.itemPrice * item.itemQuantity;
-									return (
-										<Box key={item._id} className="order-table-row product-row">
-											<Typography className="product-name">
-												{item.productData?.productTitle || 'Product'} × {item.itemQuantity}
-											</Typography>
-											<Typography className="product-total">${itemTotal.toFixed(2)}</Typography>
-										</Box>
-									);
-								})}
-								<Box className="order-table-row">
-									<Typography className="label">Subtotal:</Typography>
-									<Typography className="value">${subtotal.toFixed(2)}</Typography>
+					<Stack className="order-content">
+						<Typography className="section-title">Order details</Typography>
+						<Box className="order-details-card">
+							<Box className="order-table">
+								<Box className="order-table-header">
+									<Typography className="header-product">Product</Typography>
+									<Typography className="header-total">Total</Typography>
 								</Box>
-								<Box className="order-table-row">
-									<Typography className="label">Shipping:</Typography>
-									<Typography className="value">
-										{shippingFee === 0 ? 'Free shipping' : `$${shippingFee.toFixed(2)}`}
-									</Typography>
-								</Box>
-								<Box className="order-table-row total-row">
-									<Typography className="label">Total:</Typography>
-									<Typography className="value">${total.toFixed(2)}</Typography>
-								</Box>
-								<Box className="order-table-row">
-									<Typography className="label">Payment method:</Typography>
-									<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
+								<Box className="order-table-body">
+									{displayOrderItems.map((item) => {
+										const itemTotal = item.itemPrice * item.itemQuantity;
+										return (
+											<Box key={item._id} className="order-table-row product-row">
+												<Typography className="product-name">
+													{item.productData?.productTitle || 'Product'} × {item.itemQuantity}
+												</Typography>
+												<Typography className="product-total">${itemTotal.toFixed(2)}</Typography>
+											</Box>
+										);
+									})}
+									<Box className="order-table-row">
+										<Typography className="label">Subtotal:</Typography>
+										<Typography className="value">${subtotal.toFixed(2)}</Typography>
+									</Box>
+									<Box className="order-table-row">
+										<Typography className="label">Shipping:</Typography>
+										<Typography className="value">
+											{shippingFee === 0 ? 'Free shipping' : `$${shippingFee.toFixed(2)}`}
+										</Typography>
+									</Box>
+									<Box className="order-table-row total-row">
+										<Typography className="label">Total:</Typography>
+										<Typography className="value">${total.toFixed(2)}</Typography>
+									</Box>
+									<Box className="order-table-row">
+										<Typography className="label">Payment method:</Typography>
+										<Typography className="value">{formatPaymentMethod(order.paymentMethod)}</Typography>
+									</Box>
 								</Box>
 							</Box>
 						</Box>
-					</Box>
-					<Box className="order-addresses">
-						{!isDealer && (
-							<Box className="address-card billing-address">
-								<Typography className="address-title">Billing address</Typography>
-								{billingAddress ? (
+						<Box className="order-addresses">
+							{!isDealer && (
+								<Box className="address-card billing-address">
+									<Typography className="address-title">Billing address</Typography>
+									{billingAddress ? (
+										<>
+											{formatAddress(billingAddress, true).map((line, index) => (
+												<Typography key={index} className="address-line">
+													{line}
+												</Typography>
+											))}
+											{email && <Typography className="address-line email">{email}</Typography>}
+										</>
+									) : (
+										<Typography className="address-line">No billing address provided</Typography>
+									)}
+								</Box>
+							)}
+
+							<Box className="address-card shipping-address">
+								<Typography className="address-title">Shipping address</Typography>
+								{shippingAddress ? (
 									<>
-										{formatAddress(billingAddress, true).map((line, index) => (
+										{formatAddress(shippingAddress, false).map((line, index) => (
 											<Typography key={index} className="address-line">
 												{line}
 											</Typography>
 										))}
-										{email && <Typography className="address-line email">{email}</Typography>}
 									</>
 								) : (
-									<Typography className="address-line">No billing address provided</Typography>
+									<Typography className="address-line">No shipping address provided</Typography>
 								)}
 							</Box>
-						)}
-
-						<Box className="address-card shipping-address">
-							<Typography className="address-title">Shipping address</Typography>
-							{shippingAddress ? (
-								<>
-									{formatAddress(shippingAddress, false).map((line, index) => (
-										<Typography key={index} className="address-line">
-											{line}
-										</Typography>
-									))}
-								</>
-							) : (
-								<Typography className="address-line">No shipping address provided</Typography>
-							)}
 						</Box>
-					</Box>
-				</Stack>
+					</Stack>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 };
 
 export default withLayoutBasic(OrderDetailPage);

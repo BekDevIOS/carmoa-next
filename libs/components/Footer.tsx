@@ -35,7 +35,7 @@ const Footer = () => {
 
 					<Box className={'footer-box'}>
 						<span className="footer-title">{t('Email')}</span>
-						<p>support@carmoa.kr</p>
+						<p>support@carmoa.store</p>
 					</Box>
 
 					{/* Social Icons */}

@@ -23,13 +23,14 @@ const DealerCard = (props: DealerCardProps) => {
 
 	if (device === 'mobile') {
 		return (
-			<Stack className="dealer-card" onClick={handleDealerClick} sx={{ cursor: 'pointer' }}>
-				<div className="dealer-image-wrapper">
-					<img src={dealerImage} alt={dealer.memberNick} />
+			<Stack className="dealer-card mobile" onClick={handleDealerClick} sx={{ cursor: 'pointer', width: '100%' }}>
+				<div className="dealer-image-wrapper mobile">
+					<img src={dealerImage} alt={dealer.memberNick} className="dealer-image mobile" />
 				</div>
-
-				<strong>{dealer.memberNick}</strong>
-				<span>{dealer.memberType}</span>
+				<Stack className="dealer-info mobile">
+					<strong className="dealer-name mobile">{dealer.memberNick}</strong>
+					<span className="dealer-type mobile">{dealer.memberType}</span>
+				</Stack>
 			</Stack>
 		);
 	} else {

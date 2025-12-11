@@ -4,7 +4,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import CartFab from '../cart/CartFab';
 import CompareFab from '../compare/CompareFab';
 import AiBot from './AiBot';
-import Cart from '../Cart';
+import Cart from '../cart/Cart';
 import CompareModal from '../compare/CompareModal';
 import { Product } from '../../types/product/product';
 import { useCart } from '../../hooks/useCart';
@@ -15,10 +15,8 @@ const FloatingAction: React.FC = () => {
 	const [compareModalOpen, setCompareModalOpen] = useState(false);
 	const { addToCart } = useCart();
 
+
 	// Only render on desktop
-	if (device === 'mobile') {
-		return null;
-	}
 
 	const handleCartClick = () => {
 		setCartOpen(true);
@@ -35,6 +33,9 @@ const FloatingAction: React.FC = () => {
 	const handleAddToCart = (product: Product) => {
 		addToCart(product, 1);
 	};
+	if (device === 'mobile') {
+		return null;
+	}
 
 	return (
 		<>

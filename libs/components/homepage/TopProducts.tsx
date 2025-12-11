@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Navigation, Autoplay } from 'swiper';
 import { useTranslation } from 'next-i18next';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ProductCard from '../common/ProductCard';
@@ -14,6 +14,7 @@ import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { useCart } from '../../hooks/useCart';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -24,6 +25,7 @@ interface TopProductsProps {
 const TopProducts = (props: TopProductsProps) => {
 	const { initialInput } = props;
 	const { t } = useTranslation('common');
+	const device = useDeviceDetect();
 	const swiperRef = useRef<any>(null);
 	const { addToCart } = useCart();
 	const [topProducts, setTopProducts] = useState<Product[]>([]);
@@ -86,6 +88,42 @@ const TopProducts = (props: TopProductsProps) => {
 	const quickViewHandler = (productId: number | string) => {
 		console.log('Quick view:', productId);
 	};
+
+	if (device === 'mobile') {
+		return (
+			<Stack className={'top-products mobile'}>
+				<Stack className={'container'}>
+					<Stack className={'section-header'}>
+						<Stack className={'title-section'}>
+							<Typography variant="h2" className={'main-title'}>
+								<span className={'title-highlight'}>{t('TOP')}</span> {t('PRODUCTS')}
+							</Typography>
+						</Stack>
+					</Stack>
+					<Swiper
+						className={'top-products-swiper mobile'}
+						slidesPerView={1.2}
+						spaceBetween={16}
+						centeredSlides={false}
+						modules={[Autoplay]}
+						autoplay={{ delay: 3000, disableOnInteraction: false }}
+					>
+						{topProducts.map((product) => (
+							<SwiperSlide key={product._id} className={'top-product-slide'}>
+								<ProductCard
+									product={product}
+									likeProductHandler={likeProductHandler}
+									addToCartHandler={addToCartHandler}
+									compareHandler={compareHandler}
+									quickViewHandler={quickViewHandler}
+								/>
+							</SwiperSlide>
+						))}
+					</Swiper>
+				</Stack>
+			</Stack>
+		);
+	}
 
 	return (
 		<Stack className={'top-products'}>

@@ -62,7 +62,78 @@ const ProductCard = ({
 	};
 
 	if (device === 'mobile') {
-		return <div>PRODUCT CARD</div>;
+		return (
+			<Stack
+				className={'product-card mobile'}
+				onClick={handleCardClick}
+				sx={{ cursor: 'pointer', width: '100%' }}
+			>
+				<Stack className={'card-image-wrapper mobile'}>
+					{product.productSalePrice && product.productSalePrice > 0 && (
+						<Box className={'sale-badge mobile'}>
+							<Typography variant="caption" className={'sale-text mobile'}>
+								{t('SALE')}
+							</Typography>
+						</Box>
+					)}
+					<img src={imagePath} alt={product.productTitle} className={'product-image mobile'} />
+					<Box
+						className={`favorite-icon mobile ${isLiked ? 'liked' : ''}`}
+						onClick={(event) => {
+							stopPropagation(event);
+							likeProductHandler?.(user, product._id);
+						}}
+					>
+						{isLiked ? (
+							<FavoriteIcon className={'icon mobile'} />
+						) : (
+							<FavoriteBorderIcon className={'icon mobile'} />
+						)}
+					</Box>
+				</Stack>
+				<Stack className={'card-content mobile'}>
+					<Typography variant="body1" className={'product-title mobile'}>
+						{product.productTitle}
+					</Typography>
+					<Stack className={'price-section mobile'}>
+						{product.productSalePrice && product.productSalePrice > 0 && (
+							<Typography variant="h6" className={'sale-price mobile'}>
+								${product.productSalePrice?.toFixed(2)}
+							</Typography>
+						)}
+						{product.productPrice && (
+							<Typography variant="body2" className={`original-price mobile ${product.productSalePrice && product.productSalePrice > 0 ? 'sale' : ''}`}>
+								${product.productPrice.toFixed(2)}
+							</Typography>
+						)}
+					</Stack>
+					{product.productCondition && (
+						<Box className={'condition-badge mobile'}>
+							<Typography variant="caption" className={'condition-text mobile'}>
+								{product.productCondition}
+							</Typography>
+						</Box>
+					)}
+					<Box
+						className={'add-to-cart-btn mobile'}
+						onClick={(event) => {
+							stopPropagation(event);
+							if (propAddToCartHandler) {
+								propAddToCartHandler(product._id);
+							} else {
+								addToCart(product, 1);
+								sweetTopSmallSuccessAlert('Product added to cart').then();
+							}
+						}}
+					>
+						<ShoppingCartOutlinedIcon className={'cart-icon mobile'} />
+						<Typography variant="body2" className={'cart-text mobile'}>
+							{t('Add to Cart')}
+						</Typography>
+					</Box>
+				</Stack>
+			</Stack>
+		);
 	} else {
 		return (
 			<Stack

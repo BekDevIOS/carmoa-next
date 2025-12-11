@@ -44,7 +44,67 @@ const BlogCard = (props: BlogCardProps) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>COMMUNITY CARD MOBILE</div>;
+		return (
+			<Stack
+				className="community-blog-card mobile"
+				onClick={(e) => chooseArticleHandler(e, boardArticle)}
+				sx={{ width: '100%', cursor: 'pointer' }}
+			>
+				{/* IMAGE WITH CATEGORY BADGE */}
+				<Stack className="image-box mobile">
+					<img src={imagePath} alt={boardArticle?.articleTitle} className="card-img mobile" />
+					<Stack className="category-badge mobile">
+						<Typography className="category-text mobile">{boardArticle?.articleCategory}</Typography>
+					</Stack>
+				</Stack>
+
+				{/* CONTENT */}
+				<Stack className="content-box mobile">
+					{/* AUTHOR AND DATE */}
+					<Stack className="author-section mobile">
+						<Typography
+							className="author mobile"
+							onClick={(e) => {
+								e.stopPropagation();
+								goMemberPage(boardArticle?.memberData?._id as string);
+							}}
+						>
+							{boardArticle?.memberData?.memberNick}
+						</Typography>
+						<Typography className="date mobile">
+							<Moment format={'MMM DD, YYYY'}>{boardArticle?.createdAt}</Moment>
+						</Typography>
+					</Stack>
+
+					{/* TITLE */}
+					<Typography className="title mobile">{boardArticle?.articleTitle}</Typography>
+
+					{/* STATS */}
+					<Stack className="stats mobile">
+						<Stack className="stat-item mobile">
+							<RemoveRedEyeIcon className="icon mobile" />
+							<Typography className="stat-text mobile">{boardArticle?.articleViews || 0}</Typography>
+						</Stack>
+						<Stack
+							className="stat-item mobile"
+							onClick={(e) => {
+								e.stopPropagation();
+								if (typeof likeArticleHandler === 'function') {
+									likeArticleHandler(e, user, boardArticle?._id);
+								}
+							}}
+						>
+							{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
+								<FavoriteIcon className="icon mobile liked" />
+							) : (
+								<FavoriteBorderIcon className="icon mobile" />
+							)}
+							<Typography className="stat-text mobile">{boardArticle?.articleLikes || 0}</Typography>
+						</Stack>
+					</Stack>
+				</Stack>
+			</Stack>
+		);
 	} else {
 		return (
 			<Stack

@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { Stack, Box, Typography, MenuItem, Menu, MenuProps, IconButton } from '@mui/material';
+import { Stack, Box, Typography, MenuItem, Menu, MenuProps, IconButton, Drawer, Divider, Switch, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import {
 	Menu as MenuIcon,
 	ExpandMore as ExpandMoreIcon,
+	ChevronRight as ChevronRightIcon,
 	LocalOffer as LocalOfferIcon,
 	LightMode as LightModeIcon,
 	DarkMode as DarkModeIcon,
@@ -16,29 +17,38 @@ import Link from 'next/link';
 import { ProductMainCategory, ProductSubCategory } from '../enums/product.enum';
 import { ProductsInquiry } from '../types/product/product.input';
 import { Direction } from '../enums/common.enum';
+import useDeviceDetect from '../hooks/useDeviceDetect';
 
-const MainHeader = () => {
+interface MainHeaderProps {
+	mobileOpen?: boolean;
+	onCloseMobile?: () => void;
+}
+
+const MainHeader = ({ mobileOpen = false, onCloseMobile }: MainHeaderProps) => {
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
 	const [categoryAnchor, setCategoryAnchor] = useState<null | HTMLElement>(null);
 	const [expandedCategory, setExpandedCategory] = useState<ProductMainCategory | null>(null);
 	const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
-	const [lang, setLang] = useState<string | null>('en');
+	const [lang, setLang] = useState<string>('en');
 	const themeMode = useReactiveVar(themeVar);
 	const user = useReactiveVar(userVar);
 	const categoryMenuOpen = Boolean(categoryAnchor);
 	const langMenuOpen = Boolean(langAnchor);
-
+	const device = useDeviceDetect();
+	const [mobileCategoriesExpanded, setMobileCategoriesExpanded] = useState(false);
 	/** LIFECYCLES **/
 	useEffect(() => {
-		const storedLocale = localStorage.getItem('locale');
-		if (!storedLocale) {
-			localStorage.setItem('locale', 'en');
-			setLang('en');
-		} else {
-			setLang(storedLocale);
+		const storedLocale = localStorage.getItem('locale') || router.locale || 'en';
+		// Normalize 'ko' to 'kr' for Korean
+		const normalizedLocale = storedLocale === 'ko' ? 'kr' : storedLocale;
+		// Ensure default is 'en' if locale is invalid
+		const validLocale = ['en', 'kr', 'ru'].includes(normalizedLocale) ? normalizedLocale : 'en';
+		setLang(validLocale);
+		if (!localStorage.getItem('locale') || !['en', 'kr', 'ru'].includes(localStorage.getItem('locale') || '')) {
+			localStorage.setItem('locale', validLocale);
 		}
-	}, []);
+	}, [router.locale]);
 
 	/** HANDLERS **/
 	const handleCategoryClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -146,11 +156,12 @@ const MainHeader = () => {
 			if (selectedLang) {
 				setLang(selectedLang);
 				localStorage.setItem('locale', selectedLang);
+				await i18n.changeLanguage(selectedLang);
 				setLangAnchor(null);
 				await router.push(router.asPath, router.asPath, { locale: selectedLang });
 			}
 		},
-		[router],
+		[router, i18n],
 	);
 
 	const StyledMenu = styled((props: MenuProps) => (
@@ -226,6 +237,177 @@ const MainHeader = () => {
 		},
 	}));
 
+	if (device === 'mobile') {
+		type NavItem = { label: string; href?: string; action?: () => Promise<void>; icon?: React.ReactNode };
+
+		const navItems: NavItem[] = [
+			{ label: t('Home'), href: '/' },
+			{ label: t('Products'), href: '/product' },
+			{ 
+				label: t('SHOP BY CATEGORIES'), 
+				icon: <ChevronRightIcon sx={{ fontSize: 18, transform: mobileCategoriesExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+			},
+			{ label: t('Blog'), href: '/blog' },
+			{ label: t('About Us'), href: '/about' },
+			...(user?._id ? [{ label: t('My Page'), href: '/mypage' }] : []),
+			{ label: t('CS'), href: '/cs' },
+		];
+
+		const changeLang = async (selected: string) => {
+			// Normalize locale code: 'ko' -> 'kr' for Korean
+			const normalizedLocale = selected === 'ko' ? 'kr' : selected;
+			setLang(normalizedLocale);
+			localStorage.setItem('locale', normalizedLocale);
+			await i18n.changeLanguage(normalizedLocale);
+			onCloseMobile && onCloseMobile();
+			await router.push(router.asPath, router.asPath, { locale: normalizedLocale });
+		};
+
+		const toggleTheme = () => {
+			const newMode = themeMode === 'light' ? 'dark' : 'light';
+			themeVar(newMode);
+		};
+
+		const handleCategoryItemClick = async (mainCategory?: ProductMainCategory, subCategory?: ProductSubCategory) => {
+			onCloseMobile && onCloseMobile();
+			await handleCategoryNavigation(mainCategory, subCategory);
+		};
+
+		return (
+			<Drawer 
+				anchor="left" 
+				open={mobileOpen} 
+				onClose={onCloseMobile}
+				sx={{
+					'& .MuiDrawer-paper': {
+						width: '80%',
+						maxWidth: '300px',
+						left: 0,
+						borderRadius: '0 16px 0 0',
+					}
+				}}
+			>
+				<Stack className="mobile-drawer" sx={{ width: '100%', height: '100%', p: 2.5 }} spacing={0}>
+					<Typography variant="h6" className="mobile-drawer-title" sx={{ fontSize: 18, fontWeight: 700, mb: 2.5, pl: 0.5 }}>
+						{t('Menu')}
+					</Typography>
+					<List sx={{ py: 0 }}>
+						{navItems.map((item, index) => {
+							if (item.label === t('SHOP BY CATEGORIES')) {
+								return (
+									<React.Fragment key={item.label}>
+										<ListItem disablePadding sx={{ mb: 1 }}>
+											<ListItemButton
+												className="mobile-drawer-category-btn"
+												onClick={() => setMobileCategoriesExpanded(!mobileCategoriesExpanded)}
+												sx={{ 
+													borderRadius: '8px',
+													py: 1.25,
+													px: 1.5,
+													display: 'flex',
+													justifyContent: 'space-between',
+													alignItems: 'center'
+												}}
+											>
+												<Typography variant="body1" sx={{ fontWeight: 600, fontSize: 15 }}>
+													{item.label}
+												</Typography>
+												{item.icon}
+											</ListItemButton>
+										</ListItem>
+										{mobileCategoriesExpanded && (
+											<Box sx={{ pl: 2, mb: 1 }}>
+												{mainCategories.map((mainCategory: ProductMainCategory) => {
+													const subCategories = getSubCategories(mainCategory);
+													return (
+														<React.Fragment key={String(mainCategory)}>
+															<ListItem disablePadding sx={{ mb: 0.75 }}>
+																<ListItemButton
+																	onClick={() => handleCategoryItemClick(mainCategory)}
+																	sx={{ 
+																		borderRadius: '8px',
+																		py: 1,
+																		px: 1.5,
+																	}}
+																>
+																	<Typography variant="body2" sx={{ fontSize: 14 }}>
+																		{formatCategoryName(String(mainCategory))}
+																	</Typography>
+																</ListItemButton>
+															</ListItem>
+														</React.Fragment>
+													);
+												})}
+											</Box>
+										)}
+									</React.Fragment>
+								);
+							}
+							return (
+								<ListItem key={item.href ?? item.label} disablePadding sx={{ mb: 1 }}>
+									<ListItemButton
+										onClick={async () => {
+											if (item.href) {
+												onCloseMobile && onCloseMobile();
+												await router.push(item.href);
+											}
+										}}
+										sx={{ 
+											borderRadius: '8px',
+											py: 1.25,
+											px: 1.5,
+										}}
+									>
+										<Typography variant="body1" sx={{ fontSize: 15 }}>
+											{item.label}
+										</Typography>
+									</ListItemButton>
+								</ListItem>
+							);
+						})}
+					</List>
+					<Divider sx={{ my: 2 }} />
+					<Stack spacing={2}>
+						<Stack direction="row" justifyContent="space-between" alignItems="center">
+							<Typography variant="body2" sx={{ fontSize: 14, fontWeight: 500 }}>{t('Language')}</Typography>
+							<Stack direction="row" spacing={0.5} className="mobile-lang-tabs">
+								{['en', 'ko', 'ru'].map((lng) => {
+									// Normalize 'ko' to 'kr' for comparison
+									const normalizedLng = lng === 'ko' ? 'kr' : lng;
+									return (
+									<Box
+										key={lng}
+										className={`mobile-lang-tab ${lang === normalizedLng ? 'active' : ''}`}
+										onClick={() => changeLang(lng)}
+										sx={{
+											cursor: 'pointer',
+											px: 1.5,
+											py: 0.5,
+											borderRadius: '6px',
+											fontSize: 13,
+											fontWeight: lang === normalizedLng ? 600 : 400,
+											transition: 'all 0.2s',
+										}}
+									>
+										{lng.toUpperCase()}
+									</Box>
+									);
+								})}
+							</Stack>
+						</Stack>
+						<Stack direction="row" justifyContent="space-between" alignItems="center">
+							<Typography variant="body2" sx={{ fontSize: 14, fontWeight: 500 }}>{t('Theme')}</Typography>
+							<Switch 
+								checked={themeMode === 'dark'} 
+								onChange={toggleTheme}
+								sx={{ alignSelf: 'center' }}
+							/>
+						</Stack>
+					</Stack>
+				</Stack>
+			</Drawer>
+		);
+	} else {
 	return (
 		<Stack className={'main-header'} sx={{ bgcolor: 'background.paper', borderColor: 'divider' }}>
 			<Stack className={'container'}>
@@ -471,7 +653,8 @@ const MainHeader = () => {
 				</Box>
 			</Stack>
 		</Stack>
-	);
+		);
+	}
 };
 
 export default MainHeader;

@@ -74,10 +74,10 @@ const Chat = () => {
 					setOnlineUsers(newInfo.totalClients);
 					break;
 
-				// case 'messages':
-				// 	const list: MessagePayload[] = data.messages || [];
-				// 	setMessagesList(list);
-				// 	break;
+				case 'messages':
+					const list: MessagePayload[] = data.messages || [];
+					setMessagesList(list);
+					break;
 
 				case 'message':
 					const newMessage: MessagePayload = data;

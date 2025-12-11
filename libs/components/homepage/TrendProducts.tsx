@@ -11,6 +11,9 @@ import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { useCart } from '../../hooks/useCart';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
+import 'swiper/css';
 
 interface TrendProductsProps {
 	initialInput: ProductsInquiry;
@@ -87,6 +90,42 @@ const TrendProducts = (props: TrendProductsProps) => {
 	const quickViewHandler = (productId: string) => {
 		console.log('Quick view:', productId);
 	};
+
+	if (device === 'mobile') {
+		return (
+			<Stack className={'trend-products mobile'}>
+				<Stack className={'container'}>
+					<Stack className={'section-header'}>
+						<Stack className={'title-section'}>
+							<Typography variant="h2" className={'main-title'}>
+								<span className={'title-highlight'}>TREND</span> PRODUCTS
+							</Typography>
+						</Stack>
+					</Stack>
+					<Swiper
+						className={'trend-products-swiper mobile'}
+						slidesPerView={1.2}
+						spaceBetween={16}
+						centeredSlides={false}
+						modules={[Autoplay]}
+						autoplay={{ delay: 3000, disableOnInteraction: false }}
+					>
+						{trendProducts.map((product) => (
+							<SwiperSlide key={product._id} className={'trend-product-slide'}>
+								<ProductCard
+									product={product}
+									likeProductHandler={likeProductHandler}
+									addToCartHandler={addToCartHandler}
+									compareHandler={compareHandler}
+									quickViewHandler={quickViewHandler}
+								/>
+							</SwiperSlide>
+						))}
+					</Swiper>
+				</Stack>
+			</Stack>
+		);
+	}
 
 	return (
 		<Stack className={'trend-products'}>

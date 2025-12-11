@@ -1,0 +1,226 @@
+@import '/scss/variables.scss';
+
+#mobile-wrap {
+	.join-page.mobile {
+		padding: 30px 20px;
+		width: 100%;
+		min-height: calc(100vh - 156px);
+		background: var(--carmo-bg);
+		display: flex;
+		justify-content: center;
+
+		.container {
+			width: 100%;
+			max-width: 500px;
+			display: flex;
+			justify-content: center;
+
+			.main {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				border-radius: 16px;
+				background: var(--carmo-card-bg);
+				border: 1px solid var(--carmo-border);
+				overflow: hidden;
+				padding: 30px 20px;
+
+				/* LEFT SIDE - Full width on mobile */
+				.left {
+					width: 100%;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+
+					/* LOGO */
+					.logo {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						margin-bottom: 20px;
+
+						img {
+							width: 100px;
+							height: auto;
+							object-fit: contain;
+						}
+					}
+
+					/* TITLE & SUBTEXT */
+					.info {
+						margin-top: 10px;
+						text-align: center;
+						margin-bottom: 20px;
+
+						span {
+							font-size: 22px;
+							font-weight: 700;
+							color: var(--carmo-text);
+							text-transform: uppercase;
+							font-family: $font;
+						}
+
+						p {
+							margin-top: 8px;
+							font-size: 14px;
+							color: var(--carmo-text-secondary);
+							font-family: $font;
+						}
+					}
+
+					/* INPUTS */
+					.input-wrap {
+						margin-top: 20px;
+						width: 100%;
+						display: flex;
+						flex-direction: column;
+						gap: 18px;
+
+						.input-box {
+							display: flex;
+							flex-direction: column;
+							width: 100%;
+
+							span {
+								font-size: 13px;
+								font-weight: 600;
+								color: var(--carmo-text);
+								margin-bottom: 8px;
+								font-family: $font;
+							}
+
+							input {
+								height: 48px;
+								width: 100%;
+								border-radius: 10px;
+								padding: 0 15px;
+								border: 1px solid var(--carmo-border);
+								background: var(--carmo-bg);
+								color: var(--carmo-text);
+								font-family: $font;
+								font-size: 14px;
+								transition: 0.25s;
+								box-sizing: border-box;
+
+								&:focus {
+									outline: none;
+									border-color: var(--carmo-primary);
+									box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.15);
+								}
+
+								&::placeholder {
+									color: var(--carmo-text-secondary);
+									opacity: 0.7;
+								}
+							}
+						}
+					}
+
+					/* REGISTRATION AREA */
+					.register {
+						margin-top: 25px;
+						width: 100%;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+
+						/* USER / DEALER SELECT */
+						.type-option {
+							width: 100%;
+							display: flex;
+							flex-direction: column;
+							gap: 12px;
+							margin-bottom: 15px;
+
+							span.text {
+								font-weight: 600;
+								color: var(--carmo-text);
+								font-size: 14px;
+								font-family: $font;
+							}
+
+							div {
+								display: flex;
+								align-items: center;
+								gap: 20px;
+								flex-wrap: wrap;
+							}
+						}
+
+						/* REMEMBER ME / LOST PASSWORD */
+						.remember-info {
+							width: 100%;
+							margin-bottom: 15px;
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							flex-wrap: wrap;
+							gap: 10px;
+
+							a {
+								font-size: 13px;
+								color: var(--carmo-primary);
+								cursor: pointer;
+								font-family: $font;
+								text-decoration: none;
+
+								&:active {
+									text-decoration: underline;
+								}
+							}
+						}
+
+						/* SUBMIT BUTTON */
+						button {
+							margin-top: 10px;
+							width: 100%;
+							height: 50px;
+							border-radius: 12px;
+							font-size: 15px;
+							font-weight: 600;
+							background: var(--carmo-primary);
+							color: #000;
+							transition: 0.2s;
+							font-family: $font;
+							text-transform: uppercase;
+
+							&:hover {
+								background: var(--carmo-primary-hover);
+							}
+
+							&:active {
+								transform: scale(0.98);
+							}
+
+							&:disabled {
+								opacity: 0.5;
+								cursor: not-allowed;
+							}
+						}
+					}
+
+					/* SWITCH LOGIN / SIGNUP */
+					.ask-info {
+						margin-top: 25px;
+						text-align: center;
+
+						p {
+							font-size: 14px;
+							color: var(--carmo-text);
+							font-family: $font;
+
+							b {
+								margin-left: 6px;
+								font-size: 15px;
+								font-weight: 700;
+								color: var(--carmo-primary);
+								cursor: pointer;
+								text-decoration: underline;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,5 +1,17 @@
 import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { Box, Button, Checkbox, Stack, Typography, Tabs, Tab, OutlinedInput, Chip, IconButton, CircularProgress } from '@mui/material';
+import {
+	Box,
+	Button,
+	Checkbox,
+	Stack,
+	Typography,
+	Tabs,
+	Tab,
+	OutlinedInput,
+	Chip,
+	IconButton,
+	CircularProgress,
+} from '@mui/material';
 import { useTranslation } from 'next-i18next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
@@ -184,11 +196,11 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const relatedProductsInput = useMemo<ProductsInquiry | null>(() => {
 		if (!product) return null;
 		const search: ProductsInquiry['search'] = {};
-		
+
 		// Use main category and brand for broader results (exclude subcategory to get more products)
 		//:TODO: use options instead of conditionList(condition is for developing purpose)
 		if (product.productCondition) search.conditionList = [product.productCondition];
-		
+
 		return {
 			page: 1,
 			limit: 10, // Request more products to ensure we have enough after filtering
@@ -507,583 +519,589 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 	if (device === 'mobile') {
 		return <div>PRODUCT DETAIL PAGE</div>;
-	}
-
-	if (!product) {
-		return (
-			<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
-				<Typography variant="h6">Product not found.</Typography>
-			</Stack>
-		);
 	} else {
-		return (
-			<Stack id={'product-detail-page'}>
-				<Stack className={'container'}>
-					{/* Main Product Section */}
-					<Stack className={'product-detail-main'} direction={'row'} spacing={4} mb={'60px'}>
-						{/* Image Gallery */}
-						<Stack className="product-gallery">
-							<div className="main-image-wrapper">
-								{/* SALE BADGE */}
-								{isOnSale && (
-									<div className="sale-badge">
-										<span className="sale-text">SALE</span>
+		if (!product) {
+			return (
+				<Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+					<Typography variant="h6">Product not found.</Typography>
+				</Stack>
+			);
+		} else {
+			return (
+				<Stack id={'product-detail-page'}>
+					<Stack className={'container'}>
+						{/* Main Product Section */}
+						<Stack className={'product-detail-main'} direction={'row'} spacing={4} mb={'60px'}>
+							{/* Image Gallery */}
+							<Stack className="product-gallery">
+								<div className="main-image-wrapper">
+									{/* SALE BADGE */}
+									{isOnSale && (
+										<div className="sale-badge">
+											<span className="sale-text">SALE</span>
+										</div>
+									)}
+
+									{/* NEXT / PREV BUTTONS */}
+									{productImages.length > 1 && (
+										<>
+											<button className="image-nav-btn prev-btn" onClick={handlePreviousImage}>
+												<WestIcon />
+											</button>
+											<button className="image-nav-btn next-btn" onClick={handleNextImage}>
+												<EastIcon />
+											</button>
+										</>
+									)}
+
+									{/* MAGNIFY IMAGE */}
+									<div className="magnify-container" onClick={handleOpenLightbox}>
+										<ReactImageMagnify
+											{...{
+												smallImage: {
+													alt: product?.productTitle || '',
+													isFluidWidth: true,
+													src: displaySelectedImage,
+												},
+												largeImage: {
+													src: displaySelectedImage,
+													width: 1200,
+													height: 1200,
+												},
+												lensStyle: {
+													backgroundColor: 'rgba(255,255,255,0.4)',
+													border: '2px solid rgba(0,0,0,0.2)',
+													borderRadius: '50%',
+												},
+												shouldUsePositiveSpaceLens: true,
+												enlargedImagePosition: 'over',
+											}}
+										/>
+									</div>
+								</div>
+
+								{/* THUMBNAILS */}
+								{productImages.length > 1 && (
+									<div className="thumbnail-section">
+										<div className="thumbnail-images">
+											{productImages.map((image, index) => (
+												<div
+													key={index}
+													className={`thumbnail ${currentImageIndex === index ? 'active' : ''}`}
+													onClick={() => handleImageChange(image, index)}
+												>
+													<img src={image} alt={`Thumbnail ${index + 1}`} />
+												</div>
+											))}
+										</div>
 									</div>
 								)}
+							</Stack>
 
-							{/* NEXT / PREV BUTTONS */}
-							{productImages.length > 1 && (
-								<>
-									<button className="image-nav-btn prev-btn" onClick={handlePreviousImage}>
-										<WestIcon />
-									</button>
-									<button className="image-nav-btn next-btn" onClick={handleNextImage}>
-										<EastIcon />
-									</button>
-								</>
-							)}
+							{/* Product Information */}
+							<Stack className={'product-info'} flex={1}>
+								<Typography variant="h4" className={'product-title'}>
+									{product?.productTitle}
+								</Typography>
 
-							{/* MAGNIFY IMAGE */}
-							<div className="magnify-container" onClick={handleOpenLightbox}>
-								<ReactImageMagnify
-									{...{
-										smallImage: {
-											alt: product?.productTitle || '',
-											isFluidWidth: true,
-											src: displaySelectedImage,
-										},
-										largeImage: {
-											src: displaySelectedImage,
-											width: 1200,
-											height: 1200,
-										},
-										lensStyle: {
-											backgroundColor: 'rgba(255,255,255,0.4)',
-											border: '2px solid rgba(0,0,0,0.2)',
-											borderRadius: '50%',
-										},
-										shouldUsePositiveSpaceLens: true,
-										enlargedImagePosition: 'over',
-									}}
-								/>
-							</div>
-							</div>
-
-						{/* THUMBNAILS */}
-						{productImages.length > 1 && (
-							<div className="thumbnail-section">
-								<div className="thumbnail-images">
-									{productImages.map((image, index) => (
-										<div
-											key={index}
-											className={`thumbnail ${currentImageIndex === index ? 'active' : ''}`}
-											onClick={() => handleImageChange(image, index)}
-										>
-											<img src={image} alt={`Thumbnail ${index + 1}`} />
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-						</Stack>
-
-						{/* Product Information */}
-						<Stack className={'product-info'} flex={1}>
-							<Typography variant="h4" className={'product-title'}>
-								{product?.productTitle}
-							</Typography>
-
-							{/* Brands */}
-							{brandChips.length > 0 && (
-								<Stack className={'brands-section'} mt={'12px'} mb={'16px'}>
-									<Stack direction={'row'} spacing={1} flexWrap={'wrap'}>
-										<Typography className={'brands-label'}>Brands:</Typography>
-										{brandChips.map((brand, index) => (
-											<Chip key={index} label={brand} className={'brand-chip'} />
-										))}
-									</Stack>
-								</Stack>
-							)}
-
-							{/* Social Proof */}
-							<Stack className={'social-proof'} mb={'16px'} gap={'16px'}>
-								<Stack sx={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
-									{viewersCount !== undefined && (
-										<Stack direction={'row'} alignItems={'center'} spacing={1} className={'social-proof-item'}>
-											<RemoveRedEyeIcon className={'view-icon'} />
-											<Typography className={'viewers-count'}>{viewersCount} views</Typography>
+								{/* Brands */}
+								{brandChips.length > 0 && (
+									<Stack className={'brands-section'} mt={'12px'} mb={'16px'}>
+										<Stack direction={'row'} spacing={1} flexWrap={'wrap'}>
+											<Typography className={'brands-label'}>Brands:</Typography>
+											{brandChips.map((brand, index) => (
+												<Chip key={index} label={brand} className={'brand-chip'} />
+											))}
 										</Stack>
-									)}
-									{productLikes !== undefined && (
+									</Stack>
+								)}
+
+								{/* Social Proof */}
+								<Stack className={'social-proof'} mb={'16px'} gap={'16px'}>
+									<Stack sx={{ display: 'flex', flexDirection: 'row', gap: '16px' }}>
+										{viewersCount !== undefined && (
+											<Stack direction={'row'} alignItems={'center'} spacing={1} className={'social-proof-item'}>
+												<RemoveRedEyeIcon className={'view-icon'} />
+												<Typography className={'viewers-count'}>{viewersCount} views</Typography>
+											</Stack>
+										)}
+										{productLikes !== undefined && (
+											<Stack direction={'row'} alignItems={'center'} spacing={1} className={'social-proof-item'}>
+												<FavoriteIcon className={'like-icon'} />
+												<Typography className={'likes-count'}>{productLikes} likes</Typography>
+											</Stack>
+										)}
+									</Stack>
+									{stockStatus && (
 										<Stack direction={'row'} alignItems={'center'} spacing={1} className={'social-proof-item'}>
-											<FavoriteIcon className={'like-icon'} />
-											<Typography className={'likes-count'}>{productLikes} likes</Typography>
+											<CheckCircleIcon className={'stock-icon'} />
+											<Typography className={'stock-status'}>{stockStatus}</Typography>
 										</Stack>
 									)}
 								</Stack>
-								{stockStatus && (
-									<Stack direction={'row'} alignItems={'center'} spacing={1} className={'social-proof-item'}>
-										<CheckCircleIcon className={'stock-icon'} />
-										<Typography className={'stock-status'}>{stockStatus}</Typography>
+
+								{/* Description */}
+								{shortDescription && (
+									<Typography
+										className={'product-description'}
+										mb={'20px'}
+										sx={{
+											display: '-webkit-box',
+											WebkitLineClamp: 2,
+											WebkitBoxOrient: 'vertical',
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+										}}
+									>
+										{shortDescription}
+									</Typography>
+								)}
+								{compatibilityText && (
+									<Typography className={'compatibility-text'} mb={'20px'}>
+										Compatible with {compatibilityText}
+									</Typography>
+								)}
+
+								{/* Pricing */}
+								<Stack className={'pricing-section'} mb={'20px'}>
+									{isOnSale && product?.productPrice !== undefined && (
+										<Typography className={'original-price'}>${product.productPrice.toFixed(2)}</Typography>
+									)}
+									<Typography className={'current-price'}>
+										$
+										{isOnSale && product?.productSalePrice !== undefined
+											? product.productSalePrice.toFixed(2)
+											: product?.productPrice?.toFixed(2)}
+									</Typography>
+								</Stack>
+
+								{/* Countdown Timer */}
+								{isOnSale && timeRemaining && (
+									<Stack className={'countdown-timer'} mb={'24px'}>
+										<Stack direction={'row'} alignItems={'center'} spacing={1} className={'countdown-title'}>
+											<AccessTimeIcon className={'clock-icon'} />
+											<Typography>Hurry up! Sale end in:</Typography>
+										</Stack>
+										<Stack className={'countdown-display'} direction={'row'} spacing={0} alignItems={'center'}>
+											<Box className={'countdown-item'}>
+												<Typography className={'countdown-value'}>{timeRemaining.days}d</Typography>
+											</Box>
+											<Typography className={'countdown-separator'}>:</Typography>
+											<Box className={'countdown-item'}>
+												<Typography className={'countdown-value'}>{timeRemaining.hours}h</Typography>
+											</Box>
+											<Typography className={'countdown-separator'}>:</Typography>
+											<Box className={'countdown-item'}>
+												<Typography className={'countdown-value'}>{timeRemaining.minutes}m</Typography>
+											</Box>
+										</Stack>
 									</Stack>
 								)}
-							</Stack>
 
-							{/* Description */}
-							{shortDescription && (
-								<Typography
-									className={'product-description'}
-									mb={'20px'}
-									sx={{
-										display: '-webkit-box',
-										WebkitLineClamp: 2,
-										WebkitBoxOrient: 'vertical',
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-									}}
+								{/* Quantity Selector & Action Buttons */}
+								<Stack
+									className={'quantity-and-actions'}
+									direction={'row'}
+									alignItems={'center'}
+									spacing={2}
+									mb={'24px'}
 								>
-									{shortDescription}
-								</Typography>
-							)}
-							{compatibilityText && (
-								<Typography className={'compatibility-text'} mb={'20px'}>
-									Compatible with {compatibilityText}
-								</Typography>
-							)}
+									<Stack className={'quantity-section'}>
+										<Typography className={'quantity-label'}>Quantity:</Typography>
+										<Stack direction={'row'} alignItems={'center'} className={'quantity-controls'}>
+											<Button
+												variant="outlined"
+												onClick={() => handleQuantityChange(quantity - 1)}
+												disabled={quantity <= 1}
+												className={'quantity-btn'}
+											>
+												-
+											</Button>
+											<OutlinedInput
+												type="number"
+												value={quantity}
+												onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
+												className={'quantity-input'}
+												inputProps={{ min: 1, max: product?.productStock || 1 }}
+											/>
+											<Button
+												variant="outlined"
+												onClick={() => handleQuantityChange(quantity + 1)}
+												disabled={quantity >= (product?.productStock || 0)}
+												className={'quantity-btn'}
+											>
+												+
+											</Button>
+										</Stack>
+									</Stack>
+									<Button
+										className={'add-to-cart-btn'}
+										onClick={handleAddToCart}
+										startIcon={<ShoppingCartOutlinedIcon />}
+									>
+										ADD TO CART
+									</Button>
+									<IconButton className={'wishlist-btn'} onClick={handleWishlist}>
+										{isWishlisted ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+									</IconButton>
+									<IconButton
+										className={`compare-btn ${isInCompare ? 'compared' : ''}`}
+										onClick={() => {
+											if (product) {
+												toggleCompare(product);
+											}
+										}}
+									>
+										<CompareArrowsIcon />
+									</IconButton>
+								</Stack>
 
-							{/* Pricing */}
-							<Stack className={'pricing-section'} mb={'20px'}>
-								{isOnSale && product?.productPrice !== undefined && (
-									<Typography className={'original-price'}>${product.productPrice.toFixed(2)}</Typography>
+								{/* Buy Now */}
+								<Stack className={'buy-now-section'} mb={'20px'}>
+									<Stack direction={'row'} alignItems={'center'} spacing={1} mb={'12px'}>
+										<Checkbox className={'terms-checkbox'} />
+										<Typography className={'terms-text'}>
+											I agree with the{' '}
+											<Link href={'/terms'} className={'terms-link'}>
+												Terms and Conditions
+											</Link>
+										</Typography>
+									</Stack>
+									<Button className={'buy-now-btn'} onClick={handleBuyNow}>
+										BUY NOW
+									</Button>
+								</Stack>
+
+								{/* Estimated Delivery */}
+								{product?.estimatedDelivery && (
+									<Typography className={'estimated-delivery'}>
+										Estimated Delivery: <span className={'delivery-date-range'}>{product.estimatedDelivery}</span>
+									</Typography>
 								)}
-								<Typography className={'current-price'}>
-									$
-									{isOnSale && product?.productSalePrice !== undefined
-										? product.productSalePrice.toFixed(2)
-										: product?.productPrice?.toFixed(2)}
-								</Typography>
-							</Stack>
 
-							{/* Countdown Timer */}
-							{isOnSale && timeRemaining && (
-								<Stack className={'countdown-timer'} mb={'24px'}>
-									<Stack direction={'row'} alignItems={'center'} spacing={1} className={'countdown-title'}>
-										<AccessTimeIcon className={'clock-icon'} />
-										<Typography>Hurry up! Sale end in:</Typography>
-									</Stack>
-									<Stack className={'countdown-display'} direction={'row'} spacing={0} alignItems={'center'}>
-										<Box className={'countdown-item'}>
-											<Typography className={'countdown-value'}>{timeRemaining.days}d</Typography>
-										</Box>
-										<Typography className={'countdown-separator'}>:</Typography>
-										<Box className={'countdown-item'}>
-											<Typography className={'countdown-value'}>{timeRemaining.hours}h</Typography>
-										</Box>
-										<Typography className={'countdown-separator'}>:</Typography>
-										<Box className={'countdown-item'}>
-											<Typography className={'countdown-value'}>{timeRemaining.minutes}m</Typography>
-										</Box>
-									</Stack>
-								</Stack>
-							)}
-
-							{/* Quantity Selector & Action Buttons */}
-							<Stack className={'quantity-and-actions'} direction={'row'} alignItems={'center'} spacing={2} mb={'24px'}>
-								<Stack className={'quantity-section'}>
-									<Typography className={'quantity-label'}>Quantity:</Typography>
-									<Stack direction={'row'} alignItems={'center'} className={'quantity-controls'}>
-										<Button
-											variant="outlined"
-											onClick={() => handleQuantityChange(quantity - 1)}
-											disabled={quantity <= 1}
-											className={'quantity-btn'}
-										>
-											-
-										</Button>
-										<OutlinedInput
-											type="number"
-											value={quantity}
-											onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
-											className={'quantity-input'}
-											inputProps={{ min: 1, max: product?.productStock || 1 }}
-										/>
-										<Button
-											variant="outlined"
-											onClick={() => handleQuantityChange(quantity + 1)}
-											disabled={quantity >= (product?.productStock || 0)}
-											className={'quantity-btn'}
-										>
-											+
-										</Button>
-									</Stack>
-								</Stack>
-								<Button
-									className={'add-to-cart-btn'}
-									onClick={handleAddToCart}
-									startIcon={<ShoppingCartOutlinedIcon />}
-								>
-									ADD TO CART
-								</Button>
-								<IconButton className={'wishlist-btn'} onClick={handleWishlist}>
-									{isWishlisted ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-								</IconButton>
-								<IconButton 
-									className={`compare-btn ${isInCompare ? 'compared' : ''}`} 
-									onClick={() => {
-										if (product) {
-											toggleCompare(product);
-										}
-									}}
-								>
-									<CompareArrowsIcon />
-								</IconButton>
-							</Stack>
-
-							{/* Buy Now */}
-							<Stack className={'buy-now-section'} mb={'20px'}>
-								<Stack direction={'row'} alignItems={'center'} spacing={1} mb={'12px'}>
-									<Checkbox className={'terms-checkbox'} />
-									<Typography className={'terms-text'}>
-										I agree with the{' '}
-										<Link href={'/terms'} className={'terms-link'}>
-											Terms and Conditions
+								{/* Category */}
+								{product?.productMainCategory && (
+									<Typography className={'product-category'}>
+										{t('Category')}:{' '}
+										<Link href={`/product?category=${product.productMainCategory}`}>
+											{formatText(product.productMainCategory)}
 										</Link>
 									</Typography>
-								</Stack>
-								<Button className={'buy-now-btn'} onClick={handleBuyNow}>
-									BUY NOW
-								</Button>
-							</Stack>
-
-							{/* Estimated Delivery */}
-							{product?.estimatedDelivery && (
-								<Typography className={'estimated-delivery'}>
-									Estimated Delivery: <span className={'delivery-date-range'}>{product.estimatedDelivery}</span>
-								</Typography>
-							)}
-
-							{/* Category */}
-							{product?.productMainCategory && (
-								<Typography className={'product-category'}>
-									{t('Category')}:{' '}
-									<Link href={`/product?category=${product.productMainCategory}`}>
-										{formatText(product.productMainCategory)}
-									</Link>
-								</Typography>
-							)}
-
-							{/* Rating summary */}
-							<Stack className={'product-rating-summary'} direction="row" alignItems="center" spacing={1} mt={1}>
-								{ratingCount > 0 ? (
-									<>
-										<Stack direction="row" spacing={0.5} alignItems="center">
-											{[1, 2, 3, 4, 5].map((star) => (
-												<StarIcon
-													key={star}
-													className={star <= Math.round(ratingAverage) ? 'star-filled' : 'star-empty'}
-													fontSize="small"
-												/>
-											))}
-										</Stack>
-										<Typography variant="body2" className={'rating-value'}>
-											{ratingAverage.toFixed(1)}
-										</Typography>
-										<Typography variant="body2" className={'rating-count'}>
-											({ratingCount} {ratingCount === 1 ? 'review' : 'reviews'})
-										</Typography>
-									</>
-								) : (
-									<Typography variant="body2" className={'rating-count'}>
-										No ratings yet
-									</Typography>
 								)}
-							</Stack>
-						</Stack>
-					</Stack>
-				</Stack>
 
-				{/* Product Tabs */}
-				<Stack className={'product-tabs-section'} mb={'60px'}>
-					<Stack className={'container'}>
-						{/* Vertical Tabs on Left */}
-						<Tabs
-							value={activeTab}
-							onChange={handleTabChange}
-							orientation="vertical"
-							variant="scrollable"
-							className={'product-tabs'}
-						>
-							<Tab label="Description" />
-							<Tab label="Additional Information" />
-							<Tab label={`Reviews (${commentTotal})`} />
-						</Tabs>
-
-						{/* Tab Panels on Right */}
-						<Stack className={'tab-panels'}>
-							<Box className={'tab-panel'} hidden={activeTab !== 0}>
-								{product?.productDescription && (
-									<Stack className={'description-content'}>
-										{product.productDescription.split('\n').map((paragraph, index) => {
-											if (paragraph.trim().startsWith('*')) {
-												// Bullet point format
-												const bulletText = paragraph.trim().substring(1).trim();
-												const parts = bulletText.split(':');
-												if (parts.length >= 2) {
-													const title = parts[0].trim();
-													const content = parts.slice(1).join(':').trim();
-													return (
-														<Stack key={index} className={'description-item'} direction={'row'} spacing={1}>
-															<Typography className={'bullet'}>•</Typography>
-															<Stack>
-																<Typography className={'description-title'} component={'span'}>
-																	{title}:
-																</Typography>{' '}
-																<Typography className={'description-text'} component={'span'}>
-																	{content}
-																</Typography>
-															</Stack>
-														</Stack>
-													);
-												}
-											}
-											return (
-												<Typography key={index} className={'tab-content'} mb={'12px'}>
-													{paragraph}
-												</Typography>
-											);
-										})}
-									</Stack>
-								)}
-							</Box>
-
-							<Box className={'tab-panel'} hidden={activeTab !== 1}>
-								<Stack className={'additional-info'}>
-									{additionalInfoEntries.length === 0 ? (
-										<Typography className={'info-value'}>No additional information available.</Typography>
-									) : (
-										additionalInfoEntries.map(([key, value]) => (
-											<Stack key={key} direction={'row'} className={'info-row'}>
-												<Typography className={'info-key'}>{key}:</Typography>
-												<Typography className={'info-value'}>{value}</Typography>
-											</Stack>
-										))
-									)}
-								</Stack>
-							</Box>
-
-							<Box className={'tab-panel'} hidden={activeTab !== 2}>
-								<Stack className={'reviews-section'}>
-									<Typography className={'reviews-heading'}>Reviews</Typography>
-
-									{commentTotal === 0 ? (
-										<Stack className={'no-reviews'}>
-											<Typography className={'no-reviews-text'}>There are no reviews yet.</Typography>
-										</Stack>
-									) : (
-										<Stack className={'reviews-list'}>
-											{productComments?.map((comment: Comment, index: number) => (
-												<Review comment={comment} key={comment?._id || index} rating={comment.rating ?? null} />
-											))}
-											{commentTotal > 5 && (
-												<Box component={'div'} className={'pagination-box'}>
-													<MuiPagination
-														page={1}
-														count={Math.ceil(commentTotal / 5)}
-														onChange={commentPaginationChangeHandler}
-														shape="circular"
-														color="primary"
-													/>
-												</Box>
-											)}
-										</Stack>
-									)}
-
-									{/* Leave Review Form */}
-									<Stack className={'leave-review-form'}>
-										<Typography className={'review-form-title'}>Be the first to review "{product?.productTitle}"</Typography>
-
-										<Stack className={'rating-section'}>
-											<Typography className={'rating-label'}>
-												Your rating <span className={'required'}>(optional)</span>
-											</Typography>
-											<Stack direction={'row'} className={'star-rating-selector'}>
+								{/* Rating summary */}
+								<Stack className={'product-rating-summary'} direction="row" alignItems="center" spacing={1} mt={1}>
+									{ratingCount > 0 ? (
+										<>
+											<Stack direction="row" spacing={0.5} alignItems="center">
 												{[1, 2, 3, 4, 5].map((star) => (
-													<IconButton
+													<StarIcon
 														key={star}
-														className={`star-btn${selectedRating && star <= selectedRating ? ' selected' : ''}`}
-														onClick={() =>
-															setSelectedRating((prev) => (prev === star ? null : star))
-														}
-													>
-														{selectedRating && star <= selectedRating ? (
-															<StarIcon className={'star-icon'} />
-														) : (
-															<StarBorderIcon className={'star-icon'} />
-														)}
-													</IconButton>
+														className={star <= Math.round(ratingAverage) ? 'star-filled' : 'star-empty'}
+														fontSize="small"
+													/>
 												))}
 											</Stack>
-										</Stack>
-
-										<textarea
-											className={'review-textarea'}
-											placeholder={'Your review *'}
-											onChange={({ target: { value } }: any) => {
-												setInsertCommentData({ ...insertCommentData, commentContent: value });
-											}}
-											value={insertCommentData.commentContent}
-										/>
-
-										<Button
-											className={'submit-review-btn'}
-											disabled={insertCommentData.commentContent === '' || !user?._id}
-											onClick={createCommentHandler}
-										>
-											Submit
-										</Button>
-									</Stack>
+											<Typography variant="body2" className={'rating-value'}>
+												{ratingAverage.toFixed(1)}
+											</Typography>
+											<Typography variant="body2" className={'rating-count'}>
+												({ratingCount} {ratingCount === 1 ? 'review' : 'reviews'})
+											</Typography>
+										</>
+									) : (
+										<Typography variant="body2" className={'rating-count'}>
+											No ratings yet
+										</Typography>
+									)}
 								</Stack>
-							</Box>
+							</Stack>
 						</Stack>
 					</Stack>
+
+					{/* Product Tabs */}
+					<Stack className={'product-tabs-section'} mb={'60px'}>
+						<Stack className={'container'}>
+							{/* Vertical Tabs on Left */}
+							<Tabs
+								value={activeTab}
+								onChange={handleTabChange}
+								orientation="vertical"
+								variant="scrollable"
+								className={'product-tabs'}
+							>
+								<Tab label="Description" />
+								<Tab label="Additional Information" />
+								<Tab label={`Reviews (${commentTotal})`} />
+							</Tabs>
+
+							{/* Tab Panels on Right */}
+							<Stack className={'tab-panels'}>
+								<Box className={'tab-panel'} hidden={activeTab !== 0}>
+									{product?.productDescription && (
+										<Stack className={'description-content'}>
+											{product.productDescription.split('\n').map((paragraph, index) => {
+												if (paragraph.trim().startsWith('*')) {
+													// Bullet point format
+													const bulletText = paragraph.trim().substring(1).trim();
+													const parts = bulletText.split(':');
+													if (parts.length >= 2) {
+														const title = parts[0].trim();
+														const content = parts.slice(1).join(':').trim();
+														return (
+															<Stack key={index} className={'description-item'} direction={'row'} spacing={1}>
+																<Typography className={'bullet'}>•</Typography>
+																<Stack>
+																	<Typography className={'description-title'} component={'span'}>
+																		{title}:
+																	</Typography>{' '}
+																	<Typography className={'description-text'} component={'span'}>
+																		{content}
+																	</Typography>
+																</Stack>
+															</Stack>
+														);
+													}
+												}
+												return (
+													<Typography key={index} className={'tab-content'} mb={'12px'}>
+														{paragraph}
+													</Typography>
+												);
+											})}
+										</Stack>
+									)}
+								</Box>
+
+								<Box className={'tab-panel'} hidden={activeTab !== 1}>
+									<Stack className={'additional-info'}>
+										{additionalInfoEntries.length === 0 ? (
+											<Typography className={'info-value'}>No additional information available.</Typography>
+										) : (
+											additionalInfoEntries.map(([key, value]) => (
+												<Stack key={key} direction={'row'} className={'info-row'}>
+													<Typography className={'info-key'}>{key}:</Typography>
+													<Typography className={'info-value'}>{value}</Typography>
+												</Stack>
+											))
+										)}
+									</Stack>
+								</Box>
+
+								<Box className={'tab-panel'} hidden={activeTab !== 2}>
+									<Stack className={'reviews-section'}>
+										<Typography className={'reviews-heading'}>Reviews</Typography>
+
+										{commentTotal === 0 ? (
+											<Stack className={'no-reviews'}>
+												<Typography className={'no-reviews-text'}>There are no reviews yet.</Typography>
+											</Stack>
+										) : (
+											<Stack className={'reviews-list'}>
+												{productComments?.map((comment: Comment, index: number) => (
+													<Review comment={comment} key={comment?._id || index} rating={comment.rating ?? null} />
+												))}
+												{commentTotal > 5 && (
+													<Box component={'div'} className={'pagination-box'}>
+														<MuiPagination
+															page={1}
+															count={Math.ceil(commentTotal / 5)}
+															onChange={commentPaginationChangeHandler}
+															shape="circular"
+															color="primary"
+														/>
+													</Box>
+												)}
+											</Stack>
+										)}
+
+										{/* Leave Review Form */}
+										<Stack className={'leave-review-form'}>
+											<Typography className={'review-form-title'}>
+												Be the first to review "{product?.productTitle}"
+											</Typography>
+
+											<Stack className={'rating-section'}>
+												<Typography className={'rating-label'}>
+													Your rating <span className={'required'}>(optional)</span>
+												</Typography>
+												<Stack direction={'row'} className={'star-rating-selector'}>
+													{[1, 2, 3, 4, 5].map((star) => (
+														<IconButton
+															key={star}
+															className={`star-btn${selectedRating && star <= selectedRating ? ' selected' : ''}`}
+															onClick={() => setSelectedRating((prev) => (prev === star ? null : star))}
+														>
+															{selectedRating && star <= selectedRating ? (
+																<StarIcon className={'star-icon'} />
+															) : (
+																<StarBorderIcon className={'star-icon'} />
+															)}
+														</IconButton>
+													))}
+												</Stack>
+											</Stack>
+
+											<textarea
+												className={'review-textarea'}
+												placeholder={'Your review *'}
+												onChange={({ target: { value } }: any) => {
+													setInsertCommentData({ ...insertCommentData, commentContent: value });
+												}}
+												value={insertCommentData.commentContent}
+											/>
+
+											<Button
+												className={'submit-review-btn'}
+												disabled={insertCommentData.commentContent === '' || !user?._id}
+												onClick={createCommentHandler}
+											>
+												Submit
+											</Button>
+										</Stack>
+									</Stack>
+								</Box>
+							</Stack>
+						</Stack>
+					</Stack>
+
+					{/* Related Products */}
+					{displayedRelatedProducts.length > 0 && (
+						<Stack className={'related-products-section'}>
+							<Stack className={'container'}>
+								<Typography variant="h3" className={'section-title'}>
+									Related Products
+								</Typography>
+								<Stack className={'related-products-wrapper'} direction={'row'} spacing={2}>
+									<Box component={'div'} className={'swiper-nav-btn swiper-related-prev'}>
+										<WestIcon />
+									</Box>
+									<Box component={'div'} className={'swiper-container'}>
+										<Swiper
+											className={'related-products-swiper'}
+											slidesPerView={4}
+											spaceBetween={24}
+											modules={[Navigation]}
+											navigation={{
+												nextEl: '.swiper-related-next',
+												prevEl: '.swiper-related-prev',
+											}}
+										>
+											{displayedRelatedProducts.map((relatedProduct) => (
+												<SwiperSlide key={relatedProduct._id} className={'related-product-slide'}>
+													<ProductCard
+														product={relatedProduct}
+														likeProductHandler={likeProductHandler}
+														addToCartHandler={(id: string) => {
+															const productToAdd = displayedRelatedProducts.find((p) => p._id === id);
+															if (productToAdd) {
+																addToCart(productToAdd, 1);
+																sweetTopSmallSuccessAlert('Product added to cart').then();
+															}
+														}}
+														compareHandler={(id: string) => console.log('Add to compare:', id)}
+														quickViewHandler={(id: string) => console.log('Quick view:', id)}
+													/>
+												</SwiperSlide>
+											))}
+										</Swiper>
+									</Box>
+									<Box component={'div'} className={'swiper-nav-btn swiper-related-next'}>
+										<EastIcon />
+									</Box>
+								</Stack>
+							</Stack>
+						</Stack>
+					)}
+
+					{/* Recently Viewed Products */}
+					{filteredRecentlyViewed.length > 0 && (
+						<Stack className={'recently-viewed-section'}>
+							<Stack className={'container'}>
+								<Typography variant="h3" className={'section-title'}>
+									Recent Viewed Products
+								</Typography>
+								<Stack className={'recently-viewed-wrapper'} direction={'row'} spacing={2}>
+									<Box component={'div'} className={'swiper-nav-btn swiper-recent-prev'}>
+										<WestIcon />
+									</Box>
+									<Box component={'div'} className={'swiper-container'}>
+										<Swiper
+											className={'recently-viewed-swiper'}
+											slidesPerView={4}
+											spaceBetween={24}
+											modules={[Navigation]}
+											navigation={{
+												nextEl: '.swiper-recent-next',
+												prevEl: '.swiper-recent-prev',
+											}}
+										>
+											{filteredRecentlyViewed.map((recentProduct) => (
+												<SwiperSlide key={recentProduct._id} className={'recent-product-slide'}>
+													<ProductCard
+														product={recentProduct}
+														likeProductHandler={likeProductHandler}
+														addToCartHandler={(id: string) => {
+															const productToAdd = filteredRecentlyViewed.find((p) => p._id === id);
+															if (productToAdd) {
+																addToCart(productToAdd, 1);
+																sweetTopSmallSuccessAlert('Product added to cart').then();
+															}
+														}}
+														compareHandler={(id: string) => console.log('Add to compare:', id)}
+														quickViewHandler={(id: string) => console.log('Quick view:', id)}
+													/>
+												</SwiperSlide>
+											))}
+										</Swiper>
+									</Box>
+									<Box component={'div'} className={'swiper-nav-btn swiper-recent-next'}>
+										<EastIcon />
+									</Box>
+								</Stack>
+							</Stack>
+						</Stack>
+					)}
+
+					{/* Fullscreen Image Lightbox */}
+					{productImages.length > 0 && (
+						<Lightbox
+							open={lightboxOpen}
+							close={() => setLightboxOpen(false)}
+							index={lightboxIndex}
+							slides={productImages.map((img) => ({ src: img }))}
+							plugins={[Thumbnails, Zoom]}
+							thumbnails={{
+								position: 'bottom',
+								width: 120,
+								height: 80,
+								border: 0,
+								borderRadius: 4,
+								padding: 0,
+								gap: 16,
+							}}
+							zoom={{
+								maxZoomPixelRatio: 3,
+								scrollToZoom: true,
+							}}
+							on={{
+								view: ({ index }) => {
+									setLightboxIndex(index);
+									setCurrentImageIndex(index);
+									setSelectedImage(productImages[index]);
+								},
+							}}
+							styles={{
+								container: { backgroundColor: 'rgba(0, 0, 0, 0.95)' },
+							}}
+							carousel={{
+								finite: productImages.length <= 1,
+							}}
+						/>
+					)}
 				</Stack>
-
-				{/* Related Products */}
-				{displayedRelatedProducts.length > 0 && (
-					<Stack className={'related-products-section'}>
-						<Stack className={'container'}>
-							<Typography variant="h3" className={'section-title'}>
-								Related Products
-							</Typography>
-							<Stack className={'related-products-wrapper'} direction={'row'} spacing={2}>
-								<Box component={'div'} className={'swiper-nav-btn swiper-related-prev'}>
-									<WestIcon />
-								</Box>
-								<Box component={'div'} className={'swiper-container'}>
-									<Swiper
-										className={'related-products-swiper'}
-										slidesPerView={4}
-										spaceBetween={24}
-										modules={[Navigation]}
-										navigation={{
-											nextEl: '.swiper-related-next',
-											prevEl: '.swiper-related-prev',
-										}}
-									>
-										{displayedRelatedProducts.map((relatedProduct) => (
-											<SwiperSlide key={relatedProduct._id} className={'related-product-slide'}>
-												<ProductCard
-													product={relatedProduct}
-													likeProductHandler={likeProductHandler}
-													addToCartHandler={(id: string) => {
-														const productToAdd = displayedRelatedProducts.find((p) => p._id === id);
-														if (productToAdd) {
-															addToCart(productToAdd, 1);
-															sweetTopSmallSuccessAlert('Product added to cart').then();
-														}
-													}}
-													compareHandler={(id: string) => console.log('Add to compare:', id)}
-													quickViewHandler={(id: string) => console.log('Quick view:', id)}
-												/>
-											</SwiperSlide>
-										))}
-									</Swiper>
-								</Box>
-								<Box component={'div'} className={'swiper-nav-btn swiper-related-next'}>
-									<EastIcon />
-								</Box>
-							</Stack>
-						</Stack>
-					</Stack>
-				)}
-
-				{/* Recently Viewed Products */}
-				{filteredRecentlyViewed.length > 0 && (
-					<Stack className={'recently-viewed-section'}>
-						<Stack className={'container'}>
-							<Typography variant="h3" className={'section-title'}>
-								Recent Viewed Products
-							</Typography>
-							<Stack className={'recently-viewed-wrapper'} direction={'row'} spacing={2}>
-								<Box component={'div'} className={'swiper-nav-btn swiper-recent-prev'}>
-									<WestIcon />
-								</Box>
-								<Box component={'div'} className={'swiper-container'}>
-									<Swiper
-										className={'recently-viewed-swiper'}
-										slidesPerView={4}
-										spaceBetween={24}
-										modules={[Navigation]}
-										navigation={{
-											nextEl: '.swiper-recent-next',
-											prevEl: '.swiper-recent-prev',
-										}}
-									>
-										{filteredRecentlyViewed.map((recentProduct) => (
-											<SwiperSlide key={recentProduct._id} className={'recent-product-slide'}>
-												<ProductCard
-													product={recentProduct}
-													likeProductHandler={likeProductHandler}
-													addToCartHandler={(id: string) => {
-														const productToAdd = filteredRecentlyViewed.find((p) => p._id === id);
-														if (productToAdd) {
-															addToCart(productToAdd, 1);
-															sweetTopSmallSuccessAlert('Product added to cart').then();
-														}
-													}}
-													compareHandler={(id: string) => console.log('Add to compare:', id)}
-													quickViewHandler={(id: string) => console.log('Quick view:', id)}
-												/>
-											</SwiperSlide>
-										))}
-									</Swiper>
-								</Box>
-								<Box component={'div'} className={'swiper-nav-btn swiper-recent-next'}>
-									<EastIcon />
-								</Box>
-							</Stack>
-						</Stack>
-					</Stack>
-				)}
-
-				{/* Fullscreen Image Lightbox */}
-				{productImages.length > 0 && (
-					<Lightbox
-						open={lightboxOpen}
-						close={() => setLightboxOpen(false)}
-						index={lightboxIndex}
-						slides={productImages.map((img) => ({ src: img }))}
-						plugins={[Thumbnails, Zoom]}
-						thumbnails={{
-							position: 'bottom',
-							width: 120,
-							height: 80,
-							border: 0,
-							borderRadius: 4,
-							padding: 0,
-							gap: 16,
-						}}
-						zoom={{
-							maxZoomPixelRatio: 3,
-							scrollToZoom: true,
-						}}
-						on={{
-							view: ({ index }) => {
-								setLightboxIndex(index);
-								setCurrentImageIndex(index);
-								setSelectedImage(productImages[index]);
-							},
-						}}
-						styles={{
-							container: { backgroundColor: 'rgba(0, 0, 0, 0.95)' },
-						}}
-						carousel={{
-							finite: productImages.length <= 1,
-						}}
-					/>
-				)}
-			</Stack>
-		);
+			);
+		}
 	}
 };
 

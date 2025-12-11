@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+import { Navigation, Autoplay } from 'swiper';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import BlogCard from '../common/BlogCard';
 import { BoardArticle } from '../../types/blog/board-article';
@@ -15,6 +15,7 @@ import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAler
 import { userVar } from '../../../apollo/store';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 interface LatestBlogsProps {
 	initialInput?: BoardArticlesInquiry;
@@ -25,6 +26,7 @@ const LatestBlogs = (props: LatestBlogsProps) => {
 	const swiperRef = useRef<any>(null);
 	const user = useReactiveVar(userVar);
 	const [latestBlogs, setLatestBlogs] = useState<BoardArticle[]>([]);
+	const device = useDeviceDetect();
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
@@ -63,6 +65,36 @@ const LatestBlogs = (props: LatestBlogsProps) => {
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
+
+	if (device === 'mobile') {
+		return (
+			<Stack className={'latest-blogs'}>
+				<Stack className={'container'}>
+					<Stack className={'section-header'}>
+						<Stack className={'title-section'}>
+							<Typography variant="h2" className={'main-title'}>
+								<span className={'title-highlight'}>MOST LIKED</span> BLOGS
+							</Typography>
+						</Stack>
+					</Stack>
+					<Swiper
+						className={'latest-blogs-swiper mobile'}
+						slidesPerView={1.1}
+						spaceBetween={18}
+						centeredSlides
+						modules={[Autoplay]}
+						autoplay={{ delay: 2600, disableOnInteraction: false }}
+					>
+						{latestBlogs.map((blog) => (
+							<SwiperSlide key={blog._id} className={'latest-blog-slide'}>
+								<BlogCard boardArticle={blog} likeArticleHandler={likeArticleHandler} />
+							</SwiperSlide>
+						))}
+					</Swiper>
+				</Stack>
+			</Stack>
+		);
+	}
 
 	return (
 		<Stack className={'latest-blogs'}>

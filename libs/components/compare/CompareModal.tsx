@@ -15,6 +15,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useCompare } from '../../hooks/useCompare';
 import CompareTable from './CompareTable';
 import { Product } from '../../types/product/product';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 interface CompareModalProps {
 	open: boolean;
@@ -23,6 +24,7 @@ interface CompareModalProps {
 }
 
 const CompareModal: React.FC<CompareModalProps> = ({ open, onClose, onAddToCart }) => {
+	const device = useDeviceDetect();
 	const { items, clearCompare, removeFromCompare } = useCompare();
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -43,6 +45,10 @@ const CompareModal: React.FC<CompareModalProps> = ({ open, onClose, onAddToCart 
 	const handleCloseSnackbar = () => {
 		setSnackbarOpen(false);
 	};
+
+	if (device === 'mobile') {
+		return null;
+	}
 
 	return (
 		<Dialog

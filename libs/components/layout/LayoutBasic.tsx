@@ -15,7 +15,8 @@ import FloatingAction from '../fab/FloatingAction';
 import CompareFab from '../compare/CompareFab';
 import CompareModal from '../compare/CompareModal';
 import CartFab from '../cart/CartFab';
-import Cart from '../Cart';
+import Cart from '../cart/Cart';
+import QuickViewModal from '../product/QuickViewModal';
 import { Product } from '../../types/product/product';
 import { getJwtToken, updateUserInfo } from '../../auth';
 import { useCart } from '../../hooks/useCart';
@@ -101,25 +102,25 @@ const withLayoutBasic = (Component: any) => {
 						<title>CarMoa</title>
 						<meta name={'title'} content={`CarMoa`} />
 					</Head>
-					<Stack id="mobile-wrap">
-						<Stack id={'top'}></Stack>
-
-						<Stack id={'main'}>
-							<Component {...props} />
-						</Stack>
-
-						<Stack id={'footer'}>
-							<Footer />
-						</Stack>
-						<CompareFab onClick={() => setCompareModalOpen(true)} />
-						<CompareModal
-							open={compareModalOpen}
-							onClose={() => setCompareModalOpen(false)}
-							onAddToCart={handleAddToCart}
-						/>
-						<CartFab onClick={() => setCartOpen(true)} />
-						<Cart open={cartOpen} onClose={() => setCartOpen(false)} />
+				<Stack id="mobile-wrap">
+					<Stack id={'top'}></Stack>
+					<TopHeader />
+					<Stack id={'main'}>
+						<Component {...props} />
 					</Stack>
+
+					<Stack id={'footer'}>
+						<Footer />
+					</Stack>
+					<CompareFab onClick={() => setCompareModalOpen(true)} />
+					<CompareModal
+						open={compareModalOpen}
+						onClose={() => setCompareModalOpen(false)}
+						onAddToCart={handleAddToCart}
+					/>
+					<Cart open={cartOpen} onClose={() => setCartOpen(false)} />
+					<QuickViewModal />
+				</Stack>
 				</>
 			);
 		} else {
