@@ -9,18 +9,31 @@
 		align-items: center;
 		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 		background: var(--carmo-bg);
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		padding-left: 12px;
+		padding-right: 12px;
+		box-sizing: border-box;
+		overflow-x: hidden;
 		.mobile-bar {
 			height: 100%;
 			width: 100%;
+			max-width: 100%;
 			display: flex;
 			align-items: center;
-			gap: 6px;
+			gap: 4px;
+			box-sizing: border-box;
+			overflow: visible;
+			min-width: 0;
 		}
 
 		.mobile-menu-btn {
-			width: 34px;
-			height: 34px;
-			min-width: 34px;
+			width: 32px;
+			height: 32px;
+			min-width: 32px;
+			max-width: 32px;
+			flex-shrink: 0;
 			border: 1px solid var(--carmo-border);
 			border-radius: 8px;
 			background: var(--carmo-bg);
@@ -34,24 +47,28 @@
 		.logo-wrapper {
 			display: flex;
 			align-items: center;
-			margin-right: 4px;
+			margin-right: 2px;
+			flex-shrink: 0;
 			img {
-				height: 28px;
+				height: 24px;
 				width: auto;
 				display: block;
+				max-width: 32px;
 			}
 		}
 
 		.mobile-search-wrapper {
 			flex: 1;
-			min-width: 110px;
+			min-width: 0;
+			max-width: 100%;
 			position: relative;
 			display: flex;
 			align-items: center;
 			background: var(--carmo-bg-soft);
 			border-radius: 10px;
 			height: 36px;
-			padding: 0 8px 0 10px;
+			padding: 0 6px 0 8px;
+			flex-shrink: 1;
 
 			.mobile-search-input {
 				flex: 1;
@@ -60,21 +77,24 @@
 				border: none;
 				outline: none;
 				background: transparent;
-				font-size: 14px;
+				font-size: 13px;
 				color: var(--carmo-text);
 				font-family: $font;
 				padding: 0;
-				padding-right: 4px;
+				padding-right: 2px;
+				min-width: 0;
 
 				&::placeholder {
 					color: var(--carmo-text-secondary);
+					font-size: 12px;
 				}
 			}
 
 			.mobile-search-icon-btn {
-				width: 28px;
-				height: 28px;
-				min-width: 28px;
+				width: 24px;
+				height: 24px;
+				min-width: 24px;
+				max-width: 24px;
 				padding: 0;
 				color: var(--carmo-text-secondary);
 				flex-shrink: 0;
@@ -84,14 +104,58 @@
 		.mobile-icons {
 			display: flex;
 			align-items: center;
-			gap: 4px;
+			gap: 2px;
+			flex-shrink: 0;
+			min-width: fit-content;
 			.MuiIconButton-root {
-				width: 36px;
-				height: 36px;
-				min-width: 36px;
+				width: 32px;
+				height: 32px;
+				min-width: 32px;
+				max-width: 32px;
 				padding: 0;
 				color: var(--carmo-text);
-				font-size: 22px;
+				font-size: 20px;
+				flex-shrink: 0;
+			}
+		}
+
+		// Responsive adjustments for very small screens
+		@media (max-width: 360px) {
+			.mobile-search-wrapper {
+				min-width: 80px;
+				padding: 0 4px 0 6px;
+
+				.mobile-search-input {
+					font-size: 12px;
+
+					&::placeholder {
+						font-size: 11px;
+					}
+				}
+
+				.mobile-search-icon-btn {
+					width: 20px;
+					height: 20px;
+					min-width: 20px;
+					max-width: 20px;
+				}
+			}
+
+			.mobile-icons {
+				gap: 1px;
+
+				.MuiIconButton-root {
+					width: 30px;
+					height: 30px;
+					min-width: 30px;
+					max-width: 30px;
+					font-size: 18px;
+				}
+			}
+
+			.logo-wrapper img {
+				height: 22px;
+				max-width: 28px;
 			}
 		}
 	}
@@ -154,15 +218,19 @@
 
 	/* Part categories mobile */
 	.part-categories {
-		padding: 20px 14px;
+		padding: 20px 0;
+		width: 100%;
+		margin: 0;
 
 		.container {
 			padding: 0;
+			width: 100%;
+			margin: 0;
 		}
 
 		.categories-swiper.mobile {
 			width: 100%;
-			padding-bottom: 10px;
+			padding: 0 14px 10px 14px;
 		}
 
 		.mobile-category-slide {
@@ -212,11 +280,19 @@
 
 	/* Latest blogs mobile */
 	.latest-blogs {
-		padding: 0 14px;
+		padding: 0;
 		margin-top: 32px;
+		width: 100%;
+
+		.container {
+			padding: 0;
+			width: 100%;
+			margin: 0;
+		}
 
 		.section-header {
 			margin-bottom: 16px;
+			padding: 0 14px;
 
 			.main-title {
 				font-size: 22px;
@@ -231,9 +307,7 @@
 
 		.latest-blogs-swiper.mobile {
 			width: 100%;
-			padding-left: 6px;
-			padding-right: 6px;
-			padding-bottom: 10px;
+			padding: 0 14px 10px 14px;
 
 			.latest-blog-slide {
 				width: auto;
@@ -243,11 +317,20 @@
 
 	/* Events mobile */
 	.events {
-		padding: 20px 14px;
-    background: var(--carmo-bg-soft);
+		padding: 20px 0;
+		width: 100%;
+		margin: 0;
+		background: var(--carmo-bg-soft);
+
+		.container {
+			padding: 0;
+			width: 100%;
+			margin: 0;
+		}
 
 		.section-header {
 			margin-bottom: 16px;
+			padding: 0 14px;
 
 			.main-title {
 				font-size: 22px;
@@ -262,9 +345,7 @@
 
 		.events-swiper.mobile {
 			width: 100%;
-			padding-left: 6px;
-			padding-right: 6px;
-			padding-bottom: 10px;
+			padding: 0 14px 10px 14px;
 
 			.event-slide-mobile {
 				width: auto;
@@ -296,12 +377,7 @@
 			.gradient-overlay {
 				position: absolute;
 				inset: 0;
-				background: linear-gradient(
-					to bottom,
-					rgba(0, 0, 0, 0) 0%,
-					rgba(0, 0, 0, 0.3) 50%,
-					rgba(0, 0, 0, 0.7) 100%
-				);
+				background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.7) 100%);
 			}
 
 			.content {
@@ -370,10 +446,20 @@
 
 	/* Trend Products mobile */
 	.trend-products.mobile {
-		padding: 20px 14px;
-    background: var(--carmo-bg-soft);
+		padding: 20px 0;
+		width: 100%;
+		margin: 0;
+		background: var(--carmo-bg-soft);
+
+		.container {
+			padding: 0;
+			width: 100%;
+			margin: 0;
+		}
+
 		.section-header {
 			margin-bottom: 20px;
+			padding: 0 14px;
 			.main-title {
 				font-size: 22px;
 				font-weight: 700;
@@ -385,7 +471,7 @@
 		}
 		.trend-products-swiper.mobile {
 			width: 100%;
-			padding-bottom: 10px;
+			padding: 0 14px 10px 14px;
 			.trend-product-slide {
 				width: auto;
 				padding: 0 12px;
@@ -396,10 +482,19 @@
 
 	/* Brand Products mobile */
 	.brand-products.mobile {
-		padding: 20px 14px;
+		padding: 20px 0;
+		width: 100%;
+		margin: 0;
+
+		.container {
+			padding: 0;
+			width: 100%;
+			margin: 0;
+		}
 
 		.section-header {
 			margin-bottom: 10px;
+			padding: 0 14px;
 
 			.main-title {
 				font-size: 20px;
@@ -425,7 +520,7 @@
 			display: flex;
 			gap: 10px;
 			overflow-x: auto;
-			padding: 10px 0 4px;
+			padding: 10px 14px 4px 14px;
 			scroll-snap-type: x mandatory;
 
 			-webkit-overflow-scrolling: touch;
@@ -467,8 +562,8 @@
 		}
 
 		.view-all-btn.mobile {
-			width: 94%;
-			margin: 12px auto 0;
+			width: calc(100% - 28px);
+			margin: 12px 14px 0;
 			height: 40px;
 			border-radius: 12px;
 			background: var(--carmo-primary);
@@ -489,10 +584,19 @@
 
 	/* Top Products mobile */
 	.top-products.mobile {
-		padding: 0 10px;
+		padding: 0;
 		margin-top: 30px;
+		width: 100%;
+
+		.container {
+			padding: 0;
+			width: 100%;
+			margin: 0;
+		}
+
 		.section-header {
 			margin-bottom: 20px;
+			padding: 0 14px;
 			.main-title {
 				font-size: 22px;
 				font-weight: 700;
@@ -504,7 +608,7 @@
 		}
 		.top-products-swiper.mobile {
 			width: 100%;
-			padding-bottom: 10px;
+			padding: 0 14px 10px 14px;
 			.top-product-slide {
 				width: auto;
 				padding: 0 12px;
@@ -515,16 +619,21 @@
 
 	/* Top Dealers mobile */
 	.top-dealers.mobile {
-		padding: 20px 14px;
-    background: var(--carmo-bg-soft);
+		padding: 20px 0;
+		width: 100%;
+		margin: 0;
+		background: var(--carmo-bg-soft);
 
 		.container {
 			width: 100%;
+			padding: 0;
+			margin: 0;
 		}
 
 		.section-header.mobile {
 			margin-bottom: 16px;
 			text-align: left;
+			padding: 0 14px;
 
 			.main-title.mobile {
 				font-size: 22px;
@@ -543,9 +652,7 @@
 
 		.top-dealers-swiper.mobile {
 			width: 100%;
-			padding-left: 10px;
-			padding-right: 10px;
-			padding-bottom: 10px;
+			padding: 0 14px 10px 14px;
 
 			.top-dealers-slide.mobile {
 				width: auto;

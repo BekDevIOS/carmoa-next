@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Fab, Badge } from '@mui/material';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import { useCompare } from '../../hooks/useCompare';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 interface CompareFabProps {
 	onClick: () => void;
@@ -11,7 +12,7 @@ const CompareFab: React.FC<CompareFabProps> = ({ onClick }) => {
 	const { items } = useCompare();
 	const [shouldPulse, setShouldPulse] = useState(false);
 	const [mounted, setMounted] = useState(false);
-
+	const device = useDeviceDetect();
 	// Only render on client side to avoid hydration mismatch
 	useEffect(() => {
 		setMounted(true);
@@ -28,6 +29,10 @@ const CompareFab: React.FC<CompareFabProps> = ({ onClick }) => {
 
 	// Don't render until mounted (client-side only)
 	if (!mounted || items.length === 0) {
+		return null;
+	}
+
+	if(device === 'mobile') {
 		return null;
 	}
 
