@@ -30,7 +30,7 @@ const AboutUs: NextPage = (props: T) => {
 			id: 1,
 			memberNick: 'Utkirbek Mekhmonboev',
 			memberType: 'CEO & Founder',
-			memberImage: '/img/profile/agent.png',
+			memberImage: '/img/profile/users/image.webp',
 		},
 		{
 			id: 2,
@@ -42,13 +42,13 @@ const AboutUs: NextPage = (props: T) => {
 			id: 3,
 			memberNick: 'Daniel Kim',
 			memberType: 'Lead Full-Stack Engineer',
-			memberImage: '/img/profile/agent.png',
+			memberImage: '/img/profile/users/1.jpg',
 		},
 		{
 			id: 4,
 			memberNick: 'Sophia Lee',
 			memberType: 'Marketing & Content Director',
-			memberImage: '/img/property/girlBrunette.png',
+			memberImage: '/img/profile/girl.svg',
 		},
 		
 	];
